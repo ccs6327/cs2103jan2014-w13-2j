@@ -12,6 +12,8 @@ public class CommandExecuter {
 	private static final String COMMAND_TYPE_MARK = "mark";
 	private static final String COMMAND_TYPE_HELP = "help";
 	
+	private static final String MESSAGE_ADDED = "Task \"%1$s\" is added";
+	
 	private static final int TYPE_TIMED_TASK = 0;
 	private static final int TYPE_DEADLINE_TASK = 1;
 	private static final int TYPE_FLOATING_TASK = 2;
@@ -102,6 +104,11 @@ public class CommandExecuter {
 				break;
 				
 		}
+		HistoryTask hTask 
+		= new HistoryTask(taskName, startTime, endTime, operation);
+		storage.getHistoryList().add(hTask);
+		
+		System.out.println(String.format(MESSAGE_ADDED, taskName));
 	}
 
 	private void deleteTask() {
@@ -154,6 +161,22 @@ public class CommandExecuter {
 	private void undoOperation() {
 		// undo previous operation
 		// print confirmation message
+		try {
+			HistoryTask hTask = storage.getHistoryList().get(storage.getHistoryList().size() - 1);
+			if (hTask.getOperation().equals(COMMAND_TYPE_ADD)) {
+				deleteTask(hTask.getTaskName());
+			} else if (hTask.getOperation().equals(COMMAND_TYPE_DELETE)) {
+				addTask();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			System.err.println("No previous operation");
+		}
+		
+	}
+
+	private void deleteTask(String taskName) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
