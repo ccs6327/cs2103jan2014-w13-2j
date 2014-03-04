@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+
+
 public class CLC {
 	private static Storage storage = new Storage("clcStorage.txt");
 	private static CommandAnalyzer ca;
