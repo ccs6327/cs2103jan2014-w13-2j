@@ -1,16 +1,17 @@
+package clc.logic;
 import java.util.Calendar;
 
+import static clc.common.Constants.*;
+
 public class Task {
-	private static final int TYPE_TIMED_TASK = 0;
-	private static final int TYPE_DEADLINE_TASK = 1;
-	private static final int TYPE_FLOATING_TASK = 2;
-	private static final int TYPE_UNSUPPORTED_TASK = 3;
 	
-	String taskName;
-	Calendar startTime;
-	Calendar endTime;
+	
+	private String taskName;
+	private long taskId;
+	private Calendar startTime;
+	private Calendar endTime;
 	private int taskType; //0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
-	private boolean isDone = false;
+	private boolean isDone;
 
 	public Task() {
 		
@@ -18,21 +19,50 @@ public class Task {
 
 	public Task(String _taskName, Calendar _startTime, Calendar _endTime) {
 		taskName = _taskName;
+		taskId = setTaskId();
 		startTime = _startTime;
 		endTime = _endTime;
+		taskType = TYPE_TIMED_TASK;
+		isDone = false;
+	}
+	
+	public Task(String _taskName, Calendar _endTime) {
+		taskName = _taskName;
+		taskId = setTaskId();
+		startTime = null;
+		endTime = _endTime;
+		taskType = TYPE_DEADLINE_TASK;
+		isDone = false;
+	}
+	
+	public Task(String _taskName) {
+		taskName = _taskName;
+		taskId = setTaskId();
+		startTime = null;
+		endTime = null;
+		taskType = TYPE_FLOATING_TASK;
+		isDone = false;
 	}
 
 	//accessor
 	public String getTaskName() {
 		return taskName;
 	}
-
+	
+	public long getTaskId() {
+		return taskId;
+	}
+	
 	public Calendar getStartTime() {
 		return startTime;
 	}
 
 	public Calendar getEndTime() {
 		return endTime;
+	}
+	
+	public int getTaskType() {
+		return taskType;
 	}
 
 	//mutator for update function
@@ -63,6 +93,10 @@ public class Task {
 			return true;
 		}
 		return false;
+	}
+	
+	private long setTaskId() {
+		return System.currentTimeMillis();
 	}
 
 
