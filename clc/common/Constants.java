@@ -15,6 +15,7 @@ public class Constants {
 	public static final String TYPE_DELETE = "delete";
 	public static final String TYPE_CLEAR = "clear";
 	public static final String TYPE_EXIT = "exit";
+	public static final String TYPE_HELP = "help";
 	
 	public static final String EMPTY_STRING = "";
 	
@@ -23,6 +24,7 @@ public class Constants {
 	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format: %1$s\r\n";
 	
 	public static final String OUTFILE = "data.txt";
+	public static final String HELP_FILE = "generalHelp.txt";
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 }
