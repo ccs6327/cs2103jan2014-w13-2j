@@ -68,19 +68,22 @@ public class Storage {
 	}
 	
 	// Read from the Help.txt and return to string
-	public static String readManualFromHelpFile() throws IOException {
+	public static String readManualFromHelpFile() {
 		File fileIn = new File(HELPFILE);
-		BufferedReader bf = new BufferedReader(new FileReader(fileIn));
-		
-		String contentToRead = null;
 		StringBuilder sb = new StringBuilder();
-	
-		while((contentToRead = bf.readLine()) != null) {
-			sb.append(contentToRead.trim());
+		try {
+			
+			BufferedReader bf = new BufferedReader(new FileReader(fileIn));
+			String contentToRead = null;
+			
+			while((contentToRead = bf.readLine()) != null) {
+				sb.append(contentToRead.trim());
+			}
+			
+			bf.close();
+		} catch (IOException e) {
+			
 		}
-		
-		bf.close();
-		
 		return sb.toString();
 	}
 	
