@@ -1,7 +1,10 @@
 package clc.logic;
 
-public interface Command {
+import java.io.IOException;
 
+import clc.storage.Storage;
+public interface Command {
 	
+	public void execute();
 
 }

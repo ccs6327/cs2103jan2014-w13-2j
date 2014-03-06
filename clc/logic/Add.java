@@ -7,6 +7,9 @@ public class Add implements Command{
 		// TODO Auto-generated constructor stub
 	}
 
-	 
-	
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

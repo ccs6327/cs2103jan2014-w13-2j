@@ -1,4 +1,5 @@
 package clc.logic;
+
 import clc.storage.Storage;
 
 public class Help implements Command {
@@ -9,12 +10,11 @@ public class Help implements Command {
 	public Help() {}
 	
 	public void execute() {
-		String[] helpMessage = readUserManual();
-		//printUserManual(helpMessage);
+		String helpMessage = readUserManual();
+		System.out.println(helpMessage);
 	}
 
-	private String[] readUserManual() {
-		//return storage.
-		return null;
+	private String readUserManual() {
+		return Storage.readManualFromHelpFile();
 	}
 }

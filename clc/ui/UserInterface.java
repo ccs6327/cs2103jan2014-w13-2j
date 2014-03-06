@@ -8,6 +8,7 @@ import clc.logic.Clear;
 import clc.logic.Command;
 import clc.logic.Delete;
 import clc.logic.Display;
+import clc.logic.Help;
 import static clc.common.Constants.*;
 
 public class UserInterface {
@@ -32,7 +33,7 @@ public class UserInterface {
 	}
 	
 	private String executeCommand(String input) {
-		Command command;
+		Command command = null;
 		Analyzer analyzer = new Analyzer(input);
 		if (input.trim().equals(EMPTY_STRING)) {
 			return String.format(MESSAGE_INVALID_FORMAT, input);
@@ -54,15 +55,18 @@ public class UserInterface {
 		case TYPE_CLEAR:
 			command = new Clear();
 			break;
-		//case Invalid:
-		//	return String.format(MESSAGE_INVALID_FORMAT, command);
+		case TYPE_HELP:
+			command = new Help();
+			break;
 		case TYPE_EXIT:
 			exit();
 			break;
 		default:
 			return String.format(MESSAGE_INVALID_FORMAT, input);
 		}
-		//return command.execute();
+		
+		command.execute();
+		
 		return "";
 	}
 	
