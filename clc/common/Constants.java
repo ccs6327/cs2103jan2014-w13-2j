@@ -24,7 +24,7 @@ public class Constants {
 	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format: %1$s\r\n";
 	
 	public static final String OUTFILE = "data.txt";
-	public static final String HELP_FILE = "generalHelp.txt";
+	public static final String HELPFILE = "generalHelp.txt";
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 }

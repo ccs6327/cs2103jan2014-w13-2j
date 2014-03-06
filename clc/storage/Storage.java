@@ -1,11 +1,15 @@
 package clc.storage;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 import clc.logic.Task;
 import static clc.common.Constants.*;
@@ -62,6 +66,24 @@ public class Storage {
         out.close();
         fileOut.close();
 	}
-	     
+	
+	// Read from the Help.txt and return to string
+	public static String readManualFromHelpFile() throws IOException {
+		File fileIn = new File(HELPFILE);
+		BufferedReader bf = new BufferedReader(new FileReader(fileIn));
+		
+		String contentToRead = null;
+		StringBuilder sb = new StringBuilder();
+	
+		while((contentToRead = bf.readLine()) != null) {
+			sb.append(contentToRead.trim());
+		}
+		
+		bf.close();
+		
+		return sb.toString();
+	}
 	
 }
+
+
