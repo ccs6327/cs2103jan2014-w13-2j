@@ -9,6 +9,7 @@ import clc.logic.Command;
 import clc.logic.Delete;
 import clc.logic.Display;
 import clc.logic.Help;
+import clc.logic.Task;
 import static clc.common.Constants.*;
 
 public class UserInterface {
@@ -44,8 +45,8 @@ public class UserInterface {
 		switch (commandType) {
 		case TYPE_ADD:
 			command = new Add(analyzer.analyzeAdd());
-			return input.substring(4) + " added";
-			//break;
+			//return input.substring(4) + " added";
+			break;
 		case TYPE_DISPLAY:
 			command = new Display();
 			break;
