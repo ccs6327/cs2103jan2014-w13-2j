@@ -117,10 +117,16 @@ public class Analyzer {
 				} else if (isTimeFormat(splitSymbol)) {
 					int time = Integer.parseInt(splitSymbol[0]);
 					if (isPm) {
-						if (time <= 12) {
+						if (time < 12) {
 							time += 12;
-						} else if (time <= 1259) {
+						} else if (time <= 1159) {
 							time += 1200;
+						}
+					} else {
+						if (time == 12) {
+							time -= 12;
+						} else if (time >= 1200) {
+							time -= 1200;
 						}
 					}
 					timeInfo.add(time);

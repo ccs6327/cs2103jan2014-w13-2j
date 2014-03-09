@@ -9,9 +9,9 @@ public class Help implements Command {
 	//constructor
 	public Help() {}
 	
-	public void execute() {
+	public String execute() {
 		String helpMessage = readUserManual();
-		System.out.println(helpMessage);
+		return helpMessage;
 	}
 
 	private String readUserManual() {

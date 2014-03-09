@@ -8,6 +8,7 @@ import clc.logic.Clear;
 import clc.logic.Command;
 import clc.logic.Delete;
 import clc.logic.Display;
+import clc.logic.Exit;
 import clc.logic.Help;
 import clc.logic.Task;
 import static clc.common.Constants.*;
@@ -45,7 +46,6 @@ public class UserInterface {
 		switch (commandType) {
 		case TYPE_ADD:
 			command = new Add(analyzer.analyzeAdd());
-			//return input.substring(4) + " added";
 			break;
 		case TYPE_DISPLAY:
 			command = new Display();
@@ -60,22 +60,15 @@ public class UserInterface {
 			command = new Help();
 			break;
 		case TYPE_EXIT:
-			exit();
+			command = new Exit();
 			break;
 		default:
 			return String.format(MESSAGE_INVALID_FORMAT, input);
 		}
 		
-		command.execute();
+		return command.execute();
+	}
 		
-		return "";
-	}
-	
-	private void exit() {
-		System.exit(0);
-	}
-
-	
 	private void print(String content) {
 		System.out.print(content);
 	}

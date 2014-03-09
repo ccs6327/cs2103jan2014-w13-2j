@@ -5,6 +5,6 @@ import java.io.IOException;
 import clc.storage.Storage;
 public interface Command {
 	
-	public void execute();
+	public String execute();
 
 }
