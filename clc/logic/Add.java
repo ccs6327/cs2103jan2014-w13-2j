@@ -19,8 +19,8 @@ public class Add implements Command{
 		//String feedback;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy hh.mm aa");
 		
-		/* 
-		 //debug
+		 
+		/* //debug
 		System.out.println("task name = " + task.getTaskName());
 		System.out.println("task type = " + task.getTaskType());
 		System.out.println("start time = " + task.getStartTime());
@@ -32,10 +32,10 @@ public class Add implements Command{
 			return String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getStartTime()), formatDate(task.getEndTime()));
 			
 		case TYPE_DEADLINE_TASK:
-			return String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime()));
+			return String.format(MESSAGE_DEADLINE_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime()));
 			
 		case TYPE_FLOATING_TASK:
-			return String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName());
+			return String.format(MESSAGE_FLOATING_TASK_ADDED, task.getTaskName());
 			
 		default:
 			return "Unhandled command";
