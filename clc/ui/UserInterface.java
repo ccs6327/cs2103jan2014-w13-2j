@@ -48,7 +48,7 @@ public class UserInterface {
 			command = new Add(analyzer.analyzeAdd());
 			break;
 		case TYPE_DISPLAY:
-			command = new Display();
+			command = new Display(analyzer.analyzeDisplay());
 			break;
 		case TYPE_DELETE:
 			command = new Delete();

@@ -12,6 +12,16 @@ public class Analyzer {
 	private static final String SPACE = " ";
 	private static final String SLASH = "/";
 	private static final String DOT = ".";
+	private static final String TODAY = "today";
+	private static final String TOMORROW = "tomorrow";
+	private static final String MONDAY = "monday";
+	private static final String TUESDAY = "tuesday";
+	private static final String WEDNESDAY = "wednesday";
+	private static final String THURSDAY = "thursday";
+	private static final String FRIDAY = "friday";
+	private static final String SATURDAY = "saturday";
+	private static final String SUNDAY = "sunday";
+	
 	private String commandType, commandDetails;
 	private Task task;
 	private String taskName;
@@ -48,7 +58,6 @@ public class Analyzer {
 		String[] splitDetails = commandDetails.split(SPACE);
 
 		CountAndProcessCalendarInfoProvided(splitDetails);
-
 		
 		if (timeInfo.size() > 0) { //timed task or deadline task
 			//merge the taskName
@@ -70,6 +79,18 @@ public class Analyzer {
 		return null;
 	}
 
+	public GregorianCalendar analyzeDisplay() {
+		if (commandDetails.equals("")){
+			return null;
+		}
+		
+		String[] splitDetails = commandDetails.split(SPACE);
+		
+		CountAndProcessCalendarInfoProvided (splitDetails);
+		
+		return endTime; 
+	}
+	
 	private String mergeTaskName(String[] splitDetails) {
 		String taskName = "";
 		for (int i = 0; i < firstDateIndex; i++) {
@@ -80,17 +101,17 @@ public class Analyzer {
 	
 	private void CountAndProcessCalendarInfoProvided (String[] splitDetails) {
 		countCalendarInfo(splitDetails);
-		if (timeInfo.size() > 0) { //have Calendar Info to be processed
+		if (dayInfo.size() > 0) { //have Calendar Info to be processed
 			processCalendarInfo(splitDetails);
 		}
 	}
 
 	private void countCalendarInfo(String[] splitDetails) {
-		int endLoopIndex = splitDetails.length - 5; //loop 4 times from the back only
+		int endLoopIndex = splitDetails.length - 4; //loop 4 times from the back only
 		if (endLoopIndex < 0) {
 			endLoopIndex = 0;
 		}
-		for (int i = splitDetails.length - 1; i > endLoopIndex; i--) {
+		for (int i = splitDetails.length - 1; i >= endLoopIndex; i--) {
 			
 			String[] splitSymbol = null;
 			String currWord = splitDetails[i];
