@@ -3,6 +3,7 @@ package clc.ui;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 import clc.logic.Task;
 
@@ -65,9 +66,6 @@ public class Analyzer {
 
 		recordAndProcessCalendarInfoProvided(splitDetails);
 
-		if(startTime != null)System.out.println(startTime.getTime().toString());
-		if(endTime != null)System.out.println(endTime.getTime().toString());
-
 		if (timeInfo.size() > 0) { //timed task or deadline task
 			//merge the taskName
 			taskName = mergeTaskName(splitDetails);
@@ -84,7 +82,6 @@ public class Analyzer {
 			taskName = commandDetails;
 			return new Task(taskName);
 		}
-
 
 		return null;
 	}
@@ -122,8 +119,22 @@ public class Analyzer {
 		return time; 
 	}
 
-	private boolean doesCommandDetailsExist() {
-		return !commandDetails.equals("");
+	public ArrayList<Integer> analyzeDelete() {
+		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
+		return getSequenceNo(taskSeqNo);
+	}
+
+	private ArrayList<Integer> getSequenceNo(ArrayList<Integer> taskSeqNo) {
+		Scanner sc = new Scanner(commandDetails);
+		while (sc.hasNext()) {
+			String seqNo = sc.next();
+			if (isNumeric(seqNo)) {
+				taskSeqNo.add(Integer.parseInt(seqNo));
+			} else {
+				System.out.println("invalid format");
+			}
+		}
+		return taskSeqNo;
 	}
 
 	private void setToday() {
@@ -198,6 +209,7 @@ public class Analyzer {
 		for (int i = 0; i < firstDateIndex; i++) {
 			taskName += (splitDetails[i] + SPACE);
 		}
+		System.out.println("debug " + taskName);
 		return taskName;
 	}
 
@@ -223,6 +235,7 @@ public class Analyzer {
 				int month = Integer.parseInt(splitDate[1]);
 				dayInfo.add(day);
 				monthInfo.add(month);
+				firstDateIndex = i;
 			} else if (isTimeFormat(currWord)) {
 				int time = Integer.parseInt(splitTime[0]);
 				if (isPm) {
@@ -241,10 +254,10 @@ public class Analyzer {
 					}
 				}
 				timeInfo.add(time);
+				firstDateIndex = i;
 			}
-			firstDateIndex = i;
-
 		}
+		System.out.println(firstDateIndex);
 	}
 
 	private void processCalendarInfo(String[] splitDetails) {
@@ -379,6 +392,10 @@ public class Analyzer {
 				&& endTime.get(Calendar.DATE) != startTime.get(Calendar.DATE);
 	}
 
+	private boolean doesCommandDetailsExist() {
+		return !commandDetails.equals("");
+	}
+	
 	private boolean doesContainPm(String currWord) {
 		return currWord.contains(PM);
 	}

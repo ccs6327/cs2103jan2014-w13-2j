@@ -11,6 +11,8 @@ public class Add implements Command{
 	public Add(Task task) {
 		// TODO Auto-generated constructor stub
 		this.task = task;
+		System.out.println("taskName: " + task.getTaskName());
+		internalMem.add(task);
 	}
 
 	@Override
