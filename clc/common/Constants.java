@@ -17,6 +17,7 @@ public class Constants {
 	public static final String TYPE_EXIT = "exit";
 	public static final String TYPE_HELP = "help";
 	public static final String TYPE_MARK = "mark";
+	public static final String TYPE_UNMARK = "unmark";
 	
 	public static final String EMPTY_STRING = "";
 	
@@ -26,6 +27,12 @@ public class Constants {
 	public static final String MESSAGE_TIMED_TASK_ADDED = "%1$s(%2$s - %3$s) is added.";
 	public static final String MESSAGE_DEADLINE_TASK_ADDED = "%1$s(ending at %2$s) is added.";
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
+	public static final String MESSAGE_TASK_DELETED = "“%1$s” is deleted.";
+	public static final String MESSAGE_OUT_OF_BOUND = "%d is out of bound";
+	public static final String MESSAGE_MARK_DONE = "mark “%1$s” as done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark “%1$s” as not done sucessfuly";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "“%1$s” is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "“%1$s” is originally not mark as done";
 	
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";

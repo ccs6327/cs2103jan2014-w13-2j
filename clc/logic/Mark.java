@@ -1,11 +1,12 @@
 package clc.logic;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import static clc.common.Constants.*;
 
 public class Mark implements Command {
-	ArrayList<Integer> taskSeqNo;
+	private ArrayList<Integer> taskSeqNo;
+	private StringBuilder feedback = new StringBuilder();
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -13,13 +14,12 @@ public class Mark implements Command {
 
 	@Override
 	public String execute() {
-		StringBuilder feedback = new StringBuilder();
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 			
 			if (isOutOfBound(internalMem.size(), seqNo)) {
 				//print error msg
-				feedback.append(seqNo + " is Out Of Bound");
+				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
 				boolean isMarked = false;
@@ -27,10 +27,10 @@ public class Mark implements Command {
 				
 				String taskName = internalMem.get(seqNo - 1).getTaskName();
 				if (isMarked) {
-					feedback.append(taskName + " mark as done sucessfully");
+					feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
 					feedback.append("\n");
 				} else { //task is marked before this
-					feedback.append(taskName + " is already marked as done");
+					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
 					feedback.append("\n");
 				}
 			}

@@ -14,6 +14,7 @@ import clc.logic.Exit;
 import clc.logic.Help;
 import clc.logic.Mark;
 import clc.logic.Task;
+import clc.logic.Unmark;
 import static clc.common.Constants.*;
 
 public class UserInterface {
@@ -60,6 +61,9 @@ public class UserInterface {
 			break;
 		case TYPE_MARK:
 			command = new Mark(analyzer.analyzeMarkDone());
+			break;
+		case TYPE_UNMARK:
+			command = new Unmark(analyzer.analyzeMarkNotDone());
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();

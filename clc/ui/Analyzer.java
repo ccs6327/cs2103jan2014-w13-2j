@@ -61,7 +61,7 @@ public class Analyzer {
 		return userCommand.replaceFirst(getFirstWord(userCommand), "").trim();
 	}
 
-	public Task analyzeAdd() {
+	protected Task analyzeAdd() {
 		String[] splitDetails = commandDetails.split(SPACE);
 
 		recordAndProcessCalendarInfoProvided(splitDetails);
@@ -86,7 +86,7 @@ public class Analyzer {
 		return null;
 	}
 
-	public ArrayList<GregorianCalendar> analyzeDisplay() {
+	protected ArrayList<GregorianCalendar> analyzeDisplay() {
 		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>(); 
 
 		String[] splitDetails = commandDetails.split(SPACE);
@@ -119,12 +119,17 @@ public class Analyzer {
 		return time; 
 	}
 
-	public ArrayList<Integer> analyzeDelete() {
+	protected ArrayList<Integer> analyzeDelete() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		return getSequenceNo(taskSeqNo);
 	}
 	
-	public ArrayList<Integer> analyzeMarkDone() {
+	protected ArrayList<Integer> analyzeMarkDone() {
+		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
+		return getSequenceNo(taskSeqNo);
+	}
+
+	protected ArrayList<Integer> analyzeMarkNotDone() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		return getSequenceNo(taskSeqNo);
 	}

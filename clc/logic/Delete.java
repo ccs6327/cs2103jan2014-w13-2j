@@ -6,7 +6,7 @@ import java.util.Collections;
 import static clc.common.Constants.*;
 
 public class Delete implements Command {
-	ArrayList<Integer> taskSeqNo;
+	private ArrayList<Integer> taskSeqNo;
 	
 	public Delete(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -23,13 +23,13 @@ public class Delete implements Command {
 			
 			if (isOutOfBound(internalMem.size(), seqNo)) {
 				//print error msg
-				feedback.append(seqNo + " is Out Of Bound");
+				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
 				String taskName = internalMem.get(seqNo - 1).getTaskName();
 
 				internalMem.remove(seqNo - 1);
-				feedback.append("deleted " + taskName);
+				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
 				feedback.append("\n");
 			}
 		}
