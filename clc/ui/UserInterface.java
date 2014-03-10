@@ -1,6 +1,8 @@
 package clc.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clc.logic.Add;
@@ -45,10 +47,12 @@ public class UserInterface {
 		
 		switch (commandType) {
 		case TYPE_ADD:
-			command = new Add(analyzer.analyzeAdd());
+			Task task = analyzer.analyzeAdd();
+			command = new Add(task);
 			break;
 		case TYPE_DISPLAY:
-			command = new Display(analyzer.analyzeDisplay());
+			ArrayList<GregorianCalendar> time = analyzer.analyzeDisplay();
+			command = new Display(time.get(0), time.get(1));
 			break;
 		case TYPE_DELETE:
 			command = new Delete();
