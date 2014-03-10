@@ -12,6 +12,7 @@ import clc.logic.Delete;
 import clc.logic.Display;
 import clc.logic.Exit;
 import clc.logic.Help;
+import clc.logic.Mark;
 import clc.logic.Task;
 import static clc.common.Constants.*;
 
@@ -56,6 +57,9 @@ public class UserInterface {
 			break;
 		case TYPE_DELETE:
 			command = new Delete(analyzer.analyzeDelete());
+			break;
+		case TYPE_MARK:
+			command = new Mark(analyzer.analyzeMarkDone());
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();

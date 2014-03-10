@@ -2,6 +2,7 @@ package clc.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import static clc.common.Constants.*;
 
 public class Delete implements Command {
@@ -13,6 +14,7 @@ public class Delete implements Command {
 	
 	@Override
 	public String execute() {
+		StringBuilder feedback = new StringBuilder();
 		Collections.sort(taskSeqNo);
 
 		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
@@ -21,17 +23,18 @@ public class Delete implements Command {
 			
 			if (isOutOfBound(internalMem.size(), seqNo)) {
 				//print error msg
-				System.out.println("Out Of Bound");
+				feedback.append(seqNo + " is Out Of Bound");
+				feedback.append("\n");
 			} else {
 				String taskName = internalMem.get(seqNo - 1).getTaskName();
 
 				internalMem.remove(seqNo - 1);
-				// print confirmation message
-				System.out.println("deleted " + taskName);
+				feedback.append("deleted " + taskName);
+				feedback.append("\n");
 			}
 		}
 		
-		return "";
+		return feedback.toString();
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {

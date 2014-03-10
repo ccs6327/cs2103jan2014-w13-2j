@@ -123,6 +123,11 @@ public class Analyzer {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		return getSequenceNo(taskSeqNo);
 	}
+	
+	public ArrayList<Integer> analyzeMarkDone() {
+		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
+		return getSequenceNo(taskSeqNo);
+	}
 
 	private ArrayList<Integer> getSequenceNo(ArrayList<Integer> taskSeqNo) {
 		Scanner sc = new Scanner(commandDetails);
@@ -209,7 +214,6 @@ public class Analyzer {
 		for (int i = 0; i < firstDateIndex; i++) {
 			taskName += (splitDetails[i] + SPACE);
 		}
-		System.out.println("debug " + taskName);
 		return taskName;
 	}
 
@@ -257,7 +261,6 @@ public class Analyzer {
 				firstDateIndex = i;
 			}
 		}
-		System.out.println(firstDateIndex);
 	}
 
 	private void processCalendarInfo(String[] splitDetails) {
