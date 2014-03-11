@@ -13,7 +13,9 @@ import clc.logic.Display;
 import clc.logic.Exit;
 import clc.logic.Help;
 import clc.logic.Mark;
+import clc.logic.Redo;
 import clc.logic.Task;
+import clc.logic.Undo;
 import clc.logic.Unmark;
 import static clc.common.Constants.*;
 
@@ -29,11 +31,20 @@ public class UserInterface {
 	}
 
 	public void executeCommandsUntilExit() {
+		addNewVersion();
 		while (true) {
+			/* //debug
+			System.out.println(internalMem.size());
+			System.out.println(historyMem.size());
+			// */
 			print(MESSAGE_ENTER_COMMAND);
 			String command = scanner.nextLine();
 			String feedback = executeCommand(command);
 			println(feedback);
+			/* //debug
+			System.out.println(internalMem.size());
+			System.out.println(historyMem.size());
+			// */
 		}
 		
 	}
@@ -51,37 +62,49 @@ public class UserInterface {
 		case TYPE_ADD:
 			Task task = analyzer.analyzeAdd();
 			command = new Add(task);
+			//addNewVersion();
 			break;
 		case TYPE_DISPLAY:
 			boolean isCaseDisplayCalendar = analyzer.analyzeDisplay();
 			if (isCaseDisplayCalendar) {
 				ArrayList<GregorianCalendar> time = analyzer.getCalendar();
-				command = new Display(time.get(0), time.get(1));
+				//command = new Display(time.get(0), time.get(1));
 			} else {
 				String query = analyzer.getDisplayQuery();
-				command = new Display(query);
+				//command = new Display(query);
 			}
 			break;
 		case TYPE_DELETE:
 			command = new Delete(analyzer.analyzeDelete());
+			//addNewVersion();
 			break;
 		case TYPE_MARK:
 			command = new Mark(analyzer.analyzeMarkDone());
+			//addNewVersion();
 			break;
 		case TYPE_UNMARK:
 			command = new Unmark(analyzer.analyzeMarkNotDone());
+			//addNewVersion();
 			break;
 		case TYPE_UPDATE:
 			boolean isCaseUpdateTaskName = analyzer.analyzeUpdate();
 			if (isCaseUpdateTaskName) {
-				command = new Update(analyzer.getNewTaskName());
+				//command = new Update(analyzer.getNewTaskName());
 			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
-				command = new Update(time.get(0), time.get(1));
+				//command = new Update(time.get(0), time.get(1));
 			}
+			//addNewVersion();
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();
+			//addNewVersion();
+			break;
+		case TYPE_UNDO:
+			command = new Undo();
+			break;
+		case TYPE_REDO:
+			command = new Redo();
 			break;
 		case TYPE_HELP:
 			command = new Help();
@@ -96,6 +119,8 @@ public class UserInterface {
 		return command.execute();
 	}
 		
+	
+
 	private void print(String content) {
 		System.out.print(content);
 	}
