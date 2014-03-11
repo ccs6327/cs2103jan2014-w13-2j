@@ -107,17 +107,38 @@ public class Display implements Command {
 			}
 		}
 
-		/**
-		 * 
-		 * Firstly, it checks through the start time
-		 * Secondly, it checks through the end time
-		 * Lastly, it checks if the date 
-		 * If either one of the condition is true, the date is within the taskStartDate and taskEndDate
-		 */
+		// check it is in the time period
 		private boolean isWithinTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod, Calendar taskStartTime, Calendar taskEndTime) {
-			return true;
+			if (taskEndTime != null && endOfPeriod != null) {// check whether it is not a floating task, and it has an endOfPeriod
+				if (taskStartTime == null && isTimeA_NotLater_Than_TimeB(taskEndTime, endOfPeriod)) {// check when it is a deadline task
+					return (startOfPeriod == null || isTimeA_NotLater_Than_TimeB(startOfPeriod, taskEndTime));
+				} else if (taskStartTime != null) { // check when it is a timed task
+					if (startOfPeriod == null) { // check whether it is before deadline
+						return isTimeA_NotLater_Than_TimeB(taskEndTime, endOfPeriod);
+					} else {
+						if (isTimeA_NotLater_Than_TimeB(taskStartTime, startOfPeriod)) {
+							return (isTimeA_NotLater_Than_TimeB(startOfPeriod, taskEndTime) 
+									&& isTimeA_NotLater_Than_TimeB(taskEndTime, endOfPeriod));
+						} else {
+							return isTimeA_NotLater_Than_TimeB(taskStartTime, endOfPeriod);
+						}
+					} 
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 		
+		protected boolean isTimeA_NotLater_Than_TimeB(Calendar calA, Calendar calB){
+			int i = calB.compareTo(calA);
+			if (i==1){
+				return false;
+			} else {
+				return true;
+			}
+		}
 		// Check whether the data which can be processed is empty
 		protected boolean isDataEmpty() {
 			return displayMem.isEmpty();
