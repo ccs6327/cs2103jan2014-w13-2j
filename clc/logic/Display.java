@@ -10,7 +10,7 @@ import java.util.zip.DataFormatException;
 import static clc.common.Constants.*;
 
 public class Display implements Command {
-    private String feedback;
+    private StringBuilder feedback = new StringBuilder();
     private String commandDetails = null;
     private ArrayList<GregorianCalendar> time;
     private Calendar startOfPeriod = null, endOfPeriod = null;
@@ -29,14 +29,16 @@ public class Display implements Command {
 		displayMem.clear();
 		
 		if(internalMem.isEmpty()) {
-			feedback = MESSAGE_EMPTY_LIST;
+			feedback.append("\n");
+			feedback = feedback.append(MESSAGE_EMPTY_LIST);
+			feedback.append("\n");
 		} else if (commandDetails!= null) {// for now i assume all commandDetails are all
 			displayAllTasks();
 		} else {
 			displayInPeriod();
 		}		
 		assert feedback != null;
-		return feedback;
+		return feedback.toString();
 	}
 	
 	private void displayAllTasks(){
@@ -60,9 +62,12 @@ public class Display implements Command {
 	    	}
 	    	displayMem.add(task);
 	    }
-	 
+	    
+	    feedback.append("\n");
 	    printOutDisplay();
-	    feedback = MESSAGE_DISPLAY;
+	    feedback.append("\n");
+	    feedback.append(MESSAGE_DISPLAY);
+	    feedback.append("\n");
 	}
 	
 	private void displayInPeriod(){
@@ -72,13 +77,18 @@ public class Display implements Command {
 			DisplayOutput.add(D_M_Y_DateFormatter.format(startOfPeriod.getTime()) + TO + D_M_Y_DateFormatter.format(endOfPeriod.getTime()));
 			
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
+			feedback.append("\n");
 			printOutDisplay();
 			
 			// Process feedback
 			if (!isDataEmpty()) {
-				feedback = MESSAEG_DISPLAY_IN_PERIOD;
+				feedback.append("\n");
+				feedback.append(MESSAEG_DISPLAY_IN_PERIOD);
+				feedback.append("\n");
 			} else {
-				feedback = MESSAGE_NO_TASKS_IN_PERIOD;
+				feedback.append("\n");
+				feedback.append(MESSAGE_NO_TASKS_IN_PERIOD);
+				feedback.append("\n");
 			}
 	
 	}
@@ -115,6 +125,8 @@ public class Display implements Command {
 		
 		private void printOutDisplay(){
 			for (int i = 0; i < DisplayOutput.size(); i++) {
+				feedback.append(DisplayOutput.get(i));
+				feedback.append("\n");
 				System.out.println(DisplayOutput.get(i));
 			}
 		}

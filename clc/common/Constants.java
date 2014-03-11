@@ -78,6 +78,8 @@ public class Constants {
 	
 	public static void addNewVersion() {
 		currentVersion++;
-		historyMem.add(internalMem);
+		ArrayList<Task> tempMem = new ArrayList<Task>();
+		tempMem.addAll(internalMem);
+		historyMem.add(tempMem);
 	}
 }
