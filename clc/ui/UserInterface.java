@@ -86,10 +86,10 @@ public class UserInterface {
 			int seqNo = analyzer.getSeqNumForUpdate();
 			System.out.println(seqNo);
 			if (isCaseUpdateCalendar) {
-				command = new Update(seqNo, analyzer.getNewTaskName());
-			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
 				command = new Update(seqNo, time);
+			} else {
+				command = new Update(seqNo, analyzer.getNewTaskName());
 			}
 			//addNewVersion();
 			break;
