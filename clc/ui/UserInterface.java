@@ -53,8 +53,14 @@ public class UserInterface {
 			command = new Add(task);
 			break;
 		case TYPE_DISPLAY:
-			ArrayList<GregorianCalendar> time = analyzer.analyzeDisplay();
-			command = new Display(time.get(0), time.get(1));
+			boolean isCaseDisplayCalendar = analyzer.analyzeDisplay();
+			if (isCaseDisplayCalendar) {
+				ArrayList<GregorianCalendar> time = analyzer.getCalendar();
+				command = new Display(time.get(0), time.get(1));
+			} else {
+				String query = analyzer.getDisplayQuery();
+				command = new Display(query);
+			}
 			break;
 		case TYPE_DELETE:
 			command = new Delete(analyzer.analyzeDelete());
@@ -64,6 +70,15 @@ public class UserInterface {
 			break;
 		case TYPE_UNMARK:
 			command = new Unmark(analyzer.analyzeMarkNotDone());
+			break;
+		case TYPE_UPDATE:
+			boolean isCaseUpdateTaskName = analyzer.analyzeUpdate();
+			if (isCaseUpdateTaskName) {
+				command = new Update(analyzer.getNewTaskName());
+			} else {
+				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
+				command = new Update(time.get(0), time.get(1));
+			}
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();

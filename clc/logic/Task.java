@@ -24,6 +24,7 @@ public class Task {
 		endTime = _endTime;
 		taskType = TYPE_TIMED_TASK;
 		isDone = false;
+		setTaskId();
 	}
 	
 	public Task(String _taskName, Calendar _endTime) {
@@ -33,6 +34,7 @@ public class Task {
 		endTime = _endTime;
 		taskType = TYPE_DEADLINE_TASK;
 		isDone = false;
+		setTaskId();
 	}
 	
 	public Task(String _taskName) {
@@ -42,6 +44,7 @@ public class Task {
 		endTime = null;
 		taskType = TYPE_FLOATING_TASK;
 		isDone = false;
+		setTaskId();
 	}
 
 	//accessor
@@ -98,8 +101,6 @@ public class Task {
 	private long setTaskId() {
 		return System.currentTimeMillis();
 	}
-
-
 }
 
 

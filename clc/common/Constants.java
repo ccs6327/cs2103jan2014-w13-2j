@@ -18,6 +18,7 @@ public class Constants {
 	public static final String TYPE_HELP = "help";
 	public static final String TYPE_MARK = "mark";
 	public static final String TYPE_UNMARK = "unmark";
+	public static final String TYPE_UPDATE = "update";
 	
 	public static final String EMPTY_STRING = "";
 	

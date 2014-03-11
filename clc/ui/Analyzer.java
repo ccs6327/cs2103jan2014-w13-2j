@@ -64,9 +64,9 @@ public class Analyzer {
 	protected Task analyzeAdd() {
 		String[] splitDetails = commandDetails.split(SPACE);
 
-		recordAndProcessCalendarInfoProvided(splitDetails);
-
-		if (timeInfo.size() > 0) { //timed task or deadline task
+		if (doesContainTimeInfo(splitDetails)) { //timed task or deadline task
+			recordAndProcessCalendarInfoProvided(splitDetails);
+			
 			//merge the taskName
 			taskName = mergeTaskName(splitDetails);
 
@@ -86,44 +86,47 @@ public class Analyzer {
 		return null;
 	}
 
-	protected ArrayList<GregorianCalendar> analyzeDisplay() {
-		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>(); 
-
+	protected boolean analyzeDisplay() {
 		String[] splitDetails = commandDetails.split(SPACE);
 
-		if (doesCommandDetailsExist()){
-			if (isCaseDisplayDeadline(splitDetails)) {
-				recordAndProcessCalendarInfoProvided (splitDetails);			
-			} else { // case displayPeriod e.g. display today
-				if (isCaseDisplayToday()) {
-					setToday();
-				} else if (isCaseDisplayTomorrow()) {
-					setTomorrow();
-				} else if (isCaseDisplayThisWeek()) {
-					setThisWeek();
-				} else if (isCaseDisplayNextWeek()) {
-					setNextWeek();
-				} else if (isCaseDisplayThisMonth()) {
-					setThisMonth();
-				} else if (isCaseDisplayNextMonth()) {
-					setNextMonth();
-				} else {
-					System.out.println("Invalid Format");
-				}
-			}
+		if (isCaseDisplayAll()){
+			return false;
+		} else if (isCaseDisplayDeadline(splitDetails)) {
+			recordAndProcessCalendarInfoProvided (splitDetails);
+		} else if (isCaseDisplayToday()) {
+			setToday();
+		} else if (isCaseDisplayTomorrow()) {
+			setTomorrow();
+		} else if (isCaseDisplayThisWeek()) {
+			setThisWeek();
+		} else if (isCaseDisplayNextWeek()) {
+			setNextWeek();
+		} else if (isCaseDisplayThisMonth()) {
+			setThisMonth();
+		} else if (isCaseDisplayNextMonth()) {
+			setNextMonth();
+		} else {
+			System.out.println("Invalid Format");
+			// ***throw exception here
 		}
-		time.add(startTime);
-		time.add(endTime);
+		return true;
+	}
 
-
-		return time; 
+	protected boolean analyzeUpdate() {
+		String[] splitDetails = commandDetails.split(SPACE);
+		if (doesContainTimeInfo(splitDetails)) { //case update task name 
+			recordAndProcessCalendarInfoProvided (splitDetails);
+			return true;	
+		} else { //case update calendar
+			return false;
+		}
 	}
 
 	protected ArrayList<Integer> analyzeDelete() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		return getSequenceNo(taskSeqNo);
 	}
-	
+
 	protected ArrayList<Integer> analyzeMarkDone() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		return getSequenceNo(taskSeqNo);
@@ -145,6 +148,25 @@ public class Analyzer {
 			}
 		}
 		return taskSeqNo;
+	}
+
+	public String getDisplayQuery() {
+		return commandDetails;
+	}
+
+	protected String getNewTaskName() {
+		return commandDetails;
+	}
+
+	protected ArrayList<GregorianCalendar> getNewCalendar() {
+		return getCalendar();
+	}
+
+	protected ArrayList<GregorianCalendar> getCalendar() {
+		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>();
+		time.add(startTime);
+		time.add(endTime);
+		return time;
 	}
 
 	private void setToday() {
@@ -208,10 +230,6 @@ public class Analyzer {
 		int date = 1; //start of the month
 		startTime = new GregorianCalendar(year, month, date);
 		endTime = new GregorianCalendar(year, ++month, date);
-	}
-
-	private boolean isCaseDisplayDeadline(String[] splitDetails) {
-		return isTimeFormat(splitDetails[0])||isDateFormat(splitDetails[0]);
 	}
 
 	private String mergeTaskName(String[] splitDetails) {
@@ -350,22 +368,32 @@ public class Analyzer {
 		return commandDetails.equals(NEXT_MONTH);
 	}
 
+	private boolean isCaseDisplayAll() {
+		return !doesCommandDetailsExist() 
+				|| commandDetails.equals("all");
+	}
+
+	private boolean isCaseDisplayDeadline(String[] splitDetails) {
+		return doesContainTimeInfo(splitDetails);
+	}
+
 	private boolean isDateFormat(String currWord) {
 		boolean isDate = false;
 
 		if (doesContainSlash(currWord)) {
 			splitDate = currWord.split(SLASH);
 		} else if (doesContainDot(currWord)) {
-			splitDate = currWord.split(DOT);
+			splitDate = currWord.split("\\" + DOT);
 		} else {
 			return false;
 		}
-
+		
 		//only support dd/mm/yy format or dd/mm format
 		if (splitDate.length < 2 || splitDate.length > 3) {
 			return false;
 		}
-
+		
+		
 		if (isNumeric(splitDate[0]) && isNumeric(splitDate[1])) {
 			isDate = true;
 		}
@@ -400,10 +428,19 @@ public class Analyzer {
 				&& endTime.get(Calendar.DATE) != startTime.get(Calendar.DATE);
 	}
 
+	public static boolean isNumeric(String str) {  
+		try {  
+			Integer.parseInt(str);  
+		} catch(NumberFormatException nfe) {  
+			return false;  
+		}  
+		return true;  
+	}
+
 	private boolean doesCommandDetailsExist() {
 		return !commandDetails.equals("");
 	}
-	
+
 	private boolean doesContainPm(String currWord) {
 		return currWord.contains(PM);
 	}
@@ -420,12 +457,10 @@ public class Analyzer {
 		return currWord.contains(SLASH);
 	}
 
-	public static boolean isNumeric(String str) {  
-		try {  
-			Integer.parseInt(str);  
-		} catch(NumberFormatException nfe) {  
-			return false;  
-		}  
-		return true;  
+	private boolean doesContainTimeInfo(String[] splitDetails) {
+		// check the last word whether contains date format
+		int lastWordIndex = splitDetails.length - 1;
+		return isTimeFormat(splitDetails[lastWordIndex])
+				|| isDateFormat(splitDetails[lastWordIndex]);
 	}
 }
