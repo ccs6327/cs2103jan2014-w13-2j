@@ -66,13 +66,14 @@ public class UserInterface {
 		case TYPE_UNMARK:
 			command = new Unmark(analyzer.analyzeMarkNotDone());
 			break;
-		case TYPE_UPDATE:
+		case TYPE_UPDATE:/*
 			boolean isCaseUpdateTaskName = analyzer.analyzeUpdate();
-			/*if (isCaseUpdateTaskName) {
-				command = new Update(analyzer.getNewTaskName());
+			int seqNo = analyzer.getSeqNumForUpdate();
+			if (isCaseUpdateTaskName) {
+				command = new Update(seqNo, analyzer.getNewTaskName());
 			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
-				command = new Update(time.get(0), time.get(1));
+				command = new Update(seqNo, time);
 			}*/
 			break;
 		case TYPE_CLEAR:
