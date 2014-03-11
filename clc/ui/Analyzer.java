@@ -124,20 +124,20 @@ public class Analyzer {
 
 	protected ArrayList<Integer> analyzeDelete() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
-		return getSequenceNo(taskSeqNo);
+		return getAllSequenceNum(taskSeqNo);
 	}
 
 	protected ArrayList<Integer> analyzeMarkDone() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
-		return getSequenceNo(taskSeqNo);
+		return getAllSequenceNum(taskSeqNo);
 	}
 
 	protected ArrayList<Integer> analyzeMarkNotDone() {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
-		return getSequenceNo(taskSeqNo);
+		return getAllSequenceNum(taskSeqNo);
 	}
 
-	private ArrayList<Integer> getSequenceNo(ArrayList<Integer> taskSeqNo) {
+	private ArrayList<Integer> getAllSequenceNum(ArrayList<Integer> taskSeqNo) {
 		Scanner sc = new Scanner(commandDetails);
 		while (sc.hasNext()) {
 			String seqNo = sc.next();
@@ -156,6 +156,10 @@ public class Analyzer {
 
 	protected String getNewTaskName() {
 		return commandDetails;
+	}
+	
+	protected int getSeqNumForUpdate() {
+		return Integer.parseInt(getFirstWord(commandDetails));
 	}
 
 	protected ArrayList<GregorianCalendar> getNewCalendar() {

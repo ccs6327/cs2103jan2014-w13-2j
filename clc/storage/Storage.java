@@ -77,7 +77,7 @@ public class Storage {
 			String contentToRead = null;
 			
 			while((contentToRead = bf.readLine()) != null) {
-				sb.append(contentToRead.trim());
+				sb.append(contentToRead);
 				sb.append("\n");
 			}
 			

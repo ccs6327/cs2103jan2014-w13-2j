@@ -35,7 +35,7 @@ public class Mark implements Command {
 				}
 			}
 		}
-		return feedback.toString();
+		return feedback.toString().trim();
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {
