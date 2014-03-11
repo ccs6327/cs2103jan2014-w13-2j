@@ -37,27 +37,42 @@ public class Constants {
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
-	public static final String MESSAGE_MARK_DONE = "mark ï¿$sï¿½as done sucessfuly";
-	public static final String MESSAGE_MARK_NOT_DONE = "mark ï¿$sï¿½as not done sucessfuly";
-	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "ï¿$sï¿½is already marked as done";
-	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "ï¿$sï¿½is originally not mark as done";
+	public static final String MESSAGE_MARK_DONE = "mark ï¿½ï¿½$sï¿½ï¿½ï¿½as done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark ï¿½ï¿½$sï¿½ï¿½ï¿½as not done sucessfuly";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "ï¿½ï¿½$sï¿½ï¿½ï¿½is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "ï¿½ï¿½$sï¿½ï¿½ï¿½is originally not mark as done";
 	public static final String MESSAGE_UNDONE = "Last command has been undone.";
 	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
 	public static final String MESSAGE_REDONE = "Last command has been redone.";
 	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
+
+	//Display
+	public static final String TO = "to";
+	public static final String MESSAGE_SHOW_ALL_TASKS = "All Tasks";
 	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, starts at %3$s; ends at %4$s"; 
 	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, ends at %3$s";
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty";
-	public final static String MESSAEG_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
-	public final static String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
+	public static final String MESSAEG_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
+	public static final String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
 	
+	//Update
+	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name is updated successful";
+	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task starttime is updated successful";
+	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task endtime is updated successful";
+	public static final String MESSAGE_NO_TASK_IS_UPDATED = "Your list is empty! There is nothing to update.";
+	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
+	
+	//Filename
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
+	public static ArrayList<Task> displayMem = new ArrayList<Task>();
+	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 	public static int currentVersion = -1;
 	
 	public static void addNewVersion() {
