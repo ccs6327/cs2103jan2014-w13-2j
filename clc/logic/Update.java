@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import clc.storage.Storage;
+
 
 public class Update implements Command {
 	
@@ -36,6 +38,8 @@ public class Update implements Command {
 		} else {
 			task = displayMem.get(seqNo - 1);
             updateTask();
+    		addNewVersion();
+    		Storage.writeContentIntoFile();
 		}
 		
 		return feedback;

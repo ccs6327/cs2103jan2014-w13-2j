@@ -9,11 +9,6 @@ public class Undo implements Command {
 	@Override
 	public String execute() {
 		
-		/* //debug
-		System.out.println(internalMem.size());
-		System.out.println(historyMem.size());
-		// */
-		
 		try {
 			internalMem = historyMem.get(currentVersion - 1);
 			currentVersion--;
@@ -21,10 +16,6 @@ public class Undo implements Command {
 			return MESSAGE_UNDONE_FAILED;
 		}
 		
-		/* //debug
-		System.out.println(internalMem.size());
-		System.out.println(historyMem.size());
-		// */
 		return MESSAGE_UNDONE;
 	}
 
