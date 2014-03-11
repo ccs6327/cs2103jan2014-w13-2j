@@ -16,6 +16,7 @@ import clc.logic.Mark;
 import clc.logic.Redo;
 import clc.logic.Task;
 import clc.logic.Undo;
+import clc.logic.Update;
 import clc.logic.Unmark;
 import static clc.common.Constants.*;
 
@@ -66,7 +67,7 @@ public class UserInterface {
 				command = new Display(time);
 			} else {
 				String query = analyzer.getDisplayQuery();
-				//command = new Display(query);
+				command = new Display(query);
 			}
 			break;
 		case TYPE_DELETE:
@@ -84,7 +85,6 @@ public class UserInterface {
 		case TYPE_UPDATE:
 			boolean isCaseUpdateCalendar = analyzer.analyzeUpdate();
 			int seqNo = analyzer.getSeqNumForUpdate();
-			System.out.println(seqNo);
 			if (isCaseUpdateCalendar) {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
 				command = new Update(seqNo, time);
