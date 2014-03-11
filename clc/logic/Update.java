@@ -49,6 +49,10 @@ public class Update implements Command {
 			task.updateEndTime(newEndTime);
 			feedback = MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS;
 		} 
+		
+		if(newTaskName == null && newStartTime == null && newEndTime == null){
+			feedback = MESSAGE_NO_CHANGE;
+		}
 	}
 	
 	// Check whether the data which can be processed is empty
