@@ -49,8 +49,8 @@ public class Constants {
 	//Display
 	public static final String TO = "to";
 	public static final String MESSAGE_SHOW_ALL_TASKS = "All Tasks";
-	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, starts at %3$s; ends at %4$s"; 
-	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, ends at %3$s";
+	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, (starts at %3$s; ends at %4$s)"; 
+	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, (ends at %3$s)";
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty";
@@ -58,10 +58,11 @@ public class Constants {
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
 	
 	//Update
-	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name is updated successful";
-	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task starttime is updated successful";
-	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task endtime is updated successful";
-	public static final String MESSAGE_NO_TASK_IS_UPDATED = "Your list is empty! There is nothing to update.";
+	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name is updated to (%1$s) successful";
+	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task starttime is updated to (%1$s) successful";
+	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task endtime is updated to (%1$s) successful";
+	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
+	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number";
 	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
 	
 	//Filename
