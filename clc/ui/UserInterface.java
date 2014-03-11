@@ -13,7 +13,9 @@ import clc.logic.Display;
 import clc.logic.Exit;
 import clc.logic.Help;
 import clc.logic.Mark;
+import clc.logic.Redo;
 import clc.logic.Task;
+import clc.logic.Undo;
 import clc.logic.Unmark;
 import static clc.common.Constants.*;
 
@@ -26,6 +28,15 @@ public class UserInterface {
 	
 	public void executeCommandsUntilExit() {
 		gui.launchAndGetInputAndExecute();
+		addNewVersion();
+			/* //debug
+			System.out.println(internalMem.size());
+			System.out.println(historyMem.size());
+			// */
+			/* //debug
+			System.out.println(internalMem.size());
+			System.out.println(historyMem.size());
+			// */
 	}
 	
 	public static void setInputAndExecute(String line) {
@@ -46,6 +57,7 @@ public class UserInterface {
 		case TYPE_ADD:
 			Task task = analyzer.analyzeAdd();
 			command = new Add(task);
+			//addNewVersion();
 			break;
 		case TYPE_DISPLAY:
 			boolean isCaseDisplayCalendar = analyzer.analyzeDisplay();
@@ -54,17 +66,20 @@ public class UserInterface {
 				command = new Display(time);
 			} else {
 				String query = analyzer.getDisplayQuery();
-				command = new Display(query);
+				//command = new Display(query);
 			}
 			break;
 		case TYPE_DELETE:
 			command = new Delete(analyzer.analyzeDelete());
+			//addNewVersion();
 			break;
 		case TYPE_MARK:
 			command = new Mark(analyzer.analyzeMarkDone());
+			//addNewVersion();
 			break;
 		case TYPE_UNMARK:
 			command = new Unmark(analyzer.analyzeMarkNotDone());
+			//addNewVersion();
 			break;
 		case TYPE_UPDATE:
 			boolean isCaseUpdateCalendar = analyzer.analyzeUpdate();
@@ -76,9 +91,17 @@ public class UserInterface {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
 				command = new Update(seqNo, time);
 			}
+			//addNewVersion();
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();
+			//addNewVersion();
+			break;
+		case TYPE_UNDO:
+			command = new Undo();
+			break;
+		case TYPE_REDO:
+			command = new Redo();
 			break;
 		case TYPE_HELP:
 			command = new Help();
