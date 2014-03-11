@@ -2,14 +2,11 @@ package clc.storage;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.util.Calendar;
+import java.util.Formatter;
+import java.util.GregorianCalendar;
 
 import clc.logic.Task;
 import static clc.common.Constants.*;
@@ -40,31 +37,94 @@ public class Storage {
 	}
 	
 	// Read from the data file and store them into the internal memory
-	public static void readContentFromFile() throws Exception {
-		Task taskToRead = null;
-		
-		FileInputStream fileIn = new FileInputStream(dataFile);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
+	public static void readContentFromFile() {
+		File fileIn = new File(OUTFILE);
 
-        while ((taskToRead = (clc.logic.Task) in.readObject()) != null) {
-       	 internalMem.add(taskToRead);
-        }
-
-        in.close();
-        fileIn.close();
+		try {
+			
+			BufferedReader bf = new BufferedReader(new FileReader(fileIn));
+			String contentToRead = null;
+			String taskName;
+			Long taskId;
+			int taskType;
+			Calendar startTime = null;
+			Calendar endTime = null;
+			boolean isDone;
+			
+			while((contentToRead = bf.readLine()) != null) {
+				taskName = contentToRead;
+				taskId = Long.parseLong(bf.readLine());
+				taskType = Integer.parseInt(bf.readLine());
+				switch (taskType) {
+				case TYPE_TIMED_TASK:
+					startTime = new GregorianCalendar();
+					startTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					endTime = new GregorianCalendar();
+					endTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					break;
+				case TYPE_DEADLINE_TASK:
+					startTime = null;
+					endTime = new GregorianCalendar();
+					endTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					break;
+				case TYPE_FLOATING_TASK:
+					startTime = null;
+					endTime = null;
+					break;
+				}
+				if (Integer.parseInt(bf.readLine()) == IS_DONE) {
+					isDone = true;
+				} else {
+					isDone = false;
+				}
+				internalMem.add(new Task(taskName, taskId, taskType, startTime, endTime, isDone));
+			}
+			
+			bf.close();
+		} catch (IOException e) {
+			
+		}
 	         
 	}
 
 	// Write contents in the list into the data file
-	public static void writeContentIntoFile() throws IOException {
-		FileOutputStream fileOut = new FileOutputStream(dataFile);
-        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-        for (Task task : internalMem) {
-       	 	out.writeObject(task);
-        }
-        out.reset();
-        out.close();
-        fileOut.close();
+	public static void writeContentIntoFile() {
+		try {
+			
+			Formatter formatter = new Formatter(OUTFILE);
+	        for (Task task : internalMem) {
+	       	 	formatter.format(task.getTaskName());
+	       	 	formatter.format(NEW_LINE);
+	       	 	formatter.format(String.valueOf(task.getTaskId()));
+	       	 	formatter.format(NEW_LINE);
+	       	 	formatter.format(String.valueOf(task.getTaskType()));
+	       	 	formatter.format(NEW_LINE);
+	       	 	switch (task.getTaskType()) {
+	       	 	case TYPE_TIMED_TASK:
+	       	 		formatter.format(String.valueOf(task.getStartTime().getTimeInMillis()));
+	       	 		formatter.format(NEW_LINE);
+	       	 		formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+	       	 		formatter.format(NEW_LINE);
+	       	 		break;
+	       	 	case TYPE_DEADLINE_TASK:
+	       	 		formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+	       	 		formatter.format(NEW_LINE);
+	       	 		break;
+	       	 	case TYPE_FLOATING_TASK:
+	       	 		break;
+	       	 	}
+	       	 	if (task.isDone()) {
+	       	 		formatter.format(String.valueOf(IS_DONE));
+	       	 	} else {
+	       	 		formatter.format(String.valueOf(IS_NOT_DONE));
+	       	 	}
+	       	 	formatter.format(NEW_LINE);
+	        }
+	        formatter.flush();
+	        formatter.close();
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	// Read from the Help.txt and return to string

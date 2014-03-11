@@ -2,6 +2,7 @@ package clc.logic;
 
 import java.util.ArrayList;
 
+import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 public class Mark implements Command {
@@ -33,6 +34,8 @@ public class Mark implements Command {
 					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
 					feedback.append("\n");
 				}
+				addNewVersion();
+	    		Storage.writeContentIntoFile();
 			}
 		}
 		return feedback.toString().trim();

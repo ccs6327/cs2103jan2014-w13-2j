@@ -28,6 +28,7 @@ public class Constants {
 	public static final String TYPE_UPDATE = "update";
 	
 	public static final String EMPTY_STRING = "";
+	public static final String NEW_LINE = "\r\n";
 	
 	public static final String MESSAGE_WELCOME = "Welcome to CLC.";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
@@ -37,10 +38,10 @@ public class Constants {
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
-	public static final String MESSAGE_MARK_DONE = "mark ��$s���as done sucessfuly";
-	public static final String MESSAGE_MARK_NOT_DONE = "mark ��$s���as not done sucessfuly";
-	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "��$s���is already marked as done";
-	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "��$s���is originally not mark as done";
+	public static final String MESSAGE_MARK_DONE = "mark %1$s as done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark %1$s as not done sucessfuly";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "%1$s is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "%1$s is originally not mark as done";
 	public static final String MESSAGE_UNDONE = "Last command has been undone.";
 	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
 	public static final String MESSAGE_REDONE = "Last command has been redone.";
@@ -48,7 +49,7 @@ public class Constants {
 	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
 
 	//Display
-	public static final String TO = "to";
+	public static final String TO = " to ";
 	public static final String MESSAGE_SHOW_ALL_TASKS = "All Tasks";
 	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, (starts at %3$s; ends at %4$s)"; 
 	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, (ends at %3$s)";
@@ -69,6 +70,10 @@ public class Constants {
 	//Filename
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";
+	
+	// Storage
+	public static final int IS_DONE = 1;
+	public static final int IS_NOT_DONE = 0;
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();

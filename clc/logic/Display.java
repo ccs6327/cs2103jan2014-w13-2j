@@ -74,7 +74,7 @@ public class Display implements Command {
 			startOfPeriod = time.get(0);
 			endOfPeriod = time.get(1);
 			//Process output
-			DisplayOutput.add(D_M_Y_DateFormatter.format(startOfPeriod.getTime()) + TO + D_M_Y_DateFormatter.format(endOfPeriod.getTime()));
+			//DisplayOutput.add(D_M_Y_DateFormatter.format(startOfPeriod.getTime()) + TO + D_M_Y_DateFormatter.format(endOfPeriod.getTime()));
 			
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
 			feedback.append("\n");
@@ -97,11 +97,19 @@ public class Display implements Command {
 		private void goThroughTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod) {
 			int taskNo = 1;
 			for (int i = 1; i <= internalMem.size(); i++) {
-				Calendar taskStartTime = internalMem.get(i-1).getStartTime();
-				Calendar taskEndTime = internalMem.get(i-1).getEndTime();
+				Task task = internalMem.get(i-1);
+				Calendar taskStartTime = task.getStartTime();
+				Calendar taskEndTime = task.getEndTime();
 				if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
-					DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, taskNo, internalMem.get(i-1).getTaskName()));
-					displayMem.add(internalMem.get(i-1));
+					if (task.getTaskType() == TYPE_DEADLINE_TASK) {
+						String taskEndTimeString = D_M_Y_DateFormatter.format(taskEndTime.getTime());
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, taskNo, task.getTaskName(), taskEndTimeString));
+					} else {
+						String taskStartTimeString = D_M_Y_DateFormatter.format(taskStartTime.getTime());
+			    		String taskEndTimeString = D_M_Y_DateFormatter.format(taskEndTime.getTime());
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, taskNo, task.getTaskName(), taskStartTimeString, taskEndTimeString));
+					}
+					displayMem.add(task);
 					taskNo++;
 				}	
 			}
@@ -133,10 +141,10 @@ public class Display implements Command {
 		
 		protected boolean isTimeA_NotLater_Than_TimeB(Calendar calA, Calendar calB){
 			int i = calB.compareTo(calA);
-			if (i==1){
-				return false;
-			} else {
+			if (i > 0){
 				return true;
+			} else {
+				return false;
 			}
 		}
 		// Check whether the data which can be processed is empty

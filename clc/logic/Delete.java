@@ -3,6 +3,7 @@ package clc.logic;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 public class Delete implements Command {
@@ -29,6 +30,9 @@ public class Delete implements Command {
 				String taskName = internalMem.get(seqNo - 1).getTaskName();
 
 				internalMem.remove(seqNo - 1);
+				addNewVersion();
+				Storage.writeContentIntoFile();
+				
 				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
 				feedback.append("\n");
 			}
