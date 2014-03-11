@@ -45,6 +45,7 @@ public class Constants {
 	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
 	public static final String MESSAGE_REDONE = "Last command has been redone.";
 	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
+	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
 
 	//Display
 	public static final String TO = "to";

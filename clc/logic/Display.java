@@ -127,7 +127,7 @@ public class Display implements Command {
 			for (int i = 0; i < DisplayOutput.size(); i++) {
 				feedback.append(DisplayOutput.get(i));
 				feedback.append("\n");
-				System.out.println(DisplayOutput.get(i));
+				//System.out.println(DisplayOutput.get(i));
 			}
 		}
 
