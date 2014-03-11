@@ -1,9 +1,12 @@
 package clc.logic;
 
+import static clc.common.Constants.*;
+
 public class Clear implements Command {
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public String execute() {
+		internalMem.clear();
+		addNewVersion();
+		return MESSAGE_CLEARED;
 	}
 }
