@@ -47,6 +47,16 @@ public class Task {
 		setTaskId();
 	}
 
+	public Task(String _taskName, Long _taskId, int _taskType,
+			Calendar _startTime, Calendar _endTime, boolean _isDone) {
+		taskName = _taskName;
+		taskId = _taskId;
+		taskType = _taskType;
+		startTime = _startTime;
+		endTime = _endTime;
+		isDone = _isDone;
+	}
+
 	//accessor
 	public String getTaskName() {
 		return taskName;
@@ -100,6 +110,10 @@ public class Task {
 	
 	private long setTaskId() {
 		return System.currentTimeMillis();
+	}
+
+	public boolean isDone() {
+		return isDone;
 	}
 }
 

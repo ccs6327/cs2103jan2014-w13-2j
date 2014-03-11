@@ -18,6 +18,7 @@ import clc.logic.Task;
 import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
+import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 public class UserInterface {
@@ -25,7 +26,9 @@ public class UserInterface {
 	GUI gui = new GUI();
 	private static String input, feedback;
 	
-	public UserInterface() {}
+	public UserInterface() {
+		Storage.initializeDataFile();
+	}
 	
 	public void executeCommandsUntilExit() {
 		gui.launchAndGetInputAndExecute();
