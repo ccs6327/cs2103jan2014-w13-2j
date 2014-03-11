@@ -20,36 +20,31 @@ import clc.logic.Unmark;
 import static clc.common.Constants.*;
 
 public class UserInterface {
-	private Scanner scanner;
+	//private Scanner scanner;
+	GUI gui = new GUI();
+	private static String input, feedback;
 	
-	public UserInterface() {
-		scanner = new Scanner(System.in);
-	}
-
-	public void printWelcomeMessage() {
-		println(MESSAGE_WELCOME);
-	}
-
+	public UserInterface() {}
+	
 	public void executeCommandsUntilExit() {
+		gui.launchAndGetInputAndExecute();
 		addNewVersion();
-		while (true) {
 			/* //debug
 			System.out.println(internalMem.size());
 			System.out.println(historyMem.size());
 			// */
-			print(MESSAGE_ENTER_COMMAND);
-			String command = scanner.nextLine();
-			String feedback = executeCommand(command);
-			println(feedback);
 			/* //debug
 			System.out.println(internalMem.size());
 			System.out.println(historyMem.size());
 			// */
-		}
-		
 	}
 	
-	private String executeCommand(String input) {
+	public static void setInputAndExecute(String line) {
+		input = line;
+		feedback = executeCommand();
+	}
+
+	private static String executeCommand() {
 		Command command = null;
 		Analyzer analyzer = new Analyzer(input);
 		if (input.trim().equals(EMPTY_STRING)) {
@@ -68,7 +63,7 @@ public class UserInterface {
 			boolean isCaseDisplayCalendar = analyzer.analyzeDisplay();
 			if (isCaseDisplayCalendar) {
 				ArrayList<GregorianCalendar> time = analyzer.getCalendar();
-				//command = new Display(time.get(0), time.get(1));
+				command = new Display(time);
 			} else {
 				String query = analyzer.getDisplayQuery();
 				//command = new Display(query);
@@ -86,14 +81,15 @@ public class UserInterface {
 			command = new Unmark(analyzer.analyzeMarkNotDone());
 			//addNewVersion();
 			break;
-		case TYPE_UPDATE:
+		case TYPE_UPDATE:/*
 			boolean isCaseUpdateTaskName = analyzer.analyzeUpdate();
+			int seqNo = analyzer.getSeqNumForUpdate();
 			if (isCaseUpdateTaskName) {
-				//command = new Update(analyzer.getNewTaskName());
+				command = new Update(seqNo, analyzer.getNewTaskName());
 			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
-				//command = new Update(time.get(0), time.get(1));
-			}
+				command = new Update(seqNo, time);
+			}*/
 			//addNewVersion();
 			break;
 		case TYPE_CLEAR:
@@ -118,14 +114,12 @@ public class UserInterface {
 		
 		return command.execute();
 	}
-		
-	
 
-	private void print(String content) {
-		System.out.print(content);
+	protected static String getWelcomeMessage() {
+		return MESSAGE_WELCOME;
 	}
 	
-	private void println(String content) {
-		System.out.println(content);
+	protected static String getFeedback() {
+		return feedback;
 	}
 }
