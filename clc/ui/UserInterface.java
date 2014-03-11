@@ -71,12 +71,10 @@ public class UserInterface {
 			int seqNo = analyzer.getSeqNumForUpdate();
 			System.out.println(seqNo);
 			if (isCaseUpdateCalendar) {
-				//command = new Update(seqNo, analyzer.getNewTaskName());
-				System.out.println("isCaseCalendar");
+				command = new Update(seqNo, analyzer.getNewTaskName());
 			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
-				//command = new Update(seqNo, time);
-				System.out.println("isCaseTaskname");
+				command = new Update(seqNo, time);
 			}
 			break;
 		case TYPE_CLEAR:
@@ -92,7 +90,7 @@ public class UserInterface {
 			return String.format(MESSAGE_INVALID_FORMAT, input);
 		}
 		
-		return null;//command.execute();
+		return command.execute();
 	}
 
 	protected static String getWelcomeMessage() {
