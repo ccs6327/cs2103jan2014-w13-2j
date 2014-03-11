@@ -28,6 +28,7 @@ public class Constants {
 	public static final String TYPE_UPDATE = "update";
 	
 	public static final String EMPTY_STRING = "";
+	public static final String NEW_LINE = "\r\n";
 	
 	public static final String MESSAGE_WELCOME = "Welcome to CLC.";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
@@ -69,6 +70,10 @@ public class Constants {
 	//Filename
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";
+	
+	// Storage
+	public static final int IS_DONE = 1;
+	public static final int IS_NOT_DONE = 0;
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();

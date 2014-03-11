@@ -2,8 +2,11 @@ package clc.logic;
 
 import static clc.common.Constants.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import clc.storage.Storage;
 
 
 
@@ -20,6 +23,7 @@ public class Add implements Command{
 		
 		internalMem.add(task);
 		addNewVersion();
+		Storage.writeContentIntoFile();
 		
 		/* //debug
 		System.out.println("task name = " + task.getTaskName());
