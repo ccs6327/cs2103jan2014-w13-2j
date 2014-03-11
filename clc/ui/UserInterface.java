@@ -54,7 +54,7 @@ public class UserInterface {
 			break;
 		case TYPE_DISPLAY:
 			ArrayList<GregorianCalendar> time = analyzer.analyzeDisplay();
-			//command = new Display(time.get(0), time.get(1));
+			command = new Display(time.get(0), time.get(1));
 			break;
 		case TYPE_DELETE:
 			command = new Delete(analyzer.analyzeDelete());
