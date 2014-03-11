@@ -5,6 +5,8 @@ import static clc.common.Constants.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import clc.common.Constants;
+
 public class Add implements Command{
 	Task task;
 
@@ -17,9 +19,9 @@ public class Add implements Command{
 	public String execute() {
 		// TODO Auto-generated method stub
 		//String feedback;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy hh.mm aa");
 		
-		 
+		Constants.internalMem.add(task);
+		
 		/* //debug
 		System.out.println("task name = " + task.getTaskName());
 		System.out.println("task type = " + task.getTaskType());
@@ -45,7 +47,7 @@ public class Add implements Command{
 
 	private String formatDate(Calendar calendar) {
 		String date;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy hh.mm a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 		date = dateFormat.format(calendar.getTime());
 		date = date.replaceAll("AM", "am");
 		date = date.replaceAll("PM", "pm");
