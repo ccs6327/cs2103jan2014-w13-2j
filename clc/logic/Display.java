@@ -9,8 +9,6 @@ import java.util.zip.DataFormatException;
 
 import static clc.common.Constants.*;
 
-
-
 public class Display implements Command {
     private String feedback;
     private String commandDetails = null;
