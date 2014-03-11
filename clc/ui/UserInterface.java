@@ -66,15 +66,18 @@ public class UserInterface {
 		case TYPE_UNMARK:
 			command = new Unmark(analyzer.analyzeMarkNotDone());
 			break;
-		case TYPE_UPDATE:/*
-			boolean isCaseUpdateTaskName = analyzer.analyzeUpdate();
+		case TYPE_UPDATE:
+			boolean isCaseUpdateCalendar = analyzer.analyzeUpdate();
 			int seqNo = analyzer.getSeqNumForUpdate();
-			if (isCaseUpdateTaskName) {
-				command = new Update(seqNo, analyzer.getNewTaskName());
+			System.out.println(seqNo);
+			if (isCaseUpdateCalendar) {
+				//command = new Update(seqNo, analyzer.getNewTaskName());
+				System.out.println("isCaseCalendar");
 			} else {
 				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
-				command = new Update(seqNo, time);
-			}*/
+				//command = new Update(seqNo, time);
+				System.out.println("isCaseTaskname");
+			}
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();
@@ -89,7 +92,7 @@ public class UserInterface {
 			return String.format(MESSAGE_INVALID_FORMAT, input);
 		}
 		
-		return command.execute();
+		return null;//command.execute();
 	}
 
 	protected static String getWelcomeMessage() {
