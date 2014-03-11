@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 public class Update implements Command {
 	
-    private int taskNo;
+    private int seqNo;
     private String feedback;
     private String newTaskName = null;
     private Task task;
@@ -17,37 +17,46 @@ public class Update implements Command {
     private Calendar newStartTime = null, newEndTime = null;
    
 	//constructor
-	public Update(int taskNo, String newTaskName) {
-		this.taskNo = taskNo;
+	public Update(int seqNo, String newTaskName) {
+		this.seqNo = seqNo;
 		this.newTaskName = newTaskName;
 	}
-	public Update(int taskNo, ArrayList<GregorianCalendar> time){
-		this.taskNo = taskNo;
+	public Update(int seqNo, ArrayList<GregorianCalendar> time){
+		this.seqNo = seqNo;
 		this.time = time;
 		newStartTime = time.get(0);
 		newEndTime = time.get(1);
 	}
 	@Override
 	public String execute() {
-		task = displayMem.get(taskNo-1);
-		updateTask();
+		if (isDataEmpty()) {
+			feedback = MESSAGE_NO_TASK_TO_UPDATE;
+		} else if (isOutOfBound()) {
+			feedback = MESSAGE_INEXISTANCE_SEQNO;
+		} else {
+			task = displayMem.get(seqNo - 1);
+            updateTask();
+		}
+		
 		return feedback;
 	}
 	
 	private void updateTask(){
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
-            feedback = MESSAGE_TASK_NAME_UPDATED_SUCCESS;
-		} 
+            feedback = String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, newTaskName);
+		}
 		
 		if (newStartTime != null) {
 		    task.updateStartTime(newStartTime);
-		    feedback = MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS;
+		    String startTime = D_M_Y_DateFormatter.format(newStartTime.getTime());
+		    feedback = String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, startTime);
 		} 
 		
 		if (newEndTime != null) {
 			task.updateEndTime(newEndTime);
-			feedback = MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS;
+			String endTime = D_M_Y_DateFormatter.format(newEndTime.getTime());
+			feedback = String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, endTime);
 		} 
 		
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
@@ -58,6 +67,10 @@ public class Update implements Command {
 	// Check whether the data which can be processed is empty
 	protected boolean isDataEmpty() {
 		return displayMem.isEmpty();
+	}
+	
+	protected boolean isOutOfBound() {
+		return seqNo > displayMem.size();
 	}
 }	
 	
