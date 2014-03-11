@@ -1,5 +1,9 @@
 package clc.common;
 
+import static clc.common.Constants.currentVersion;
+import static clc.common.Constants.historyMem;
+import static clc.common.Constants.internalMem;
+
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
@@ -18,6 +22,8 @@ public class Constants {
 	public static final String TYPE_EXIT = "exit";
 	public static final String TYPE_HELP = "help";
 	public static final String TYPE_MARK = "mark";
+	public static final String TYPE_UNDO = "undo";
+	public static final String TYPE_REDO = "redo";
 	public static final String TYPE_UNMARK = "unmark";
 	public static final String TYPE_UPDATE = "update";
 	
@@ -31,14 +37,14 @@ public class Constants {
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
-	public static final String MESSAGE_MARK_DONE = "mark [%1$s] as done sucessfuly";
-	public static final String MESSAGE_MARK_NOT_DONE = "mark [%1$s] as not done sucessfuly";
-	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "[%1$s] is already marked as done";
-	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "[%1$s] is originally not mark as done";
-	
-	//Display
-	public final static String TO = "to";
-	public static final String MESSAGE_SHOW_ALL_TASKS = "All Tasks";
+	public static final String MESSAGE_MARK_DONE = "mark ï¿$sï¿½as done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark ï¿$sï¿½as not done sucessfuly";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "ï¿$sï¿½is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "ï¿$sï¿½is originally not mark as done";
+	public static final String MESSAGE_UNDONE = "Last command has been undone.";
+	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
+	public static final String MESSAGE_REDONE = "Last command has been redone.";
+	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
 	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, starts at %3$s; ends at %4$s"; 
 	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, ends at %3$s";
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
@@ -51,7 +57,11 @@ public class Constants {
 	public static final String HELPFILE = "generalHelp.txt";
 	
 	public static ArrayList<Task> internalMem = new ArrayList<Task>();
-	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
-	public static ArrayList<Task> displayMem = new ArrayList<Task>();
-	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
+	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	public static int currentVersion = -1;
+	
+	public static void addNewVersion() {
+		currentVersion++;
+		historyMem.add(internalMem);
+	}
 }

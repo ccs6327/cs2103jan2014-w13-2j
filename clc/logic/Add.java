@@ -5,7 +5,7 @@ import static clc.common.Constants.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import clc.common.Constants;
+
 
 public class Add implements Command{
 	Task task;
@@ -17,10 +17,9 @@ public class Add implements Command{
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		//String feedback;
 		
-		Constants.internalMem.add(task);
+		internalMem.add(task);
+		addNewVersion();
 		
 		/* //debug
 		System.out.println("task name = " + task.getTaskName());
@@ -44,7 +43,7 @@ public class Add implements Command{
 		}
 		
 	}
-
+	
 	private String formatDate(Calendar calendar) {
 		String date;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");

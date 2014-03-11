@@ -4,7 +4,7 @@ import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 
-public class Undo implements Command {
+public class Redo implements Command {
 
 	@Override
 	public String execute() {
@@ -15,17 +15,17 @@ public class Undo implements Command {
 		// */
 		
 		try {
-			internalMem = historyMem.get(currentVersion - 1);
-			currentVersion--;
+			internalMem = historyMem.get(currentVersion + 1);
+			currentVersion++;
 		} catch (Exception exception) {
-			return MESSAGE_UNDONE_FAILED;
+			return MESSAGE_REDONE_FAILED;
 		}
 		
 		/* //debug
 		System.out.println(internalMem.size());
 		System.out.println(historyMem.size());
 		// */
-		return MESSAGE_UNDONE;
+		return MESSAGE_REDONE;
 	}
 
 }
