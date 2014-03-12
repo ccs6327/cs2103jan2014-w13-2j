@@ -12,7 +12,7 @@ import clc.storage.Storage;
 public class Update implements Command {
 	
     private int seqNo;
-    private String feedback;
+    private StringBuilder feedback = new StringBuilder();
     private String newTaskName = null;
     private Task task;
     private ArrayList<GregorianCalendar> time;
@@ -32,9 +32,11 @@ public class Update implements Command {
 	@Override
 	public String execute() {
 		if (isDataEmpty()) {
-			feedback = MESSAGE_NO_TASK_TO_UPDATE;
+			feedback.append(MESSAGE_NO_TASK_TO_UPDATE);
+			feedback.append("\n");
 		} else if (isOutOfBound()) {
-			feedback = MESSAGE_INEXISTANCE_SEQNO;
+			feedback.append(MESSAGE_INEXISTANCE_SEQNO);
+			feedback.append("\n");
 		} else {
 			task = displayMem.get(seqNo - 1);
             updateTask();
@@ -42,29 +44,34 @@ public class Update implements Command {
     		Storage.writeContentIntoFile();
 		}
 		
-		return feedback;
+		return feedback.toString();
 	}
 	
 	private void updateTask(){
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
-            feedback = String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, newTaskName);
+            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, newTaskName));
+            feedback.append("\n");
 		}
 		
 		if (newStartTime != null) {
 		    task.updateStartTime(newStartTime);
 		    String startTime = D_M_Y_DateFormatter.format(newStartTime.getTime());
-		    feedback = String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, startTime);
+		    feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, startTime));
+		    feedback.append("\n");
 		} 
 		
 		if (newEndTime != null) {
 			task.updateEndTime(newEndTime);
 			String endTime = D_M_Y_DateFormatter.format(newEndTime.getTime());
-			feedback = String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, endTime);
+			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, endTime));
+			feedback.append("\n");
 		} 
 		
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
-			feedback = MESSAGE_NO_CHANGE;
+			feedback.append(MESSAGE_NO_CHANGE);
+			feedback.append("\n");
+			
 		}
 	}
 	
