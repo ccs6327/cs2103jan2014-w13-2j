@@ -16,6 +16,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Window.Type;
+import java.awt.Rectangle;
+import java.awt.Insets;
 
 
 public class GUI {
@@ -75,7 +77,7 @@ public class GUI {
 	}
 
 	private void initializeTextInInputTextBox() {
-		inputTextBox.setText(" ");
+		inputTextBox.setText("  ");
 	}
 
 	/**
@@ -94,6 +96,7 @@ public class GUI {
 		inputTextBox.setBounds(12, 417, 639, 38);
 		frmClcV.getContentPane().add(inputTextBox);
 		inputTextBox.setColumns(10);
+		displayBox.setMargin(new Insets(10, 10, 10, 10));
 		
 		
 		displayBox.setBackground(Color.DARK_GRAY);
@@ -114,7 +117,7 @@ public class GUI {
 	}
 
 	protected void showToUser(String string) {
-		displayBox.append(" " + string + "\n");
+		displayBox.append(string + "\n");
 		displayBox.append("================================================\n");
 	}
 }
