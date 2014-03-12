@@ -316,6 +316,7 @@ public class Analyzer {
 				firstDateIndex = i;
 			} else if (isTimeFormat(currWord)) {
 				int time = Integer.parseInt(splitTime[0]);
+				
 				if (isPm) {
 					if (time != 12) {
 						if (time < 12) {
@@ -358,17 +359,26 @@ public class Analyzer {
 		//process hour and minute
 		if (timeInfo.size() >= 1) { 
 			if (timeInfo.get(0) < 24) {
+				System.out.println(timeInfo.get(0) + " smaller than 24");
 				endHour = timeInfo.get(0);
+				System.out.println("endHour: " + endHour);
 			} else {
+				System.out.println(timeInfo.get(1) + " larger or equal 24");
 				endHour = timeInfo.get(0) / 100;
 				endMin = timeInfo.get(0) % 100;
+				System.out.println("endHour: " + endHour);
+				System.out.println("endMin: " + endMin);
 			}
 			if (timeInfo.size() == 2) {
-				if (timeInfo.get(0) < 24) {
+				if (timeInfo.get(1) < 24) {
+					System.out.println(timeInfo.get(0) + " smaller than 24");
 					startHour = timeInfo.get(1);
 				} else {
+					System.out.println(timeInfo.get(1) + " larger or equal 24");
 					startHour = timeInfo.get(1) / 100;
 					startMin = timeInfo.get(1) % 100;
+					System.out.println("startHour: " + startHour);
+					System.out.println("startMin: " + startMin);
 				}
 			}
 		}
