@@ -48,23 +48,26 @@ public class Update implements Command {
 	}
 	
 	private void updateTask(){
+		String taskOldName = task.getTaskName();
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
-            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, newTaskName));
+            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskOldName, newTaskName));
             feedback.append("\n");
 		}
 		
 		if (newStartTime != null) {
+			taskOldName = task.getTaskName();
 		    task.updateStartTime(newStartTime);
 		    String startTime = D_M_Y_DateFormatter.format(newStartTime.getTime());
-		    feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, startTime));
+		    feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskOldName, startTime));
 		    feedback.append("\n");
 		} 
 		
 		if (newEndTime != null) {
+			taskOldName = task.getTaskName();
 			task.updateEndTime(newEndTime);
 			String endTime = D_M_Y_DateFormatter.format(newEndTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, endTime));
+			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskOldName, endTime));
 			feedback.append("\n");
 		} 
 		
