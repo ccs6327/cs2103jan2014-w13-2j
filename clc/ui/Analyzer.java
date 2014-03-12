@@ -1,5 +1,6 @@
 package clc.ui;
 
+import static clc.common.Constants.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -8,26 +9,6 @@ import java.util.Scanner;
 import clc.logic.Task;
 
 public class Analyzer {
-	private static final String COMMA = ",";
-	private static final String PM = "pm";
-	private static final String AM = "am";
-	private static final String SPACE = " ";
-	private static final String SLASH = "/";
-	private static final String DOT = ".";
-	private static final String TODAY = "today";
-	private static final String TOMORROW = "tomorrow";
-	private static final String THIS_WEEK = "this week";
-	private static final String NEXT_WEEK = "next week";
-	private static final String THIS_MONTH = "this month";
-	private static final String NEXT_MONTH = "next month";
-	/*
-	private static final String MONDAY = "monday";
-	private static final String TUESDAY = "tuesday";
-	private static final String WEDNESDAY = "wednesday";
-	private static final String THURSDAY = "thursday";
-	private static final String FRIDAY = "friday";
-	private static final String SATURDAY = "saturday";
-	private static final String SUNDAY = "sunday";*/
 
 	private String commandType, commandDetails, taskName;
 	private Task task;

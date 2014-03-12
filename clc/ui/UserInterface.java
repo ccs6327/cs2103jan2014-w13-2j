@@ -22,7 +22,6 @@ import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 public class UserInterface {
-	//private Scanner scanner;
 	GUI gui = new GUI();
 	private static String input, feedback;
 	
