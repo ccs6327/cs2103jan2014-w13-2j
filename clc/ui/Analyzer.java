@@ -8,6 +8,7 @@ import java.util.Scanner;
 import clc.logic.Task;
 
 public class Analyzer {
+	private static final String COMMA = ",";
 	private static final String PM = "pm";
 	private static final String AM = "am";
 	private static final String SPACE = " ";
@@ -66,7 +67,7 @@ public class Analyzer {
 
 		if (doesContainTimeInfo(splitDetails)) { //timed task or deadline task
 			recordAndProcessCalendarInfoProvided(splitDetails);
-			
+
 			//merge the taskName
 			taskName = mergeTaskName(splitDetails);
 
@@ -114,12 +115,55 @@ public class Analyzer {
 
 	protected boolean analyzeUpdate() {
 		String[] splitDetails = commandDetails.split(SPACE);
-		if (doesContainTimeInfo(splitDetails)) { //case update task name 
-			recordAndProcessCalendarInfoProvided (splitDetails);
+
+		//** throw exception if first is not a digit
+
+		if (doesContainTimeInfo(splitDetails)) { //case update calendar
+			int indexOfComma = findIndexOfComma(splitDetails);
+			analyzeUpdateStartTime(splitDetails, indexOfComma);
+			analyzeUpdateEndTime(splitDetails, indexOfComma);
 			return true;	
-		} else { //case update calendar
+		} else { //case update task name
 			return false;
 		}
+	}
+
+	private void analyzeUpdateEndTime(String[] splitDetails, int indexOfComma) {
+		String[] infoToBeProcessed;
+		int index = 0;
+		if (splitDetails.length != indexOfComma + 1) {
+			infoToBeProcessed = new String[splitDetails.length - indexOfComma - 1];
+			for (int i = indexOfComma + 1; i < splitDetails.length ; i ++) { //first one is sequence no
+				infoToBeProcessed[index ++] = splitDetails[i];
+			}
+			recordAndProcessCalendarInfoProvided (infoToBeProcessed);
+		}
+	}
+
+	private void analyzeUpdateStartTime(String[] splitDetails, int indexOfComma) {
+		String[] infoToBeProcessed;
+		int index = 0;
+		if (indexOfComma > 0) {
+			infoToBeProcessed = new String[indexOfComma - 1];
+			for (int i = 1; i < indexOfComma; i ++) { //first one is sequence no
+				infoToBeProcessed[index ++] = splitDetails[i];
+			}
+			recordAndProcessCalendarInfoProvided (infoToBeProcessed);
+
+			// as processCalendarInfo will set the time to endTime
+			// so we have to swap the value
+			startTime = endTime;
+			endTime = null;
+		}
+	}
+
+	private int findIndexOfComma(String[] splitDetails) {
+		for(int i = 0; i < splitDetails.length; i ++) {
+			if(splitDetails[i].equals(COMMA)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	protected ArrayList<Integer> analyzeDelete() {
@@ -157,7 +201,7 @@ public class Analyzer {
 	protected String getNewTaskName() {
 		return removeFirstWord(commandDetails);
 	}
-	
+
 	protected int getSeqNumForUpdate() {
 		return Integer.parseInt(getFirstWord(commandDetails));
 	}
@@ -244,10 +288,13 @@ public class Analyzer {
 		return taskName;
 	}
 
-	private void recordAndProcessCalendarInfoProvided (String[] splitDetails) {
-		recordCalendarInfo(splitDetails);
+	private void recordAndProcessCalendarInfoProvided (String[] infoToBeProcessed) {
+		monthInfo = new ArrayList<Integer>();
+		dayInfo = new ArrayList<Integer>();
+		timeInfo = new ArrayList<Integer>();
+		recordCalendarInfo(infoToBeProcessed);
 		if (dayInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
-			processCalendarInfo(splitDetails);
+			processCalendarInfo(infoToBeProcessed);
 		}
 	}
 
@@ -277,6 +324,7 @@ public class Analyzer {
 							time += 1200;
 						}
 					}
+					isPm = false;
 				} else {
 					if (time == 12) {
 						time -= 12;
@@ -391,13 +439,13 @@ public class Analyzer {
 		} else {
 			return false;
 		}
-		
+
 		//only support dd/mm/yy format or dd/mm format
 		if (splitDate.length < 2 || splitDate.length > 3) {
 			return false;
 		}
-		
-		
+
+
 		if (isNumeric(splitDate[0]) && isNumeric(splitDate[1])) {
 			isDate = true;
 		}
@@ -463,8 +511,11 @@ public class Analyzer {
 
 	private boolean doesContainTimeInfo(String[] splitDetails) {
 		// check the last word whether contains date format
-		int lastWordIndex = splitDetails.length - 1;
-		return isTimeFormat(splitDetails[lastWordIndex])
-				|| isDateFormat(splitDetails[lastWordIndex]);
+		int lastTimeIndex = splitDetails.length - 1;
+		if (splitDetails[lastTimeIndex].equals(COMMA)) { //case update
+			lastTimeIndex --;
+		}
+		return (isTimeFormat(splitDetails[lastTimeIndex])
+				|| isDateFormat(splitDetails[lastTimeIndex]));
 	}
 }

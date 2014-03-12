@@ -115,5 +115,6 @@ public class GUI {
 
 	protected void showToUser(String string) {
 		displayBox.append(" " + string + "\n");
+		displayBox.append("================================================\n");
 	}
 }
