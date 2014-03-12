@@ -60,7 +60,7 @@ public class Constants {
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
 	
 	//Update
-	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name is updated to (%1$s) successful";
+	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task is updated to (%1$s) successful";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task starttime is updated to (%1$s) successful";
 	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task endtime is updated to (%1$s) successful";
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
