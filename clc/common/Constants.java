@@ -82,6 +82,20 @@ public class Constants {
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 	public static int currentVersion = -1;
 	
+	//Analyzer
+	public static final String COMMA = ",";
+	public static final String PM = "pm";
+	public static final String AM = "am";
+	public static final String SPACE = " ";
+	public static final String SLASH = "/";
+	public static final String DOT = ".";
+	public static final String TODAY = "today";
+	public static final String TOMORROW = "tomorrow";
+	public static final String THIS_WEEK = "this week";
+	public static final String NEXT_WEEK = "next week";
+	public static final String THIS_MONTH = "this month";
+	public static final String NEXT_MONTH = "next month";
+	
 	public static void addNewVersion() {
 		currentVersion++;
 		ArrayList<Task> tempMem = new ArrayList<Task>();

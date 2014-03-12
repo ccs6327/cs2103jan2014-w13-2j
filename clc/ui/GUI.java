@@ -70,8 +70,21 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				input = inputTextBox.getText().trim();
 				UserInterface.setInputAndExecute(input);
-				showToUser(UserInterface.getFeedback());
+				String feedback = UserInterface.getFeedback();
+				if (isCaseClearScreen()) {
+					emptyDisplayBox();
+				} else {
+					showToUser(feedback);
+				}
 				initializeTextInInputTextBox();
+			}
+
+			private void emptyDisplayBox() {
+				displayBox.setText("");
+			}
+
+			private boolean isCaseClearScreen() {
+				return input.equals("");
 			}
 		});
 	}
@@ -94,16 +107,18 @@ public class GUI {
 		inputTextBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		inputTextBox.setHorizontalAlignment(SwingConstants.LEFT);
 		inputTextBox.setBounds(12, 417, 639, 38);
-		frmClcV.getContentPane().add(inputTextBox);
 		inputTextBox.setColumns(10);
+		inputTextBox.setCaretColor(Color.WHITE);
+		frmClcV.getContentPane().add(inputTextBox);
+				
+		displayBox.setWrapStyleWord(true);
 		displayBox.setMargin(new Insets(10, 10, 10, 10));
-		
-		
 		displayBox.setBackground(Color.DARK_GRAY);
 		displayBox.setForeground(Color.WHITE);
 		displayBox.setEditable(false);
 		displayBox.setFont(new Font("Calibri", Font.PLAIN, 17));
 		displayBox.setBounds(12, 13, 597, 400);
+		displayBox.setLineWrap(true);
 		JScrollPane scrollPane = new JScrollPane(displayBox);
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(12, 13, 639, 391);
@@ -118,6 +133,6 @@ public class GUI {
 
 	protected void showToUser(String string) {
 		displayBox.append(string + "\n");
-		displayBox.append("================================================\n");
+		displayBox.append("==========================================================================\n");
 	}
 }
