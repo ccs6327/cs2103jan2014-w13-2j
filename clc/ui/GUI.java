@@ -39,7 +39,7 @@ public class GUI {
 	/**
 	 * Launch the application.
 	 */
-	public String launchAndGetInputAndExecute() {
+	public void launchAndGetInputAndExecute() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -50,7 +50,6 @@ public class GUI {
 				}
 			}
 		});
-		return input;
 	}
 
 	private void focusOnInputTextBox() {
