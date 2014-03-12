@@ -141,7 +141,7 @@ public class Display implements Command {
 		
 		protected boolean isTimeA_NotLater_Than_TimeB(Calendar calA, Calendar calB){
 			int i = calB.compareTo(calA);
-			if (i > 0){
+			if (i > 0 || i == 0){
 				return true;
 			} else {
 				return false;
