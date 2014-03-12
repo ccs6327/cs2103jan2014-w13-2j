@@ -16,8 +16,9 @@ public class Delete implements Command {
 	@Override
 	public String execute() {
 		StringBuilder feedback = new StringBuilder();
+		boolean isChanged = false;
 		Collections.sort(taskSeqNo);
-
+		
 		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
 			//ArrayList<Task> taskList = storage.getTaskList();
 			int seqNo = taskSeqNo.get(i);
@@ -27,16 +28,20 @@ public class Delete implements Command {
 				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
+				isChanged = true;
 				String taskName = displayMem.get(seqNo - 1).getTaskName();
 				long idNum = displayMem.get(seqNo - 1).getTaskId();
 				displayMem.remove(seqNo - 1);
 				searchAndDeleteInternalMemTask(idNum);
-				addNewVersion();
-				Storage.writeContentIntoFile();
 				
 				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
 				feedback.append("\n");
 			}
+		}
+		
+		if (isChanged) {
+			addNewVersion();
+			Storage.writeContentIntoFile();
 		}
 		
 		return feedback.toString();
