@@ -18,15 +18,15 @@ public class Mark implements Command {
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 			
-			if (isOutOfBound(internalMem.size(), seqNo)) {
+			if (isOutOfBound(displayMem.size(), seqNo)) {
 				//print error msg
 				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
 				boolean isMarked = false;
-				isMarked = internalMem.get(seqNo - 1).markDone();
+				isMarked = displayMem.get(seqNo - 1).markDone();
 				
-				String taskName = internalMem.get(seqNo - 1).getTaskName();
+				String taskName = displayMem.get(seqNo - 1).getTaskName();
 				if (isMarked) {
 					feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
 					feedback.append("\n");

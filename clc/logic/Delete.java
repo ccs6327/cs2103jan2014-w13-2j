@@ -22,14 +22,15 @@ public class Delete implements Command {
 			//ArrayList<Task> taskList = storage.getTaskList();
 			int seqNo = taskSeqNo.get(i);
 			
-			if (isOutOfBound(internalMem.size(), seqNo)) {
+			if (isOutOfBound(displayMem.size(), seqNo)) {
 				//print error msg
 				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
-				String taskName = internalMem.get(seqNo - 1).getTaskName();
-
-				internalMem.remove(seqNo - 1);
+				String taskName = displayMem.get(seqNo - 1).getTaskName();
+				long idNum = displayMem.get(seqNo - 1).getTaskId();
+				displayMem.remove(seqNo - 1);
+				searchAndDeleteInternalMemTask(idNum);
 				addNewVersion();
 				Storage.writeContentIntoFile();
 				
@@ -39,6 +40,14 @@ public class Delete implements Command {
 		}
 		
 		return feedback.toString();
+	}
+
+	private void searchAndDeleteInternalMemTask(long idNum) {
+		for (int i = 0; i < internalMem.size(); i++) {
+			if (internalMem.get(i).getTaskId() == idNum) {
+				internalMem.remove(i);
+			}
+		}
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {

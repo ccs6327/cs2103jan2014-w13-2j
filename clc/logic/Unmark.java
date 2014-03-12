@@ -18,14 +18,14 @@ public class Unmark implements Command {
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 
-			if (isOutOfBound(internalMem.size(), seqNo)) {
+			if (isOutOfBound(displayMem.size(), seqNo)) {
 				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
 				boolean isUnmarked = false;
-				isUnmarked = internalMem.get(seqNo - 1).markUndone();
+				isUnmarked = displayMem.get(seqNo - 1).markUndone();
 
-				String taskName = internalMem.get(seqNo - 1).getTaskName();
+				String taskName = displayMem.get(seqNo - 1).getTaskName();
 				if (isUnmarked) {
 					feedback.append(String.format(MESSAGE_MARK_NOT_DONE, taskName));
 					feedback.append("\n");

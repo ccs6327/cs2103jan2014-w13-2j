@@ -155,7 +155,7 @@ public class Analyzer {
 	}
 
 	protected String getNewTaskName() {
-		return commandDetails;
+		return removeFirstWord(commandDetails);
 	}
 	
 	protected int getSeqNumForUpdate() {
