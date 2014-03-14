@@ -69,8 +69,7 @@ public class GUI {
 		inputTextBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				input = inputTextBox.getText().trim();
-				UserInterface.setInputAndExecute(input);
-				String feedback = UserInterface.getFeedback();
+				String feedback = UserInterface.setInputAndExecute(input);
 				if (isCaseClearScreen()) {
 					emptyDisplayBox();
 				} else {
