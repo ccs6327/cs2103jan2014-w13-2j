@@ -42,9 +42,9 @@ public class UserInterface {
 			// */
 	}
 	
-	public static void setInputAndExecute(String line) {
+	protected static String setInputAndExecute(String line) {
 		input = line;
-		feedback = executeCommand();
+		return executeCommand();
 	}
 
 	private static String executeCommand() {
@@ -120,9 +120,5 @@ public class UserInterface {
 
 	protected static String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
-	}
-	
-	protected static String getFeedback() {
-		return feedback;
 	}
 }
