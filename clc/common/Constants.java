@@ -56,7 +56,7 @@ public class Constants {
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
-	public static final String MESSAEG_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
+	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
 	
 	//Update

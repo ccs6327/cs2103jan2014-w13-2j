@@ -44,6 +44,7 @@ public class Delete implements Command {
 			Storage.writeContentIntoFile();
 		}
 		
+		displayMem.clear();
 		return feedback.toString();
 	}
 

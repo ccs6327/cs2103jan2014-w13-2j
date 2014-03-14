@@ -83,7 +83,7 @@ public class Display implements Command {
 			// Process feedback
 			if (!isDataEmpty()) {
 				feedback.append("\n");
-				feedback.append(MESSAEG_DISPLAY_IN_PERIOD);
+				feedback.append(MESSAGE_DISPLAY_IN_PERIOD);
 				feedback.append("\n");
 			} else {
 				feedback.append("\n");
