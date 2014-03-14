@@ -1,9 +1,7 @@
 package clc.ui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Scanner;
 
 import clc.logic.Add;
 import clc.logic.Clear;
@@ -18,28 +16,16 @@ import clc.logic.Task;
 import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
-import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 public class UserInterface {
-	GUI gui = new GUI();
-	private static String input, feedback;
+	private GUI gui = new GUI();
+	private static String input;
 	
-	public UserInterface() {
-		Storage.initializeDataFile();
-	}
+	public UserInterface() {}
 	
 	public void executeCommandsUntilExit() {
 		gui.launchAndGetInputAndExecute();
-		addNewVersion();
-			/* //debug
-			System.out.println(internalMem.size());
-			System.out.println(historyMem.size());
-			// */
-			/* //debug
-			System.out.println(internalMem.size());
-			System.out.println(historyMem.size());
-			// */
 	}
 	
 	protected static String setInputAndExecute(String line) {
@@ -49,55 +35,48 @@ public class UserInterface {
 
 	private static String executeCommand() {
 		Command command = null;
-		Analyzer analyzer = new Analyzer(input);
-		if (input.trim().equals(EMPTY_STRING)) {
-			return String.format(MESSAGE_INVALID_FORMAT, input);
-		}
-		
-		String commandType = analyzer.getCommandType();
+		Analyzer.analyze(input);
+		String commandType = Analyzer.getCommandType(); 
 		
 		switch (commandType) {
 		case TYPE_ADD:
-			Task task = analyzer.analyzeAdd();
+			AddAnalyzer.analyze();
+			Task task = AddAnalyzer.getToBeAddedTask();
 			command = new Add(task);
-			//addNewVersion();
 			break;
 		case TYPE_DISPLAY:
-			boolean isCaseDisplayCalendar = analyzer.analyzeDisplay();
+			DisplayAnalyzer.analyze();
+			boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
 			if (isCaseDisplayCalendar) {
-				ArrayList<GregorianCalendar> time = analyzer.getCalendar();
+				ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 				command = new Display(time);
 			} else {
-				String query = analyzer.getDisplayQuery();
+				String query = DisplayAnalyzer.getDisplayQuery();
 				command = new Display(query);
 			}
 			break;
 		case TYPE_DELETE:
-			command = new Delete(analyzer.analyzeDelete());
-			//addNewVersion();
+			command = new Delete(SequenceNumberExtracter.getSequenceNum());
 			break;
 		case TYPE_MARK:
-			command = new Mark(analyzer.analyzeMarkDone());
-			//addNewVersion();
+			command = new Mark(SequenceNumberExtracter.getSequenceNum());
 			break;
 		case TYPE_UNMARK:
-			command = new Unmark(analyzer.analyzeMarkNotDone());
-			//addNewVersion();
+			command = new Unmark(SequenceNumberExtracter.getSequenceNum());
 			break;
 		case TYPE_UPDATE:
-			boolean isCaseUpdateCalendar = analyzer.analyzeUpdate();
-			int seqNo = analyzer.getSeqNumForUpdate();
+			UpdateAnalyzer.analyze();
+			boolean isCaseUpdateCalendar = UpdateAnalyzer.getUpdateCase();
+			int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
 			if (isCaseUpdateCalendar) {
-				ArrayList<GregorianCalendar> time = analyzer.getNewCalendar();
+				ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
 				command = new Update(seqNo, time);
 			} else {
-				command = new Update(seqNo, analyzer.getNewTaskName());
+				command = new Update(seqNo, UpdateAnalyzer.getNewTaskName());
 			}
-			//addNewVersion();
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();
-			//addNewVersion();
 			break;
 		case TYPE_UNDO:
 			command = new Undo();

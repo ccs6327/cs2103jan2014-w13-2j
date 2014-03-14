@@ -74,7 +74,6 @@ public class Update implements Command {
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
 			feedback.append(MESSAGE_NO_CHANGE);
 			feedback.append("\n");
-			
 		}
 	}
 	

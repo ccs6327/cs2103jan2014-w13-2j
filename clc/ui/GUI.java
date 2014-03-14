@@ -7,46 +7,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import java.awt.Window.Type;
-import java.awt.Rectangle;
-import java.awt.Insets;
+
 
 
 public class GUI {
 
-	private String input;
-
-	private JFrame frmClcV;
-	private final JTextField inputTextBox = new JTextField();
+	private JFrame frameClc;
+	private JTextField inputTextBox = new JTextField();
 	private JTextArea displayBox = new JTextArea();
 
 	/**
 	 * Create the application.
 	 */
-	public GUI() {
+	protected GUI() {
 		initialize();
 		focusOnInputTextBox();
-		initializeTextInInputTextBox();
+		initializeInputTextBox();
 		actionWhenEnterIsPressed();
 	}
 
 	/**
 	 * Launch the application.
 	 */
-	public void launchAndGetInputAndExecute() {
+	protected void launchAndGetInputAndExecute() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frmClcV.setVisible(true);
+					window.frameClc.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,7 +51,7 @@ public class GUI {
 	}
 
 	private void focusOnInputTextBox() {
-		frmClcV.addWindowFocusListener(new WindowAdapter() {
+		frameClc.addWindowFocusListener(new WindowAdapter() {
 			public void windowGainedFocus(WindowEvent e) {
 				inputTextBox.requestFocusInWindow();
 			}
@@ -68,27 +64,27 @@ public class GUI {
 		inputTextBox.setForeground(Color.WHITE);
 		inputTextBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				input = inputTextBox.getText().trim();
+				String input = inputTextBox.getText().trim();
 				String feedback = UserInterface.setInputAndExecute(input);
-				if (isCaseClearScreen()) {
+				if (isCaseClearScreen(input)) {
 					emptyDisplayBox();
 				} else {
 					showToUser(feedback);
 				}
-				initializeTextInInputTextBox();
+				initializeInputTextBox();
 			}
 
 			private void emptyDisplayBox() {
 				displayBox.setText("");
 			}
 
-			private boolean isCaseClearScreen() {
+			private boolean isCaseClearScreen(String input) {
 				return input.equals("");
 			}
 		});
 	}
 
-	private void initializeTextInInputTextBox() {
+	private void initializeInputTextBox() {
 		inputTextBox.setText("  ");
 	}
 
@@ -96,19 +92,19 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmClcV = new JFrame();
-		frmClcV.getContentPane().setBackground(Color.GRAY);
-		frmClcV.setTitle("CLC V0.1");
-		frmClcV.setResizable(false);
-		frmClcV.setBounds(100, 100, 669, 496);
-		frmClcV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmClcV.getContentPane().setLayout(null);
+		frameClc = new JFrame();
+		frameClc.getContentPane().setBackground(Color.GRAY);
+		frameClc.setTitle("CLC V0.1");
+		frameClc.setResizable(false);
+		frameClc.setBounds(100, 100, 669, 496);
+		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameClc.getContentPane().setLayout(null);
 		inputTextBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		inputTextBox.setHorizontalAlignment(SwingConstants.LEFT);
 		inputTextBox.setBounds(12, 417, 639, 38);
 		inputTextBox.setColumns(10);
 		inputTextBox.setCaretColor(Color.WHITE);
-		frmClcV.getContentPane().add(inputTextBox);
+		frameClc.getContentPane().add(inputTextBox);
 				
 		displayBox.setWrapStyleWord(true);
 		displayBox.setMargin(new Insets(10, 10, 10, 10));
@@ -122,15 +118,15 @@ public class GUI {
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(12, 13, 639, 391);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frmClcV.getContentPane().add(scrollPane);
-		initializeTextInDisplayBox();
+		frameClc.getContentPane().add(scrollPane);
+		initializeDisplayBox();
 	}
 
-	private void initializeTextInDisplayBox() {
+	private void initializeDisplayBox() {
 		showToUser(UserInterface.getWelcomeMessage());
 	}
 
-	protected void showToUser(String string) {
+	private void showToUser(String string) {
 		displayBox.append(string + "\n");
 		displayBox.append("==========================================================================\n");
 	}
