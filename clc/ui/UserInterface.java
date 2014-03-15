@@ -56,13 +56,13 @@ public class UserInterface {
 			}
 			break;
 		case TYPE_DELETE:
-			command = new Delete(SequenceNumberExtracter.getSequenceNum());
+			command = new Delete(SequenceNumberExtractor.getSequenceNum());
 			break;
 		case TYPE_MARK:
-			command = new Mark(SequenceNumberExtracter.getSequenceNum());
+			command = new Mark(SequenceNumberExtractor.getSequenceNum());
 			break;
 		case TYPE_UNMARK:
-			command = new Unmark(SequenceNumberExtracter.getSequenceNum());
+			command = new Unmark(SequenceNumberExtractor.getSequenceNum());
 			break;
 		case TYPE_UPDATE:
 			UpdateAnalyzer.analyze();
