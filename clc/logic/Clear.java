@@ -10,7 +10,7 @@ public class Clear implements Command {
 	@Override
 	public String execute() {
 		internalMem.clear();
-		displayMem = new ArrayList<Task>();
+		displayMem.clear();
 		addNewVersion();
 		Storage.writeContentIntoFile();
 		return MESSAGE_CLEARED;
