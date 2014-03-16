@@ -9,11 +9,13 @@ import static clc.common.Constants.*;
 public class Mark implements Command {
 	private ArrayList<Integer> taskSeqNo;
 	private StringBuilder feedback = new StringBuilder();
-	private ArrayList<Task> displayMem;
+	private ArrayList<Integer> displayMem;
+	private ArrayList<Task> internalMem;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
 		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
 	}
 
 	@Override
@@ -27,9 +29,10 @@ public class Mark implements Command {
 				feedback.append("\n");
 			} else {
 				boolean isMarked = false;
-				isMarked = displayMem.get(seqNo - 1).markDone();
+				int internalSeqNo = displayMem.get(seqNo - 1); 
+				isMarked = internalMem.get(internalSeqNo).markDone();
 				
-				String taskName = displayMem.get(seqNo - 1).getTaskName();
+				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				if (isMarked) {
 					feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
 					feedback.append("\n");

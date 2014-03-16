@@ -16,7 +16,7 @@ public class Storage {
 	
 	private static File dataFile;
 	private static ArrayList<Task> internalMem = new ArrayList<Task>();
-	private static ArrayList<Task> displayMem = new ArrayList<Task>();
+	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
 	
 	/* If the data file does not exist, create the data file. 
 	 *  Otherwise read in the content from the data file.
@@ -155,7 +155,7 @@ public class Storage {
 		return internalMem;
 	}
 
-	public static ArrayList<Task> getDisplayMem() {
+	public static ArrayList<Integer> getDisplayMem() {
 		return displayMem;
 	}
 }
