@@ -6,15 +6,15 @@ import java.util.Collections;
 import clc.storage.Storage;
 import clc.storage.History;
 import static clc.common.Constants.*;
-import static clc.storage.History.historyMem;
-import static clc.storage.History.currentVersion;
-import static clc.storage.Storage.internalMem;
 
 public class Delete implements Command {
 	private ArrayList<Integer> taskSeqNo;
+	private ArrayList<Task> internalMem, displayMem;
 	
 	public Delete(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
 	}
 	
 	@Override

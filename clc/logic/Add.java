@@ -1,25 +1,22 @@
 package clc.logic;
 
 import static clc.common.Constants.*;
-import static clc.storage.History.historyMem;
-import static clc.storage.History.currentVersion;
-import static clc.storage.Storage.internalMem;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import clc.storage.History;
 import clc.storage.Storage;
 
-
-
 public class Add implements Command{
-	Task task;
-
+	private Task task;
+	private ArrayList<Task> internalMem;
+	
 	public Add(Task task) {
 		// TODO Auto-generated constructor stub
 		this.task = task;
+		internalMem = Storage.getInternalMem();
 	}
 
 	@Override

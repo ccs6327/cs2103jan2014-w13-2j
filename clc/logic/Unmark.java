@@ -9,9 +9,11 @@ import static clc.common.Constants.*;
 public class Unmark implements Command {
 	private ArrayList<Integer> taskSeqNo;
 	private StringBuilder feedback = new StringBuilder();
+	private ArrayList<Task> displayMem;
 	
 	public Unmark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
+		displayMem = Storage.getDisplayMem();
 	}
 
 	@Override

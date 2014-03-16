@@ -15,7 +15,8 @@ import static clc.common.Constants.*;
 public class Storage {
 	
 	private static File dataFile;
-	public static ArrayList<Task> internalMem = new ArrayList<Task>();
+	private static ArrayList<Task> internalMem = new ArrayList<Task>();
+	private static ArrayList<Task> displayMem = new ArrayList<Task>();
 	
 	/* If the data file does not exist, create the data file. 
 	 *  Otherwise read in the content from the data file.
@@ -153,7 +154,10 @@ public class Storage {
 	public static ArrayList<Task> getInternalMem() {
 		return internalMem;
 	}
-	
+
+	public static ArrayList<Task> getDisplayMem() {
+		return displayMem;
+	}
 }
 
 

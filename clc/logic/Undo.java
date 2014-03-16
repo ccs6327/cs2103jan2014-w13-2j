@@ -1,16 +1,16 @@
 package clc.logic;
 
 import static clc.common.Constants.*;
-import static clc.storage.History.historyMem;
-import static clc.storage.History.currentVersion;
-import static clc.storage.Storage.internalMem;
 
 import java.util.ArrayList;
 
 
 
 public class Undo implements Command {
-
+	private ArrayList<ArrayList<Task>> historyMem;
+	private ArrayList<Task> internalMem;
+	private int currentVersion;
+	
 	@Override
 	public String execute() {
 		

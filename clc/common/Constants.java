@@ -72,9 +72,7 @@ public class Constants {
 	public static final int IS_NOT_DONE = 0;
 	
 	
-	
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
-	public static ArrayList<Task> displayMem = new ArrayList<Task>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 
 	

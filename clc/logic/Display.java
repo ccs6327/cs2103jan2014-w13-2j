@@ -2,24 +2,26 @@ package clc.logic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.GregorianCalendar;
-import java.util.zip.DataFormatException;
-
+import clc.storage.Storage;
 import static clc.common.Constants.*;
-import static clc.storage.Storage.internalMem;
 
 public class Display implements Command {
     private StringBuilder feedback = new StringBuilder();
     private String commandDetails = null;
     private ArrayList<GregorianCalendar> time;
     private Calendar startOfPeriod = null, endOfPeriod = null;
-    
+	private ArrayList<Task> internalMem, displayMem;
+	
 	public Display(ArrayList<GregorianCalendar> time) {
 		this.time = time;
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
 	}
 	public Display(String commandDetails) {
 		this. commandDetails = commandDetails;
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
 	} 
 	 
 	@Override

@@ -40,29 +40,19 @@ public class UserInterface {
 		
 		switch (commandType) {
 		case TYPE_ADD:
-			AddAnalyzer.analyze();
-			Task task = AddAnalyzer.getToBeAddedTask();
-			command = new Add(task);
+			command = analyzeAdd();
 			break;
 		case TYPE_DISPLAY:
-			DisplayAnalyzer.analyze();
-			boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
-			if (isCaseDisplayCalendar) {
-				ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
-				command = new Display(time);
-			} else {
-				String query = DisplayAnalyzer.getDisplayQuery();
-				command = new Display(query);
-			}
+			command = analyzeDisplay();
 			break;
 		case TYPE_DELETE:
-			command = new Delete(SequenceNumberExtractor.getSequenceNum());
+			command = analyzeDelete();
 			break;
 		case TYPE_MARK:
-			command = new Mark(SequenceNumberExtractor.getSequenceNum());
+			command = analyzeMark();
 			break;
 		case TYPE_UNMARK:
-			command = new Unmark(SequenceNumberExtractor.getSequenceNum());
+			command = analyzeUnmark();
 			break;
 		case TYPE_UPDATE:
 			UpdateAnalyzer.analyze();
@@ -95,6 +85,46 @@ public class UserInterface {
 		}
 		
 		return command.execute();
+	}
+
+	private static Command analyzeAdd() {
+		Command command;
+		AddAnalyzer.analyze();
+		Task task = AddAnalyzer.getToBeAddedTask();
+		command = new Add(task);
+		return command;
+	}
+
+	private static Command analyzeDelete() {
+		Command command;
+		command = new Delete(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeDisplay() {
+		Command command;
+		DisplayAnalyzer.analyze();
+		boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
+		if (isCaseDisplayCalendar) {
+			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
+			command = new Display(time);
+		} else {
+			String query = DisplayAnalyzer.getDisplayQuery();
+			command = new Display(query);
+		}
+		return command;
+	}
+
+	private static Command analyzeMark() {
+		Command command;
+		command = new Mark(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeUnmark() {
+		Command command;
+		command = new Unmark(SequenceNumberExtractor.getSequenceNum());
+		return command;
 	}
 
 	protected static String getWelcomeMessage() {
