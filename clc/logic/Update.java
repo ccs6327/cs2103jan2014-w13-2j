@@ -18,15 +18,18 @@ public class Update implements Command {
     private Task task;
     private ArrayList<GregorianCalendar> time;
     private Calendar newStartTime = null, newEndTime = null;
+    private ArrayList<Task> displayMem;
    
 	//constructor
 	public Update(int seqNo, String newTaskName) {
 		this.seqNo = seqNo;
 		this.newTaskName = newTaskName;
+		displayMem = Storage.getDisplayMem();
 	}
 	public Update(int seqNo, ArrayList<GregorianCalendar> time){
 		this.seqNo = seqNo;
 		this.time = time;
+		displayMem = Storage.getDisplayMem();
 		newStartTime = time.get(0);
 		newEndTime = time.get(1);
 	}

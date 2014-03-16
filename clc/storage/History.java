@@ -11,9 +11,8 @@ public class History {
 	private static Stack<Command> operationHistory = new Stack<Command>();
 	private static Stack<Task> taskHistory = new Stack<Task>();
 	private static Stack<Task> updateHistory = new Stack<Task>(); //for update operation to store updated task
-	
-	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
-	public static int currentVersion = -1;
+	private static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	private static int currentVersion = -1;
 	
 	private static void addOperationHistory(Command operation){
 		operationHistory.push(operation);

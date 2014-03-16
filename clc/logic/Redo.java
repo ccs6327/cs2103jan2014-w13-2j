@@ -1,17 +1,24 @@
 package clc.logic;
 
 import static clc.common.Constants.*;
-import static clc.storage.History.historyMem;
-import static clc.storage.History.currentVersion;
-import static clc.storage.Storage.internalMem;
 
 import java.util.ArrayList;
 
-public class Redo implements Command {
+import clc.storage.Storage;
+import clc.storage.History;
 
+public class Redo implements Command {
+	private ArrayList<ArrayList<Task>> historyMem;
+	private ArrayList<Task> internalMem;
+	private int currentVersion;
+	
+	public Redo() {
+		internalMem = Storage.getInternalMem();
+		historyMem = History.getHistoryMem();
+	}
+	
 	@Override
 	public String execute() {
-		
 		try {
 			internalMem = historyMem.get(currentVersion + 1);
 			currentVersion++;
