@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
@@ -14,6 +15,7 @@ import static clc.common.Constants.*;
 public class Storage {
 	
 	private static File dataFile;
+	public static ArrayList<Task> internalMem = new ArrayList<Task>();
 	
 	/* If the data file does not exist, create the data file. 
 	 *  Otherwise read in the content from the data file.
@@ -146,6 +148,10 @@ public class Storage {
 			
 		}
 		return sb.toString();
+	}
+	
+	public static ArrayList<Task> getInternalMem() {
+		return internalMem;
 	}
 	
 }

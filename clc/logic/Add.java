@@ -1,11 +1,15 @@
 package clc.logic;
 
 import static clc.common.Constants.*;
+import static clc.storage.History.historyMem;
+import static clc.storage.History.currentVersion;
+import static clc.storage.Storage.internalMem;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import clc.storage.History;
 import clc.storage.Storage;
 
 
@@ -22,7 +26,7 @@ public class Add implements Command{
 	public String execute() {
 		
 		internalMem.add(task);
-		addNewVersion();
+		History.addNewVersion();
 		Storage.writeContentIntoFile();
 		
 		switch (task.getTaskType()) {

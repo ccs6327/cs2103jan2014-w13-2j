@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import clc.storage.Storage;
+import clc.storage.History;
 import static clc.common.Constants.*;
+import static clc.storage.History.historyMem;
+import static clc.storage.History.currentVersion;
+import static clc.storage.Storage.internalMem;
 
 public class Delete implements Command {
 	private ArrayList<Integer> taskSeqNo;
@@ -40,7 +44,7 @@ public class Delete implements Command {
 		}
 		
 		if (isChanged) {
-			addNewVersion();
+			History.addNewVersion();
 			Storage.writeContentIntoFile();
 		}
 		

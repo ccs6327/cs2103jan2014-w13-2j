@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.zip.DataFormatException;
 
-
 import static clc.common.Constants.*;
+import static clc.storage.Storage.internalMem;
 
 public class Display implements Command {
     private StringBuilder feedback = new StringBuilder();
