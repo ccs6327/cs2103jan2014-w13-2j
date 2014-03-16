@@ -8,7 +8,8 @@ import clc.storage.Storage;
 import clc.storage.History;
 
 public class Clear implements Command {
-	private ArrayList<Task> internalMem, displayMem;
+	private ArrayList<Task> internalMem;
+	private ArrayList<Integer> displayMem;
 	
 	public Clear() {
 		internalMem = Storage.getInternalMem();

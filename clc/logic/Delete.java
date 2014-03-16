@@ -9,7 +9,8 @@ import static clc.common.Constants.*;
 
 public class Delete implements Command {
 	private ArrayList<Integer> taskSeqNo;
-	private ArrayList<Task> internalMem, displayMem;
+	private ArrayList<Task> internalMem;
+	private ArrayList<Integer> displayMem;
 	
 	public Delete(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -33,10 +34,10 @@ public class Delete implements Command {
 				feedback.append("\n");
 			} else {
 				isChanged = true;
-				String taskName = displayMem.get(seqNo - 1).getTaskName();
-				long idNum = displayMem.get(seqNo - 1).getTaskId();
+				int internalSeqNo = displayMem.get(seqNo - 1); 
+				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				displayMem.remove(seqNo - 1);
-				searchAndDeleteInternalMemTask(idNum);
+				internalMem.remove(internalSeqNo);
 				
 				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
 				feedback.append("\n");
@@ -50,14 +51,6 @@ public class Delete implements Command {
 		
 		displayMem.clear();
 		return feedback.toString();
-	}
-
-	private void searchAndDeleteInternalMemTask(long idNum) {
-		for (int i = 0; i < internalMem.size(); i++) {
-			if (internalMem.get(i).getTaskId() == idNum) {
-				internalMem.remove(i);
-			}
-		}
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {

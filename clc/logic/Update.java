@@ -18,18 +18,21 @@ public class Update implements Command {
     private Task task;
     private ArrayList<GregorianCalendar> time;
     private Calendar newStartTime = null, newEndTime = null;
-    private ArrayList<Task> displayMem;
+    private ArrayList<Integer> displayMem;
+    private ArrayList<Task> internalMem;
    
 	//constructor
 	public Update(int seqNo, String newTaskName) {
 		this.seqNo = seqNo;
 		this.newTaskName = newTaskName;
 		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
 	}
 	public Update(int seqNo, ArrayList<GregorianCalendar> time){
 		this.seqNo = seqNo;
 		this.time = time;
 		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
 		newStartTime = time.get(0);
 		newEndTime = time.get(1);
 	}
@@ -42,7 +45,8 @@ public class Update implements Command {
 			feedback.append(MESSAGE_INEXISTANCE_SEQNO);
 			feedback.append("\n");
 		} else {
-			task = displayMem.get(seqNo - 1);
+			int internalSeqNo = displayMem.get(seqNo - 1);
+			task = internalMem.get(internalSeqNo);
             updateTask();
     		History.addNewVersion();
     		Storage.writeContentIntoFile();

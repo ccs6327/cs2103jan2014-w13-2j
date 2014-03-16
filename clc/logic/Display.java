@@ -3,6 +3,7 @@ package clc.logic;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import clc.storage.Storage;
 import static clc.common.Constants.*;
 
@@ -11,7 +12,8 @@ public class Display implements Command {
     private String commandDetails = null;
     private ArrayList<GregorianCalendar> time;
     private Calendar startOfPeriod = null, endOfPeriod = null;
-	private ArrayList<Task> internalMem, displayMem;
+	private ArrayList<Task> internalMem;
+	private ArrayList<Integer> displayMem;
 	
 	public Display(ArrayList<GregorianCalendar> time) {
 		this.time = time;
@@ -48,7 +50,7 @@ public class Display implements Command {
 
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	
-	    	Task task = internalMem.get(i-1);
+	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_TIMED_TASK){
 	    		
 	    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
@@ -62,7 +64,7 @@ public class Display implements Command {
 	    	} else {
 	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
 	    	}
-	    	displayMem.add(task);
+	    	displayMem.add(i - 1);
 	    }
 	    
 	    feedback.append("\n");
@@ -99,7 +101,7 @@ public class Display implements Command {
 		private void goThroughTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod) {
 			int taskNo = 1;
 			for (int i = 1; i <= internalMem.size(); i++) {
-				Task task = internalMem.get(i-1);
+				Task task = internalMem.get(i - 1);
 				Calendar taskStartTime = task.getStartTime();
 				Calendar taskEndTime = task.getEndTime();
 				if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
@@ -111,7 +113,7 @@ public class Display implements Command {
 			    		String taskEndTimeString = D_M_Y_DateFormatter.format(taskEndTime.getTime());
 						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, taskNo, task.getTaskName(), taskStartTimeString, taskEndTimeString));
 					}
-					displayMem.add(task);
+					displayMem.add(i - 1);
 					taskNo++;
 				}	
 			}
