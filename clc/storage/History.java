@@ -1,6 +1,8 @@
 package clc.storage;
 
+import java.util.ArrayList;
 import java.util.Stack;
+
 import clc.logic.Task;
 import clc.logic.Command;
 
@@ -9,6 +11,9 @@ public class History {
 	private static Stack<Command> operationHistory = new Stack<Command>();
 	private static Stack<Task> taskHistory = new Stack<Task>();
 	private static Stack<Task> updateHistory = new Stack<Task>(); //for update operation to store updated task
+	
+	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	public static int currentVersion = -1;
 	
 	private static void addOperationHistory(Command operation){
 		operationHistory.push(operation);
@@ -38,6 +43,18 @@ public class History {
 		return operationHistory.isEmpty(); 
 	}
 	
+	public static void addNewVersion() {
+		currentVersion++;
+		ArrayList<Task> tempMem = new ArrayList<Task>();
+		tempMem.addAll(Storage.getInternalMem());
+		historyMem.add(tempMem);
+	}
 	
+	public static ArrayList<ArrayList<Task>> getHistoryMem() {
+		return historyMem;
+	}
 
+	public static int getCurrentVersion() {
+		return currentVersion;
+	}
 }

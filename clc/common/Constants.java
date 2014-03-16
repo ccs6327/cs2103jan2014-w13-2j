@@ -1,9 +1,5 @@
 package clc.common;
 
-import static clc.common.Constants.currentVersion;
-import static clc.common.Constants.historyMem;
-import static clc.common.Constants.internalMem;
-
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
@@ -75,12 +71,12 @@ public class Constants {
 	public static final int IS_DONE = 1;
 	public static final int IS_NOT_DONE = 0;
 	
-	public static ArrayList<Task> internalMem = new ArrayList<Task>();
-	public static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	
+	
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static ArrayList<Task> displayMem = new ArrayList<Task>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
-	public static int currentVersion = -1;
+
 	
 	//Analyzer
 	public static final String COMMA = ",";
@@ -96,10 +92,5 @@ public class Constants {
 	public static final String THIS_MONTH = "this month";
 	public static final String NEXT_MONTH = "next month";
 	
-	public static void addNewVersion() {
-		currentVersion++;
-		ArrayList<Task> tempMem = new ArrayList<Task>();
-		tempMem.addAll(internalMem);
-		historyMem.add(tempMem);
-	}
+	
 }

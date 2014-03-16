@@ -2,6 +2,7 @@ package clc.logic;
 
 import java.util.ArrayList;
 
+import clc.storage.History;
 import clc.storage.Storage;
 import static clc.common.Constants.*;
 
@@ -36,7 +37,7 @@ public class Unmark implements Command {
 			}
 		}
 		
-		addNewVersion();
+		History.addNewVersion();
 		Storage.writeContentIntoFile();
 		
 		return feedback.toString().trim();

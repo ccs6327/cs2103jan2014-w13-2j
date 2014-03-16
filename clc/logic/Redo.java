@@ -1,6 +1,9 @@
 package clc.logic;
 
 import static clc.common.Constants.*;
+import static clc.storage.History.historyMem;
+import static clc.storage.History.currentVersion;
+import static clc.storage.Storage.internalMem;
 
 import java.util.ArrayList;
 
