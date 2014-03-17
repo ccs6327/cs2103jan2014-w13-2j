@@ -6,6 +6,7 @@ import static clc.common.Constants.SPACE;
 public class UpdateAnalyzer extends TimeAnalyzer {
 	private static boolean isCaseUpdateCalendar;
 	private static String[] tempInfo;
+	private static int calendarProvided = 0;
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
@@ -13,6 +14,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	}
 
 	protected static void analyze() {
+		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
 		//** throw exception if first is not a digit
@@ -20,10 +22,38 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		if (doesContainTimeInfo()) { //case update calendar
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
+			determineIfStartDateIsProvided();
+			determineIfStartTimeIsProvided();
 			analyzeUpdateEndTime(indexOfComma);
-			isCaseUpdateCalendar = true;	
+			determineIfEndDateIsProvided();
+			determineIfEndTimeIsProvided();
+			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
+		}                                                                                                                                                                         
+	}
+
+	private static void determineIfStartDateIsProvided() {
+		if (dayInfo.size() == 1) {
+			calendarProvided += 8; // 1000 binary
+		}
+	}
+
+	private static void determineIfStartTimeIsProvided() {
+		if (timeInfo.size() == 1) {
+			calendarProvided += 4;
+		}
+	}
+
+	private static void determineIfEndTimeIsProvided() {
+		if (dayInfo.size() == 1) {
+			calendarProvided += 2;
+		}
+	}
+
+	private static void determineIfEndDateIsProvided() {
+		if (timeInfo.size() == 1) {
+			calendarProvided += 1;
 		}
 	}
 
@@ -78,5 +108,9 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	protected static String getNewTaskName() {
 		return removeFirstWord(commandDetails);
 		//** throw exception when removeFirstWord(commandDetails).equals("")
+	}
+
+	public static int getCalendarProvidedCase() {
+		return calendarProvided;
 	}
 }

@@ -55,15 +55,7 @@ public class UserInterface {
 			command = analyzeUnmark();
 			break;
 		case TYPE_UPDATE:
-			UpdateAnalyzer.analyze();
-			boolean isCaseUpdateCalendar = UpdateAnalyzer.getUpdateCase();
-			int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
-			if (isCaseUpdateCalendar) {
-				ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
-				command = new Update(seqNo, time);
-			} else {
-				command = new Update(seqNo, UpdateAnalyzer.getNewTaskName());
-			}
+			command = analyzeUpdate();
 			break;
 		case TYPE_CLEAR:
 			command = new Clear();
@@ -85,6 +77,21 @@ public class UserInterface {
 		}
 		
 		return command.execute();
+	}
+
+	private static Command analyzeUpdate() {
+		Command command;
+		UpdateAnalyzer.analyze();
+		boolean isCaseUpdateCalendar = UpdateAnalyzer.getUpdateCase();
+		int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
+		if (isCaseUpdateCalendar) {
+			int calendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
+			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
+			command = new Update(seqNo, time);
+		} else {
+			command = new Update(seqNo, calendarProvided, UpdateAnalyzer.getNewTaskName());
+		}
+		return command;
 	}
 
 	private static Command analyzeAdd() {
