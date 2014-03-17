@@ -19,13 +19,6 @@ Getting Started
  i)add task without end date(end on the same date) 
  ---> e.g. add meeting 23/8 2pm 4pm 
 
- If you want to add a timed task with interval
- --> Enter: add [task name] [start date] [start time] [interval]
- i)normal 
- ---> e.g. add meeting 23/8 2pm 2 hours
- ii)add task with interval without start time(start from now) 
- ---> e.g. add meeting 23/8 2 hours 
-
  If you want to add a deadline task 
  --> Enter: add [task name] [end date] [end time]
  ---> e.g. add submit homework next fri 11.59pm 
@@ -41,9 +34,6 @@ Getting Started
  If you want to display all tasks 
  --> Enter: display all
 
- If you want to display a task with its task name
- --> Enter: display [task name]
-
  If you want to display tasks during specific period of time
  --> Enter: display tasks [start date] [start time] [end date] [end time]
 
@@ -51,8 +41,6 @@ Getting Started
  --> Enter: display tasks end [end date] [end time]
  i) display tasks ending at a specific time 
  ---> e.g. display tasks end 23/9 9pm
- ii) display tasks ending at a specific day only 
- ---> e.g. display tasks end 23/9
 
  =========================================================
 
@@ -61,35 +49,29 @@ Getting Started
  Before you update a task, you are required to display tasks first. 
 
  If you want to update the name of the task
- --> Enter: update name [sequence no. of the task] [new task name]
+ --> Enter: update [sequence no. of the task] [new task name]
 
  If you want to update the time of a timed task, leave the part blank if you wish
  to remain it unchanged
- --> Enter: update time [sequence no. of the task] [new date] [start time+”,”+end time]
+ --> Enter: update [sequence no. of the task] [new date] [start time+”,”+end time]
  i) update the start time only 
- ---> e.g. update time 1 3pm,
+ ---> e.g. update 1 3pm ,
  ii) update the end time only 
- ---> e.g. update time 1 ,9pm
+ ---> e.g. update 1 , 9pm
  iii) update both start and end time 
- ---> e.g. update time 1 3pm,9pm
- iv) update the date only 
- ---> e.g. update time 1 23/9
- v) update the time with interval (substitute end time) 
- ---> e.g. update time 1 23/9 3pm,6 hours
+ ---> e.g. update 1 3pm , 9pm
 
  If you want to update the time of a deadline task, leave the blank if you wish to 
  remain it unchanged
- --> Enter: update time [sequence no. of the task] [new date] [end time]
+ --> Enter: update [sequence no. of the task] [new date] [end time]
  i)update the end time only 
- ---> e.g. update time 1 9pm
- ii)update the date only 
- ---> e.g. update time 23/9
+ ---> e.g. update 1 9pm
 
  If you want to add date and time to a floating task
  i)make it into a timed task 
- --> Enter: update time [sequence no. of the task] [new date] [start time] [end time]
+ --> Enter: update [sequence no. of the task] [new date] [start time] [end time]
  ii)make it into a deadline task 
- --> Enter: update time [sequence no. of the task] [new date] [end time]
+ --> Enter: update [sequence no. of the task] [new date] [end time]
 
  =========================================================
 
@@ -103,15 +85,14 @@ Getting Started
  If you want to delete multiple tasks, simply delete their sequence numbers
  --> Enter: delete [sequence no. of the task] [sequence no. of the task] …
 
- If you want to delete all the tasks showing by display operation 
- --> Enter: delete display
-
  =========================================================
 
  Undo
  ----
  If you want to cancel the last change you have operated 
  --> Enter: undo
+ If you want to cancel duno 
+ --> Enter: redo
 
  =========================================================
  
@@ -122,21 +103,6 @@ Getting Started
 
  If you want to mark a task as done 
  --> Enter: mark [sequence no. of the task]
-
- If you want to mark all the tasks on the display screen
- --> Enter: mark display
-
- If you want to unmark task that you have marked as done before and update date
- and end time, leave the part blank if you wish to remain unchanged
- --> Enter: unmark [sequence no. of the task] [deadline] [end time]
- i) unmark the task only 
- ---> e.g. unmark 1
- ii) unmark the task and update the date only 
- ---> e.g. unmark 1 23/9
- iii) unmark the task and update the end time only 
- ---> e.g. unmark 1 9pm
- iv) unmark the task and update the date and the end time 
- ---> e.g. unmark 1 23/9 9pm
  
  =========================================================
 
@@ -144,6 +110,3 @@ Getting Started
  ----
  If you want to retrieve a help manual of a function 
  --> Enter: help [command name] 
-
- If you want to retrieve shortcut command list 
- --> Enter: help shortcut
