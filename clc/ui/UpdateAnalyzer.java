@@ -3,6 +3,10 @@ package clc.ui;
 import static clc.common.Constants.COMMA;
 import static clc.common.Constants.SPACE;
 
+import java.util.ArrayList;
+
+import clc.common.InvalidInputException;
+
 public class UpdateAnalyzer extends TimeAnalyzer {
 	private static boolean isCaseUpdateCalendar;
 	private static String[] tempInfo;
@@ -10,32 +14,42 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
-		// TODO Auto-generated constructor stub
 	}
 
-	protected static void analyze() {
+	protected static void analyze() throws InvalidInputException {
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
 		//** throw exception if first is not a digit
 
-		if (doesContainTimeInfo()) { //case update calendar
+		if (!commandDetails.contains(COMMA)) {
+			throw new InvalidInputException("wrong format");
+		}
+		
+		if (doesContainTimeInfo()) { //case update calendar]
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
+			clearInfoMemory();
 			analyzeUpdateEndTime(indexOfComma);
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
-		}                                                                                                                                                                         
+		}                                                    
+	}
+
+	private static void clearInfoMemory() {
+		timeInfo = new ArrayList<Integer>();
+		dayInfo = new ArrayList<Integer>();
+		monthInfo = new ArrayList<Integer>();
 	}
 
 	private static void determineIfStartDateIsProvided() {
 		if (dayInfo.size() == 1) {
-			calendarProvided += 8; // 1000 binary
+			calendarProvided += 8;
 		}
 	}
 
