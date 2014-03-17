@@ -22,11 +22,10 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		infoToBeProcessed = tempInfo;
 		//** throw exception if first is not a digit
 
-		if (!commandDetails.contains(COMMA)) {
-			throw new InvalidInputException("wrong format");
-		}
-		
 		if (doesContainTimeInfo()) { //case update calendar]
+			if (!commandDetails.contains(COMMA)) {
+				throw new InvalidInputException("wrong format");
+			}
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
