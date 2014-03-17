@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 public class TimeAnalyzer extends Analyzer{
 	protected static int firstDateIndex;
-	private static ArrayList<Integer> monthInfo;
+	protected static ArrayList<Integer> monthInfo;
 	protected static ArrayList<Integer> dayInfo;
 	protected static ArrayList<Integer> timeInfo;
 	protected static GregorianCalendar startTime = null;

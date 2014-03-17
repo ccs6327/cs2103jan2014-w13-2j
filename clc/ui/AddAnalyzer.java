@@ -22,9 +22,6 @@ public class AddAnalyzer extends TimeAnalyzer {
 
 			//merge the taskName
 			taskName = mergeTaskName();
-
-			//startTime = TimeAnalyzer.startTime;
-			//endTime = TimeAnalyzer.endTime;
 			
 			if (isCaseDeadlineTask()) {
 				taskToBeAdded = new Task(taskName, endTime);
