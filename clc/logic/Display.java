@@ -20,6 +20,7 @@ public class Display implements Command {
 		internalMem = Storage.getInternalMem();
 		displayMem = Storage.getDisplayMem();
 	}
+	
 	public Display(String commandDetails) {
 		this. commandDetails = commandDetails;
 		internalMem = Storage.getInternalMem();
@@ -36,8 +37,25 @@ public class Display implements Command {
 			feedback.append("\n");
 			feedback = feedback.append(MESSAGE_EMPTY_LIST);
 			feedback.append("\n");
-		} else if (commandDetails!= null) {// for now i assume all commandDetails are all
-			displayAllTasks();
+		} else if (commandDetails!= null) {
+			
+			switch (commandDetails){
+			case TYPE_DISPLAY_ALL:
+				displayAllTasks();
+				break;
+			case TYPE_DISPLAY_FLOATING_TASK:
+				displayFloatingTasks();
+				break;	
+			case TYPE_DISPLAY_DEADLINE_TASK:
+				displayDeadlineTasks();
+				break;
+			case TYPE_DISPLAY_TIMED_TASK:
+				displayTimedTasks();
+				break;
+			default:	
+			    feedback.append(String.format(MESSAGE_INVALID_FORMAT, commandDetails));
+			}
+			
 		} else {
 			displayInPeriod();
 		}		
@@ -45,6 +63,7 @@ public class Display implements Command {
 		return feedback.toString();
 	}
 	
+	//display all tasks
 	private void displayAllTasks(){
 		DisplayOutput.add(MESSAGE_SHOW_ALL_TASKS);
 
@@ -73,6 +92,98 @@ public class Display implements Command {
 	    feedback.append(MESSAGE_DISPLAY);
 	    feedback.append("\n");
 	}
+	
+	//display floating tasks
+	private void displayFloatingTasks(){
+		
+		DisplayOutput.add(MESSAGE_SHOW_FLOATING_TASKS);
+
+	    for (int i = 1; i<= internalMem.size(); i++){
+	    	Task task = internalMem.get(i - 1);
+	    	if(task.getTaskType() == TYPE_FLOATING_TASK){
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
+	    		displayMem.add(i - 1);
+	    	}
+	    }
+	    
+		feedback.append("\n");
+		printOutDisplay();
+		
+		// Process feedback
+		if (!isDataEmpty()) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS);
+			feedback.append("\n");
+		} else {
+			feedback.append("\n");
+			feedback.append(MESSAGE_NO_FLOATING_TASKS);
+			feedback.append("\n");
+		}
+	   
+	}
+	
+	//display deadline tasks
+	private void displayDeadlineTasks(){
+		
+		DisplayOutput.add(MESSAGE_SHOW_DEADLINE_TASKS);
+
+	    for (int i = 1; i<= internalMem.size(); i++){
+	    	Task task = internalMem.get(i - 1);
+	    	if(task.getTaskType() == TYPE_DEADLINE_TASK){
+	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, i, task.getTaskName(), endTime));
+	    		displayMem.add(i - 1);
+	    	}
+	    }
+	    
+		feedback.append("\n");
+		printOutDisplay();
+		
+		// Process feedback
+		if (!isDataEmpty()) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS);
+			feedback.append("\n");
+		} else {
+			feedback.append("\n");
+			feedback.append(MESSAGE_NO_DEADLINE_TASKS);
+			feedback.append("\n");
+		}
+	   
+	}
+	
+	//display timed tasks
+	private void displayTimedTasks(){
+		
+		DisplayOutput.add(MESSAGE_SHOW_TIMED_TASKS);
+
+	    for (int i = 1; i<= internalMem.size(); i++){
+	    	Task task = internalMem.get(i - 1);
+	    	if(task.getTaskType() == TYPE_TIMED_TASK){
+	    		
+	    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
+	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, i, task.getTaskName(), startTime, endTime));
+	    		displayMem.add(i - 1);
+	    	}
+	    }
+	    
+		feedback.append("\n");
+		printOutDisplay();
+		
+		// Process feedback
+		if (!isDataEmpty()) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS);
+			feedback.append("\n");
+		} else {
+			feedback.append("\n");
+			feedback.append(MESSAGE_NO_TIMED_TASKS);
+			feedback.append("\n");
+		}
+	   
+	}
+
 	
 	private void displayInPeriod(){
 			startOfPeriod = time.get(0);
@@ -143,7 +254,7 @@ public class Display implements Command {
 			}
 		}
 		
-		protected boolean isTimeA_NotLater_Than_TimeB(Calendar calA, Calendar calB){
+		private boolean isTimeA_NotLater_Than_TimeB(Calendar calA, Calendar calB){
 			int i = calB.compareTo(calA);
 			if (i > 0 || i == 0){
 				return true;
@@ -151,6 +262,7 @@ public class Display implements Command {
 				return false;
 			}
 		}
+		
 		// Check whether the data which can be processed is empty
 		protected boolean isDataEmpty() {
 			return displayMem.isEmpty();

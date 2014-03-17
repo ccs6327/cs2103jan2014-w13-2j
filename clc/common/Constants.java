@@ -46,14 +46,27 @@ public class Constants {
 
 	//Display
 	public static final String TO = " to ";
-	public static final String MESSAGE_SHOW_ALL_TASKS = "All Tasks";
+	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
+	public static final String MESSAGE_SHOW_FLOATING_TASKS = "FLOATING TASKS";
+	public static final String MESSAGE_SHOW_DEADLINE_TASKS = "DEADLINE TASKS";
+	public static final String MESSAGE_SHOW_TIMED_TASKS = "TIMED TASKS";
 	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, (starts at %3$s; ends at %4$s)"; 
 	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, (ends at %3$s)";
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
+	public static final String MESSAGE_DISPLAY_FLOATING_TASKS = "All floating tasks have been displayed.";
+	public static final String MESSAGE_NO_FLOATING_TASKS =  "No floating task is found.";
+	public static final String MESSAGE_DISPLAY_DEADLINE_TASKS = "All deadline tasks have been displayed.";
+	public static final String MESSAGE_NO_DEADLINE_TASKS =  "No deadline task is found";
+	public static final String MESSAGE_DISPLAY_TIMED_TASKS = "All timed tasks have been displayed.";
+	public static final String MESSAGE_NO_TIMED_TASKS =  "No timed task is found";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
-	public static final String MESSAGE_NO_TASKS_IN_PERIOD =  "No task is found in this period";
+	public static final String MESSAGE_NO_TASKS_IN_PERIOD = "No task is found in this period";
+    public static final String TYPE_DISPLAY_ALL = "all";
+    public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
+    public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
+    public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
 	
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task (%1$s) is updated to (%2$s) successful.";
