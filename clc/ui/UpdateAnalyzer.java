@@ -24,7 +24,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 		if (doesContainTimeInfo()) { //case update calendar]
 			if (!commandDetails.contains(COMMA)) {
-				throw new InvalidInputException("wrong format");
+				throw new InvalidInputException();
 			}
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);

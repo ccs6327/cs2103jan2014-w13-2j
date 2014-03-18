@@ -20,33 +20,24 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
 	protected static void analyze() {
 		infoToBeProcessed = commandDetails.split(SPACE);
+		isCaseDisplayCalendar = true;
 		
-		if (isCaseDisplayAll()){
-			isCaseDisplayCalendar = false;
-		} else if (isCaseDisplayDeadline()) {
+		if (isCaseDisplayDeadline()) {
 			recordAndProcessCalendarInfoProvided();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayToday()) {
 			setToday();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayTomorrow()) {
 			setTomorrow();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayThisWeek()) {
 			setThisWeek();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayNextWeek()) {
 			setNextWeek();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayThisMonth()) {
 			setThisMonth();
-			isCaseDisplayCalendar = true;
 		} else if (isCaseDisplayNextMonth()) {
 			setNextMonth();
-			isCaseDisplayCalendar = true;
 		} else {
-			System.out.println("Invalid Format");
-			// ***throw exception here
+			isCaseDisplayCalendar = false;
 		}
 	}
 	

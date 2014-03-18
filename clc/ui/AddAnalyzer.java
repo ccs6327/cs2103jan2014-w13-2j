@@ -1,7 +1,7 @@
 package clc.ui;
 
 import static clc.common.Constants.SPACE;
-
+import clc.common.InvalidInputException;
 import clc.logic.Task;
 
 public class AddAnalyzer extends TimeAnalyzer {
@@ -12,7 +12,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 		super(input);
 	}
 
-	protected static void analyze() {
+	protected static void analyze() throws InvalidInputException {
 		infoToBeProcessed = commandDetails.split(SPACE);
 		
 		//**handle empty name case throw exception
@@ -28,8 +28,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 			} else if (isCaseTimedTask()) {
 				taskToBeAdded = new Task(taskName, startTime, endTime);
 			} else {
-				//handle exception ****
-				System.out.println("invalid calendar format");
+				throw new InvalidInputException();
 			}
 		} else { // floating task
 			taskName = commandDetails;

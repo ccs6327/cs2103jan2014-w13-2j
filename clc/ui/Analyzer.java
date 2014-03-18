@@ -8,7 +8,7 @@ public class Analyzer {
 	
 	protected static void analyze(String input) {
 		commandType = getFirstWord(input);
-		commandDetails = removeFirstWord(input);
+		commandDetails = removeFirstWord(input).trim();
 	}
 
 	protected static String getCommandType() {
