@@ -54,6 +54,7 @@ public class Display implements Command {
 				break;
 			default:	
 			    feedback.append(String.format(MESSAGE_INVALID_FORMAT, commandDetails));
+			    
 			}
 			
 		} else {

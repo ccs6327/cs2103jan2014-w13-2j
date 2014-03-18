@@ -115,7 +115,7 @@ public class UserInterface {
 		return command;
 	}
 
-	private static Command analyzeDisplay() {
+	private static Command analyzeDisplay() throws InvalidInputException{
 		Command command;
 		DisplayAnalyzer.analyze();
 		boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();

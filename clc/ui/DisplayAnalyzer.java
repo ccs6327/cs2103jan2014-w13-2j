@@ -7,9 +7,15 @@ import static clc.common.Constants.THIS_MONTH;
 import static clc.common.Constants.THIS_WEEK;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.ALL;
+import static clc.common.Constants.FLOATING_TASK;
+import static clc.common.Constants.DEADLINE_TASK;
+import static clc.common.Constants.TIMED_TASK;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import clc.common.InvalidInputException;
 
 public class DisplayAnalyzer extends TimeAnalyzer{
 	private static boolean isCaseDisplayCalendar;
@@ -18,7 +24,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 		super(input);
 	}
 
-	protected static void analyze() {
+	protected static void analyze() throws InvalidInputException{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
 		
@@ -36,8 +42,10 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 			setThisMonth();
 		} else if (isCaseDisplayNextMonth()) {
 			setNextMonth();
-		} else {
+		} else if(isCaseDisplayString()){
 			isCaseDisplayCalendar = false;
+		} else {
+			throw new InvalidInputException();
 		}
 	}
 	
@@ -136,11 +144,20 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 		return commandDetails.equals(NEXT_MONTH);
 	}
 
-	private static boolean isCaseDisplayAll() {
-		return !doesCommandDetailsExist(commandDetails) 
-				|| commandDetails.equals("all");
+    //change for display string
+	private static boolean isCaseDisplayString() {
+		if(!doesCommandDetailsExist(commandDetails)){
+			commandDetails = ALL;
+		} else {
+			
+		}
+		
+		return commandDetails.equals(ALL) ||
+			   commandDetails.equals(FLOATING_TASK) ||
+			   commandDetails.equals(DEADLINE_TASK) ||
+			   commandDetails.equals(TIMED_TASK);
 	}
-
+	
 	private static boolean isCaseDisplayDeadline() {
 		return doesContainTimeInfo();
 	}

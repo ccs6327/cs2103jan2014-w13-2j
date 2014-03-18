@@ -22,7 +22,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		infoToBeProcessed = tempInfo;
 		//** throw exception if first is not a digit
 
-		if (doesContainTimeInfo()) { //case update calendar]
+		if (doesContainTimeInfo()) { //case update calendar
 			if (!commandDetails.contains(COMMA)) {
 				throw new InvalidInputException();
 			}
