@@ -95,14 +95,15 @@ public class Display implements Command {
 	
 	//display floating tasks
 	private void displayFloatingTasks(){
-		
+		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_FLOATING_TASKS);
 
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_FLOATING_TASK){
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, displayNo, task.getTaskName()));
 	    		displayMem.add(i - 1);
+	    		displayNo++;
 	    	}
 	    }
 	    
@@ -124,15 +125,16 @@ public class Display implements Command {
 	
 	//display deadline tasks
 	private void displayDeadlineTasks(){
-		
+		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_DEADLINE_TASKS);
 
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_DEADLINE_TASK){
 	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, i, task.getTaskName(), endTime));
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, displayNo, task.getTaskName(), endTime));
 	    		displayMem.add(i - 1);
+	    		displayNo++;
 	    	}
 	    }
 	    
@@ -154,7 +156,7 @@ public class Display implements Command {
 	
 	//display timed tasks
 	private void displayTimedTasks(){
-		
+		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_TIMED_TASKS);
 
 	    for (int i = 1; i<= internalMem.size(); i++){
@@ -163,8 +165,9 @@ public class Display implements Command {
 	    		
 	    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
 	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, i, task.getTaskName(), startTime, endTime));
+	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, displayNo, task.getTaskName(), startTime, endTime));
 	    		displayMem.add(i - 1);
+	    		displayNo++;
 	    	}
 	    }
 	    
