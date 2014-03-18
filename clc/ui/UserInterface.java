@@ -80,7 +80,8 @@ public class UserInterface {
 
 			return command.execute();
 		} catch (InvalidInputException iie) {
-			return "INVALID COMMAND";
+			String invalidFormatMessage = String.format(MESSAGE_INVALID_FORMAT, input);
+			return invalidFormatMessage;
 		}
 	}
 
@@ -90,16 +91,17 @@ public class UserInterface {
 		boolean isCaseUpdateCalendar = UpdateAnalyzer.getUpdateCase();
 		int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
 		if (isCaseUpdateCalendar) {
-			System.out.println(UpdateAnalyzer.getCalendarProvidedCase());
+			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
-			command = new Update(seqNo, time);
+			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
-			command = new Update(seqNo, UpdateAnalyzer.getNewTaskName());
+			String newTaskName = UpdateAnalyzer.getNewTaskName();
+			command = new Update(seqNo, newTaskName);
 		}
 		return command;
 	}
 
-	private static Command analyzeAdd() {
+	private static Command analyzeAdd() throws InvalidInputException {
 		Command command;
 		AddAnalyzer.analyze();
 		Task task = AddAnalyzer.getToBeAddedTask();
@@ -107,7 +109,7 @@ public class UserInterface {
 		return command;
 	}
 
-	private static Command analyzeDelete() {
+	private static Command analyzeDelete() throws InvalidInputException {
 		Command command;
 		command = new Delete(SequenceNumberExtractor.getSequenceNum());
 		return command;
@@ -127,13 +129,13 @@ public class UserInterface {
 		return command;
 	}
 
-	private static Command analyzeMark() {
+	private static Command analyzeMark() throws InvalidInputException {
 		Command command;
 		command = new Mark(SequenceNumberExtractor.getSequenceNum());
 		return command;
 	}
 
-	private static Command analyzeUnmark() {
+	private static Command analyzeUnmark() throws InvalidInputException {
 		Command command;
 		command = new Unmark(SequenceNumberExtractor.getSequenceNum());
 		return command;
