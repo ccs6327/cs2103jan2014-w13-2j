@@ -88,7 +88,6 @@ public class Constants {
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 
-	
 	//Analyzer
 	public static final String COMMA = ",";
 	public static final String PM = "pm";
@@ -96,6 +95,10 @@ public class Constants {
 	public static final String SPACE = " ";
 	public static final String SLASH = "/";
 	public static final String DOT = ".";
+	public static final String ALL = "all";
+    public static final String FLOATING_TASK = "floating tasks";
+    public static final String DEADLINE_TASK = "deadline tasks";
+    public static final String TIMED_TASK = "timed tasks";
 	public static final String TODAY = "today";
 	public static final String TOMORROW = "tomorrow";
 	public static final String THIS_WEEK = "this week";
@@ -103,5 +106,6 @@ public class Constants {
 	public static final String THIS_MONTH = "this month";
 	public static final String NEXT_MONTH = "next month";
 	
+
 	
 }
