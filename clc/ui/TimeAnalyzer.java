@@ -55,7 +55,7 @@ public class TimeAnalyzer extends Analyzer{
 		}
 	}
 
-	private static void recordCalendarInfo() {
+	private static void recordCalendarInfo() throws InvalidInputException {
 		int endLoopIndex = infoToBeProcessed.length - 4; //loop 4 times from the back only
 		if (endLoopIndex < 0) {
 			endLoopIndex = 0;
@@ -110,12 +110,15 @@ public class TimeAnalyzer extends Analyzer{
 		monthInfo.add(month - 1); //calendar get month from 0 to 6
 	}
 
-	private static void addYearInfo() {
+	private static void addYearInfo() throws InvalidInputException {
 		if (splitDate.length == 3) { // year
 			int year = Integer.parseInt(splitDate[2]);
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR); 
 			if (year < 100) { //merge with first two digit of current year
 				year += currentYear - (currentYear % 100);
+			}
+			if (year < currentYear) {
+				throw new InvalidInputException("ERROR: you have entered a year before " + currentYear);
 			}
 			yearInfo.add(year);
 		}
