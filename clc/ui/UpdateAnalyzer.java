@@ -42,12 +42,12 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 	private static void clearInfoMemory() {
 		timeInfo = new ArrayList<Integer>();
-		dayInfo = new ArrayList<Integer>();
+		dateInfo = new ArrayList<Integer>();
 		monthInfo = new ArrayList<Integer>();
 	}
 
 	private static void determineIfStartDateIsProvided() {
-		if (dayInfo.size() == 1) {
+		if (dateInfo.size() == 1) {
 			calendarProvided += 8;
 		}
 	}
@@ -59,7 +59,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	}
 
 	private static void determineIfEndTimeIsProvided() {
-		if (dayInfo.size() == 1) {
+		if (dateInfo.size() == 1) {
 			calendarProvided += 2;
 		}
 	}

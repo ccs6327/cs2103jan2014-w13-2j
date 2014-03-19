@@ -11,9 +11,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class TimeAnalyzer extends Analyzer{
+	private static final String TODAY = "today";
+	private static final String TOMORROW = "tomorrow";
 	protected static int firstDateIndex;
 	protected static ArrayList<Integer> monthInfo;
-	protected static ArrayList<Integer> dayInfo;
+	protected static ArrayList<Integer> dateInfo;
 	protected static ArrayList<Integer> timeInfo;
 	protected static GregorianCalendar startTime = null;
 	protected static GregorianCalendar endTime = null;
@@ -21,7 +23,7 @@ public class TimeAnalyzer extends Analyzer{
 	private static String[] splitDate = null;
 	private static String[] splitTime = null;
 	protected static String[] infoToBeProcessed = null;
-	
+
 	protected TimeAnalyzer(String input) {
 		super(input);
 	}
@@ -32,13 +34,13 @@ public class TimeAnalyzer extends Analyzer{
 		time.add(endTime);
 		return time;
 	}
-	
+
 	protected static void recordAndProcessCalendarInfoProvided() {
 		monthInfo = new ArrayList<Integer>();
-		dayInfo = new ArrayList<Integer>();
+		dateInfo = new ArrayList<Integer>();
 		timeInfo = new ArrayList<Integer>();
 		recordCalendarInfo();
-		if (dayInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
+		if (dateInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
 			processCalendarInfo();
 		}
 	}
@@ -53,15 +55,18 @@ public class TimeAnalyzer extends Analyzer{
 			String currWord = infoToBeProcessed[i];
 
 			//contains either SLASH, DOT, AM or PM
-			if (isDateFormat(currWord)) {
+			if (doesContainDateKeyword(currWord)) {
+				addKeywordDayInfo(currWord);
+				firstDateIndex = i;
+			} else if (isDateFormat(currWord)) {
 				int day = Integer.parseInt(splitDate[0]);
 				int month = Integer.parseInt(splitDate[1]);
-				dayInfo.add(day);
+				dateInfo.add(day);
 				monthInfo.add(month);
 				firstDateIndex = i;
 			} else if (isTimeFormat(currWord)) {
 				int time = Integer.parseInt(splitTime[0]);
-				
+
 				if (isPm) {
 					if (time != 12) {
 						if (time < 12) {
@@ -84,6 +89,22 @@ public class TimeAnalyzer extends Analyzer{
 		}
 	}
 
+	private static void addKeywordDayInfo(String currWord) {
+		int date = 0, month = 0;
+		switch (currWord) {
+		case TODAY:
+			date = Calendar.getInstance().get(Calendar.DATE);
+			month = Calendar.getInstance().get(Calendar.MONTH);
+			break;
+		case TOMORROW:
+			date = Calendar.getInstance().get(Calendar.DATE) + 1;
+			month = Calendar.getInstance().get(Calendar.MONTH);
+			break;
+		}
+		dateInfo.add(date);
+		monthInfo.add(month);
+	}
+
 	private static void processCalendarInfo() {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int endMonth = Calendar.getInstance().get(Calendar.MONTH);
@@ -92,12 +113,12 @@ public class TimeAnalyzer extends Analyzer{
 		int startHour = 0, startMin = 0, endHour = 0, endMin = 0;
 
 		//process day and month
-		if (dayInfo.size() >= 1) { //monthInfo == 0 as well
+		if (dateInfo.size() >= 1) { //monthInfo == 0 as well
 			endMonth = monthInfo.get(0) - 1;
-			endDate = dayInfo.get(0);
-			if (dayInfo.size() == 2) {
+			endDate = dateInfo.get(0);
+			if (dateInfo.size() == 2) {
 				startMonth = monthInfo.get(1) - 1;
-				startDate = dayInfo.get(1);
+				startDate = dateInfo.get(1);
 			}
 		}
 
@@ -130,7 +151,7 @@ public class TimeAnalyzer extends Analyzer{
 		}
 		endTime = new GregorianCalendar(year, endMonth, endDate, endHour, endMin);
 	}
-	
+
 	private static boolean isDateFormat(String currWord) {
 		boolean isDate = false;
 
@@ -178,14 +199,14 @@ public class TimeAnalyzer extends Analyzer{
 	}
 
 	protected static boolean isCaseDeadlineTask() {
-		return (dayInfo.size() == 0 && timeInfo.size() == 1) 
-				|| (dayInfo.size() == 1 && timeInfo.size() == 1);
+		return (dateInfo.size() == 0 && timeInfo.size() == 1) 
+				|| (dateInfo.size() == 1 && timeInfo.size() == 1);
 	}
 
 	protected static boolean isCaseTimedTask() {
-		return (dayInfo.size() == 0 && timeInfo.size() == 2) 
-				|| (dayInfo.size() == 1 && timeInfo.size() == 2) 
-				|| (dayInfo.size() == 2 && timeInfo.size() == 2);
+		return (dateInfo.size() == 0 && timeInfo.size() == 2) 
+				|| (dateInfo.size() == 1 && timeInfo.size() == 2) 
+				|| (dateInfo.size() == 2 && timeInfo.size() == 2);
 	}
 
 	private static boolean doesContainPm(String currWord) {
@@ -211,6 +232,17 @@ public class TimeAnalyzer extends Analyzer{
 			lastTimeIndex --;
 		}
 		return (isTimeFormat(infoToBeProcessed[lastTimeIndex])
-				|| isDateFormat(infoToBeProcessed[lastTimeIndex]));
+				|| isDateFormat(infoToBeProcessed[lastTimeIndex])
+				  ||doesContainDateKeyword(infoToBeProcessed[lastTimeIndex]));
+	}
+
+	protected static boolean doesContainDateKeyword(String currWord) { //today, tomorrow etc
+		switch (currWord) {
+		case TODAY:
+		case TOMORROW:
+			return true;
+		default:
+			return false;
+		}
 	}
 }
