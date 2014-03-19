@@ -19,6 +19,7 @@ import clc.common.InvalidInputException;
 
 public class DisplayAnalyzer extends TimeAnalyzer{
 	private static boolean isCaseDisplayCalendar;
+	private static int year, month, date;
 	
 	protected DisplayAnalyzer(String input) {
 		super(input);
@@ -27,6 +28,10 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	protected static void analyze() throws InvalidInputException{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
+		
+		year = Calendar.getInstance().get(Calendar.YEAR);
+		month = Calendar.getInstance().get(Calendar.MONTH);
+		date = Calendar.getInstance().get(Calendar.DATE);
 		
 		if (isCaseDisplayToday()) {
 			setToday();
@@ -59,27 +64,20 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
 	private static void setToday() {
 		// set the start time to now, end time to end of today
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
-		int date = Calendar.getInstance().get(Calendar.DATE) + 1;
 		startTime = new GregorianCalendar();
-		endTime = new GregorianCalendar(year, month, date);
+		endTime = new GregorianCalendar(year, month, ++date);
 	}
 
 	private static void setTomorrow() {
 		// set the start time to tomorrow 0000, end time to end of the day
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
-		int date = Calendar.getInstance().get(Calendar.DATE) + 1;
-		startTime = new GregorianCalendar(year, month, date);
+		startTime = new GregorianCalendar(year, month, ++date);
+		System.out.println(startTime.getTime().toString());
 		endTime = new GregorianCalendar(year, month, ++date);
+		System.out.println(endTime.getTime().toString());
 	}
 
 	private static void setThisWeek() {
 		// set the start time to now, end time to end of the week
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
-		int date = Calendar.getInstance().get(Calendar.DATE);
 		startTime = new GregorianCalendar();
 		endTime = new GregorianCalendar(year, month , date);
 		while (!isNextMonday(endTime)) { //end of the week = beginning of next week
@@ -89,9 +87,6 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
 	private static void setNextWeek() {
 		// set the start time to next Monday, end time to end of next week
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
-		int date = Calendar.getInstance().get(Calendar.DATE);
 		startTime = new GregorianCalendar(year, month, date);
 		endTime = new GregorianCalendar(year, month , date);
 		while (!isNextMonday(startTime)) { //end of the week = beginning of next week
@@ -104,20 +99,14 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
 	private static void setThisMonth() {
 		// set the start time to now, end time to end of the month
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		int date = 1; //start of the month
 		startTime = new GregorianCalendar();
-		endTime = new GregorianCalendar(year, month, date);
+		endTime = new GregorianCalendar(year, ++month, 1);
 	}
 
 	private static void setNextMonth() {
 		// set the start time to beginning to next month, end time to end of next month
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		int date = 1; //start of the month
-		startTime = new GregorianCalendar(year, month, date);
-		endTime = new GregorianCalendar(year, ++month, date);
+		startTime = new GregorianCalendar(year, ++month, 1);
+		endTime = new GregorianCalendar(year, ++month, 1);
 	}
 
 	private static boolean isCaseDisplayToday() {
@@ -148,8 +137,6 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	private static boolean isCaseDisplayString() {
 		if(!doesCommandDetailsExist(commandDetails)){
 			commandDetails = ALL;
-		} else {
-			
 		}
 		
 		return commandDetails.equals(ALL) ||
