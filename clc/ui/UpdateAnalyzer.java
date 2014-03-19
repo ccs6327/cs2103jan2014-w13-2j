@@ -110,17 +110,21 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		return isCaseUpdateCalendar;
 	}
 	
-	protected static int getSeqNumForUpdate() {
+	protected static int getSeqNumForUpdate() throws InvalidInputException {
 		String currWord = getFirstWord(commandDetails);
 		if (isNumeric(currWord)) {
 			return Integer.parseInt(currWord);
+		} else {
+			throw new InvalidInputException();
 		}
-		return -1; //****handle exception
 	}
 
-	protected static String getNewTaskName() {
-		return removeFirstWord(commandDetails);
-		//** throw exception when removeFirstWord(commandDetails).equals("")
+	protected static String getNewTaskName() throws InvalidInputException {
+		String newTaskName = removeFirstWord(commandDetails);
+		if (newTaskName.equals("")) {
+			throw new InvalidInputException();
+		}
+		return newTaskName;
 	}
 
 	public static int getCalendarProvidedCase() {
