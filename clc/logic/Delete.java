@@ -22,25 +22,34 @@ public class Delete implements Command {
 	public String execute() {
 		StringBuilder feedback = new StringBuilder();
 		boolean isChanged = false;
+		
+		// append message with the sequence enter by user
+		for (int i = 0; i < taskSeqNo.size(); i++) {
+			int seqNo = taskSeqNo.get(i);
+			if (isOutOfBound(displayMem.size(), seqNo)) {
+				//build error message
+				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+				feedback.append("\n");
+			} else {
+				int internalSeqNo = displayMem.get(seqNo - 1);
+				String taskName = internalMem.get(internalSeqNo).getTaskName();
+				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
+				feedback.append("\n");
+			}
+		}
+		
 		Collections.sort(taskSeqNo);
 		
+		//delete from the back of the list
 		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
 			//ArrayList<Task> taskList = storage.getTaskList();
 			int seqNo = taskSeqNo.get(i);
 			
-			if (isOutOfBound(displayMem.size(), seqNo)) {
-				//print error msg
-				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
-				feedback.append("\n");
-			} else {
+			if (!isOutOfBound(displayMem.size(), seqNo)) {
 				isChanged = true;
 				int internalSeqNo = displayMem.get(seqNo - 1); 
-				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				displayMem.remove(seqNo - 1);
 				internalMem.remove(internalSeqNo);
-				
-				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
-				feedback.append("\n");
 			}
 		}
 		
