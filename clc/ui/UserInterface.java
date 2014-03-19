@@ -3,6 +3,9 @@ package clc.ui;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+
 import clc.common.InvalidInputException;
 import clc.logic.Add;
 import clc.logic.Clear;
@@ -18,6 +21,7 @@ import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
 import static clc.common.Constants.*;
+
 
 public class UserInterface {
 	private GUI gui = new GUI();
