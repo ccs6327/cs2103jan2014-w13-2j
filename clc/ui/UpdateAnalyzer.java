@@ -30,7 +30,6 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
-			clearInfoMemory();
 			analyzeUpdateEndTime(indexOfComma);
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
@@ -38,12 +37,6 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
 		}                                                    
-	}
-
-	private static void clearInfoMemory() {
-		timeInfo = new ArrayList<Integer>();
-		dateInfo = new ArrayList<Integer>();
-		monthInfo = new ArrayList<Integer>();
 	}
 
 	private static void determineIfStartDateIsProvided() {
@@ -112,19 +105,27 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	
 	protected static int getSeqNumForUpdate() throws InvalidInputException {
 		String currWord = getFirstWord(commandDetails);
-		if (isNumeric(currWord)) {
+		if (isTaskSeqNoProvided(currWord)) {
 			return Integer.parseInt(currWord);
 		} else {
 			throw new InvalidInputException();
 		}
 	}
 
+	private static boolean isTaskSeqNoProvided(String currWord) {
+		return isNumeric(currWord);
+	}
+
 	protected static String getNewTaskName() throws InvalidInputException {
 		String newTaskName = removeFirstWord(commandDetails);
-		if (newTaskName.equals("")) {
+		if (isNewTaskNameProvided(newTaskName)) {
 			throw new InvalidInputException();
 		}
 		return newTaskName;
+	}
+
+	private static boolean isNewTaskNameProvided(String newTaskName) {
+		return newTaskName.equals("");
 	}
 
 	public static int getCalendarProvidedCase() {
