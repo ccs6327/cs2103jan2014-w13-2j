@@ -71,9 +71,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	private static void setTomorrow() {
 		// set the start time to tomorrow 0000, end time to end of the day
 		startTime = new GregorianCalendar(year, month, ++date);
-		System.out.println(startTime.getTime().toString());
 		endTime = new GregorianCalendar(year, month, ++date);
-		System.out.println(endTime.getTime().toString());
 	}
 
 	private static void setThisWeek() {
