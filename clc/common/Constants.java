@@ -28,7 +28,7 @@ public class Constants {
 	
 	public static final String MESSAGE_WELCOME = "Welcome to CLC.";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
-	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format: %1$s";
+	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format";
 	public static final String MESSAGE_TIMED_TASK_ADDED = "%1$s(%2$s - %3$s) is added.";
 	public static final String MESSAGE_DEADLINE_TASK_ADDED = "%1$s(ending at %2$s) is added.";
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";

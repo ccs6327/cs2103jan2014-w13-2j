@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import clc.common.InvalidInputException;
+
 public class TimeAnalyzer extends Analyzer{
 	private static final String TODAY = "today";
 	private static final String TOMORROW = "tomorrow";
@@ -35,13 +37,21 @@ public class TimeAnalyzer extends Analyzer{
 		return time;
 	}
 
-	protected static void recordAndProcessCalendarInfoProvided() {
+	protected static void recordAndProcessCalendarInfoProvided() throws InvalidInputException {
 		monthInfo = new ArrayList<Integer>();
 		dateInfo = new ArrayList<Integer>();
 		timeInfo = new ArrayList<Integer>();
 		recordCalendarInfo();
 		if (dateInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
 			processCalendarInfo();
+		}
+		determineIfStartTimeLaterThanEndTime();
+	}
+
+	protected static void determineIfStartTimeLaterThanEndTime()
+			throws InvalidInputException {
+		if (startTime != null && startTime.compareTo(endTime) == 1) {
+			throw new InvalidInputException("ERROR: Start time is later than end time");
 		}
 	}
 
