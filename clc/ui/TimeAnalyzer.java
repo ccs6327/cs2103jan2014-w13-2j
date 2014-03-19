@@ -13,9 +13,10 @@ public class TimeAnalyzer extends Analyzer{
 	protected static ArrayList<Integer> monthInfo;
 	protected static ArrayList<Integer> dateInfo;
 	protected static ArrayList<Integer> timeInfo;
+	private static ArrayList<Integer> yearInfo;
 	protected static GregorianCalendar startTime = null;
 	protected static GregorianCalendar endTime = null;
-	private static boolean isPm = false;
+	private static boolean isPm;
 	private static String[] splitDate = null;
 	private static String[] splitTime = null;
 	protected static String[] infoToBeProcessed = null;
@@ -32,13 +33,19 @@ public class TimeAnalyzer extends Analyzer{
 	}
 
 	protected static void recordAndProcessCalendarInfoProvided() throws InvalidInputException {
+		instantiateVariable();
+		recordCalendarInfo();
+		if (doesContainTimeInfo()) { //have Calendar Info to be processed
+			processCalendarInfo();
+		}
+	}
+
+	private static void instantiateVariable() {
+		yearInfo = new ArrayList<Integer>();
 		monthInfo = new ArrayList<Integer>();
 		dateInfo = new ArrayList<Integer>();
 		timeInfo = new ArrayList<Integer>();
-		recordCalendarInfo();
-		if (dateInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
-			processCalendarInfo();
-		}
+		isPm = false;
 	}
 
 	protected static void determineIfStartTimeLaterThanEndTime()
@@ -62,10 +69,9 @@ public class TimeAnalyzer extends Analyzer{
 				addKeywordDayInfo(currWord);
 				firstDateIndex = i;
 			} else if (isDateFormat(currWord)) {
-				int day = Integer.parseInt(splitDate[0]);
-				int month = Integer.parseInt(splitDate[1]);
-				dateInfo.add(day);
-				monthInfo.add(month - 1); //calendar get month from 0 to 6
+				addDateInfo();
+				addMonthInfo();
+				addYearInfo();
 				firstDateIndex = i;
 			} else if (isTimeFormat(currWord)) {
 				int time = Integer.parseInt(splitTime[0]);
@@ -88,7 +94,30 @@ public class TimeAnalyzer extends Analyzer{
 				}
 				timeInfo.add(time);
 				firstDateIndex = i;
+			} else {
+				break;
 			}
+		}
+	}
+
+	private static void addDateInfo() {
+		int date = Integer.parseInt(splitDate[0]);
+		dateInfo.add(date);
+	}
+
+	private static void addMonthInfo() {
+		int month = Integer.parseInt(splitDate[1]);
+		monthInfo.add(month - 1); //calendar get month from 0 to 6
+	}
+
+	private static void addYearInfo() {
+		if (splitDate.length == 3) { // year
+			int year = Integer.parseInt(splitDate[2]);
+			int currentYear = Calendar.getInstance().get(Calendar.YEAR); 
+			if (year < 100) { //merge with first two digit of current year
+				year += currentYear - (currentYear % 100);
+			}
+			yearInfo.add(year);
 		}
 	}
 
@@ -97,7 +126,7 @@ public class TimeAnalyzer extends Analyzer{
 		int date = gc.get(Calendar.DATE);
 		int month = gc.get(Calendar.MONTH);
 		int addValue = 10; // -6 <= addValue <= 7
-		
+
 		switch (currWord) {
 		case TODAY:
 			break;
@@ -126,27 +155,36 @@ public class TimeAnalyzer extends Analyzer{
 			addValue = Calendar.SUNDAY - gc.get(Calendar.DAY_OF_WEEK);
 			break;
 		}
-		
+
 		if (addValue != 10) {
 			if (addValue <= 0) addValue += 7;
 			gc.add(GregorianCalendar.DAY_OF_WEEK, addValue);
 			date = gc.get(Calendar.DATE);
 			month = gc.get(Calendar.MONTH);
 		}
-		
+
 		dateInfo.add(date);
 		monthInfo.add(month);
 	}
 
 	private static void processCalendarInfo() {
-		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int endYear = Calendar.getInstance().get(Calendar.YEAR);
+		int startYear = Calendar.getInstance().get(Calendar.YEAR);
 		int endMonth = Calendar.getInstance().get(Calendar.MONTH);
 		int endDate = Calendar.getInstance().get(Calendar.DATE);
 		int startMonth = 0, startDate = 0;
 		int startHour = 0, startMin = 0, endHour = 0, endMin = 0;
 
+		//process year
+		if(yearInfo.size() >= 1) {
+			endYear = yearInfo.get(0);
+			if (yearInfo.size() == 2) {
+				startYear = yearInfo.get(1);
+			}
+		}
+
 		//process day and month
-		if (dateInfo.size() >= 1) { //monthInfo == 0 as well
+		if (dateInfo.size() >= 1 && monthInfo.size() >= 1) {
 			endMonth = monthInfo.get(0);
 			endDate = dateInfo.get(0);
 			if (dateInfo.size() == 2) {
@@ -180,9 +218,9 @@ public class TimeAnalyzer extends Analyzer{
 		}
 
 		if(timeInfo.size() == 2) {
-			startTime = new GregorianCalendar(year, startMonth, startDate, startHour, startMin);
+			startTime = new GregorianCalendar(startYear, startMonth, startDate, startHour, startMin);
 		}
-		endTime = new GregorianCalendar(year, endMonth, endDate, endHour, endMin);
+		endTime = new GregorianCalendar(endYear, endMonth, endDate, endHour, endMin);
 	}
 
 	private static boolean isDateFormat(String currWord) {
@@ -196,15 +234,17 @@ public class TimeAnalyzer extends Analyzer{
 			return false;
 		}
 
-		//only support dd/mm/yy format or dd/mm format
-		if (splitDate.length < 2 || splitDate.length > 3) {
-			return false;
-		}
-
-
-		if (isNumeric(splitDate[0]) && isNumeric(splitDate[1])) {
+		if (splitDate.length == 2 && isNumeric(splitDate[0]) 
+				&& isNumeric(splitDate[1])) { //  case dd/mm
 			isDate = true;
+		} else if (splitDate.length == 3 && isNumeric(splitDate[0]) 
+				&& isNumeric(splitDate[1]) && isNumeric(splitDate[2])) { 
+			// case dd/mm/yy or //case dd/mm/yyyy
+			isDate = true;
+		} else {
+			isDate = false;
 		}
+
 		return isDate;
 	}
 
@@ -270,7 +310,7 @@ public class TimeAnalyzer extends Analyzer{
 		}
 		return (isTimeFormat(infoToBeProcessed[lastTimeIndex])
 				|| isDateFormat(infoToBeProcessed[lastTimeIndex])
-				  ||doesContainDateKeyword(infoToBeProcessed[lastTimeIndex]));
+				||doesContainDateKeyword(infoToBeProcessed[lastTimeIndex]));
 	}
 
 	protected static boolean doesContainDateKeyword(String currWord) { //today, tomorrow etc
