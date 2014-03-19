@@ -77,26 +77,20 @@ public class GUI implements NativeKeyListener{
 		initiateWindowListener();
 	}
 
-	private void setUpDisplayBoxAndScrollPane() {
-		//displayBox.setWrapStyleWord(true);
-		displayBox.setMargin(new Insets(10, 10, 10, 10));
-		displayBox.setBackground(Color.DARK_GRAY);
-		displayBox.setForeground(Color.WHITE);
-		displayBox.setEditable(false);
-		displayBox.setFont(new Font("Calibri", Font.PLAIN, 17));
-		displayBox.setBounds(12, 13, 639, 391);
-		//displayBox.setLineWrap(true);
-		scrollPane = new JScrollPane(displayBox);
-		scrollPane.setBorder(null);
-		scrollPane.setBounds(12, 13, 639, 391);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameClc.getContentPane().add(scrollPane);
+	private void setUpJFrame() {
+		frameClc = new JFrame();
+		frameClc.getContentPane().setBackground(Color.GRAY);
+		frameClc.setTitle("CLC V0.1");
+		frameClc.setResizable(false);
+		frameClc.setBounds(10, 10, 650, 500);
+		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameClc.getContentPane().setLayout(null);
 	}
 
 	private void setUpInputTextBox() {
 		inputTextBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		inputTextBox.setHorizontalAlignment(SwingConstants.LEFT);
-		inputTextBox.setBounds(12, 417, 639, 38);
+		inputTextBox.setBounds(10, 415, 625, 40);
 		inputTextBox.setColumns(10);
 		inputTextBox.setCaretColor(Color.WHITE);
 		inputTextBox.setBorder(null);
@@ -105,14 +99,18 @@ public class GUI implements NativeKeyListener{
 		frameClc.getContentPane().add(inputTextBox);
 	}
 
-	private void setUpJFrame() {
-		frameClc = new JFrame();
-		frameClc.getContentPane().setBackground(Color.GRAY);
-		frameClc.setTitle("CLC V0.1");
-		frameClc.setResizable(false);
-		frameClc.setBounds(100, 100, 669, 496);
-		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameClc.getContentPane().setLayout(null);
+	private void setUpDisplayBoxAndScrollPane() {
+		displayBox.setMargin(new Insets(10, 10, 10, 10));
+		displayBox.setBackground(Color.DARK_GRAY);
+		displayBox.setForeground(Color.WHITE);
+		displayBox.setEditable(false);
+		displayBox.setFont(new Font("Calibri", Font.PLAIN, 17));
+		displayBox.setBounds(10, 10, 625, 400);
+		scrollPane = new JScrollPane(displayBox);
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(10, 10, 625, 400);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frameClc.getContentPane().add(scrollPane);
 	}
 
 	private void focusOnInputTextBox() {
@@ -140,6 +138,7 @@ public class GUI implements NativeKeyListener{
 						displayBox.setCaretPosition(0);
 					} else {
 						showToUser(feedback);
+						displayBox.setCaretPosition(doc.getLength());
 					}
 				}
 				initializeInputTextBox();
@@ -206,7 +205,7 @@ public class GUI implements NativeKeyListener{
 	private void showToUser(String string) {
 		try {
 			doc.insertString(doc.getLength(), string + "\n", null);
-			doc.insertString(doc.getLength(), "==========================================================================\n", null);
+			doc.insertString(doc.getLength(), "=========================================================================\n", null);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
