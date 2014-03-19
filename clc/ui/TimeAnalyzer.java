@@ -1,10 +1,6 @@
 package clc.ui;
 
-import static clc.common.Constants.AM;
-import static clc.common.Constants.COMMA;
-import static clc.common.Constants.DOT;
-import static clc.common.Constants.PM;
-import static clc.common.Constants.SLASH;
+import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,8 +9,6 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 
 public class TimeAnalyzer extends Analyzer{
-	private static final String TODAY = "today";
-	private static final String TOMORROW = "tomorrow";
 	protected static int firstDateIndex;
 	protected static ArrayList<Integer> monthInfo;
 	protected static ArrayList<Integer> dateInfo;
@@ -45,12 +39,11 @@ public class TimeAnalyzer extends Analyzer{
 		if (dateInfo.size() > 0 || timeInfo.size() > 0) { //have Calendar Info to be processed
 			processCalendarInfo();
 		}
-		determineIfStartTimeLaterThanEndTime();
 	}
 
 	protected static void determineIfStartTimeLaterThanEndTime()
 			throws InvalidInputException {
-		if (startTime != null && startTime.compareTo(endTime) == 1) {
+		if (isStartTimeLaterThanEndTime()) {
 			throw new InvalidInputException("ERROR: Start time is later than end time");
 		}
 	}
@@ -72,7 +65,7 @@ public class TimeAnalyzer extends Analyzer{
 				int day = Integer.parseInt(splitDate[0]);
 				int month = Integer.parseInt(splitDate[1]);
 				dateInfo.add(day);
-				monthInfo.add(month);
+				monthInfo.add(month - 1); //calendar get month from 0 to 6
 				firstDateIndex = i;
 			} else if (isTimeFormat(currWord)) {
 				int time = Integer.parseInt(splitTime[0]);
@@ -100,17 +93,47 @@ public class TimeAnalyzer extends Analyzer{
 	}
 
 	private static void addKeywordDayInfo(String currWord) {
-		int date = 0, month = 0;
+		GregorianCalendar gc = new GregorianCalendar(); //construct a current time Calendar
+		int date = gc.get(Calendar.DATE);
+		int month = gc.get(Calendar.MONTH);
+		int addValue = 10; // -6 <= addValue <= 7
+		
 		switch (currWord) {
 		case TODAY:
-			date = Calendar.getInstance().get(Calendar.DATE);
-			month = Calendar.getInstance().get(Calendar.MONTH);
 			break;
 		case TOMORROW:
-			date = Calendar.getInstance().get(Calendar.DATE) + 1;
-			month = Calendar.getInstance().get(Calendar.MONTH);
+			date++;
+			break;
+		case MONDAY:
+			addValue = Calendar.MONDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case TUESDAY:
+			addValue = Calendar.TUESDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case WEDNESDAY:
+			addValue = Calendar.WEDNESDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case THURSDAY:
+			addValue = Calendar.THURSDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case FRIDAY:
+			addValue = Calendar.FRIDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case SATURDAY:
+			addValue = Calendar.SATURDAY - gc.get(Calendar.DAY_OF_WEEK);
+			break;
+		case SUNDAY:
+			addValue = Calendar.SUNDAY - gc.get(Calendar.DAY_OF_WEEK);
 			break;
 		}
+		
+		if (addValue != 10) {
+			if (addValue <= 0) addValue += 7;
+			gc.add(GregorianCalendar.DAY_OF_WEEK, addValue);
+			date = gc.get(Calendar.DATE);
+			month = gc.get(Calendar.MONTH);
+		}
+		
 		dateInfo.add(date);
 		monthInfo.add(month);
 	}
@@ -124,10 +147,10 @@ public class TimeAnalyzer extends Analyzer{
 
 		//process day and month
 		if (dateInfo.size() >= 1) { //monthInfo == 0 as well
-			endMonth = monthInfo.get(0) - 1;
+			endMonth = monthInfo.get(0);
 			endDate = dateInfo.get(0);
 			if (dateInfo.size() == 2) {
-				startMonth = monthInfo.get(1) - 1;
+				startMonth = monthInfo.get(1);
 				startDate = dateInfo.get(1);
 			}
 		}
@@ -219,6 +242,10 @@ public class TimeAnalyzer extends Analyzer{
 				|| (dateInfo.size() == 2 && timeInfo.size() == 2);
 	}
 
+	private static boolean isStartTimeLaterThanEndTime() {
+		return startTime != null && endTime != null && startTime.compareTo(endTime) == 1;
+	}
+
 	private static boolean doesContainPm(String currWord) {
 		return currWord.contains(PM);
 	}
@@ -248,8 +275,9 @@ public class TimeAnalyzer extends Analyzer{
 
 	protected static boolean doesContainDateKeyword(String currWord) { //today, tomorrow etc
 		switch (currWord) {
-		case TODAY:
-		case TOMORROW:
+		case TODAY: case TOMORROW: case MONDAY: 
+		case TUESDAY: case WEDNESDAY: case THURSDAY: 
+		case FRIDAY: case SATURDAY: case SUNDAY:
 			return true;
 		default:
 			return false;

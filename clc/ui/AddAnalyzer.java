@@ -19,7 +19,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 		
 		if (doesContainTimeInfo()) { //timed task or deadline task
 			recordAndProcessCalendarInfoProvided();
-
+			determineIfStartTimeLaterThanEndTime();
 			//merge the taskName
 			taskName = mergeTaskName();
 			

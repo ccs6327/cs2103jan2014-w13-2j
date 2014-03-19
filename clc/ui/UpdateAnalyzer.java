@@ -2,14 +2,13 @@ package clc.ui;
 
 import static clc.common.Constants.*;
 
-import java.util.ArrayList;
-
 import clc.common.InvalidInputException;
 
 public class UpdateAnalyzer extends TimeAnalyzer {
 	private static boolean isCaseUpdateCalendar;
 	private static String[] tempInfo;
 	private static int calendarProvided = 0;
+	private static int seqNo;
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
@@ -19,12 +18,14 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
-		//** throw exception if first is not a digit
-
+		
+		determineIfSeqNoProvided();
+		
 		if (doesContainTimeInfo()) { //case update calendar
 			if (!commandDetails.contains(COMMA)) {
 				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
+			
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
@@ -40,6 +41,14 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
 		}                                                    
+	}
+
+	private static void determineIfSeqNoProvided() throws InvalidInputException {
+		if (!isNumeric(getFirstWord(commandDetails))) {
+			throw new InvalidInputException("ERROR: please indicate the sequence number");
+		} else {
+			seqNo = Integer.parseInt(getFirstWord(commandDetails));
+		}
 	}
 
 	private static void determineIfStartDateIsProvided() {
@@ -107,16 +116,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	}
 	
 	protected static int getSeqNumForUpdate() throws InvalidInputException {
-		String currWord = getFirstWord(commandDetails);
-		if (isTaskSeqNoProvided(currWord)) {
-			return Integer.parseInt(currWord);
-		} else {
-			throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
-		}
-	}
-
-	private static boolean isTaskSeqNoProvided(String currWord) {
-		return isNumeric(currWord);
+		return seqNo;
 	}
 
 	protected static String getNewTaskName() throws InvalidInputException {
