@@ -1,6 +1,6 @@
 package clc.ui;
 
-import static clc.common.Constants.SPACE;
+import static clc.common.Constants.*;
 import clc.common.InvalidInputException;
 import clc.logic.Task;
 
@@ -28,7 +28,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 			} else if (isCaseTimedTask()) {
 				taskToBeAdded = new Task(taskName, startTime, endTime);
 			} else {
-				throw new InvalidInputException();
+				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
 		} else { // floating task
 			taskName = commandDetails;

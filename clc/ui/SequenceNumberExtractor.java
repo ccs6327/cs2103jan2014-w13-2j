@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import clc.common.InvalidInputException;
+import static clc.common.Constants.*;
 
 public class SequenceNumberExtractor extends Analyzer{
 	
@@ -26,7 +27,7 @@ public class SequenceNumberExtractor extends Analyzer{
 				}
 			} else {
 				sc.close();
-				throw new InvalidInputException();
+				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
 		}
 		sc.close();

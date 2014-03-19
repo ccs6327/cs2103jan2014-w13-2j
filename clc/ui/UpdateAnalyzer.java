@@ -1,7 +1,6 @@
 package clc.ui;
 
-import static clc.common.Constants.COMMA;
-import static clc.common.Constants.SPACE;
+import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 
@@ -24,15 +23,19 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 		if (doesContainTimeInfo()) { //case update calendar
 			if (!commandDetails.contains(COMMA)) {
-				throw new InvalidInputException();
+				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
+			
 			analyzeUpdateEndTime(indexOfComma);
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
+			
+			determineIfStartTimeLaterThanEndTime();
+			
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
@@ -63,7 +66,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		}
 	}
 
-	private static void analyzeUpdateStartTime(int indexOfComma) {
+	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
 		int index = 0;
 		if (indexOfComma > 0) {
 			infoToBeProcessed = new String[indexOfComma - 1];
@@ -79,7 +82,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		}
 	}
 
-	private static void analyzeUpdateEndTime(int indexOfComma) {
+	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
 		int index = 0;
 		if (tempInfo.length != indexOfComma + 1) {
 			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
@@ -108,7 +111,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		if (isTaskSeqNoProvided(currWord)) {
 			return Integer.parseInt(currWord);
 		} else {
-			throw new InvalidInputException();
+			throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -119,7 +122,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	protected static String getNewTaskName() throws InvalidInputException {
 		String newTaskName = removeFirstWord(commandDetails);
 		if (isNewTaskNameProvided(newTaskName)) {
-			throw new InvalidInputException();
+			throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 		}
 		return newTaskName;
 	}

@@ -2,8 +2,8 @@ package clc.common;
 
 public class InvalidInputException extends Exception {
 
-	public InvalidInputException() {
-		super();
+	public InvalidInputException(String string) {
+		super(string);
 	}
 
 	/**

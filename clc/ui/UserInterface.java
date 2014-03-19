@@ -80,8 +80,7 @@ public class UserInterface {
 
 			return command.execute();
 		} catch (InvalidInputException iie) {
-			String invalidFormatMessage = String.format(MESSAGE_INVALID_FORMAT, input);
-			return invalidFormatMessage;
+			return iie.getMessage();
 		}
 	}
 
