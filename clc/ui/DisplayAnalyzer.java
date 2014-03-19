@@ -28,9 +28,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
 		
-		if (isCaseDisplayDeadline()) {
-			recordAndProcessCalendarInfoProvided();
-		} else if (isCaseDisplayToday()) {
+		if (isCaseDisplayToday()) {
 			setToday();
 		} else if (isCaseDisplayTomorrow()) {
 			setTomorrow();
@@ -42,6 +40,8 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 			setThisMonth();
 		} else if (isCaseDisplayNextMonth()) {
 			setNextMonth();
+		} else if (isCaseDisplayDeadline()) {
+			recordAndProcessCalendarInfoProvided();
 		} else if(isCaseDisplayString()){
 			isCaseDisplayCalendar = false;
 		} else {
