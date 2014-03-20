@@ -41,6 +41,7 @@ public class GUI implements NativeKeyListener{
 	private boolean isPressingCtrl;
 	private ArrayList<String> previousInput = new ArrayList<String>();
 	private int inputIndex = 0;
+	protected boolean isWindowActivated;
 
 	/**
 	 * Create the application.
@@ -191,13 +192,17 @@ public class GUI implements NativeKeyListener{
 
 	private void initiateWindowListener() {
 		frameClc.addWindowListener(new WindowListener() {
-			public void windowActivated(WindowEvent arg0) {}
+			public void windowActivated(WindowEvent arg0) {
+				isWindowActivated = true;
+			}
 			public void windowClosed(WindowEvent arg0) {
 				//Clean up the native hook.
 				GlobalScreen.unregisterNativeHook();
 			}
 			public void windowClosing(WindowEvent arg0) {}
-			public void windowDeactivated(WindowEvent arg0) {}
+			public void windowDeactivated(WindowEvent arg0) {
+				isWindowActivated = false;
+			}
 			public void windowDeiconified(WindowEvent arg0) {}
 			public void windowIconified(WindowEvent arg0) {}
 			public void windowOpened(WindowEvent arg0) {}
@@ -225,7 +230,7 @@ public class GUI implements NativeKeyListener{
 		if (isPressingCtrl) {
 			icontifyAndDeicontifyWindow(e);
 		}	
-		if (frameClc.getState() == Frame.NORMAL) {
+		if (isWindowActivated) {
 			traversePreviousInput(e);
 			clearInputTextBox(e);
 			if (isPressingCtrl) {
