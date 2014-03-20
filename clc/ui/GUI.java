@@ -18,6 +18,7 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
@@ -42,6 +43,7 @@ public class GUI implements NativeKeyListener{
 	private ArrayList<String> previousInput = new ArrayList<String>();
 	private int inputIndex = 0;
 	protected boolean isWindowActivated;
+	private boolean isPressingShift;
 
 	/**
 	 * Create the application.
@@ -63,7 +65,7 @@ public class GUI implements NativeKeyListener{
 					e.printStackTrace();
 				}
 			}
-		});	
+		});
 	}
 
 	/**
@@ -77,12 +79,12 @@ public class GUI implements NativeKeyListener{
 		focusOnInputTextBox();
 		initializeInputTextBox();
 		actionWhenEnterIsPressed();
-		initiateGlobalKeyListener();
 		initiateWindowListener();
 	}
 
 	private void setUpJFrame() {
 		frameClc = new JFrame();
+		frameClc.setName("frame");
 		frameClc.getContentPane().setBackground(Color.GRAY);
 		frameClc.setTitle("CLC V0.1");
 		frameClc.setResizable(false);
@@ -205,7 +207,9 @@ public class GUI implements NativeKeyListener{
 			}
 			public void windowDeiconified(WindowEvent arg0) {}
 			public void windowIconified(WindowEvent arg0) {}
-			public void windowOpened(WindowEvent arg0) {}
+			public void windowOpened(WindowEvent arg0) {
+				initiateGlobalKeyListener();	
+			}
 		});
 	}
 
@@ -224,11 +228,14 @@ public class GUI implements NativeKeyListener{
 
 	@Override //NativeKeyListener
 	public void nativeKeyPressed(NativeKeyEvent e) {
+		System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
 		if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
 			isPressingCtrl = true;
+		} else if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+			isPressingShift = true;
 		}
-		if (isPressingCtrl) {
-			icontifyAndDeicontifyWindow(e);
+		if (isPressingShift) {
+			changeWindowVisibility(e);
 		}	
 		if (isWindowActivated) {
 			traversePreviousInput(e);
@@ -241,26 +248,29 @@ public class GUI implements NativeKeyListener{
 	public void nativeKeyReleased(NativeKeyEvent e) {
 		if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
 			isPressingCtrl = false;
+		} else if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+			isPressingShift = false;
 		}
 	}
 	public void nativeKeyTyped(NativeKeyEvent e) {}
 
-	private void icontifyAndDeicontifyWindow(NativeKeyEvent e) {
-		if (e.getKeyCode() == NativeKeyEvent.VK_SPACE) { //ctrl + space
-			if(frameClc.getState() == Frame.NORMAL) {
-				frameClc.setState(Frame.ICONIFIED);
-			} else {
-				frameClc.setState(Frame.NORMAL);
-			}
+	private void changeWindowVisibility(NativeKeyEvent e) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SPACE) { //shift  + space
+			if (frameClc.isVisible()) {
+				frameClc.setVisible(false);
+			} else if (!frameClc.isVisible()){
+				frameClc.setVisible(true);
+			} 
 		}
 	}
+	
 
-	private void traversePreviousInput(NativeKeyEvent e) {
+	private void traversePreviousInput(NativeKeyEvent e) { 
 		String cachedInput;
 		if (e.getKeyCode() == NativeKeyEvent.VK_ENTER) {
 			inputIndex = previousInput.size();
 		}
-		
+
 		if (e.getKeyCode() == NativeKeyEvent.VK_UP && inputIndex - 1 >= 0) {
 			cachedInput = previousInput.get(--inputIndex);
 			inputTextBox.setText("  " + cachedInput);
@@ -282,7 +292,7 @@ public class GUI implements NativeKeyListener{
 			scrollPane.getVerticalScrollBar().setValue(currPosition + incrementValue);
 		}
 	}
-	
+
 	private void clearInputTextBox(NativeKeyEvent e) {
 		if (e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
 			initializeInputTextBox();
