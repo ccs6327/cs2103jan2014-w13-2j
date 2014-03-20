@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -44,7 +45,7 @@ public class GUI implements NativeKeyListener{
 	private int inputIndex = 0;
 	protected boolean isWindowActivated;
 	private boolean isPressingShift;
-
+	
 	/**
 	 * Create the application.
 	 */
