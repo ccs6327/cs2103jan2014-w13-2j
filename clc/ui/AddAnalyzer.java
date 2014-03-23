@@ -7,21 +7,24 @@ import clc.logic.Task;
 public class AddAnalyzer extends TimeAnalyzer {
 	private static String taskName;
 	private static Task taskToBeAdded;
+	private static boolean isReminderNeeded;
 
 	protected AddAnalyzer(String input) {
 		super(input);
 	}
 
 	protected static void analyze() throws InvalidInputException {
+		determineIfReminderNeeded();
 		infoToBeProcessed = commandDetails.split(SPACE);
 		
-		//**handle empty name case throw exception
-		
 		if (doesContainTimeInfo()) { //timed task or deadline task
+			
 			recordAndProcessCalendarInfoProvided();
 			determineIfStartTimeLaterThanEndTime();
+			
 			//merge the taskName
 			taskName = mergeTaskName();
+			determineIfTaskNameProvided();
 			
 			if (isCaseDeadlineTask()) {
 				taskToBeAdded = new Task(taskName, endTime);
@@ -31,9 +34,30 @@ public class AddAnalyzer extends TimeAnalyzer {
 				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
 		} else { // floating task
+			if (isReminderNeeded) {
+				throw new InvalidInputException("ERROR: no reminder is allowed for floating task");
+			}
 			taskName = commandDetails;
 			taskToBeAdded = new Task(taskName);
 		}
+	}
+
+	private static void determineIfReminderNeeded() {
+		if (getFirstWord(commandDetails).equals("-r")) {
+			isReminderNeeded = true;
+			commandDetails = removeFirstWord(commandDetails);
+		}
+	}
+
+	private static void determineIfTaskNameProvided()
+			throws InvalidInputException {
+		if (isEmptyTaskName()) {
+			throw new InvalidInputException("ERROR: no task name is given");
+		}
+	}
+
+	private static boolean isEmptyTaskName() {
+		return taskName.equals("");
 	}
 	
 	protected static Task getToBeAddedTask() {
@@ -46,5 +70,9 @@ public class AddAnalyzer extends TimeAnalyzer {
 			taskName += (infoToBeProcessed[i] + SPACE);
 		}
 		return taskName.trim();
+	}
+
+	public static boolean getReminderCase() {
+		return isReminderNeeded;
 	}
 }
