@@ -3,9 +3,6 @@ package clc.ui;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-
 import clc.common.InvalidInputException;
 import clc.logic.Add;
 import clc.logic.Clear;
@@ -109,7 +106,9 @@ public class UserInterface {
 		Command command;
 		AddAnalyzer.analyze();
 		Task task = AddAnalyzer.getToBeAddedTask();
+		boolean isReminderNeeded = AddAnalyzer.getReminderCase();
 		command = new Add(task);
+		//command = new Add(task, isReminderNeeded);
 		return command;
 	}
 
