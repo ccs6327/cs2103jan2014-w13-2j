@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import clc.storage.Storage;
 
@@ -51,7 +52,7 @@ public class Remind {
 		taskInfo.add(String.format(MESSAGE_REMIND_DEADLINE_TASKS, task.getTaskName(), endTime));
 		Calendar reminderCalendar = (Calendar) task.getEndTime().clone();
 		reminderCalendar.add(Calendar.MINUTE, INTERVAL_TO_REMIND);
-		timeToBeReminded.add(task.getEndTime().getTime());
+		timeToBeReminded.add(reminderCalendar.getTime());
 	}
 
 	private void remindTimedTask(ArrayList<String> taskInfo, Task task) {
