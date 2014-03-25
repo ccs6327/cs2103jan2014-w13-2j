@@ -75,8 +75,4 @@ public class AddAnalyzer extends TimeAnalyzer {
 		}
 		return taskName.trim();
 	}
-
-	public static boolean getReminderCase() {
-		return isReminderNeeded;
-	}
 }

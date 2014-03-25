@@ -131,7 +131,6 @@ public class UserInterface {
 		AddAnalyzer.analyze();
 		Task task = AddAnalyzer.getToBeAddedTask();
 		command = new Add(task);
-		//command = new Add(task, isReminderNeeded);
 		return command;
 	}
 

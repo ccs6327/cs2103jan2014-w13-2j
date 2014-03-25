@@ -42,16 +42,10 @@ public class GUI implements NativeKeyListener{
 	protected boolean isWindowActivated;
 	private boolean isPressingShift;
 	
-	/**
-	 * Create the application.
-	 */
 	protected GUI() {
 		initialize();
 	}
 
-	/**
-	 * Launch the application.
-	 */
 	protected void launchAndGetInputAndExecute() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -65,9 +59,6 @@ public class GUI implements NativeKeyListener{
 		});
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		setUpJFrame();
 		setUpInputTextBox();
