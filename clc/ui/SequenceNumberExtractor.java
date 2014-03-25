@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import clc.common.InvalidInputException;
-import static clc.common.Constants.*;
+import static clc.common.Constants.ERROR_CONTAIN_NON_NUMERIC_INFO;
 
 public class SequenceNumberExtractor extends Analyzer{
 	
+
 	protected SequenceNumberExtractor(String input) {
 		super(input);
 	}
@@ -27,7 +28,7 @@ public class SequenceNumberExtractor extends Analyzer{
 				}
 			} else {
 				sc.close();
-				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
+				throw new InvalidInputException(ERROR_CONTAIN_NON_NUMERIC_INFO);
 			}
 		}
 		sc.close();
