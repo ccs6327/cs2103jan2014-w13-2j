@@ -118,5 +118,13 @@ public class Constants {
 	public static final String SATURDAY = "saturday";
 	public static final String SUNDAY = "sunday";
 
-	
+	//InvalidInputException messages
+	public static final String ERROR_NO_TASK_NAME = "ERROR: no task name is given";
+	public static final String ERROR_REMINDER_FOR_FLOATING_TASK = "ERROR: no reminder is allowed for floating task";
+	public static final String ERROR_EMPTY_COMMAND_DETAILS = "ERROR: empty command details";
+	public static final String ERROR_START_TIME = "ERROR: start time is a calendar before now";
+	public static final String ERROR_END_TIME = "ERROR: end time is a calendar before now";
+	public static final String ERROR_START_TIME_LATER_THAN_END_TIME = "ERROR: Start time is later than end time";
+	public static final String ERROR_YEAR_INPUT = "ERROR: you have entered a year before %1$d";
+	public static final String ERROR_NO_EXACT_TIME = "ERROR: no exact time is given";
 }

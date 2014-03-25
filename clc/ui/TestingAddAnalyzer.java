@@ -2,6 +2,15 @@ package clc.ui;
 
 import static org.junit.Assert.*;
 
+import static clc.common.Constants.ERROR_NO_TASK_NAME;
+import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import static clc.common.Constants.ERROR_START_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_YEAR_INPUT;
+import static clc.common.Constants.ERROR_NO_EXACT_TIME;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -157,7 +166,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: empty command details", e.getMessage());
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
 		}
 
 		//spaces command details
@@ -165,7 +174,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: empty command details", e.getMessage());
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
 		}
 
 		//command details without task name 
@@ -173,7 +182,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: no task name is given", e.getMessage());
+			assertEquals(ERROR_NO_TASK_NAME, e.getMessage());
 		}
 
 		//add with reminder for floating task
@@ -181,7 +190,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: no reminder is allowed for floating task", e.getMessage());
+			assertEquals(ERROR_REMINDER_FOR_FLOATING_TASK, e.getMessage());
 		}
 
 		//command details end time is earlier than start time
@@ -189,7 +198,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: Start time is later than end time", e.getMessage());
+			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
 		}		
 
 		//enter a year before current year
@@ -198,7 +207,8 @@ public class TestingAddAnalyzer {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR); 
-			assertEquals("ERROR: you have entered a year before " + currentYear, e.getMessage());
+			String error = String.format(ERROR_YEAR_INPUT, currentYear);
+			assertEquals(error, e.getMessage());
 		}		
 
 		//start time(or both) is earlier than current time
@@ -206,7 +216,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: start time is a calendar before now", e.getMessage());
+			assertEquals(ERROR_START_TIME, e.getMessage());
 		}	
 
 		//end time for deadline task is earlier than current time
@@ -214,7 +224,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: end time is a calendar before now", e.getMessage());
+			assertEquals(ERROR_END_TIME, e.getMessage());
 		}
 
 		//no time(only date) is given
@@ -222,7 +232,7 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals("ERROR: no exact time is given", e.getMessage());
+			assertEquals(ERROR_NO_EXACT_TIME, e.getMessage());
 		}
 
 	}
