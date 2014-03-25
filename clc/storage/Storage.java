@@ -163,6 +163,11 @@ public class Storage {
 		internalMem.clear();
 		internalMem.addAll(taskList);
 	}
+
+	public static void setDisplayMem(ArrayList<Integer> taskList) {
+		displayMem.clear();
+		displayMem.addAll(taskList);
+	}
 }
 
 
