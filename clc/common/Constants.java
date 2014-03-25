@@ -8,7 +8,7 @@ public class Constants {
 	public static final int TYPE_DEADLINE_TASK = 1;
 	public static final int TYPE_FLOATING_TASK = 2;
 	public static final int TYPE_UNSUPPORTED_TASK = 3;
-	
+
 	public static final String TYPE_ADD = "add";
 	public static final String TYPE_DISPLAY = "display";
 	public static final String TYPE_DELETE = "delete";
@@ -20,10 +20,10 @@ public class Constants {
 	public static final String TYPE_REDO = "redo";
 	public static final String TYPE_UNMARK = "unmark";
 	public static final String TYPE_UPDATE = "update";
-	
+
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
-	
+
 	public static final String MESSAGE_WELCOME = "Welcome to CLC.";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
 	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format";
@@ -61,11 +61,11 @@ public class Constants {
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD = "No task is found in this period";
-    public static final String TYPE_DISPLAY_ALL = "all";
-    public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
-    public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
-    public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
-	
+	public static final String TYPE_DISPLAY_ALL = "all";
+	public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
+	public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
+	public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
+
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task (%1$s) is updated to (%2$s) successful.";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task (%1$s) starttime is updated to (%2$s) successful.";
@@ -73,21 +73,21 @@ public class Constants {
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
 	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
-	
+
 	//Remind
 	public static final int INTERVAL_TO_REMIND = -15; //minutes
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
 	public static final String MESSAGE_REMIND_DEADLINE_TASKS = "%1$s, (ends at %2$s)";
-	
+
 	//Filename
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";
-	
+
 	// Storage
 	public static final int IS_DONE = 1;
 	public static final int IS_NOT_DONE = 0;
-	
-	
+
+
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 
@@ -99,14 +99,14 @@ public class Constants {
 	public static final String SLASH = "/";
 	public static final String DOT = ".";
 	public static final String ALL = "all";
-    public static final String FLOATING_TASK = "floating tasks";
-    public static final String DEADLINE_TASK = "deadline tasks";
-    public static final String TIMED_TASK = "timed tasks";
+	public static final String FLOATING_TASK = "floating tasks";
+	public static final String DEADLINE_TASK = "deadline tasks";
+	public static final String TIMED_TASK = "timed tasks";
 	public static final String THIS_WEEK = "this week";
 	public static final String NEXT_WEEK = "next week";
 	public static final String THIS_MONTH = "this month";
 	public static final String NEXT_MONTH = "next month";
-	
+
 	//TimeAnalyzer
 	public static final String TODAY = "today";
 	public static final String TOMORROW = "tomorrow";
@@ -128,4 +128,7 @@ public class Constants {
 	public static final String ERROR_YEAR_INPUT = "ERROR: you have entered a year before %1$d";
 	public static final String ERROR_NO_EXACT_TIME = "ERROR: no exact time is given";
 	public static final String ERROR_INVALID_DISPLAY_REQUEST = "ERROR: Invalid display request";
+	public static final String ERROR_NO_COMMA = "ERROR: use comma to differentiate start time and end time";
+	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: no new task name is given";
+	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: please indicate the sequence number";
 }
