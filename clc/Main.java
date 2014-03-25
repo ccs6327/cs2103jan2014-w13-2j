@@ -31,6 +31,6 @@ public class Main {
 			System.err.println("Unexpected error.");
 			e.printStackTrace();
 			System.exit(2);
-		}
+		} 
 	}
 }

@@ -38,6 +38,7 @@ public class Delete implements Command {
 			}
 		}
 		
+		History.setDisplayMem();
 		Collections.sort(taskSeqNo);
 		
 		//delete from the back of the list

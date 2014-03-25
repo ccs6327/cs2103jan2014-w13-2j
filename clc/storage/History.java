@@ -12,6 +12,7 @@ public class History {
 	private static Stack<Task> taskHistory = new Stack<Task>();
 	private static Stack<Task> updateHistory = new Stack<Task>(); //for update operation to store updated task
 	private static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
 	private static int currentVersion = -1;
 	
 	private static void addOperationHistory(Command operation){
@@ -68,5 +69,13 @@ public class History {
 	public static int decreaseCurrentVersion() {
 		currentVersion -= 1;
 		return currentVersion;
+	}
+
+	public static ArrayList<Integer> getDisplayMem() {
+		return displayMem;
+	}
+
+	public static void setDisplayMem() {
+		displayMem.addAll(Storage.getDisplayMem());
 	}
 }
