@@ -1,6 +1,10 @@
 package clc.ui;
 
-import static clc.common.Constants.*;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.ERROR_NO_TASK_NAME;
+import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+
 import clc.common.InvalidInputException;
 import clc.logic.Task;
 
@@ -31,7 +35,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 			} else if (isCaseTimedTask()) {
 				taskToBeAdded = new Task(taskName, startTime, endTime);
 			} else {
-				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
+				throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 			}
 			
 			if (isReminderNeeded) {
@@ -39,13 +43,13 @@ public class AddAnalyzer extends TimeAnalyzer {
 			}
 		} else { // floating task
 			if (isReminderNeeded) {
-				throw new InvalidInputException("ERROR: no reminder is allowed for floating task");
+				throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
 			}
 			taskName = commandDetails;
 			taskToBeAdded = new Task(taskName);
 		}
 	}
-
+	  
 	private static void determineIfReminderNeeded() {
 		if (getFirstWord(commandDetails).equals("-r")) {
 			isReminderNeeded = true;
@@ -56,7 +60,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 	private static void determineIfTaskNameProvided()
 			throws InvalidInputException {
 		if (isEmptyTaskName()) {
-			throw new InvalidInputException("ERROR: no task name is given");
+			throw new InvalidInputException(ERROR_NO_TASK_NAME);
 		}
 	}
 
