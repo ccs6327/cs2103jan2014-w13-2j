@@ -5,6 +5,7 @@ import static clc.common.Constants.COMMA;
 import static clc.common.Constants.ERROR_NO_COMMA;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 
 import java.util.GregorianCalendar;
 
@@ -22,6 +23,9 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	}
 
 	protected static void analyze() throws InvalidInputException {
+		
+		determineIfCommandDetailsEmpty();
+		
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
@@ -47,6 +51,13 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
+		}
+	}
+
+	private static void determineIfCommandDetailsEmpty()
+			throws InvalidInputException {
+		if (commandDetails.equals("")) {
+			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 	}
 
