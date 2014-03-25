@@ -46,6 +46,9 @@ public class History {
 		currentVersion++;
 		ArrayList<Task> tempMem = new ArrayList<Task>();
 		tempMem.addAll(Storage.getInternalMem());
+		for (int i = historyMem.size() - 1; i >= currentVersion ; i--) {
+			historyMem.remove(i);
+		}
 		historyMem.add(tempMem);
 	}
 	
@@ -54,6 +57,16 @@ public class History {
 	}
 
 	public static int getCurrentVersion() {
+		return currentVersion;
+	}
+	
+	public static int increaseCurrentVersion() {
+		currentVersion += 1;
+		return currentVersion;
+	}
+	
+	public static int decreaseCurrentVersion() {
+		currentVersion -= 1;
 		return currentVersion;
 	}
 }

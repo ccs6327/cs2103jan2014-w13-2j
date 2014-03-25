@@ -9,19 +9,17 @@ import clc.storage.History;
 
 public class Redo implements Command {
 	private ArrayList<ArrayList<Task>> historyMem;
-	private ArrayList<Task> internalMem;
 	private int currentVersion;
-	
-	public Redo() {
-		internalMem = Storage.getInternalMem();
-		historyMem = History.getHistoryMem();
-	}
 	
 	@Override
 	public String execute() {
+		
+		historyMem = History.getHistoryMem();
+		currentVersion = History.getCurrentVersion();
+		
 		try {
-			internalMem = historyMem.get(currentVersion + 1);
-			currentVersion++;
+			Storage.setInternalMem(historyMem.get(currentVersion + 1));
+			currentVersion = History.increaseCurrentVersion();
 		} catch (Exception exception) {
 			return MESSAGE_REDONE_FAILED;
 		}
