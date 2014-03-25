@@ -119,8 +119,8 @@ public class UserInterface {
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
-			command = new Update(seqNo, time);
-			//command = new Update(seqNo, caseCalendarProvided, time);
+			//command = new Update(seqNo, time);
+			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
 			command = new Update(seqNo, newTaskName);

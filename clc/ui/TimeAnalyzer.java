@@ -1,6 +1,24 @@
 package clc.ui;
 
-import static clc.common.Constants.*;
+import static clc.common.Constants.ERROR_START_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_YEAR_INPUT;
+import static clc.common.Constants.ERROR_NO_EXACT_TIME;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.MONDAY;
+import static clc.common.Constants.TUESDAY;
+import static clc.common.Constants.WEDNESDAY;
+import static clc.common.Constants.THURSDAY;
+import static clc.common.Constants.FRIDAY;
+import static clc.common.Constants.SATURDAY;
+import static clc.common.Constants.SUNDAY;
+import static clc.common.Constants.SLASH;
+import static clc.common.Constants.DOT;
+import static clc.common.Constants.COMMA;
+import static clc.common.Constants.AM;
+import static clc.common.Constants.PM;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +31,7 @@ public class TimeAnalyzer extends Analyzer{
 	protected static ArrayList<Integer> monthInfo;
 	protected static ArrayList<Integer> dateInfo;
 	protected static ArrayList<Integer> timeInfo;
-	private static ArrayList<Integer> yearInfo;
+	protected static ArrayList<Integer> yearInfo;
 	protected static GregorianCalendar startTime = null;
 	protected static GregorianCalendar endTime = null;
 	private static boolean isPm;
@@ -35,27 +53,24 @@ public class TimeAnalyzer extends Analyzer{
 	protected static void recordAndProcessCalendarInfoProvided() throws InvalidInputException {
 		instantiateVariable();
 		recordCalendarInfo();
-		if (doesContainTimeInfo()) { //have Calendar Info to be processed
+		if (timeInfo.size() > 0) { //have Calendar Info to be processed
 			processCalendarInfo();
+		} else if (dateInfo.size() > 0) { //date only
+			throw new InvalidInputException(ERROR_NO_EXACT_TIME);
 		}
 	}
 
-	private static void instantiateVariable() {
+	protected static void instantiateVariable() {
 		yearInfo = new ArrayList<Integer>();
 		monthInfo = new ArrayList<Integer>();
 		dateInfo = new ArrayList<Integer>();
 		timeInfo = new ArrayList<Integer>();
 		isPm = false;
+		startTime = null;
+		endTime = null;
 	}
 
-	protected static void determineIfStartTimeLaterThanEndTime()
-			throws InvalidInputException {
-		if (isStartTimeLaterThanEndTime()) {
-			throw new InvalidInputException("ERROR: Start time is later than end time");
-		}
-	}
-
-	private static void recordCalendarInfo() throws InvalidInputException {
+	protected static void recordCalendarInfo() throws InvalidInputException {
 		int endLoopIndex = infoToBeProcessed.length - 4; //loop 4 times from the back only
 		if (endLoopIndex < 0) {
 			endLoopIndex = 0;
@@ -118,7 +133,8 @@ public class TimeAnalyzer extends Analyzer{
 				year += currentYear - (currentYear % 100);
 			}
 			if (year < currentYear) {
-				throw new InvalidInputException("ERROR: you have entered a year before " + currentYear);
+				String error = String.format(ERROR_YEAR_INPUT, currentYear);
+				throw new InvalidInputException(error);
 			}
 			yearInfo.add(year);
 		}
@@ -170,12 +186,12 @@ public class TimeAnalyzer extends Analyzer{
 		monthInfo.add(month);
 	}
 
-	private static void processCalendarInfo() {
+	protected static void processCalendarInfo() throws InvalidInputException {
 		int endYear = Calendar.getInstance().get(Calendar.YEAR);
-		int startYear = Calendar.getInstance().get(Calendar.YEAR);
+		int startYear = -1;
 		int endMonth = Calendar.getInstance().get(Calendar.MONTH);
 		int endDate = Calendar.getInstance().get(Calendar.DATE);
-		int startMonth = 0, startDate = 0;
+		int startMonth = -1, startDate = 0;
 		int startHour = 0, startMin = 0, endHour = 0, endMin = 0;
 
 		//process year
@@ -215,7 +231,10 @@ public class TimeAnalyzer extends Analyzer{
 		}
 
 		//for case that user provide only one or no date
-		if (startMonth == 0) {
+		if (startYear == -1) { //startYear is not initiated
+			startYear = endYear;
+		}
+		if (startMonth == -1) { //startMonth and startDate are not initiated
 			startMonth = endMonth;
 			startDate = endDate;
 		}
@@ -224,6 +243,22 @@ public class TimeAnalyzer extends Analyzer{
 			startTime = new GregorianCalendar(startYear, startMonth, startDate, startHour, startMin);
 		}
 		endTime = new GregorianCalendar(endYear, endMonth, endDate, endHour, endMin);
+		determineIfCalendarLaterThanNow();
+	}
+
+	private static void determineIfCalendarLaterThanNow() throws InvalidInputException {
+		if (startTime != null && startTime.compareTo(Calendar.getInstance()) == -1) {
+			throw new InvalidInputException(ERROR_START_TIME); 
+		} else if (endTime != null && endTime.compareTo(Calendar.getInstance()) == -1) {
+			throw new InvalidInputException(ERROR_END_TIME);
+		}
+	}
+
+	protected static void determineIfStartTimeLaterThanEndTime()
+			throws InvalidInputException {
+		if (isStartTimeLaterThanEndTime()) {
+			throw new InvalidInputException(ERROR_START_TIME_LATER_THAN_END_TIME);
+		}
 	}
 
 	private static boolean isDateFormat(String currWord) {
