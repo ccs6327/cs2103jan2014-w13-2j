@@ -33,6 +33,10 @@ public class AddAnalyzer extends TimeAnalyzer {
 			} else {
 				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
 			}
+			
+			if (isReminderNeeded) {
+				taskToBeAdded.setReminder();
+			}
 		} else { // floating task
 			if (isReminderNeeded) {
 				throw new InvalidInputException("ERROR: no reminder is allowed for floating task");

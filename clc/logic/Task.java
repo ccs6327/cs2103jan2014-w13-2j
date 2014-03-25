@@ -12,6 +12,7 @@ public class Task {
 	private Calendar endTime;
 	private int taskType; //0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
 	private boolean isDone;
+	private boolean isReminderNeeded;
 
 	public Task() {
 		
@@ -114,6 +115,14 @@ public class Task {
 
 	public boolean isDone() {
 		return isDone;
+	}
+
+	public void setReminder() {
+		isReminderNeeded = true;
+	}
+
+	public boolean isReminderNeeded() {
+		return isReminderNeeded;
 	}
 }
 
