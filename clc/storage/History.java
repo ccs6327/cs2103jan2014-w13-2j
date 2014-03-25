@@ -76,6 +76,7 @@ public class History {
 	}
 
 	public static void setDisplayMem() {
+		displayMem.clear();
 		displayMem.addAll(Storage.getDisplayMem());
 	}
 }
