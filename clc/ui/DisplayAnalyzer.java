@@ -1,6 +1,17 @@
 package clc.ui;
 
-import static clc.common.Constants.*;
+import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.THIS_WEEK;
+import static clc.common.Constants.THIS_MONTH;
+import static clc.common.Constants.NEXT_WEEK;
+import static clc.common.Constants.NEXT_MONTH;
+import static clc.common.Constants.ALL;
+import static clc.common.Constants.TIMED_TASK;
+import static clc.common.Constants.DEADLINE_TASK;
+import static clc.common.Constants.FLOATING_TASK;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -40,7 +51,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 		} else if(isCaseDisplayString()){
 			isCaseDisplayCalendar = false;
 		} else {
-			throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
+			throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
 		}
 	}
 	

@@ -127,4 +127,5 @@ public class Constants {
 	public static final String ERROR_START_TIME_LATER_THAN_END_TIME = "ERROR: Start time is later than end time";
 	public static final String ERROR_YEAR_INPUT = "ERROR: you have entered a year before %1$d";
 	public static final String ERROR_NO_EXACT_TIME = "ERROR: no exact time is given";
+	public static final String ERROR_INVALID_DISPLAY_REQUEST = "ERROR: Invalid display request";
 }
