@@ -15,6 +15,10 @@ public class Analyzer {
 		return commandType;
 	}
 	
+	protected static String getCommandDetails() {
+		return commandDetails;
+	}
+	
 	protected static String getFirstWord(String userCommand) {
 		String commandTypeString = userCommand.trim().split("\\s+")[0];
 		return commandTypeString;

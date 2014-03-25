@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
@@ -32,7 +33,7 @@ public class Storage {
 			}
 		} else {
 			try {
-				readContentFromFile();
+				readContentFromFile(OUTFILE);
 			} catch (Exception e) {
 					
 			}
@@ -40,8 +41,8 @@ public class Storage {
 	}
 	
 	// Read from the data file and store them into the internal memory
-	public static void readContentFromFile() {
-		File fileIn = new File(OUTFILE);
+	public static void readContentFromFile(String path) {
+		File fileIn = new File(path);
 
 		try {
 			
@@ -55,6 +56,7 @@ public class Storage {
 			boolean isDone;
 			
 			while((contentToRead = bf.readLine()) != null) {
+				Task task;
 				taskName = contentToRead;
 				taskId = Long.parseLong(bf.readLine());
 				taskType = Integer.parseInt(bf.readLine());
@@ -80,7 +82,11 @@ public class Storage {
 				} else {
 					isDone = false;
 				}
-				internalMem.add(new Task(taskName, taskId, taskType, startTime, endTime, isDone));
+				
+				task = new Task(taskName, taskId, taskType, startTime, endTime, isDone);
+				if (hasNoIdenticalTask(task)) {
+					internalMem.add(task);
+				}
 			}
 			
 			bf.close();
@@ -88,6 +94,17 @@ public class Storage {
 			
 		}
 	         
+	}
+
+	private static boolean hasNoIdenticalTask(Task task) {
+		for (Task taskInInternalMem : internalMem) {
+			// Should compare all Task attributes
+			if (taskInInternalMem.getTaskId() == task.getTaskId()) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	// Write contents in the list into the data file
@@ -167,6 +184,26 @@ public class Storage {
 	public static void setDisplayMem(ArrayList<Integer> taskList) {
 		displayMem.clear();
 		displayMem.addAll(taskList);
+	}
+
+	public static String exportDataFile(String path) {
+		File destination = new File(path + OUTFILE);
+		try {
+			Files.copy(dataFile.toPath(), destination.toPath());
+		} catch (IOException e) {
+			return MESSAGE_EXPORT_FAILED;
+		}
+		return MESSAGE_EXPORT;
+	}
+	
+	public static String importDataFile(String path) {
+		try {
+			readContentFromFile(path + OUTFILE);
+		} catch (Exception e) {
+			return MESSAGE_IMPORT_NO_ACCESS;
+		} 
+		writeContentIntoFile();
+		return MESSAGE_IMPORT;
 	}
 }
 

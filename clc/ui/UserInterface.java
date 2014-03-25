@@ -12,7 +12,9 @@ import clc.logic.Command;
 import clc.logic.Delete;
 import clc.logic.Display;
 import clc.logic.Exit;
+import clc.logic.Export;
 import clc.logic.Help;
+import clc.logic.Import;
 import clc.logic.Mark;
 import clc.logic.Redo;
 import clc.logic.Remind;
@@ -87,6 +89,12 @@ public class UserInterface {
 			case TYPE_REDO:
 				command = new Redo();
 				break;
+			case TYPE_EXPORT:
+				command = analyzeExport();
+				break;
+			case TYPE_IMPORT:
+				command = analyzeImport();
+				break;
 			case TYPE_HELP:
 				command = new Help();
 				break;
@@ -108,6 +116,18 @@ public class UserInterface {
 		} catch (InvalidInputException iie) {
 			return iie.getMessage();
 		}
+	}
+
+	private static Command analyzeExport() {
+		Command command;
+		command = new Export(Analyzer.getCommandDetails());
+		return command;
+	}
+	
+	private static Command analyzeImport() {
+		Command command;
+		command = new Import(Analyzer.getCommandDetails());
+		return command;
 	}
 
 	private static Command analyzeUpdate() throws InvalidInputException {

@@ -20,6 +20,8 @@ public class Constants {
 	public static final String TYPE_REDO = "redo";
 	public static final String TYPE_UNMARK = "unmark";
 	public static final String TYPE_UPDATE = "update";
+	public static final String TYPE_EXPORT = "export";
+	public static final String TYPE_IMPORT = "import";
 
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
@@ -79,6 +81,14 @@ public class Constants {
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
 	public static final String MESSAGE_REMIND_DEADLINE_TASKS = "%1$s, (ends at %2$s)";
 
+	// Export/Import
+	public static final String BACKSLASH = "\\";
+	public static final String MESSAGE_EXPORT = "Your calendar has been exported to %1$s";
+	public static final String MESSAGE_EXPORT_FAILED = "Failed to export to %1$s. Please check the destination path.";
+	public static final String MESSAGE_IMPORT = "Your calendar has been imported from %1$s";
+	public static final String MESSAGE_IMPORT_NO_ACCESS = "Failed to import from %1$s. Please check the origin path.";
+	public static final String MESSAGE_IMPORT_FILE_CORRUPTED = "The data file is corrupted.";
+	
 	//Filename
 	public static final String OUTFILE = "data.txt";
 	public static final String HELPFILE = "generalHelp.txt";
