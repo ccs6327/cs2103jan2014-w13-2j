@@ -13,6 +13,7 @@ import clc.storage.Storage;
 public class Update implements Command {
 	
     private int seqNo;
+    private int caseCalendarProvided;
     private StringBuilder feedback = new StringBuilder();
     private String newTaskName = null;
     private Task task;
@@ -28,8 +29,9 @@ public class Update implements Command {
 		displayMem = Storage.getDisplayMem();
 		internalMem = Storage.getInternalMem();
 	}
-	public Update(int seqNo, ArrayList<GregorianCalendar> time){
+	public Update(int seqNo, int caseCalendarProvided, ArrayList<GregorianCalendar> time){
 		this.seqNo = seqNo;
+		this.caseCalendarProvided = caseCalendarProvided;
 		this.time = time;
 		displayMem = Storage.getDisplayMem();
 		internalMem = Storage.getInternalMem();
@@ -56,26 +58,60 @@ public class Update implements Command {
 	}
 	
 	private void updateTask(){
-		String taskOldName = task.getTaskName();
+		String taskName = task.getTaskName();
+		Calendar updateTime = null;
+		//update name
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
-            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskOldName, newTaskName));
+            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskName, newTaskName));
             feedback.append("\n");
 		}
-		
-		if (newStartTime != null) {
-			taskOldName = task.getTaskName();
-		    task.updateStartTime(newStartTime);
-		    String startTime = D_M_Y_DateFormatter.format(newStartTime.getTime());
-		    feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskOldName, startTime));
-		    feedback.append("\n");
-		} 
-		
+		//update start time
+		if (newStartTime != null){
+			Calendar taskOldStartTime;
+			//update date
+			if (caseCalendarProvided/8 == 1) {
+				taskName = task.getTaskName();
+				taskOldStartTime = task.getStartTime();
+				updateTime = updateNewDate(taskOldStartTime, newStartTime);
+			    task.updateStartTime(updateTime);
+			    caseCalendarProvided -= 8;
+			} 
+			//update time
+			if (caseCalendarProvided/4 == 1) {
+				taskName = task.getTaskName();
+				taskOldStartTime = task.getStartTime();
+				updateTime = updateNewDate(newStartTime, taskOldStartTime);
+			    task.updateStartTime(updateTime);
+			    caseCalendarProvided -= 4;
+			}
+			
+			String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+			feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime));
+			feedback.append("\n");
+		}
+		//update end time
 		if (newEndTime != null) {
-			taskOldName = task.getTaskName();
-			task.updateEndTime(newEndTime);
-			String endTime = D_M_Y_DateFormatter.format(newEndTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskOldName, endTime));
+			Calendar taskOldEndTime = null;
+			//update date
+			if (caseCalendarProvided/2 == 1) {
+				taskName = task.getTaskName();
+				taskOldEndTime = task.getEndTime();
+				updateTime = updateNewDate(taskOldEndTime, newEndTime);
+			    task.updateEndTime(updateTime);
+			    caseCalendarProvided -= 2;
+			} 
+			
+			//update time
+			if (caseCalendarProvided == 1) {
+				taskName = task.getTaskName();
+				taskOldEndTime = task.getEndTime();
+				updateTime = updateNewDate(newEndTime, taskOldEndTime);
+			    task.updateEndTime(updateTime);
+			}
+			
+			String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime));
 			feedback.append("\n");
 		} 
 		
@@ -83,6 +119,16 @@ public class Update implements Command {
 			feedback.append(MESSAGE_NO_CHANGE);
 			feedback.append("\n");
 		}
+	}
+	
+	private GregorianCalendar updateNewDate(Calendar oldTime, Calendar newTime) {
+		int year = newTime.get(Calendar.YEAR);
+	 	int month =	newTime.get(Calendar.MONTH);	
+		int date = newTime.get(Calendar.DATE);
+		int hour = oldTime.get(Calendar.HOUR_OF_DAY);
+		int minute = oldTime.get(Calendar.MINUTE);
+		GregorianCalendar updateTime = new GregorianCalendar(year, month, date, hour, minute);
+		return updateTime;
 	}
 	
 	// Check whether the data which can be processed is empty
@@ -93,6 +139,7 @@ public class Update implements Command {
 	protected boolean isOutOfBound() {
 		return seqNo > displayMem.size();
 	}
+	
 }	
 	
 	
