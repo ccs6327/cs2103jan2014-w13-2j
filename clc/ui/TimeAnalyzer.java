@@ -31,7 +31,7 @@ public class TimeAnalyzer extends Analyzer{
 	protected static ArrayList<Integer> monthInfo;
 	protected static ArrayList<Integer> dateInfo;
 	protected static ArrayList<Integer> timeInfo;
-	private static ArrayList<Integer> yearInfo;
+	protected static ArrayList<Integer> yearInfo;
 	protected static GregorianCalendar startTime = null;
 	protected static GregorianCalendar endTime = null;
 	private static boolean isPm;
@@ -60,7 +60,7 @@ public class TimeAnalyzer extends Analyzer{
 		}
 	}
 
-	private static void instantiateVariable() {
+	protected static void instantiateVariable() {
 		yearInfo = new ArrayList<Integer>();
 		monthInfo = new ArrayList<Integer>();
 		dateInfo = new ArrayList<Integer>();
@@ -70,7 +70,7 @@ public class TimeAnalyzer extends Analyzer{
 		endTime = null;
 	}
 
-	private static void recordCalendarInfo() throws InvalidInputException {
+	protected static void recordCalendarInfo() throws InvalidInputException {
 		int endLoopIndex = infoToBeProcessed.length - 4; //loop 4 times from the back only
 		if (endLoopIndex < 0) {
 			endLoopIndex = 0;
@@ -186,13 +186,13 @@ public class TimeAnalyzer extends Analyzer{
 		monthInfo.add(month);
 	}
 
-	private static void processCalendarInfo() throws InvalidInputException {
+	protected static void processCalendarInfo() throws InvalidInputException {
 		int endYear = Calendar.getInstance().get(Calendar.YEAR);
 		int startYear = -1;
 		int endMonth = Calendar.getInstance().get(Calendar.MONTH);
 		int endDate = Calendar.getInstance().get(Calendar.DATE);
-		int startMonth = -1, startDate = -1;
-		int startHour = -1, startMin = -1, endHour = -1, endMin = -1;
+		int startMonth = -1, startDate = 0;
+		int startHour = 0, startMin = 0, endHour = 0, endMin = 0;
 
 		//process year
 		if(yearInfo.size() >= 1) {

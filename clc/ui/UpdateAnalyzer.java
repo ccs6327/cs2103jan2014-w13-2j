@@ -1,6 +1,12 @@
 package clc.ui;
 
-import static clc.common.Constants.*;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.COMMA;
+import static clc.common.Constants.ERROR_NO_COMMA;
+import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
+import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
+
+import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
 
@@ -9,6 +15,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	private static String[] tempInfo;
 	private static int calendarProvided = 0;
 	private static int seqNo;
+	private static GregorianCalendar startTime;
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
@@ -18,34 +25,34 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
-		
+
 		determineIfSeqNoProvided();
-		
+
 		if (doesContainTimeInfo()) { //case update calendar
 			if (!commandDetails.contains(COMMA)) {
-				throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
+				throw new InvalidInputException(ERROR_NO_COMMA);
 			}
-			
+
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
-			
+
 			analyzeUpdateEndTime(indexOfComma);
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
-			
+
 			determineIfStartTimeLaterThanEndTime();
-			
+
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
-		}                                                    
+		}
 	}
 
 	private static void determineIfSeqNoProvided() throws InvalidInputException {
 		if (!isNumeric(getFirstWord(commandDetails))) {
-			throw new InvalidInputException("ERROR: please indicate the sequence number");
+			throw new InvalidInputException(ERROR_NO_SEQUENCE_NUMBER);
 		} else {
 			seqNo = Integer.parseInt(getFirstWord(commandDetails));
 		}
@@ -93,6 +100,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
 		int index = 0;
+		instantiateVariable(); //to avoid wrong calculation of calendarProvided
 		if (tempInfo.length != indexOfComma + 1) {
 			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
 			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) { //first one is sequence no
@@ -114,7 +122,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	public static boolean getUpdateCase() {
 		return isCaseUpdateCalendar;
 	}
-	
+
 	protected static int getSeqNumForUpdate() throws InvalidInputException {
 		return seqNo;
 	}
@@ -122,7 +130,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	protected static String getNewTaskName() throws InvalidInputException {
 		String newTaskName = removeFirstWord(commandDetails);
 		if (isNewTaskNameProvided(newTaskName)) {
-			throw new InvalidInputException(MESSAGE_INVALID_FORMAT);
+			throw new InvalidInputException(ERROR_NO_NEW_TASK_NAME);
 		}
 		return newTaskName;
 	}
@@ -133,5 +141,13 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 	public static int getCalendarProvidedCase() {
 		return calendarProvided;
+	}
+
+	protected static void recordAndProcessCalendarInfoProvided() throws InvalidInputException {
+		instantiateVariable();
+		recordCalendarInfo();
+		if (timeInfo.size() > 0 || dateInfo.size() > 0) { //have Calendar Info to be processed
+			processCalendarInfo();
+		}
 	}
 }
