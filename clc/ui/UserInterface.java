@@ -21,7 +21,6 @@ import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
 import clc.storage.History;
-import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 
