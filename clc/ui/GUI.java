@@ -243,7 +243,7 @@ public class GUI implements NativeKeyListener{
 
 	private void changeWindowVisibility(NativeKeyEvent e) {
 		if (e.getKeyCode() == NativeKeyEvent.VK_SPACE) { //shift  + space
-			if (frameClc.isVisible()) {
+			if (frameClc.isVisible()) { 
 				frameClc.setVisible(false);
 			} else if (!frameClc.isVisible()){
 				frameClc.setVisible(true);
