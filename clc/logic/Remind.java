@@ -30,11 +30,7 @@ public class Remind {
 		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (int i = 0; i < internalMem.size(); i ++) {
 			Task task = internalMem.get(i);
-			if (!task.isDone()) {
-				System.out.println(task.getTaskName());
-				if (task.isDone()) {
-					System.out.println("WERID");
-				}
+			if (task.isReminderNeeded() && !task.isDone()) {
 				reminderMem.add(task);
 				taskIdToBeReminded.add(task.getTaskId());
 				switch (task.getTaskType()) {
@@ -53,7 +49,7 @@ public class Remind {
 	private void remindDeadlineTask(ArrayList<String> taskInfo, Task task) {
 		String endTime = formatDate(task.getEndTime());
 		taskInfo.add(String.format(MESSAGE_REMIND_DEADLINE_TASKS, task.getTaskName(), endTime));
-		Calendar reminderCalendar = task.getEndTime();
+		Calendar reminderCalendar = (Calendar) task.getEndTime().clone();
 		reminderCalendar.add(Calendar.MINUTE, INTERVAL_TO_REMIND);
 		timeToBeReminded.add(task.getEndTime().getTime());
 	}
@@ -62,7 +58,7 @@ public class Remind {
 		String startTime = formatDate(task.getStartTime());
 		String endTime = formatDate(task.getEndTime());
 		taskInfo.add(String.format(MESSAGE_REMIND_TIMED_TASKS, task.getTaskName(), startTime, endTime));
-		Calendar reminderCalendar = task.getStartTime();
+		Calendar reminderCalendar = (Calendar) task.getStartTime().clone();
 		reminderCalendar.add(Calendar.MINUTE, INTERVAL_TO_REMIND);
 		timeToBeReminded.add(reminderCalendar.getTime());
 	}

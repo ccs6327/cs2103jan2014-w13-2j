@@ -1,7 +1,9 @@
 package clc.ui;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Timer;
 
 import clc.common.InvalidInputException;
 import clc.logic.Add;
@@ -13,21 +15,36 @@ import clc.logic.Exit;
 import clc.logic.Help;
 import clc.logic.Mark;
 import clc.logic.Redo;
+import clc.logic.Remind;
 import clc.logic.Task;
 import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
+import clc.storage.Storage;
 import static clc.common.Constants.*;
 
 
 public class UserInterface {
 	private GUI gui = new GUI();
 	private static String input;
-
+	private static Timer timer;
 	public UserInterface() {}
 
 	public void executeCommandsUntilExit() {
 		gui.launchAndGetInputAndExecute();
+		setTimerForReminder();
+	}
+
+	private static void setTimerForReminder() {
+		Remind rmd = new Remind();
+		ArrayList<String> reminderInfo = rmd.getToBeRemindedInfo();
+		ArrayList<Date> reminderTime = rmd.getToBeRemindedTime();
+		ArrayList<Long> reminderTaskId = rmd.getToBeRemindedTaskId();
+		timer = new Timer(true);
+		
+		for (int i = 0; i < reminderInfo.size(); i ++) {
+			timer.schedule(new Reminder(reminderInfo.get(i), reminderTaskId.get(i)), reminderTime.get(i));
+		}
 	}
 
 	protected static String setInputAndExecute(String line) {
@@ -79,7 +96,14 @@ public class UserInterface {
 				return String.format(MESSAGE_INVALID_FORMAT, input);
 			}
 
-			return command.execute();
+			String feedback = command.execute();
+			
+			//clear timer and reset timer
+			timer.cancel();
+			timer.purge();
+			setTimerForReminder();
+			
+			return feedback;
 		} catch (InvalidInputException iie) {
 			return iie.getMessage();
 		}
@@ -106,7 +130,6 @@ public class UserInterface {
 		Command command;
 		AddAnalyzer.analyze();
 		Task task = AddAnalyzer.getToBeAddedTask();
-		boolean isReminderNeeded = AddAnalyzer.getReminderCase();
 		command = new Add(task);
 		//command = new Add(task, isReminderNeeded);
 		return command;
@@ -146,5 +169,11 @@ public class UserInterface {
 
 	protected static String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
+	}
+
+	public static void markReminderTask(long taskId) {
+		Command command;
+		command = new Mark(taskId);
+		command.execute();
 	}
 }

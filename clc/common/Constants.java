@@ -3,8 +3,6 @@ package clc.common;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
-import clc.logic.Task;
-
 public class Constants {
 	public static final int TYPE_TIMED_TASK = 0;
 	public static final int TYPE_DEADLINE_TASK = 1;
@@ -35,7 +33,7 @@ public class Constants {
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
 	public static final String MESSAGE_MARK_DONE = "mark %1$s as done sucessfuly";
-	public static final String MESSAGE_MARK_NOT_DONE = "mark %1$s as not done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark %1$s as not done sucessfully";
 	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "%1$s is already marked as done";
 	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "%1$s is originally not mark as done";
 	public static final String MESSAGE_UNDONE = "Last command has been undone.";
@@ -75,6 +73,11 @@ public class Constants {
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
 	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
+	
+	//Remind
+	public static final int INTERVAL_TO_REMIND = -15; //minutes
+	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
+	public static final String MESSAGE_REMIND_DEADLINE_TASKS = "%1$s, (ends at %2$s)";
 	
 	//Filename
 	public static final String OUTFILE = "data.txt";

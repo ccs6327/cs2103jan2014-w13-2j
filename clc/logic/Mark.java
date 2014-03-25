@@ -11,20 +11,48 @@ public class Mark implements Command {
 	private StringBuilder feedback = new StringBuilder();
 	private ArrayList<Integer> displayMem;
 	private ArrayList<Task> internalMem;
+	private ArrayList<Task> reminderMem;
+	private boolean isReminderTask;
+	private long targetTaskId;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
 		displayMem = Storage.getDisplayMem();
 		internalMem = Storage.getInternalMem();
 	}
+	
+	//constructor for marking reminder task
+	public Mark(long taskId) {
+		isReminderTask = true;
+		reminderMem = Remind.getReminderMem();
+		targetTaskId = taskId;
+	}
 
 	@Override
 	public String execute() {
+		if (isReminderTask) {
+			return markReminderMem();
+		}
+		return markDisplayMem();
+	}
+
+	private String markReminderMem() {
+		for (int i = reminderMem.size() - 1; i >= 0; i --) {
+			Task task = reminderMem.get(i);
+			if (task.getTaskId() == targetTaskId) {
+				task.markDone();
+	    		Storage.writeContentIntoFile();
+				break;
+			}
+		}
+		return "";
+	}
+
+	private String markDisplayMem() {
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 			
 			if (isOutOfBound(displayMem.size(), seqNo)) {
-				//print error msg
 				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
 				feedback.append("\n");
 			} else {
