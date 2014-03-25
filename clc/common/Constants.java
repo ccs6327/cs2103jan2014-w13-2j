@@ -131,4 +131,5 @@ public class Constants {
 	public static final String ERROR_NO_COMMA = "ERROR: use comma to differentiate start time and end time";
 	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: no new task name is given";
 	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: please indicate the sequence number";
+	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: command details contain non-numeric info";
 }

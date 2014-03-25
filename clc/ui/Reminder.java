@@ -31,7 +31,7 @@ public class Reminder extends TimerTask {
 	private void initializeFrame() {
 		frameReminder.setTitle("REMINDER");
 		frameReminder.setResizable(false);
-		frameReminder.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameReminder.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameReminder.setBounds(100, 100, 500, 242);
 		frameReminder.getContentPane().setBackground(Color.BLACK);
 		frameReminder.getContentPane().setLayout(null);
