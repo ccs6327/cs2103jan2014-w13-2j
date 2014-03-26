@@ -80,6 +80,10 @@ public class Task {
 	}
 
 	//mutator for update function
+	public void setTaskType(int _taskType){
+		taskType = _taskType;
+	}
+	
 	public void updateTaskName(String newTaskName) {
 		taskName = newTaskName;
 	}
@@ -90,6 +94,18 @@ public class Task {
 
 	public void updateEndTime(Calendar newEndTime) {
 		endTime = newEndTime;
+	}
+	
+	public void updateTaskType(Calendar newStartTime, Calendar newEndTime) {
+		if (newStartTime != null && newEndTime != null) {
+			taskType = TYPE_TIMED_TASK;
+	    } else if (newStartTime == null && newEndTime != null) {
+	    	taskType = TYPE_DEADLINE_TASK;
+	    } else if(newStartTime == null && newEndTime == null) {
+	    	taskType = TYPE_FLOATING_TASK;
+	    } else {
+	    	taskType = TYPE_UNSUPPORTED_TASK;
+	    }
 	}
 
 	//public method

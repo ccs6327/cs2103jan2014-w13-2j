@@ -59,62 +59,91 @@ public class Update implements Command {
 	
 	private void updateTask(){
 		String taskName = task.getTaskName();
+		int taskType = task.getTaskType();
 		Calendar updateTime = null;
+		
 		//update name
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
             feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskName, newTaskName));
             feedback.append("\n");
 		}
+		
 		//update start time
 		if (newStartTime != null){
 			Calendar taskOldStartTime;
-			//update date
-			if (caseCalendarProvided/8 == 1) {
-				taskName = task.getTaskName();
-				taskOldStartTime = task.getStartTime();
-				updateTime = updateNewDate(taskOldStartTime, newStartTime);
-			    task.updateStartTime(updateTime);
-			    caseCalendarProvided -= 8;
-			} 
-			//update time
-			if (caseCalendarProvided/4 == 1) {
-				taskName = task.getTaskName();
-				taskOldStartTime = task.getStartTime();
-				updateTime = updateNewDate(newStartTime, taskOldStartTime);
-			    task.updateStartTime(updateTime);
-			    caseCalendarProvided -= 4;
+			
+			if (taskType == TYPE_TIMED_TASK){
+				//update date
+				if (caseCalendarProvided/8 == 1) {
+					taskName = task.getTaskName();
+					taskOldStartTime = task.getStartTime();
+					updateTime = updateNewDate(taskOldStartTime, newStartTime);
+				    task.updateStartTime(updateTime);
+				    caseCalendarProvided -= 8;
+				} 
+				//update time
+				if (caseCalendarProvided/4 == 1) {
+					taskName = task.getTaskName();
+					taskOldStartTime = task.getStartTime();
+					updateTime = updateNewDate(newStartTime, taskOldStartTime);
+				    task.updateStartTime(updateTime);
+				    caseCalendarProvided -= 4;
+				}
+				
+			} else if (taskType == TYPE_DEADLINE_TASK){
+				task.updateStartTime(newStartTime);
+				updateTime = task.getStartTime();
+				task.setTaskType(TYPE_TIMED_TASK);
+			} else {//for floating task, something not correct
+				task.updateEndTime(newStartTime);
+				updateTime = task.getEndTime();
+				task.setTaskType(TYPE_DEADLINE_TASK);
 			}
 			
 			String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 			feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime));
 			feedback.append("\n");
 		}
+		
 		//update end time
 		if (newEndTime != null) {
-			Calendar taskOldEndTime = null;
-			//update date
-			if (caseCalendarProvided/2 == 1) {
-				taskName = task.getTaskName();
+			Calendar taskOldEndTime;
+			if (taskType == TYPE_FLOATING_TASK){
 				taskOldEndTime = task.getEndTime();
-				updateTime = updateNewDate(taskOldEndTime, newEndTime);
-			    task.updateEndTime(updateTime);
-			    caseCalendarProvided -= 2;
-			} 
-			
-			//update time
-			if (caseCalendarProvided == 1) {
-				taskName = task.getTaskName();
-				taskOldEndTime = task.getEndTime();
-				updateTime = updateNewDate(newEndTime, taskOldEndTime);
-			    task.updateEndTime(updateTime);
+				if (taskOldEndTime == null){
+					task.updateEndTime(newEndTime);
+					updateTime = task.getEndTime();
+					task.setTaskType(TYPE_DEADLINE_TASK);
+				} else {
+					task.updateStartTime(taskOldEndTime);
+					task.updateEndTime(newEndTime);
+					updateTime = task.getEndTime();
+					task.setTaskType(TYPE_TIMED_TASK);
+				}
+			} else {
+				//update date
+				if (caseCalendarProvided/2 == 1) {
+					taskName = task.getTaskName();
+					taskOldEndTime = task.getEndTime();
+					updateTime = updateNewDate(taskOldEndTime, newEndTime);
+				    task.updateEndTime(updateTime);
+				    caseCalendarProvided -= 2;
+				} 
+				
+				//update time
+				if (caseCalendarProvided == 1) {
+					taskName = task.getTaskName();
+					taskOldEndTime = task.getEndTime();
+					updateTime = updateNewDate(newEndTime, taskOldEndTime);
+				    task.updateEndTime(updateTime);
+				}
 			}
 			
 			String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime));
 			feedback.append("\n");
 		} 
-		
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
 			feedback.append(MESSAGE_NO_CHANGE);
 			feedback.append("\n");
