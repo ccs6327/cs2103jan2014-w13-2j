@@ -72,6 +72,7 @@ public class GUI implements NativeKeyListener{
 
 	private void setUpJFrame() {
 		frameClc = new JFrame();
+		frameClc.setAlwaysOnTop(true);
 		frameClc.setName("frame");
 		frameClc.getContentPane().setBackground(Color.GRAY);
 		frameClc.setTitle("CLC V0.2");
@@ -225,7 +226,9 @@ public class GUI implements NativeKeyListener{
 			changeWindowVisibility(e);
 		}	
 		if (isWindowActivated) {
-			traversePreviousInput(e);
+			if (!isPressingCtrl) {
+				traversePreviousInput(e);
+			}
 			clearInputTextBox(e);
 			if (isPressingCtrl) {
 				scrollUpAndDownDisplayBox(e);
