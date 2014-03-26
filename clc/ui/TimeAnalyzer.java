@@ -58,6 +58,9 @@ public class TimeAnalyzer extends Analyzer{
 		} else if (dateInfo.size() > 0) { //date only
 			throw new InvalidInputException(ERROR_NO_EXACT_TIME);
 		}
+
+		if(startTime!=null) System.out.println(startTime.getTime().toString());
+		if(endTime!=null) System.out.println(endTime.getTime().toString());
 	}
 
 	protected static void instantiateVariable() {

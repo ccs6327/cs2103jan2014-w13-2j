@@ -16,7 +16,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	private static String[] tempInfo;
 	private static int calendarProvided = 0;
 	private static int seqNo;
-	private static GregorianCalendar startTime;
+	private static GregorianCalendar tempStartTime;
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
@@ -46,6 +46,8 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
 
+			startTime = tempStartTime;
+			
 			determineIfStartTimeLaterThanEndTime();
 
 			isCaseUpdateCalendar = true;
@@ -104,7 +106,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 			// as processCalendarInfo will set the time to endTime
 			// so we have to swap the value
-			startTime = endTime;
+			tempStartTime = endTime;
 			endTime = null;
 		}
 	}
