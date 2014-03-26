@@ -59,8 +59,7 @@ public class TimeAnalyzer extends Analyzer{
 			throw new InvalidInputException(ERROR_NO_EXACT_TIME);
 		}
 
-		if(startTime!=null) System.out.println(startTime.getTime().toString());
-		if(endTime!=null) System.out.println(endTime.getTime().toString());
+		determineIfCalendarLaterThanNow();
 	}
 
 	protected static void instantiateVariable() {
@@ -246,7 +245,6 @@ public class TimeAnalyzer extends Analyzer{
 			startTime = new GregorianCalendar(startYear, startMonth, startDate, startHour, startMin);
 		}
 		endTime = new GregorianCalendar(endYear, endMonth, endDate, endHour, endMin);
-		determineIfCalendarLaterThanNow();
 	}
 
 	private static void determineIfCalendarLaterThanNow() throws InvalidInputException {
