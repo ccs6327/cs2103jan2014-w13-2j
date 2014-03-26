@@ -47,8 +47,6 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			determineIfEndTimeIsProvided();
 
 			startTime = tempStartTime;
-			
-			determineIfStartTimeLaterThanEndTime();
 
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
