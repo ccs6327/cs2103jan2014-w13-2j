@@ -1,6 +1,7 @@
 package clc.ui;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Timer;
@@ -138,6 +139,8 @@ public class UserInterface {
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();  
+			if(time.get(0)!=null) System.out.println(time.get(0).getTime().toString());
+			if(time.get(1)!=null) System.out.println(time.get(1).getTime().toString());
 			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
