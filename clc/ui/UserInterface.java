@@ -137,8 +137,7 @@ public class UserInterface {
 		int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
-			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
-			//command = new Update(seqNo, time);
+			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();  
 			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
@@ -146,7 +145,7 @@ public class UserInterface {
 		}
 		return command;
 	}
-
+ 
 	private static Command analyzeAdd() throws InvalidInputException {
 		Command command;
 		AddAnalyzer.analyze();
