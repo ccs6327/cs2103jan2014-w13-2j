@@ -19,6 +19,7 @@ public class Redo implements Command {
 		
 		try {
 			Storage.setInternalMem(historyMem.get(currentVersion + 1));
+			Storage.writeContentIntoFile();
 			currentVersion = History.increaseCurrentVersion();
 		} catch (Exception exception) {
 			return MESSAGE_REDONE_FAILED;

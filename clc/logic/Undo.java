@@ -23,6 +23,7 @@ public class Undo implements Command {
 		
 		try {
 			Storage.setInternalMem(historyMem.get(currentVersion - 1));
+			Storage.writeContentIntoFile();
 			Storage.setDisplayMem(displayMem);
 			currentVersion = History.decreaseCurrentVersion();
 		} catch (Exception exception) {
