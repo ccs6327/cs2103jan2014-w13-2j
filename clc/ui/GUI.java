@@ -99,7 +99,7 @@ public class GUI implements NativeKeyListener{
 		displayBox.setBackground(Color.DARK_GRAY);
 		displayBox.setForeground(Color.WHITE);
 		displayBox.setEditable(false);
-		displayBox.setFont(new Font("Calibri", Font.PLAIN, 17));
+		displayBox.setFont(new Font("Calibri Light", Font.PLAIN, 17));
 		displayBox.setBounds(10, 10, 625, 400);
 		scrollPane = new JScrollPane(displayBox);
 		scrollPane.setBorder(null);
