@@ -51,6 +51,7 @@ public class AddAnalyzer extends TimeAnalyzer {
 	}
 	  
 	private static void determineIfReminderNeeded() {
+		isReminderNeeded = false;
 		if (getFirstWord(commandDetails).equals("-r")) {
 			isReminderNeeded = true;
 			commandDetails = removeFirstWord(commandDetails);
