@@ -29,6 +29,7 @@ public class Reminder extends TimerTask {
 	}
 
 	private void initializeFrame() {
+		frameReminder.setAlwaysOnTop(true);
 		frameReminder.setTitle("REMINDER");
 		frameReminder.setResizable(false);
 		frameReminder.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
