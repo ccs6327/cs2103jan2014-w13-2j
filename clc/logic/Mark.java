@@ -49,6 +49,8 @@ public class Mark implements Command {
 	}
 
 	private String markDisplayMem() {
+		boolean isChanged = false;
+		
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 			
@@ -62,16 +64,21 @@ public class Mark implements Command {
 				
 				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				if (isMarked) {
+					isChanged = true;
 					feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
 					feedback.append("\n");
 				} else { //task is marked before this
 					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
 					feedback.append("\n");
-				}
-				History.addNewVersion();
-	    		Storage.writeContentIntoFile();
+				}	
 			}
 		}
+		
+		if (isChanged) {
+			History.addNewVersion();
+    		Storage.writeContentIntoFile();
+		}
+		
 		return feedback.toString().trim();
 	}
 
