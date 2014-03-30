@@ -61,7 +61,8 @@ public class Update implements Command {
 		String taskName = task.getTaskName();
 		int taskType = task.getTaskType();
 		Calendar updateTime = null;
-		
+		Calendar startTimeForChecking = null;
+		Calendar endTimeForChecking = null;
 		//update name
 		if (newTaskName != null){
             task.updateTaskName(newTaskName);
@@ -186,7 +187,14 @@ public class Update implements Command {
 				feedback.append("\n");
 			}
 		} 
-		
+        //check if startTime before endTime
+		startTimeForChecking = task.getStartTime();
+		endTimeForChecking = task.getEndTime();
+		if (startTimeForChecking.compareTo(endTimeForChecking) < 0) {
+			
+		}else {
+			
+		}
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
 			feedback.append(MESSAGE_NO_CHANGE);
 			feedback.append("\n");

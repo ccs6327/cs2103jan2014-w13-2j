@@ -108,6 +108,7 @@ public class Display implements Command {
 	
 	//display incomplete tasks
 	private void displayIncompleteTasks(){
+		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_INCOMPLETE_TASKS);
 		DisplayOutput.add(ANOTHER_LINE);
 		
@@ -119,16 +120,17 @@ public class Display implements Command {
 		    		
 		    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
 		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, i, task.getTaskName(), startTime, endTime));
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, displayNo, task.getTaskName(), startTime, endTime));
 		    		
 		    	} else if (task.getTaskType() == TYPE_DEADLINE_TASK){
 		    		
 		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, i, task.getTaskName(), endTime));
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, displayNo, task.getTaskName(), endTime));
 		    	} else {
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, displayNo, task.getTaskName()));
 		    	}
 		    	displayMem.add(i - 1);
+		    	displayNo++;
 	    	}
 
 	    }
