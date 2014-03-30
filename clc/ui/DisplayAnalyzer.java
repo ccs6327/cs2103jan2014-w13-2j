@@ -3,7 +3,9 @@ package clc.ui;
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TODAY_SHORT;
 import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.TOMORROW_SHORT;
 import static clc.common.Constants.THIS_WEEK;
 import static clc.common.Constants.THIS_MONTH;
 import static clc.common.Constants.NEXT_WEEK;
@@ -73,18 +75,21 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	}
 
 	private static void setToday() {
+		commandDetails = TODAY;
 		// set the start time to now, end time to end of today
 		startTime = new GregorianCalendar();
 		endTime = new GregorianCalendar(year, month, ++date);
 	}
 
 	private static void setTomorrow() {
+		commandDetails = TOMORROW;
 		// set the start time to tomorrow 0000, end time to end of the day
 		startTime = new GregorianCalendar(year, month, ++date);
 		endTime = new GregorianCalendar(year, month, ++date);
 	}
 
 	private static void setThisWeek() {
+		commandDetails = THIS_WEEK;
 		// set the start time to now, end time to end of the week
 		startTime = new GregorianCalendar();
 		endTime = new GregorianCalendar(year, month , date);
@@ -94,6 +99,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	}
 
 	private static void setNextWeek() {
+		commandDetails = NEXT_WEEK;
 		// set the start time to next Monday, end time to end of next week
 		startTime = new GregorianCalendar(year, month, date);
 		endTime = new GregorianCalendar(year, month , date);
@@ -106,39 +112,43 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	}
 
 	private static void setThisMonth() {
+		commandDetails = THIS_MONTH;
 		// set the start time to now, end time to end of the month
 		startTime = new GregorianCalendar();
 		endTime = new GregorianCalendar(year, ++month, 1);
 	}
 
 	private static void setNextMonth() {
+		commandDetails = NEXT_MONTH;
 		// set the start time to beginning to next month, end time to end of next month
 		startTime = new GregorianCalendar(year, ++month, 1);
 		endTime = new GregorianCalendar(year, ++month, 1);
 	}
 
 	private static boolean isCaseDisplayToday() {
-		return commandDetails.equals(TODAY);
+		return commandDetails.equalsIgnoreCase(TODAY)
+				|| commandDetails.equalsIgnoreCase(TODAY_SHORT);
 	}
 
 	private static boolean isCaseDisplayTomorrow() {
-		return commandDetails.equals(TOMORROW);
+		return commandDetails.equalsIgnoreCase(TOMORROW)
+				|| commandDetails.equalsIgnoreCase(TOMORROW_SHORT);
 	}
 
 	private static boolean isCaseDisplayThisWeek() {
-		return commandDetails.equals(THIS_WEEK);
+		return commandDetails.equalsIgnoreCase(THIS_WEEK);
 	}
 
 	private static boolean isCaseDisplayNextWeek() {
-		return commandDetails.equals(NEXT_WEEK);
+		return commandDetails.equalsIgnoreCase(NEXT_WEEK);
 	}
 
 	private static boolean isCaseDisplayThisMonth() {
-		return commandDetails.equals(THIS_MONTH);
+		return commandDetails.equalsIgnoreCase(THIS_MONTH);
 	}
 
 	private static boolean isCaseDisplayNextMonth() {
-		return commandDetails.equals(NEXT_MONTH);
+		return commandDetails.equalsIgnoreCase(NEXT_MONTH);
 	}
 
     //change for display string
