@@ -57,13 +57,16 @@ public class Constants {
 	//Display
 	public static final String TO = " to ";
 	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
+	public static final String MESSAGE_SHOW_INCOMPLETE_TASKS = "INCOMPLETE TASKS";
 	public static final String MESSAGE_SHOW_FLOATING_TASKS = "FLOATING TASKS";
 	public static final String MESSAGE_SHOW_DEADLINE_TASKS = "DEADLINE TASKS";
 	public static final String MESSAGE_SHOW_TIMED_TASKS = "TIMED TASKS";
-	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. %2$s, (starts at %3$s; ends at %4$s)"; 
-	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. %2$s, (ends at %3$s)";
+	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. [%3$s - %4$s] %2$s"; 
+	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. [by %3$s] %2$s";
 	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
+	public static final String MESSAGE_DISPLAY_INCOMPLETE_TASKS = "All incomplete tasks have been displayed.";
+	public static final String MESSAGE_NO_INCOMPLETE_TASKS =  "All tasks are done.";
 	public static final String MESSAGE_DISPLAY_FLOATING_TASKS = "All floating tasks have been displayed.";
 	public static final String MESSAGE_NO_FLOATING_TASKS =  "No floating task is found.";
 	public static final String MESSAGE_DISPLAY_DEADLINE_TASKS = "All deadline tasks have been displayed.";
@@ -73,6 +76,7 @@ public class Constants {
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD = "No task is found in this period";
+	public static final String TYPE_DISPLAY_INCOMPLETE = "";
 	public static final String TYPE_DISPLAY_ALL = "all";
 	public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
 	public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
@@ -119,6 +123,7 @@ public class Constants {
 	public static final String SLASH = "/";
 	public static final String DOT = ".";
 	public static final String ALL = "all";
+	public static final String INCOMPLETE_TASK = "";
 	public static final String FLOATING_TASK = "floating tasks";
 	public static final String DEADLINE_TASK = "deadline tasks";
 	public static final String TIMED_TASK = "timed tasks";

@@ -40,6 +40,9 @@ public class Display implements Command {
 		} else if (commandDetails!= null) {
 			
 			switch (commandDetails){
+			case TYPE_DISPLAY_INCOMPLETE:
+				displayIncompleteTasks();
+				break;
 			case TYPE_DISPLAY_ALL:
 				displayAllTasks();
 				break;
@@ -92,6 +95,48 @@ public class Display implements Command {
 	    feedback.append("\n");
 	    feedback.append(MESSAGE_DISPLAY);
 	    feedback.append("\n");
+	}
+	
+	//display incomplete tasks
+	private void displayIncompleteTasks(){
+		DisplayOutput.add(MESSAGE_SHOW_INCOMPLETE_TASKS);
+
+	    for (int i = 1; i<= internalMem.size(); i++){
+	    	
+	    	Task task = internalMem.get(i - 1);
+	    	if (!task.isDone()){
+		    	if(task.getTaskType() == TYPE_TIMED_TASK){
+		    		
+		    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
+		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, i, task.getTaskName(), startTime, endTime));
+		    		
+		    	} else if (task.getTaskType() == TYPE_DEADLINE_TASK){
+		    		
+		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, i, task.getTaskName(), endTime));
+		    	} else {
+		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
+		    	}
+		    	displayMem.add(i - 1);
+	    	}
+
+	    }
+	    
+	    feedback.append("\n");
+	    printOutDisplay();
+	    
+		// Process feedback
+		if (!isDataEmpty()) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS);
+			feedback.append("\n");
+		} else {
+			feedback.append("\n");
+			feedback.append(MESSAGE_NO_INCOMPLETE_TASKS);
+			feedback.append("\n");
+		}
+        
 	}
 	
 	//display floating tasks

@@ -9,6 +9,7 @@ import static clc.common.Constants.THIS_MONTH;
 import static clc.common.Constants.NEXT_WEEK;
 import static clc.common.Constants.NEXT_MONTH;
 import static clc.common.Constants.ALL;
+import static clc.common.Constants.INCOMPLETE_TASK;
 import static clc.common.Constants.TIMED_TASK;
 import static clc.common.Constants.DEADLINE_TASK;
 import static clc.common.Constants.FLOATING_TASK;
@@ -142,7 +143,9 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
     //change for display string
 	private static boolean isCaseDisplayString() {
+		
 		return commandDetails.equals(ALL) ||
+			   commandDetails.equals(INCOMPLETE_TASK) ||
 			   commandDetails.equals(FLOATING_TASK) ||
 			   commandDetails.equals(DEADLINE_TASK) ||
 			   commandDetails.equals(TIMED_TASK);
