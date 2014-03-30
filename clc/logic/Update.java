@@ -73,7 +73,7 @@ public class Update implements Command {
 		if (newStartTime != null){
 			Calendar taskOldStartTime;
 			
-			if (taskType == TYPE_TIMED_TASK){
+			if (taskType == TYPE_TIMED_TASK){//for timed task
 				//update date
 				if (caseCalendarProvided/8 == 1) {
 					taskName = task.getTaskName();
@@ -91,37 +91,78 @@ public class Update implements Command {
 				    caseCalendarProvided -= 4;
 				}
 				
-			} else if (taskType == TYPE_DEADLINE_TASK){
+				//process feedback
+				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
+				feedback.append("\n");
+				
+			} else if (taskType == TYPE_DEADLINE_TASK){//for deadline task
 				task.updateStartTime(newStartTime);
 				updateTime = task.getStartTime();
 				task.setTaskType(TYPE_TIMED_TASK);
-			} else {//for floating task, something not correct
-				task.updateEndTime(newStartTime);
-				updateTime = task.getEndTime();
-				task.setTaskType(TYPE_DEADLINE_TASK);
+				
+				//process feedback
+				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
+				feedback.append("\n");
+				feedback.append("\n");
+				feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, taskName, UPDATE_DEADLINE_TASK, UPDATE_TIMED_TASK, seqNo));
+				feedback.append("\n");
+				
+			} else {//for floating task
+				if(newEndTime != null){
+					task.updateStartTime(newStartTime);
+					updateTime = task.getStartTime();
+					//task.setTaskType(TYPE_DEADLINE_TASK);
+					
+					//process feedback
+					String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+					feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
+					feedback.append("\n");
+				} else {
+					
+					//process feedback
+					feedback.append(MESSAGE_ERROR_UPDATE);
+					feedback.append("\n");
+				}
 			}
 			
-			String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-			feedback.append("\n");
 		}
 		
 		//update end time
 		if (newEndTime != null) {
-			Calendar taskOldEndTime;
-			if (taskType == TYPE_FLOATING_TASK){
-				taskOldEndTime = task.getEndTime();
-				if (taskOldEndTime == null){
+			Calendar taskOldEndTime, floatingTaskStartTime;
+			if (taskType == TYPE_FLOATING_TASK){//for floating task
+				floatingTaskStartTime = task.getStartTime();
+				if (floatingTaskStartTime == null){
 					task.updateEndTime(newEndTime);
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_DEADLINE_TASK);
+					
+					//process feedback
+					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
+					feedback.append("\n");
+					feedback.append("\n");
+					feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, taskName, UPDATE_FLOATING_TASK, UPDATE_DEADLINE_TASK, seqNo));
+					feedback.append("\n");
+					
 				} else {
-					task.updateStartTime(taskOldEndTime);
 					task.updateEndTime(newEndTime);
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_TIMED_TASK);
+					
+					//process feedback
+					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
+					feedback.append("\n");
+					feedback.append("\n");
+					feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, taskName, UPDATE_FLOATING_TASK, UPDATE_TIMED_TASK, seqNo));
+					feedback.append("\n");
+					
 				}
 			} else {
+				
 				//update date
 				if (caseCalendarProvided/2 == 1) {
 					taskName = task.getTaskName();
@@ -138,12 +179,14 @@ public class Update implements Command {
 					updateTime = updateNewDate(newEndTime, taskOldEndTime);
 				    task.updateEndTime(updateTime);
 				}
+				
+				// process feedback
+				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
+				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
+				feedback.append("\n");
 			}
-			
-			String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-			feedback.append("\n");
 		} 
+		
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
 			feedback.append(MESSAGE_NO_CHANGE);
 			feedback.append("\n");
