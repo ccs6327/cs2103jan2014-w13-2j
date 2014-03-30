@@ -20,7 +20,6 @@ public class Constants {
 	public static final String TYPE_REMOVE = "remove";
 	public static final String TYPE_ERASE = "erase";
 	public static final String TYPE_CLEAR = "clear";
-	public static final String TYPE_DELETE_ALL = "delete all";
 	public static final String TYPE_EXIT = "exit";
 	public static final String TYPE_HELP = "help";
 	public static final String TYPE_MARK = "mark";
@@ -45,10 +44,10 @@ public class Constants {
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
-	public static final String MESSAGE_MARK_DONE = "mark %1$s as done sucessfuly";
-	public static final String MESSAGE_MARK_NOT_DONE = "mark %1$s as not done sucessfully";
-	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "%1$s is already marked as done";
-	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "%1$s is originally not mark as done";
+	public static final String MESSAGE_MARK_DONE = "mark [%1$s] as done sucessfuly";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark [%1$s] as not done sucessfully";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "[%1$s] is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "[%1$s] is originally not mark as done";
 	public static final String MESSAGE_UNDONE = "Last command has been undone.";
 	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
 	public static final String MESSAGE_REDONE = "Last command has been redone.";

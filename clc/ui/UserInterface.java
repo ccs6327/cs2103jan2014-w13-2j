@@ -43,7 +43,6 @@ import static clc.common.Constants.TYPE_UNMARK_SHORT;
 import static clc.common.Constants.TYPE_UPDATE;
 import static clc.common.Constants.TYPE_UPDATE_SHORT;
 import static clc.common.Constants.TYPE_CLEAR;
-import static clc.common.Constants.TYPE_DELETE_ALL;
 import static clc.common.Constants.TYPE_UNDO;
 import static clc.common.Constants.TYPE_REDO;
 import static clc.common.Constants.TYPE_HELP;
@@ -170,8 +169,7 @@ public class UserInterface {
 	}
 
 	private static boolean isCaseClear(String commandType) {
-		return commandType.equalsIgnoreCase(TYPE_CLEAR) 
-				|| commandType.equalsIgnoreCase(TYPE_DELETE_ALL);
+		return commandType.equalsIgnoreCase(TYPE_CLEAR);
 	}
 
 	private static boolean isCaseUndo(String commandType) {
@@ -245,8 +243,6 @@ public class UserInterface {
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();  
-			if(time.get(0)!=null) System.out.println(time.get(0).getTime().toString());
-			if(time.get(1)!=null) System.out.println(time.get(1).getTime().toString());
 			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
