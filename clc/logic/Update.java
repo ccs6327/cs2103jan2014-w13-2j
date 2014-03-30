@@ -102,7 +102,7 @@ public class Update implements Command {
 			}
 			
 			String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime));
+			feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
 			feedback.append("\n");
 		}
 		
@@ -141,7 +141,7 @@ public class Update implements Command {
 			}
 			
 			String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime));
+			feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
 			feedback.append("\n");
 		} 
 		if(newTaskName == null && newStartTime == null && newEndTime == null){

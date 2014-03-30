@@ -1,5 +1,6 @@
 package clc.logic;
 import java.util.Calendar;
+import java.util.Comparator;
 
 import static clc.common.Constants.*;
 
@@ -96,18 +97,19 @@ public class Task {
 		endTime = newEndTime;
 	}
 	
-	public void updateTaskType(Calendar newStartTime, Calendar newEndTime) {
-		if (newStartTime != null && newEndTime != null) {
-			taskType = TYPE_TIMED_TASK;
-	    } else if (newStartTime == null && newEndTime != null) {
-	    	taskType = TYPE_DEADLINE_TASK;
-	    } else if(newStartTime == null && newEndTime == null) {
-	    	taskType = TYPE_FLOATING_TASK;
-	    } else {
-	    	taskType = TYPE_UNSUPPORTED_TASK;
-	    }
+	// Check whether the task has both start time and end time
+	public boolean isTimedTask() {
+		return getStartTime() != null && getEndTime() != null;
 	}
-
+	// Check whether the task has only the end date
+	public boolean isDeadlineTask() {
+		return getStartTime() == null && getEndTime() != null;
+	}
+	// Check whether the event has neither start date nor end date
+	public boolean isFloatingTask() {
+		return getStartTime() == null && getEndTime() == null;
+	}
+	
 	//public method
 	public boolean markDone() {
 		if (!isDone) {
@@ -142,5 +144,34 @@ public class Task {
 	}
 }
 
+class TaskComparator implements Comparator<Task> {
+	@Override
+	public int compare(Task task1, Task task2) {
+		if(task1.isFloatingTask()){
+			if(task2.isFloatingTask()) {
+				return task1.getTaskName().compareTo(task2.getTaskName());
+			}
+			else {
+				return -1;
+			}
+		}
+		else {
+			if(task2.isFloatingTask()) {
+				return 1;
+			}
+			else if(!task1.getEndTime().equals(task2.getEndTime())) {
+				if(task1.getEndTime().before(task2.getEndTime())) {
+					return -1;
+				}
+				else {
+					return 1;
+				}
+			}
+			else {
+				return task1.getTaskName().compareTo(task2.getTaskName());
+			}
+		}
+	}
+}
 
 

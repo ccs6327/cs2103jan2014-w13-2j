@@ -10,6 +10,7 @@ import static clc.common.Constants.*;
 public class Display implements Command {
     private StringBuilder feedback = new StringBuilder();
     private String commandDetails = null;
+    private String query;
     private ArrayList<GregorianCalendar> time;
     private Calendar startOfPeriod = null, endOfPeriod = null;
 	private ArrayList<Task> internalMem;
@@ -17,6 +18,13 @@ public class Display implements Command {
 	
 	public Display(ArrayList<GregorianCalendar> time) {
 		this.time = time;
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
+	}
+	
+	public Display(ArrayList<GregorianCalendar> time, String query) {
+		this.time = time;
+		this.query = query;
 		internalMem = Storage.getInternalMem();
 		displayMem = Storage.getDisplayMem();
 	}
@@ -70,7 +78,8 @@ public class Display implements Command {
 	//display all tasks
 	private void displayAllTasks(){
 		DisplayOutput.add(MESSAGE_SHOW_ALL_TASKS);
-
+		DisplayOutput.add(ANOTHER_LINE);
+		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	
 	    	Task task = internalMem.get(i - 1);
@@ -100,7 +109,8 @@ public class Display implements Command {
 	//display incomplete tasks
 	private void displayIncompleteTasks(){
 		DisplayOutput.add(MESSAGE_SHOW_INCOMPLETE_TASKS);
-
+		DisplayOutput.add(ANOTHER_LINE);
+		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	
 	    	Task task = internalMem.get(i - 1);
@@ -143,7 +153,8 @@ public class Display implements Command {
 	private void displayFloatingTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_FLOATING_TASKS);
-
+		DisplayOutput.add(ANOTHER_LINE);
+		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_FLOATING_TASK){
@@ -173,7 +184,8 @@ public class Display implements Command {
 	private void displayDeadlineTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_DEADLINE_TASKS);
-
+		DisplayOutput.add(ANOTHER_LINE);
+		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_DEADLINE_TASK){
@@ -204,6 +216,7 @@ public class Display implements Command {
 	private void displayTimedTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_TIMED_TASKS);
+		DisplayOutput.add(ANOTHER_LINE);
 
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
@@ -239,7 +252,19 @@ public class Display implements Command {
 			endOfPeriod = time.get(1);
 			//Process output
 			//DisplayOutput.add(D_M_Y_DateFormatter.format(startOfPeriod.getTime()) + TO + D_M_Y_DateFormatter.format(endOfPeriod.getTime()));
-			
+			if(query != null){
+				DisplayOutput.add(String.format(MESSAGE_DISPLAY_QUERY, query));
+				DisplayOutput.add(ANOTHER_LINE);
+			} else if (startOfPeriod == null){
+				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
+				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_BY_DEADLINE, endTime));
+				DisplayOutput.add(ANOTHER_LINE);
+			} else {
+				String startTime = D_M_Y_DateFormatter.format(startOfPeriod.getTime());
+				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
+				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_IN_PERIOD, startTime, endTime));
+				DisplayOutput.add(ANOTHER_LINE);
+			}
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
 			feedback.append("\n");
 			printOutDisplay();

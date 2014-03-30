@@ -48,7 +48,9 @@ import static clc.common.Constants.TYPE_REDO;
 import static clc.common.Constants.TYPE_HELP;
 import static clc.common.Constants.TYPE_EXIT;
 import static clc.common.Constants.TYPE_IMPORT;
+import static clc.common.Constants.TYPE_IMPORT_SHORT;
 import static clc.common.Constants.TYPE_EXPORT;
+import static clc.common.Constants.TYPE_EXPORT_SHORT;
 
 
 public class UserInterface {
@@ -161,11 +163,13 @@ public class UserInterface {
 	}
 
 	private static boolean isCaseImport(String commandType) {
-		return commandType.equalsIgnoreCase(TYPE_IMPORT);
+		return commandType.equalsIgnoreCase(TYPE_IMPORT)
+				|| commandType.equalsIgnoreCase(TYPE_IMPORT_SHORT);
 	}
 
 	private static boolean isCaseExport(String commandType) {
-		return commandType.equalsIgnoreCase(TYPE_EXPORT);
+		return commandType.equalsIgnoreCase(TYPE_EXPORT)
+				|| commandType.equalsIgnoreCase(TYPE_EXPORT_SHORT);
 	}
 
 	private static boolean isCaseClear(String commandType) {
@@ -210,10 +214,11 @@ public class UserInterface {
 			boolean isCaseKeywordCalendar = DisplayAnalyzer.getDisplayCalendarCase();
 			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 			if (isCaseKeywordCalendar) {
-				command = new Display(time);
-			} else {
 				String query = DisplayAnalyzer.getDisplayQuery();
-				//command = new Display(time, query);
+				command = new Display(time, query);
+				//command = new Display(time);
+				
+			} else {
 				command = new Display(time);
 			}
 		} else {
