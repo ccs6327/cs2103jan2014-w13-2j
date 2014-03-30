@@ -31,7 +31,9 @@ public class Constants {
 	public static final String TYPE_UPDATE = "update";
 	public static final String TYPE_UPDATE_SHORT = "up";
 	public static final String TYPE_IMPORT = "import";
+	public static final String TYPE_IMPORT_SHORT = "imp";
 	public static final String TYPE_EXPORT = "export";
+	public static final String TYPE_EXPORT_SHORT = "exp";
 
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
@@ -127,15 +129,15 @@ public class Constants {
 	public static final String FLOATING_TASK = "floating tasks";
 	public static final String DEADLINE_TASK = "deadline tasks";
 	public static final String TIMED_TASK = "timed tasks";
-	public static final String THIS_WEEK = "this week";
-	public static final String NEXT_WEEK = "next week";
-	public static final String THIS_MONTH = "this month";
-	public static final String NEXT_MONTH = "next month";
+	public static final String THIS_WEEK = "This week";
+	public static final String NEXT_WEEK = "Next week";
+	public static final String THIS_MONTH = "This month";
+	public static final String NEXT_MONTH = "Next month";
 
 	//TimeAnalyzer
-	public static final String TODAY = "today";
+	public static final String TODAY = "Today";
 	public static final String TODAY_SHORT = "tdy";
-	public static final String TOMORROW = "tomorrow";
+	public static final String TOMORROW = "Tomorrow";
 	public static final String TOMORROW_SHORT = "tmr";
 	public static final String MONDAY = "monday";
 	public static final String MONDAY_SHORT = "mon";
