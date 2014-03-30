@@ -255,8 +255,15 @@ public class Display implements Command {
 			if(query != null){
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_QUERY, query));
 				DisplayOutput.add(ANOTHER_LINE);
+			} else if (startOfPeriod == null){
+				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
+				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_BY_DEADLINE, endTime));
+				DisplayOutput.add(ANOTHER_LINE);
 			} else {
-				
+				String startTime = D_M_Y_DateFormatter.format(startOfPeriod.getTime());
+				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
+				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_IN_PERIOD, startTime, endTime));
+				DisplayOutput.add(ANOTHER_LINE);
 			}
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
 			feedback.append("\n");

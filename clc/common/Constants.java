@@ -77,6 +77,8 @@ public class Constants {
 	public static final String MESSAGE_DISPLAY_TIMED_TASKS = "All timed tasks have been displayed.";
 	public static final String MESSAGE_NO_TIMED_TASKS =  "No timed task is found";
 	public static final String MESSAGE_DISPLAY_QUERY = "[%1$s's Tasks]";
+	public static final String MESSAGE_DISPLAY_TASKS_BY_DEADLINE = "Task(s) end before [%1$s]";
+	public static final String MESSAGE_DISPLAY_TASKS_IN_PERIOD = "Task(s) from [%1$s] to [%2$s]";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD = "No task is found in this period";
@@ -87,9 +89,9 @@ public class Constants {
 	public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
 
 	//Update
-	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task (%1$s) is updated to (%2$s) successful.";
-	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task (%1$s) starttime is updated to (%2$s) successful.";
-	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task (%1$s) endtime is updated to (%2$s) successful.";
+	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successful.";
+	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successful.";
+	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] end  time is updated to [%2$s} successful.";
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
 	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
@@ -131,15 +133,15 @@ public class Constants {
 	public static final String FLOATING_TASK = "floating tasks";
 	public static final String DEADLINE_TASK = "deadline tasks";
 	public static final String TIMED_TASK = "timed tasks";
-	public static final String THIS_WEEK = "This week";
-	public static final String NEXT_WEEK = "Next week";
-	public static final String THIS_MONTH = "This month";
-	public static final String NEXT_MONTH = "Next month";
+	public static final String THIS_WEEK = "this week";
+	public static final String NEXT_WEEK = "next week";
+	public static final String THIS_MONTH = "this month";
+	public static final String NEXT_MONTH = "next month";
 
 	//TimeAnalyzer
-	public static final String TODAY = "Today";
+	public static final String TODAY = "today";
 	public static final String TODAY_SHORT = "tdy";
-	public static final String TOMORROW = "Tomorrow";
+	public static final String TOMORROW = "tomorrow";
 	public static final String TOMORROW_SHORT = "tmr";
 	public static final String MONDAY = "monday";
 	public static final String MONDAY_SHORT = "mon";
