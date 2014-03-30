@@ -10,7 +10,7 @@ import clc.ui.UserInterface;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { 
 		checkIfRunning();
 		UserInterface userInterface = new UserInterface();
 		Storage.initializeDataFile();
@@ -32,5 +32,5 @@ public class Main {
 			e.printStackTrace();
 			System.exit(2);
 		} 
-	}
+	} 
 }
