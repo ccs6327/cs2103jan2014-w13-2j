@@ -19,7 +19,8 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 
 public class DisplayAnalyzer extends TimeAnalyzer{
-	private static boolean isCaseDisplayCalendar;
+	private static boolean isCaseDisplayCalendar; //display Calendar with date format
+	private static boolean isCaseKeywordCalendar; //display Calendar with keyword
 	private static int year, month, date;
 	
 	protected DisplayAnalyzer(String input) {
@@ -29,6 +30,7 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	protected static void analyze() throws InvalidInputException{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
+		isCaseKeywordCalendar = true;
 		
 		year = Calendar.getInstance().get(Calendar.YEAR);
 		month = Calendar.getInstance().get(Calendar.MONTH);
@@ -46,10 +48,12 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 			setThisMonth();
 		} else if (isCaseDisplayNextMonth()) {
 			setNextMonth();
-		} else if (isCaseDisplayDeadline()) {
+		} else if (isCaseDisplayCalendar()) {
+			isCaseKeywordCalendar = false;
 			recordAndProcessCalendarInfoProvided();
 		} else if(isCaseDisplayString()){
 			isCaseDisplayCalendar = false;
+			isCaseKeywordCalendar = false;
 		} else {
 			throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
 		}
@@ -57,6 +61,10 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 	
 	protected static boolean getDisplayCase() {
 		return isCaseDisplayCalendar;
+	}
+	
+	protected static boolean getDisplayCalendarCase() {
+		return isCaseKeywordCalendar;
 	}
 
 	protected static String getDisplayQuery() {
@@ -134,17 +142,13 @@ public class DisplayAnalyzer extends TimeAnalyzer{
 
     //change for display string
 	private static boolean isCaseDisplayString() {
-		if(!doesCommandDetailsExist(commandDetails)){
-			commandDetails = ALL;
-		}
-		
 		return commandDetails.equals(ALL) ||
 			   commandDetails.equals(FLOATING_TASK) ||
 			   commandDetails.equals(DEADLINE_TASK) ||
 			   commandDetails.equals(TIMED_TASK);
 	}
 	
-	private static boolean isCaseDisplayDeadline() {
+	private static boolean isCaseDisplayCalendar() {
 		return doesContainTimeInfo();
 	}
 

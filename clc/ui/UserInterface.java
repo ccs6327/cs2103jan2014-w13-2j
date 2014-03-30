@@ -1,7 +1,6 @@
 package clc.ui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Timer;
@@ -24,7 +23,33 @@ import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
 import clc.storage.History;
-import static clc.common.Constants.*;
+
+import static clc.common.Constants.MESSAGE_INVALID_FORMAT;
+import static clc.common.Constants.MESSAGE_WELCOME;
+import static clc.common.Constants.TYPE_ADD;
+import static clc.common.Constants.TYPE_CREATE;
+import static clc.common.Constants.TYPE_DELETE;
+import static clc.common.Constants.TYPE_DELETE_SHORT;
+import static clc.common.Constants.TYPE_ERASE;
+import static clc.common.Constants.TYPE_REMOVE;
+import static clc.common.Constants.TYPE_DISPLAY;
+import static clc.common.Constants.TYPE_DISPLAY_SHORT;
+import static clc.common.Constants.TYPE_SHOW;
+import static clc.common.Constants.TYPE_LIST;
+import static clc.common.Constants.TYPE_MARK;
+import static clc.common.Constants.TYPE_MARK_SHORT;
+import static clc.common.Constants.TYPE_UNMARK;
+import static clc.common.Constants.TYPE_UNMARK_SHORT;
+import static clc.common.Constants.TYPE_UPDATE;
+import static clc.common.Constants.TYPE_UPDATE_SHORT;
+import static clc.common.Constants.TYPE_CLEAR;
+import static clc.common.Constants.TYPE_DELETE_ALL;
+import static clc.common.Constants.TYPE_UNDO;
+import static clc.common.Constants.TYPE_REDO;
+import static clc.common.Constants.TYPE_HELP;
+import static clc.common.Constants.TYPE_EXIT;
+import static clc.common.Constants.TYPE_IMPORT;
+import static clc.common.Constants.TYPE_EXPORT;
 
 
 public class UserInterface {
@@ -62,56 +87,39 @@ public class UserInterface {
 		String commandType = Analyzer.getCommandType(); 
 
 		try{
-			switch (commandType) {
-			case TYPE_ADD:
+			if (isCaseAdd(commandType)) {
 				command = analyzeAdd();
-				break;
-			case TYPE_DISPLAY:
-				command = analyzeDisplay();
-				break;
-			case TYPE_DELETE:
+			} else if (isCaseDelete(commandType)) {
 				command = analyzeDelete();
-				break;
-			case TYPE_MARK:
+			} else if (isCaseDisplay(commandType)) {
+				command = analyzeDisplay();
+			} else if (isCaseMark(commandType)) {
 				command = analyzeMark();
-				break;
-			case TYPE_UNMARK:
+			} else if (isCaseUnmark(commandType)) {
 				command = analyzeUnmark();
-				break;
-			case TYPE_UPDATE:
+			} else if (isCaseUpdate(commandType)) {
 				command = analyzeUpdate();
-				break;
-			case TYPE_CLEAR:
-				command = new Clear();
-				break;
-			case TYPE_UNDO:
-				command = new Undo();
-				break;
-			case TYPE_REDO:
-				command = new Redo();
-				break;
-			case TYPE_EXPORT:
-				command = analyzeExport();
-				break;
-			case TYPE_IMPORT:
+			} else if (isCaseImport(commandType)) {
 				command = analyzeImport();
-				break;
-			case TYPE_HELP:
+			} else if (isCaseExport(commandType)) {
+				command = analyzeExport();
+			} else if (isCaseClear(commandType)) {
+				command = new Clear();
+			} else if (isCaseUndo(commandType)) {
+				command = new Undo();
+			} else if (isCaseRedo(commandType)) {
+				command = new Redo();
+			} else if (isCaseHelp(commandType)) {
 				command = new Help();
-				break;
-			case TYPE_EXIT:
+			} else if (isCaseExit(commandType)) {
 				command = new Exit();
-				break;
-			default:
-				return String.format(MESSAGE_INVALID_FORMAT, input);
+			} else {
+				throw new InvalidInputException(String.format(MESSAGE_INVALID_FORMAT, input));
 			}
-
+			
 			String feedback = command.execute();
 			
-			//clear timer and reset timer
-			timer.cancel();
-			timer.purge();
-			setTimerForReminder();
+			clearAndResetTimer();
 			
 			return feedback;
 		} catch (InvalidInputException iie) {
@@ -119,15 +127,113 @@ public class UserInterface {
 		}
 	}
 
-	private static Command analyzeExport() {
+	private static boolean isCaseAdd(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_ADD) 
+				|| commandType.equalsIgnoreCase(TYPE_CREATE);
+	}
+
+	private static boolean isCaseDelete(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_DELETE) 
+				|| commandType.equalsIgnoreCase(TYPE_DELETE_SHORT)
+				|| commandType.equalsIgnoreCase(TYPE_ERASE)
+				|| commandType.equalsIgnoreCase(TYPE_REMOVE);
+	}
+
+	private static boolean isCaseDisplay(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_DISPLAY) 
+				|| commandType.equalsIgnoreCase(TYPE_DISPLAY_SHORT) 
+				|| commandType.equalsIgnoreCase(TYPE_SHOW) 
+				|| commandType.equalsIgnoreCase(TYPE_LIST);
+	}
+
+	private static boolean isCaseMark(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_MARK) 
+				|| commandType.equalsIgnoreCase(TYPE_MARK_SHORT);
+	}
+
+	private static boolean isCaseUnmark(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UNMARK) 
+				|| commandType.equalsIgnoreCase(TYPE_UNMARK_SHORT);
+	}
+
+	private static boolean isCaseUpdate(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UPDATE) 
+				|| commandType.equalsIgnoreCase(TYPE_UPDATE_SHORT);
+	}
+
+	private static boolean isCaseImport(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_IMPORT);
+	}
+
+	private static boolean isCaseExport(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_EXPORT);
+	}
+
+	private static boolean isCaseClear(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_CLEAR) 
+				|| commandType.equalsIgnoreCase(TYPE_DELETE_ALL);
+	}
+
+	private static boolean isCaseUndo(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UNDO);
+	}
+
+	private static boolean isCaseRedo(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_REDO);
+	}
+
+	private static boolean isCaseHelp(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_HELP);
+	}
+
+	private static boolean isCaseExit(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_EXIT);
+	}
+ 
+	private static Command analyzeAdd() throws InvalidInputException {
 		Command command;
-		command = new Export(Analyzer.getCommandDetails());
+		AddAnalyzer.analyze(); 
+		Task task = AddAnalyzer.getToBeAddedTask();
+		command = new Add(task);
 		return command;
 	}
-	
-	private static Command analyzeImport() {
+
+	private static Command analyzeDelete() throws InvalidInputException {
 		Command command;
-		command = new Import(Analyzer.getCommandDetails());
+		command = new Delete(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeDisplay() throws InvalidInputException{
+		Command command;
+		DisplayAnalyzer.analyze();
+		boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
+		if (isCaseDisplayCalendar) {
+			boolean isCaseKeywordCalendar = DisplayAnalyzer.getDisplayCalendarCase();
+			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
+			if (isCaseKeywordCalendar) {
+				command = new Display(time);
+			} else {
+				String query = DisplayAnalyzer.getDisplayQuery();
+				//command = new Display(time, query);
+				command = new Display(time);
+			}
+		} else {
+			String query = DisplayAnalyzer.getDisplayQuery();
+			command = new Display(query);
+		}
+		return command;
+	}
+
+	private static Command analyzeMark() throws InvalidInputException {
+		Command command;
+		command = new Mark(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeUnmark() throws InvalidInputException {
+		Command command;
+		command = new Unmark(SequenceNumberExtractor.getSequenceNum());
 		return command;
 	}
 
@@ -148,45 +254,23 @@ public class UserInterface {
 		}
 		return command;
 	}
- 
-	private static Command analyzeAdd() throws InvalidInputException {
+	
+	private static Command analyzeImport() {
 		Command command;
-		AddAnalyzer.analyze();
-		Task task = AddAnalyzer.getToBeAddedTask();
-		command = new Add(task);
+		command = new Import(Analyzer.getCommandDetails());
 		return command;
 	}
 
-	private static Command analyzeDelete() throws InvalidInputException {
+	private static Command analyzeExport() {
 		Command command;
-		command = new Delete(SequenceNumberExtractor.getSequenceNum());
+		command = new Export(Analyzer.getCommandDetails());
 		return command;
 	}
 
-	private static Command analyzeDisplay() throws InvalidInputException{
-		Command command;
-		DisplayAnalyzer.analyze();
-		boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
-		if (isCaseDisplayCalendar) {
-			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
-			command = new Display(time);
-		} else {
-			String query = DisplayAnalyzer.getDisplayQuery();
-			command = new Display(query);
-		}
-		return command;
-	}
-
-	private static Command analyzeMark() throws InvalidInputException {
-		Command command;
-		command = new Mark(SequenceNumberExtractor.getSequenceNum());
-		return command;
-	}
-
-	private static Command analyzeUnmark() throws InvalidInputException {
-		Command command;
-		command = new Unmark(SequenceNumberExtractor.getSequenceNum());
-		return command;
+	private static void clearAndResetTimer() {
+		timer.cancel();
+		timer.purge();
+		setTimerForReminder();
 	}
 
 	protected static String getWelcomeMessage() {

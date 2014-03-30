@@ -5,23 +5,34 @@ import java.text.SimpleDateFormat;
 
 public class Constants {
 	public static final int TYPE_TIMED_TASK = 0;
-	public static final int TYPE_DEADLINE_TASK = 1;
+	public static final int TYPE_DEADLINE_TASK = 1; 
 	public static final int TYPE_FLOATING_TASK = 2;
 	public static final int TYPE_UNSUPPORTED_TASK = 3;
 
 	public static final String TYPE_ADD = "add";
+	public static final String TYPE_CREATE = "create";
 	public static final String TYPE_DISPLAY = "display";
+	public static final String TYPE_DISPLAY_SHORT = "dis";
+	public static final String TYPE_SHOW = "show";
+	public static final String TYPE_LIST = "list";
 	public static final String TYPE_DELETE = "delete";
+	public static final String TYPE_DELETE_SHORT = "del";
+	public static final String TYPE_REMOVE = "remove";
+	public static final String TYPE_ERASE = "erase";
 	public static final String TYPE_CLEAR = "clear";
+	public static final String TYPE_DELETE_ALL = "delete all";
 	public static final String TYPE_EXIT = "exit";
 	public static final String TYPE_HELP = "help";
 	public static final String TYPE_MARK = "mark";
+	public static final String TYPE_MARK_SHORT = "mrk";
+	public static final String TYPE_UNMARK = "unmark";
+	public static final String TYPE_UNMARK_SHORT = "umrk";
 	public static final String TYPE_UNDO = "undo";
 	public static final String TYPE_REDO = "redo";
-	public static final String TYPE_UNMARK = "unmark";
 	public static final String TYPE_UPDATE = "update";
-	public static final String TYPE_EXPORT = "export";
+	public static final String TYPE_UPDATE_SHORT = "up";
 	public static final String TYPE_IMPORT = "import";
+	public static final String TYPE_EXPORT = "export";
 
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
@@ -119,14 +130,23 @@ public class Constants {
 
 	//TimeAnalyzer
 	public static final String TODAY = "today";
+	public static final String TODAY_SHORT = "tdy";
 	public static final String TOMORROW = "tomorrow";
+	public static final String TOMORROW_SHORT = "tmr";
 	public static final String MONDAY = "monday";
+	public static final String MONDAY_SHORT = "mon";
 	public static final String TUESDAY = "tuesday";
+	public static final String TUESDAY_SHORT = "tue";
 	public static final String WEDNESDAY = "wednesday";
+	public static final String WEDNESDAY_SHORT = "wed";
 	public static final String THURSDAY = "thursday";
+	public static final String THURSDAY_SHORT = "thu";
 	public static final String FRIDAY = "friday";
+	public static final String FRIDAY_SHORT = "fri";
 	public static final String SATURDAY = "saturday";
+	public static final String SATURDAY_SHORT = "sat";
 	public static final String SUNDAY = "sunday";
+	public static final String SUNDAY_SHORT = "sun";
 
 	//InvalidInputException messages
 	public static final String ERROR_NO_TASK_NAME = "ERROR: no task name is given";
