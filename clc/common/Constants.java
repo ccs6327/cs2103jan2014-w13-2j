@@ -56,6 +56,7 @@ public class Constants {
 
 	//Display
 	public static final String TO = " to ";
+	public static final String ANOTHER_LINE = "";
 	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
 	public static final String MESSAGE_SHOW_INCOMPLETE_TASKS = "INCOMPLETE TASKS";
 	public static final String MESSAGE_SHOW_FLOATING_TASKS = "FLOATING TASKS";
@@ -73,6 +74,7 @@ public class Constants {
 	public static final String MESSAGE_NO_DEADLINE_TASKS =  "No deadline task is found";
 	public static final String MESSAGE_DISPLAY_TIMED_TASKS = "All timed tasks have been displayed.";
 	public static final String MESSAGE_NO_TIMED_TASKS =  "No timed task is found";
+	public static final String MESSAGE_DISPLAY_QUERY = "[%1$s's Tasks]";
 	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_NO_TASKS_IN_PERIOD = "No task is found in this period";

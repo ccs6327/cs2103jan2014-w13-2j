@@ -210,10 +210,11 @@ public class UserInterface {
 			boolean isCaseKeywordCalendar = DisplayAnalyzer.getDisplayCalendarCase();
 			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 			if (isCaseKeywordCalendar) {
-				command = new Display(time);
-			} else {
 				String query = DisplayAnalyzer.getDisplayQuery();
-				//command = new Display(time, query);
+				command = new Display(time, query);
+				//command = new Display(time);
+				
+			} else {
 				command = new Display(time);
 			}
 		} else {
