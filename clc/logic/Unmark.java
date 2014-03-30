@@ -20,6 +20,8 @@ public class Unmark implements Command {
 
 	@Override
 	public String execute() {
+		boolean isChanged = false;
+		
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 
@@ -33,6 +35,7 @@ public class Unmark implements Command {
 				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				
 				if (isUnmarked) {
+					isChanged = true;
 					feedback.append(String.format(MESSAGE_MARK_NOT_DONE, taskName));
 					feedback.append("\n");
 				} else { //task is not marked as done previously
@@ -42,8 +45,10 @@ public class Unmark implements Command {
 			}
 		}
 		
-		History.addNewVersion();
-		Storage.writeContentIntoFile();
+		if (isChanged) {
+			History.addNewVersion();
+			Storage.writeContentIntoFile();
+		}
 		
 		return feedback.toString().trim();
 	}
