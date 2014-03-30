@@ -153,11 +153,13 @@ public class GUI implements NativeKeyListener{
 			}
 
 			private boolean isCaseDisplayOrHelp() {
-				return input.equalsIgnoreCase(TYPE_DISPLAY)
-						||input.equalsIgnoreCase(TYPE_DISPLAY_SHORT)
-						||input.equalsIgnoreCase(TYPE_SHOW)
-						||input.equalsIgnoreCase(TYPE_LIST)
-						|| input.equalsIgnoreCase(TYPE_HELP);
+				String[] command = input.split(SPACE);
+				
+				return command[0].equalsIgnoreCase(TYPE_DISPLAY)
+						|| command[0].equalsIgnoreCase(TYPE_DISPLAY_SHORT)
+						|| command[0].equalsIgnoreCase(TYPE_SHOW)
+						|| command[0].equalsIgnoreCase(TYPE_LIST)
+						|| command[0].equalsIgnoreCase(TYPE_HELP);
 			}
 
 			private void emptyDisplayBox() {

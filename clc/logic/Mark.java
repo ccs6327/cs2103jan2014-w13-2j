@@ -14,6 +14,7 @@ public class Mark implements Command {
 	private ArrayList<Task> reminderMem;
 	private boolean isReminderTask;
 	private long targetTaskId;
+	private boolean isChanged;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -59,7 +60,7 @@ public class Mark implements Command {
 				boolean isMarked = false;
 				int internalSeqNo = displayMem.get(seqNo - 1); 
 				isMarked = internalMem.get(internalSeqNo).markDone();
-				
+				isChanged = true;
 				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				if (isMarked) {
 					feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
@@ -68,10 +69,14 @@ public class Mark implements Command {
 					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
 					feedback.append("\n");
 				}
-				History.addNewVersion();
-	    		Storage.writeContentIntoFile();
 			}
 		}
+		
+		if (isChanged) {
+			History.addNewVersion();
+    		Storage.writeContentIntoFile();
+		}
+		
 		return feedback.toString().trim();
 	}
 
