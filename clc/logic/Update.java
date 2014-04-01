@@ -196,12 +196,13 @@ public class Update implements Command {
         //check if startTime before endTime
 		startTimeForChecking = task.getStartTime();
 		endTimeForChecking = task.getEndTime();
-		String startTimeC = D_M_Y_DateFormatter.format(startTimeForChecking.getTime());
-		String endTimeC = D_M_Y_DateFormatter.format(endTimeForChecking.getTime());
 		if (startTimeForChecking == null ||startTimeForChecking.compareTo(endTimeForChecking) < 0) {
 			feedback.append("\n");
 			
 		}else {
+			
+			String startTimeC = D_M_Y_DateFormatter.format(startTimeForChecking.getTime());
+			String endTimeC = D_M_Y_DateFormatter.format(endTimeForChecking.getTime());
 			
 			task.updateStartTime(taskOldStartTime);
 			task.updateEndTime(taskOldEndTime);
