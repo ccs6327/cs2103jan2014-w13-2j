@@ -61,7 +61,9 @@ public class Mark implements Command {
 			} else {
 				boolean isMarked = false;
 				int internalSeqNo = displayMem.get(seqNo - 1); 
+				System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
 				isMarked = internalMem.get(internalSeqNo).markDone();
+				System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
 				isChanged = true;
 				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				if (isMarked) {
@@ -76,8 +78,15 @@ public class Mark implements Command {
 		}
 		
 		if (isChanged) {
+			System.out.println("currentVersion before = " + History.getCurrentVersion());//
+			System.out.println(History.getHistoryMem());//
+			System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
 			History.addNewVersion();
     		Storage.writeContentIntoFile();
+    		System.out.println("currentVersion after  = " + History.getCurrentVersion());//
+			System.out.println(History.getHistoryMem());//
+			System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
+			System.out.println(History.getHistoryMem().get(2).get(0).isDone());//
 		}
 		
 		return feedback.toString().trim();

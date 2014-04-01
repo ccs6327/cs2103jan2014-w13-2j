@@ -75,7 +75,7 @@ public class GUI implements NativeKeyListener{
 		frameClc.setAlwaysOnTop(true);
 		frameClc.setName("frame");
 		frameClc.getContentPane().setBackground(Color.GRAY);
-		frameClc.setTitle("CLC V0.2");
+		frameClc.setTitle("CLC V0.3");
 		frameClc.setResizable(false);
 		frameClc.setBounds(10, 10, 650, 500);
 		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
