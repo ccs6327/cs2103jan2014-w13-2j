@@ -37,7 +37,7 @@ public class TestingDisplayAnalyzer {
 		Analyzer.analyze("display");
 		
 		DisplayAnalyzer.analyze();
-		assertEquals(ALL, DisplayAnalyzer.getDisplayQuery());
+		assertEquals("", DisplayAnalyzer.getDisplayQuery());
 		
 		//case2 with "all" keyword
 		Analyzer.analyze("display all");

@@ -8,7 +8,7 @@ import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 import clc.common.InvalidInputException;
 import clc.logic.Task;
 
-public class AddAnalyzer extends TimeAnalyzer {
+public class AddAnalyzer extends TimeParser {
 	private static String taskName;
 	private static Task taskToBeAdded;
 	private static boolean isReminderNeeded;
@@ -21,19 +21,17 @@ public class AddAnalyzer extends TimeAnalyzer {
 		determineIfReminderNeeded();
 		infoToBeProcessed = commandDetails.split(SPACE);
 		
+		processCalendarInfo();
+		
 		if (doesContainTimeInfo()) { //timed task or deadline task
-			
-			recordAndProcessCalendarInfoProvided();
-			determineIfStartTimeLaterThanEndTime();
-			
 			//merge the taskName
 			taskName = mergeTaskName();
 			determineIfTaskNameProvided();
 			
 			if (isCaseDeadlineTask()) {
-				taskToBeAdded = new Task(taskName, endTime);
+				taskToBeAdded = new Task(taskName, endCalendar);
 			} else if (isCaseTimedTask()) {
-				taskToBeAdded = new Task(taskName, startTime, endTime);
+				taskToBeAdded = new Task(taskName, startCalendar, endCalendar);
 			} else {
 				throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 			}
@@ -75,9 +73,15 @@ public class AddAnalyzer extends TimeAnalyzer {
 	
 	private static String mergeTaskName() {
 		String taskName = "";
-		for (int i = 0; i < firstDateIndex; i++) {
+		
+		for (int i = 0; i < startCalendarIndex; i++) {
 			taskName += (infoToBeProcessed[i] + SPACE);
 		}
+		
+		for (int i = endCalendarIndex + 1; i < infoToBeProcessed.length; i++) {
+			taskName += (infoToBeProcessed[i] + SPACE);
+		}
+		
 		return taskName.trim();
 	}
 }
