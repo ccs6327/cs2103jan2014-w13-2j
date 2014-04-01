@@ -138,6 +138,8 @@ public class Constants {
 	public static final String SPACE = " ";
 	public static final String SLASH = "/";
 	public static final String DOT = ".";
+	public static final String COLON = ":";
+	public static final String DASH = "-";
 	public static final String ALL = "all";
 	public static final String INCOMPLETE_TASK = "";
 	public static final String FLOATING_TASK = "floating tasks";

@@ -8,7 +8,37 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
-import static clc.common.Constants.*;
+
+import static clc.common.Constants.ERROR_START_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TODAY_SHORT;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.TOMORROW_SHORT;
+import static clc.common.Constants.MONDAY;
+import static clc.common.Constants.MONDAY_SHORT;
+import static clc.common.Constants.TUESDAY;
+import static clc.common.Constants.TUESDAY_SHORT;
+import static clc.common.Constants.WEDNESDAY;
+import static clc.common.Constants.WEDNESDAY_SHORT;
+import static clc.common.Constants.THURSDAY;
+import static clc.common.Constants.THURSDAY_SHORT;
+import static clc.common.Constants.FRIDAY;
+import static clc.common.Constants.FRIDAY_SHORT;
+import static clc.common.Constants.SATURDAY;
+import static clc.common.Constants.SATURDAY_SHORT;
+import static clc.common.Constants.SUNDAY;
+import static clc.common.Constants.SUNDAY_SHORT;
+import static clc.common.Constants.AM;
+import static clc.common.Constants.PM;
+import static clc.common.Constants.TIME_12H_PATTERNS;
+import static clc.common.Constants.TIME_24H_PATTERNS;
+import static clc.common.Constants.DATE_PATTERNS;
+import static clc.common.Constants.DOT;
+import static clc.common.Constants.COLON;
+import static clc.common.Constants.SLASH;
+import static clc.common.Constants.DASH;
 
 public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
@@ -49,7 +79,6 @@ public class TimeParser extends Analyzer {
 				}
 			}
 			setCalendar();
-			System.out.println(isTime + " " + isDate + " " + isKeywordDate);
 		}
 		
 		setStartCalendarAsNullIfNotSet();
@@ -57,10 +86,6 @@ public class TimeParser extends Analyzer {
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfStartTimeLaterThanEndTime();
-
-		//if (startCalendar != null) System.out.println("START: " + startCalendar.getTime().toString());
-		//if (endCalendar != null) System.out.println("END: " + endCalendar.getTime().toString());
-		//if (startCalendar == null && endCalendar == null) System.out.println("NO VALID CALENDAR");
 	}
 
 	protected static void initializeVariable() {
@@ -277,7 +302,7 @@ public class TimeParser extends Analyzer {
 	private static void determineIfFormatError(String currStr) throws ParseException {
 		if (currStr.length() > 2 && (currStr.toLowerCase().contains(AM) || currStr.toLowerCase().contains(PM))) {
 			doesContainAmOrPm = true;
-			if (!currStr.contains(".") && !currStr.contains(":") && !currStr.contains("/") && !currStr.contains("-")) {
+			if (!currStr.contains(DOT) && !currStr.contains(COLON) && !currStr.contains(SLASH) && !currStr.contains(DASH)) {
 				//remove am or pm
 				String firstTwoChar = currStr.substring(0,currStr.length() - 2).trim(); //firstTwoCharacter
 				try {
