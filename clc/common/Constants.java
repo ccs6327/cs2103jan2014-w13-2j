@@ -46,7 +46,7 @@ public class Constants {
 	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
 	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
 	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
-	public static final String MESSAGE_MARK_DONE = "mark [%1$s] as done sucessfuly";
+	public static final String MESSAGE_MARK_DONE = "mark [%1$s] as done sucessfuly.";
 	public static final String MESSAGE_MARK_NOT_DONE = "mark [%1$s] as not done sucessfully";
 	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "[%1$s] is already marked as done";
 	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "[%1$s] is originally not mark as done";
@@ -91,7 +91,7 @@ public class Constants {
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successful.";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successful.";
-	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] end  time is updated to [%2$s} successful.";
+	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] end  time is updated to [%2$s] successful.";
 	public static final String MESSAGE_TASK_TYPE_CHANGED = "No.%4$d [%2$s] [%1$s] TASK-TYPE changes to [%3$s]";
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
