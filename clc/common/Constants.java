@@ -144,7 +144,7 @@ public class Constants {
 	public static final String THIS_MONTH = "This Month";
 	public static final String NEXT_MONTH = "Next Month";
 
-	//TimeAnalyzer
+	//TimeParser
 	public static final String TODAY = "Today";
 	public static final String TODAY_SHORT = "tdy";
 	public static final String TOMORROW = "Tomorrow";
@@ -163,6 +163,9 @@ public class Constants {
 	public static final String SATURDAY_SHORT = "sat";
 	public static final String SUNDAY = "sunday";
 	public static final String SUNDAY_SHORT = "sun";
+	public static final String[] DATE_PATTERNS = {"ddMMMyyyy", "ddMMM", "dd/MM/yyyy", "dd/MM", "dd-MM-yyyy", "dd-MM", "dd.MM.yyyy", "dd.MM"};
+	public static final String[] TIME_12H_PATTERNS = {"h:mma", "h.mma", "hha", "hmma", "hhmma"};
+	public static final String[] TIME_24H_PATTERNS = {"HH:mm"};
 
 	//InvalidInputException messages
 	public static final String ERROR_NO_TASK_NAME = "ERROR: no task name is given";
@@ -171,7 +174,6 @@ public class Constants {
 	public static final String ERROR_START_TIME = "ERROR: start time is a calendar before now";
 	public static final String ERROR_END_TIME = "ERROR: end time is a calendar before now";
 	public static final String ERROR_START_TIME_LATER_THAN_END_TIME = "ERROR: Start time is later than end time";
-	public static final String ERROR_YEAR_INPUT = "ERROR: you have entered a year before %1$d";
 	public static final String ERROR_NO_EXACT_TIME = "ERROR: no exact time is given";
 	public static final String ERROR_INVALID_DISPLAY_REQUEST = "ERROR: Invalid display request";
 	public static final String ERROR_NO_COMMA = "ERROR: use comma to differentiate start time and end time";

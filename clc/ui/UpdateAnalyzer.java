@@ -11,12 +11,12 @@ import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
 
-public class UpdateAnalyzer extends TimeAnalyzer {
+public class UpdateAnalyzer extends TimeParser {
 	private static boolean isCaseUpdateCalendar;
 	private static String[] tempInfo;
 	private static int calendarProvided = 0;
 	private static int seqNo;
-	private static GregorianCalendar tempStartTime;
+	private static GregorianCalendar tempStartCalendar;
 
 	protected UpdateAnalyzer(String input) {
 		super(input);
@@ -31,6 +31,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 		infoToBeProcessed = tempInfo;
 
 		determineIfSeqNoProvided();
+		processCalendarInfo();
 
 		if (doesContainTimeInfo()) { //case update calendar
 			if (!commandDetails.contains(COMMA)) {
@@ -46,7 +47,7 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
 
-			startTime = tempStartTime;
+			startCalendar = tempStartCalendar;
 
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
@@ -70,25 +71,29 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 	}
 
 	private static void determineIfStartDateIsProvided() {
-		if (dateInfo.size() == 1) {
+		if (isEndDateSet) {
+			System.out.println("startDate");
 			calendarProvided += 8;
 		}
 	}
 
 	private static void determineIfStartTimeIsProvided() {
-		if (timeInfo.size() == 1) {
+		if (isEndTimeSet) {
+			System.out.println("startTime");
 			calendarProvided += 4;
 		}
 	}
 
-	private static void determineIfEndTimeIsProvided() {
-		if (dateInfo.size() == 1) {
+	private static void determineIfEndDateIsProvided() {
+		if (isEndDateSet) {
+			System.out.println("endDate");
 			calendarProvided += 2;
 		}
 	}
 
-	private static void determineIfEndDateIsProvided() {
-		if (timeInfo.size() == 1) {
+	private static void determineIfEndTimeIsProvided() {
+		if (isEndTimeSet) {
+			System.out.println("endTime");
 			calendarProvided += 1;
 		}
 	}
@@ -100,24 +105,24 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 			for (int i = 1; i < indexOfComma; i ++) { //first one is sequence no
 				infoToBeProcessed[index ++] = tempInfo[i];
 			}
-			recordAndProcessCalendarInfoProvided();
+			processCalendarInfo();
 
 			// as processCalendarInfo will set the time to endTime
 			// so we have to swap the value
-			tempStartTime = endTime;
-			endTime = null;
+			tempStartCalendar = endCalendar;
+			endCalendar = null;
 		}
 	}
 
 	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
 		int index = 0;
-		instantiateVariable(); //to avoid wrong calculation of calendarProvided
+		initializeVariable(); //to avoid wrong calculation of calendarProvided
 		if (tempInfo.length != indexOfComma + 1) {
 			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
 			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) { //first one is sequence no
 				infoToBeProcessed[index ++] = tempInfo[i];
 			}
-			recordAndProcessCalendarInfoProvided();
+			processCalendarInfo();
 		}
 	}
 
@@ -152,13 +157,5 @@ public class UpdateAnalyzer extends TimeAnalyzer {
 
 	public static int getCalendarProvidedCase() {
 		return calendarProvided;
-	}
-
-	protected static void recordAndProcessCalendarInfoProvided() throws InvalidInputException {
-		instantiateVariable();
-		recordCalendarInfo();
-		if (timeInfo.size() > 0 || dateInfo.size() > 0) { //have Calendar Info to be processed
-			processCalendarInfo();
-		}
 	}
 }

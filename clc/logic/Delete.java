@@ -43,7 +43,6 @@ public class Delete implements Command {
 		
 		//delete from the back of the list
 		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
-			//ArrayList<Task> taskList = storage.getTaskList();
 			int seqNo = taskSeqNo.get(i);
 			
 			if (!isOutOfBound(displayMem.size(), seqNo)) {

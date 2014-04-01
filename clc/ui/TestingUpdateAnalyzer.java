@@ -32,37 +32,42 @@ public class TestingUpdateAnalyzer {
 		
 		//case update , T
 		Analyzer.analyze("update 1 , 1159pm");
-		
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(1, UpdateAnalyzer.getCalendarProvidedCase());
 		
 		//case update , D
 		Analyzer.analyze("update 1 , 1/1/2100");
-		
+
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(2, UpdateAnalyzer.getCalendarProvidedCase());
 		
 		//case update , D T
 		Analyzer.analyze("update 1 , 1/1/2100 1159pm");
-		
+
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
 		
 		//case update T ,
 		Analyzer.analyze("update 1 1159pm ,");
-		
+
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(4, UpdateAnalyzer.getCalendarProvidedCase());
 		
 		//case update T , T
 		Analyzer.analyze("update 1 1158pm , 1159pm");
-		
+
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
 		
 		//case update T , D
 		Analyzer.analyze("update 1 1159pm , 1/1/2100");
-		
+
+		System.out.println("x");
 		UpdateAnalyzer.analyze();
 		assertEquals(6, UpdateAnalyzer.getCalendarProvidedCase());
 		

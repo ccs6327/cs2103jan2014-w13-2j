@@ -8,7 +8,6 @@ import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
-import static clc.common.Constants.ERROR_YEAR_INPUT;
 import static clc.common.Constants.ERROR_NO_EXACT_TIME;
 
 import java.util.Calendar;
@@ -89,8 +88,10 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("taskname5", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar(2100, 0, 1, 23, 58); // month is 0 to 11
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		//assertEquals(gc.compareTo(AddAnalyzer.getToBeAddedTask().getStartTime()), 0);
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
@@ -99,7 +100,8 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("taskname6", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar(2100, 0, 1, 23, 58); // month is 0 to 11
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
@@ -199,17 +201,7 @@ public class TestingAddAnalyzer {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
-		}		
-
-		//enter a year before current year
-		Analyzer.analyze("add taskname 25/5/2001 4pm");
-		try {
-			AddAnalyzer.analyze();
-		} catch (InvalidInputException e) {
-			int currentYear = Calendar.getInstance().get(Calendar.YEAR); 
-			String error = String.format(ERROR_YEAR_INPUT, currentYear);
-			assertEquals(error, e.getMessage());
-		}		
+		}
 
 		//start time(or both) is earlier than current time
 		Analyzer.analyze("add taskname 1/1/2014 4pm 1/1/2100 4pm");
