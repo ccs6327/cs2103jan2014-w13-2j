@@ -95,12 +95,16 @@ public class Constants {
 	public static final String MESSAGE_TASK_TYPE_CHANGED = "No.%4$d [%2$s] [%1$s] TASK-TYPE changes to [%3$s]";
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
-	public static final String MESSAGE_ERROR_UPDATE = "Floating task cannot only update start time.";
+	public static final String MESSAGE_ERROR_UPDATE_FLOATING = "Floating task cannot only update start time.";
 	public static final String MESSAGE_NO_CHANGE = "Nothing has been updated";
 	public static final String UPDATE_FLOATING_TASK = "TYPE FLOATING";
 	public static final String UPDATE_DEADLINE_TASK = "TYPE DEADLINE";
 	public static final String UPDATE_TIMED_TASK = "TYPE TIMED";
-
+    public static final String MESSAGE_UPDUATE_SUCCESSFUL = "Updated Sucessful!";
+    public static final String MESSAGE_UPDATE_TIME_ERROR = "UPDATE ERROR: The task's end  time [%2$s] \r\n"
+    		+ "                                                  is before/equal \r\n"
+    		+ "                                             start time [%1$s].\r\n\r\n=*=*=*=UPDATE UNSUCCESSFUL!=*=*=*=";
+    		
 
 	//Remind
 	public static final int INTERVAL_TO_REMIND = -15; //minutes
