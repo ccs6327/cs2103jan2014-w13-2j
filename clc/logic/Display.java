@@ -3,6 +3,7 @@ package clc.logic;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Collections;
 
 import clc.storage.Storage;
 import static clc.common.Constants.*;
@@ -40,6 +41,7 @@ public class Display implements Command {
 		
 		DisplayOutput.clear();
 		displayMem.clear();
+		sortTasks();
 		
 		if(internalMem.isEmpty()) {
 			feedback.append("\n");
@@ -344,6 +346,10 @@ public class Display implements Command {
 			return displayMem.isEmpty();
 		}
 		
+		protected void sortTasks() {
+			Collections.sort(internalMem, new  TaskComparator());
+		}
+		
 		private void printOutDisplay(){
 			for (int i = 0; i < DisplayOutput.size(); i++) {
 				feedback.append(DisplayOutput.get(i));
@@ -351,5 +357,6 @@ public class Display implements Command {
 				//System.out.println(DisplayOutput.get(i));
 			}
 		}
+		
 
 }
