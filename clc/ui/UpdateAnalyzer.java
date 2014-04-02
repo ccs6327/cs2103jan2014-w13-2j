@@ -72,28 +72,24 @@ public class UpdateAnalyzer extends TimeParser {
 
 	private static void determineIfStartDateIsProvided() {
 		if (isEndDateSet) {
-			System.out.println("startDate");
 			calendarProvided += 8;
 		}
 	}
 
 	private static void determineIfStartTimeIsProvided() {
 		if (isEndTimeSet) {
-			System.out.println("startTime");
 			calendarProvided += 4;
 		}
 	}
 
 	private static void determineIfEndDateIsProvided() {
 		if (isEndDateSet) {
-			System.out.println("endDate");
 			calendarProvided += 2;
 		}
 	}
 
 	private static void determineIfEndTimeIsProvided() {
 		if (isEndTimeSet) {
-			System.out.println("endTime");
 			calendarProvided += 1;
 		}
 	}
