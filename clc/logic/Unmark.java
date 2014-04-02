@@ -1,0 +1,60 @@
+package clc.logic;
+
+import java.util.ArrayList;
+
+import clc.storage.History;
+import clc.storage.Storage;
+import static clc.common.Constants.*;
+
+public class Unmark implements Command {
+	private ArrayList<Integer> taskSeqNo;
+	private StringBuilder feedback = new StringBuilder();
+	private ArrayList<Integer> displayMem;
+	private ArrayList<Task> internalMem;
+	
+	public Unmark(ArrayList<Integer> taskSeqNo) {
+		this.taskSeqNo = taskSeqNo;
+		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
+	}
+
+	@Override
+	public String execute() {
+		boolean isChanged = false;
+		
+		for (int i = 0; i < taskSeqNo.size(); i++) {
+			int seqNo = taskSeqNo.get(i);
+
+			if (isOutOfBound(displayMem.size(), seqNo)) {
+				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+				feedback.append("\n");
+			} else {
+				boolean isUnmarked = false;
+				int internalSeqNo = displayMem.get(seqNo - 1);
+				isUnmarked = internalMem.get(internalSeqNo).markUndone();
+				String taskName = internalMem.get(internalSeqNo).getTaskName();
+				
+				if (isUnmarked) {
+					isChanged = true;
+					feedback.append(String.format(MESSAGE_MARK_NOT_DONE, taskName));
+					feedback.append("\n");
+				} else { //task is not marked as done previously
+					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_NOT_DONE, taskName));
+					feedback.append("\n");
+				}
+			}
+		}
+		
+		if (isChanged) {
+			History.addNewVersion();
+			Storage.writeContentIntoFile();
+		}
+		
+		return feedback.toString().trim();
+	}
+
+	private boolean isOutOfBound(int taskListSize, int seqNo) {
+		return (taskListSize < seqNo || seqNo <= 0);
+	}
+}
+
