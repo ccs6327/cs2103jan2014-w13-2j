@@ -134,6 +134,8 @@ public class Constants {
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 
 	//Analyzer
+	public static final String EMPTY = "";
+	public static final String SLASH_R = "/r";
 	public static final String COMMA = ",";
 	public static final String PM = "pm";
 	public static final String AM = "am";
@@ -142,6 +144,7 @@ public class Constants {
 	public static final String DOT = ".";
 	public static final String COLON = ":";
 	public static final String DASH = "-";
+	public static final String QUOTATION_MARK = "'";
 	public static final String ALL = "all";
 	public static final String INCOMPLETE_TASK = "";
 	public static final String FLOATING_TASK = "floating tasks";
@@ -174,6 +177,12 @@ public class Constants {
 	public static final String[] DATE_PATTERNS = {"ddMMMyyyy", "ddMMM", "dd/MM/yyyy", "dd/MM", "dd-MM-yyyy", "dd-MM", "dd.MM.yyyy", "dd.MM"};
 	public static final String[] TIME_12H_PATTERNS = {"h:mma", "h.mma", "hha", "hmma", "hhmma"};
 	public static final String[] TIME_24H_PATTERNS = {"HH:mm"};
+	public static final String FROM = "from";
+	public static final String BY = "by";
+	public static final String DUE = "due";
+	public static final String AT = "at";
+	
+	
 
 	//InvalidInputException messages
 	public static final String ERROR_NO_TASK_NAME = "ERROR: no task name is given";
