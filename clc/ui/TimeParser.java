@@ -38,6 +38,11 @@ import static clc.common.Constants.DOT;
 import static clc.common.Constants.COLON;
 import static clc.common.Constants.SLASH;
 import static clc.common.Constants.DASH;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.FROM;
+import static clc.common.Constants.BY;
+import static clc.common.Constants.DUE;
+import static clc.common.Constants.AT;
 
 public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
@@ -58,7 +63,7 @@ public class TimeParser extends Analyzer {
 		int currIndex = infoToBeProcessed.length - 1;
 
 		while (currIndex >= 0 && !hasAllTimeSet()) {
-			String toBeAnalyzedString = "";
+			String toBeAnalyzedString = EMPTY;
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
@@ -83,8 +88,6 @@ public class TimeParser extends Analyzer {
 			setCalendar();
 		}
 
-		System.out.println(startCalendarIndex + " " + endCalendarIndex);
-
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
 		caseIfCalendarBeforeCurrentTime();
@@ -98,7 +101,10 @@ public class TimeParser extends Analyzer {
 		int infoLength = infoToBeProcessed.length;
 
 		if (startCalendarIndex - 1 > 0) {
-			if (infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase("from")) {
+			if (infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(FROM)
+					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(BY)
+					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(DUE)
+					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(AT)) {
 				startCalendarIndex --;
 			}
 		}
@@ -342,7 +348,7 @@ public class TimeParser extends Analyzer {
 				String firstTwoChar = currStr.substring(0,currStr.length() - 2).trim(); //firstTwoCharacter
 				try {
 					if (Integer.parseInt(firstTwoChar) > 12 && Integer.parseInt(firstTwoChar) < 100) {
-						throw new ParseException("", 0); //handle this e.g. 13pm
+						throw new ParseException(EMPTY, 0); //handle this e.g. 13pm
 					}
 				}
 				catch(NumberFormatException nfe) {}
@@ -352,7 +358,7 @@ public class TimeParser extends Analyzer {
 
 	private static void determineIfFailsAllParsing() throws ParseException {
 		if (hasFailedAllParsing()) { // all nFail
-			throw new ParseException("", 0);
+			throw new ParseException(EMPTY, 0);
 		}
 	}
 

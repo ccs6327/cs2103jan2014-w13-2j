@@ -33,7 +33,7 @@ public class GUI implements NativeKeyListener{
 	private JFrame frameClc;
 	private JTextField inputTextBox = new JTextField();
 	private JTextPane displayBox = new JTextPane();
-	private String input = "";
+	private String input = EMPTY;
 	private JScrollPane scrollPane;
 	private StyledDocument doc = displayBox.getStyledDocument();
 	private boolean isPressingCtrl;
@@ -117,8 +117,8 @@ public class GUI implements NativeKeyListener{
 	}
 
 	private void initializeInputTextBox() {
-		inputTextBox.setText("  ");
-		inputTextBox.setCaretPosition(2);
+		inputTextBox.setText(SPACE);
+		inputTextBox.setCaretPosition(SPACE.length());
 	}
 
 	private void actionWhenEnterIsPressed() {
@@ -163,11 +163,11 @@ public class GUI implements NativeKeyListener{
 			}
 
 			private void emptyDisplayBox() {
-				displayBox.setText("");
+				displayBox.setText(EMPTY);
 			}
 
 			private boolean isCaseClearScreen() {
-				return input.equals("");
+				return input.equals(EMPTY);
 			}
 		});
 	}
@@ -177,9 +177,6 @@ public class GUI implements NativeKeyListener{
 			GlobalScreen.registerNativeHook();
 		}
 		catch (NativeHookException ex) {
-			System.err.println("There was a problem registering the native hook.");
-			System.err.println(ex.getMessage());
-
 			System.exit(1);
 		}
 
@@ -270,12 +267,12 @@ public class GUI implements NativeKeyListener{
 
 		if (e.getKeyCode() == NativeKeyEvent.VK_UP && inputIndex - 1 >= 0) {
 			cachedInput = previousInput.get(--inputIndex);
-			inputTextBox.setText("  " + cachedInput);
-			inputTextBox.setCaretPosition(cachedInput.length() + 2);
+			inputTextBox.setText(SPACE + cachedInput);
+			inputTextBox.setCaretPosition(cachedInput.length() + 1);
 		} else if (e.getKeyCode() == NativeKeyEvent.VK_DOWN && inputIndex + 1 < previousInput.size()) {
 			cachedInput = previousInput.get(++inputIndex);
-			inputTextBox.setText("  " + cachedInput);
-			inputTextBox.setCaretPosition(cachedInput.length() + 2);
+			inputTextBox.setText(SPACE + cachedInput);
+			inputTextBox.setCaretPosition(cachedInput.length() + 1);
 		}
 	}
 

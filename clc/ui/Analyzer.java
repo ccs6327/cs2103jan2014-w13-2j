@@ -1,5 +1,7 @@
 package clc.ui;
 
+import static clc.common.Constants.EMPTY;
+
 public class Analyzer {
 
 	protected static String commandType, commandDetails;
@@ -25,7 +27,7 @@ public class Analyzer {
 	}
 
 	protected static String removeFirstWord(String userCommand) {
-		return userCommand.replaceFirst(getFirstWord(userCommand), "").trim();
+		return userCommand.replaceFirst(getFirstWord(userCommand), EMPTY).trim();
 	}
 	
 	protected static boolean isNumeric(String str) {  
@@ -38,6 +40,6 @@ public class Analyzer {
 	}
 
 	protected static boolean doesCommandDetailsExist(String commandDetails) {
-		return !commandDetails.equals("");
+		return !commandDetails.equals(EMPTY);
 	}
 }

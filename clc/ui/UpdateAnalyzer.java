@@ -2,6 +2,7 @@ package clc.ui;
 
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.COMMA;
+import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.ERROR_NO_COMMA;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
@@ -52,7 +53,7 @@ public class UpdateAnalyzer extends TimeParser {
 
 	private static void determineIfCommandDetailsEmpty()
 			throws InvalidInputException {
-		if (commandDetails.equals("")) {
+		if (commandDetails.equals(EMPTY)) {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 	}
@@ -149,7 +150,7 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	private static boolean isNewTaskNameProvided(String newTaskName) {
-		return newTaskName.equals("");
+		return newTaskName.equals(EMPTY);
 	}
 
 	public static int getCalendarProvidedCase() {
@@ -162,7 +163,7 @@ public class UpdateAnalyzer extends TimeParser {
 		int currIndex = infoToBeProcessed.length - 1;
 		
 		while (currIndex >= 0 && !hasAllTimeSet()) {
-			String toBeAnalyzedString = "";
+			String toBeAnalyzedString = EMPTY;
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
