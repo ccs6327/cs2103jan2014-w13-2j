@@ -23,13 +23,12 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	protected static void analyze() throws InvalidInputException {
-		
 		determineIfCommandDetailsEmpty();
 		
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
-
+		
 		determineIfSeqNoProvided();
 		processCalendarInfo();
 
@@ -40,13 +39,8 @@ public class UpdateAnalyzer extends TimeParser {
 
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
-			determineIfStartDateIsProvided();
-			determineIfStartTimeIsProvided();
-
+			
 			analyzeUpdateEndTime(indexOfComma);
-			determineIfEndDateIsProvided();
-			determineIfEndTimeIsProvided();
-
 			startCalendar = tempStartCalendar;
 
 			isCaseUpdateCalendar = true;
@@ -67,6 +61,40 @@ public class UpdateAnalyzer extends TimeParser {
 			throw new InvalidInputException(ERROR_NO_SEQUENCE_NUMBER);
 		} else {
 			seqNo = Integer.parseInt(getFirstWord(commandDetails));
+		}
+	}
+
+	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
+		int index = 0;
+		if (indexOfComma > 0) {
+			infoToBeProcessed = new String[indexOfComma - 1];
+			for (int i = 1; i < indexOfComma; i ++) { //first one is sequence no
+				infoToBeProcessed[index ++] = tempInfo[i];
+			}
+			processCalendarInfo();
+
+			// as processCalendarInfo will set the time to endTime
+			// so we have to swap the value
+			tempStartCalendar = endCalendar;
+			endCalendar = null;
+
+			determineIfStartDateIsProvided();
+			determineIfStartTimeIsProvided();
+		}
+	}
+
+	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
+		int index = 0;
+		if (tempInfo.length != indexOfComma + 1) {
+			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
+			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) { //first one is sequence no
+				infoToBeProcessed[index ++] = tempInfo[i];
+			}
+	
+			processCalendarInfo();
+
+			determineIfEndDateIsProvided();
+			determineIfEndTimeIsProvided();
 		}
 	}
 
@@ -91,34 +119,6 @@ public class UpdateAnalyzer extends TimeParser {
 	private static void determineIfEndTimeIsProvided() {
 		if (isEndTimeSet) {
 			calendarProvided += 1;
-		}
-	}
-
-	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
-		int index = 0;
-		if (indexOfComma > 0) {
-			infoToBeProcessed = new String[indexOfComma - 1];
-			for (int i = 1; i < indexOfComma; i ++) { //first one is sequence no
-				infoToBeProcessed[index ++] = tempInfo[i];
-			}
-			processCalendarInfo();
-
-			// as processCalendarInfo will set the time to endTime
-			// so we have to swap the value
-			tempStartCalendar = endCalendar;
-			endCalendar = null;
-		}
-	}
-
-	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
-		int index = 0;
-		initializeVariable(); //to avoid wrong calculation of calendarProvided
-		if (tempInfo.length != indexOfComma + 1) {
-			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
-			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) { //first one is sequence no
-				infoToBeProcessed[index ++] = tempInfo[i];
-			}
-			processCalendarInfo();
 		}
 	}
 

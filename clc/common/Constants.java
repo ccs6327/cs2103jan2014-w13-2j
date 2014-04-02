@@ -30,6 +30,7 @@ public class Constants {
 	public static final String TYPE_REDO = "redo";
 	public static final String TYPE_UPDATE = "update";
 	public static final String TYPE_UPDATE_SHORT = "up";
+	public static final String TYPE_EDIT = "edit";
 	public static final String TYPE_IMPORT = "import";
 	public static final String TYPE_IMPORT_SHORT = "imp";
 	public static final String TYPE_EXPORT = "export";
