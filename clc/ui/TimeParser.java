@@ -60,24 +60,27 @@ public class TimeParser extends Analyzer {
 		
 		while (currIndex >= 0 && !hasAllTimeSet()) {
 			String toBeAnalyzedString = "";
-			
+			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
-				toBeAnalyzedString = infoToBeProcessed[currIndex --] + toBeAnalyzedString;
+				toBeAnalyzedString = infoToBeProcessed[loopIndex] + toBeAnalyzedString;
 				try {
 					analyzeTime(toBeAnalyzedString);
 					if (endCalendarIndex == -1) {
-						startCalendarIndex = currIndex + 1; // due to currIndex --
-						endCalendarIndex = currIndex + 1;
-					} else if (startCalendarIndex == -1 || currIndex + 1 < startCalendarIndex) {
-						startCalendarIndex = currIndex + 1;
+						startCalendarIndex = loopIndex;
+						endCalendarIndex = loopIndex + i;
+					} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
+						startCalendarIndex = loopIndex;
 					}
+					currIndex = loopIndex;
 					break;
 				} catch (ParseException e) { //catch parsing error
-					if (currIndex < 0) {
+					if (loopIndex - 1 < 0) {
 						break;
 					}
 				}
+				loopIndex --;
 			}
+			currIndex --;
 			setCalendar();
 		}
 		
