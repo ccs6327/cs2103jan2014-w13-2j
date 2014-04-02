@@ -108,6 +108,7 @@ public class Update implements Command {
 				task.updateStartTime(newStartTime);
 				updateTime = task.getStartTime();
 				task.setTaskType(TYPE_TIMED_TASK);
+				caseCalendarProvided %= 4;
 				
 				//process feedback
 				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
