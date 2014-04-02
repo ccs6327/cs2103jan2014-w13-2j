@@ -105,6 +105,8 @@ public class UserInterface {
 				command = analyzeImport();
 			} else if (isCaseExport(commandType)) {
 				command = analyzeExport();
+			} else if (isCaseSearch(commandType)) {
+				command = analyzeSearch();
 			} else if (isCaseClear(commandType)) {
 				command = new Clear();
 			} else if (isCaseUndo(commandType)) {
@@ -172,6 +174,10 @@ public class UserInterface {
 	private static boolean isCaseExport(String commandType) {
 		return commandType.equalsIgnoreCase(TYPE_EXPORT)
 				|| commandType.equalsIgnoreCase(TYPE_EXPORT_SHORT);
+	}
+
+	private static boolean isCaseSearch(String commandType) {
+		return commandType.equalsIgnoreCase("search");
 	}
 
 	private static boolean isCaseClear(String commandType) {
@@ -248,8 +254,6 @@ public class UserInterface {
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();  
-			if(time.get(0) != null) System.out.println("START: " + time.get(0).getTime().toString());
-			if(time.get(1) != null) System.out.println("END: " + time.get(1).getTime().toString());
 			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
@@ -267,6 +271,12 @@ public class UserInterface {
 	private static Command analyzeExport() {
 		Command command;
 		command = new Export(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static Command analyzeSearch() {
+		Command command;
+		command = new Search(Analyzer.getCommandDetails());
 		return command;
 	}
 
