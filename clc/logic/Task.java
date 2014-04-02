@@ -8,10 +8,11 @@ public class Task {
 	
 	
 	private String taskName;
+	private String taskTypeToString;
 	private long taskId;
 	private Calendar startTime;
 	private Calendar endTime;
-	private int taskType; //0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
+	private int taskType;//0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
 	private boolean isDone;
 	private boolean isReminderNeeded;
 
@@ -80,6 +81,18 @@ public class Task {
 		return taskType;
 	}
 
+	public String taskTypeToString(){
+	    if(taskType == TYPE_TIMED_TASK){
+	    	taskTypeToString = STRING_TIMED_TASK;
+	    }else if (taskType == TYPE_DEADLINE_TASK) {
+	    	taskTypeToString = STRING_DEADLINE_TASK;
+	    }else if (taskType == TYPE_FLOATING_TASK){
+	    	taskTypeToString = STRING_FLOATING_TASK;
+	    }else {
+	    	taskTypeToString = STRING_UNSUPPORTED_TASK;
+	    }
+		return taskTypeToString;
+	}
 	//mutator for update function
 	public void setTaskType(int _taskType){
 		taskType = _taskType;
