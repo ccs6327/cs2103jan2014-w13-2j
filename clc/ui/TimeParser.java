@@ -3,12 +3,12 @@ package clc.ui;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
-
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
