@@ -53,7 +53,6 @@ public class DisplayAnalyzer extends TimeParser{
 			setNextMonth();
 		} else if (isCaseDisplayCalendar()) {
 			isCaseKeywordCalendar = false;
-			processCalendarInfo();
 		} else if(isCaseDisplayString()){
 			isCaseDisplayCalendar = false;
 			isCaseKeywordCalendar = false;
@@ -161,7 +160,8 @@ public class DisplayAnalyzer extends TimeParser{
 			   commandDetails.equals(TIMED_TASK);
 	}
 	
-	private static boolean isCaseDisplayCalendar() {
+	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
+		processCalendarInfo();
 		return doesContainTimeInfo();
 	}
 
