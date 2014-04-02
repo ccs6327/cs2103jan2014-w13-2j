@@ -56,14 +56,13 @@ public class TimeParser extends Analyzer {
 	protected static void processCalendarInfo() throws InvalidInputException {
 		initializeVariable();
 		int currIndex = infoToBeProcessed.length - 1;
-		
+
 		while (currIndex >= 0 && !hasAllTimeSet()) {
 			String toBeAnalyzedString = "";
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 				try {
-					System.out.println(toBeAnalyzedString);
 					analyzeTime(toBeAnalyzedString);
 					if (endCalendarIndex == -1) {
 						startCalendarIndex = loopIndex;
@@ -83,19 +82,45 @@ public class TimeParser extends Analyzer {
 			currIndex --;
 			setCalendar();
 		}
-		/*
-		for (int i = 0; i < 3; i ++) {
-			
-			if ()
-		}*/
-		
+
 		System.out.println(startCalendarIndex + " " + endCalendarIndex);
-		
+
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfStartTimeLaterThanEndTime();
+ 
+		adjustStartAndEndCalendarIndexToCorrectPosition();
+	}
+
+	private static void adjustStartAndEndCalendarIndexToCorrectPosition() {
+		int infoLength = infoToBeProcessed.length;
+
+		if (startCalendarIndex - 1 > 0) {
+			if (infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase("from")) {
+				startCalendarIndex --;
+			}
+		}
+		
+		try {	
+			if (startCalendarIndex != -1 && endCalendarIndex != -1) {
+				if (endCalendarIndex + 1 < infoLength) {
+					checkIfContainCalendarInfo(infoToBeProcessed[endCalendarIndex] + infoToBeProcessed[endCalendarIndex + 1]);
+					endCalendarIndex ++;
+				} else if (endCalendarIndex + 2 < infoLength) {
+					checkIfContainCalendarInfo(infoToBeProcessed[endCalendarIndex] + infoToBeProcessed[endCalendarIndex + 1] 
+							+ infoToBeProcessed[endCalendarIndex + 2]);
+					endCalendarIndex += 2;
+				}
+			}
+		} catch (ParseException e) {}
+	}
+
+	private static void checkIfContainCalendarInfo (String currStr) throws ParseException {
+		parseIfDateFormat(currStr);
+		parseIfTime12Format(currStr);
+		//Time24Format does not contains Date Format that is represent by more than one String
 	}
 
 	protected static void initializeVariable() {
@@ -273,7 +298,7 @@ public class TimeParser extends Analyzer {
 				if (analyzedCalendar.get(Calendar.YEAR) == 1970) { //calendar provided without year
 					analyzedCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
 				}
-				
+
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -343,20 +368,20 @@ public class TimeParser extends Analyzer {
 		return isStartDateSet && isStartTimeSet
 				&& isEndDateSet && isEndTimeSet;
 	}
-	
+
 	protected static boolean doesContainTimeInfo() {
 		return isStartDateSet || isStartTimeSet 
 				|| isEndDateSet || isEndTimeSet;
 	}
-	
+
 	protected static boolean isCaseTimedTask() {
 		return startCalendar != null && endCalendar != null;
 	}
-	
+
 	protected static boolean isCaseDeadlineTask() {
 		return startCalendar == null && endCalendar != null;
 	}
-	
+
 	protected static ArrayList<GregorianCalendar> getCalendar() {
 		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>();
 		time.add(startCalendar);
