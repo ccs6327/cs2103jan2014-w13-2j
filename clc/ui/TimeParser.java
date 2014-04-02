@@ -3,7 +3,6 @@ package clc.ui;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -62,12 +61,13 @@ public class TimeParser extends Analyzer {
 			String toBeAnalyzedString = "";
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
-				toBeAnalyzedString = infoToBeProcessed[loopIndex] + toBeAnalyzedString;
+				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 				try {
+					System.out.println(toBeAnalyzedString);
 					analyzeTime(toBeAnalyzedString);
 					if (endCalendarIndex == -1) {
 						startCalendarIndex = loopIndex;
-						endCalendarIndex = loopIndex + i;
+						endCalendarIndex = loopIndex;
 					} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
 						startCalendarIndex = loopIndex;
 					}
@@ -83,6 +83,13 @@ public class TimeParser extends Analyzer {
 			currIndex --;
 			setCalendar();
 		}
+		/*
+		for (int i = 0; i < 3; i ++) {
+			
+			if ()
+		}*/
+		
+		System.out.println(startCalendarIndex + " " + endCalendarIndex);
 		
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
@@ -122,7 +129,7 @@ public class TimeParser extends Analyzer {
 		determineIfFailsAllParsing();
 	}
 
-	private static void setCalendar() {
+	protected static void setCalendar() {
 		if (isDate || isKeywordDate) {
 			setDate();
 		} else if (isTime) {
@@ -130,7 +137,7 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static void caseIfCalendarBeforeCurrentTime()
+	protected static void caseIfCalendarBeforeCurrentTime()
 			throws InvalidInputException {
 		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
 			throw new InvalidInputException(ERROR_START_TIME);
@@ -154,13 +161,13 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static void setStartCalendarAsNullIfNotSet() {
+	protected static void setStartCalendarAsNullIfNotSet() {
 		if (!isStartTimeSet && !isStartDateSet) {
 			startCalendar = null;
 		}
 	}
 
-	private static void setEndCalendarAsNullIfNotSet() {
+	protected static void setEndCalendarAsNullIfNotSet() {
 		if (!isEndTimeSet && !isEndDateSet) {
 			endCalendar = null;
 		}
@@ -332,7 +339,7 @@ public class TimeParser extends Analyzer {
 		return startCalendar.compareTo(endCalendar) == 1;
 	}
 
-	private static boolean hasAllTimeSet() {
+	protected static boolean hasAllTimeSet() {
 		return isStartDateSet && isStartTimeSet
 				&& isEndDateSet && isEndTimeSet;
 	}

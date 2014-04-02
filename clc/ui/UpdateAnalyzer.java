@@ -7,6 +7,7 @@ import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
@@ -153,5 +154,41 @@ public class UpdateAnalyzer extends TimeParser {
 
 	public static int getCalendarProvidedCase() {
 		return calendarProvided;
+	}
+	
+	//override function in TimeParser
+	protected static void processCalendarInfo() throws InvalidInputException {
+		initializeVariable();
+		int currIndex = infoToBeProcessed.length - 1;
+		
+		while (currIndex >= 0 && !hasAllTimeSet()) {
+			String toBeAnalyzedString = "";
+			int loopIndex = currIndex;
+			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
+				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
+				try {
+					System.out.println(toBeAnalyzedString);
+					analyzeTime(toBeAnalyzedString);
+					if (endCalendarIndex == -1) {
+						startCalendarIndex = loopIndex;
+						endCalendarIndex = loopIndex;
+					} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
+						startCalendarIndex = loopIndex;
+					}
+					currIndex = loopIndex;
+					break;
+				} catch (ParseException e) { //catch parsing error
+					if (loopIndex - 1 < 0) {
+						break;
+					}
+				}
+				loopIndex --;
+			}
+			currIndex --;
+			setCalendar();
+		}
+		
+		setStartCalendarAsNullIfNotSet();
+		setEndCalendarAsNullIfNotSet();
 	}
 }
