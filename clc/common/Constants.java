@@ -181,6 +181,7 @@ public class Constants {
 	public static final String BY = "by";
 	public static final String DUE = "due";
 	public static final String AT = "at";
+	public static final String NEXT = "next";
 	
 	
 
@@ -197,4 +198,5 @@ public class Constants {
 	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: no new task name is given";
 	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: please indicate the sequence number";
 	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: command details contain non-numeric info";
+	public static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: display query can be extended with 'next' only";
 }

@@ -1,7 +1,10 @@
 package clc.ui;
 
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.ERROR_ONLY_ALLOW_NEXT;
 import static clc.common.Constants.SPACE;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.NEXT;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TODAY_SHORT;
 import static clc.common.Constants.TOMORROW;
@@ -36,9 +39,12 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 
 public class DisplayAnalyzer extends TimeParser{
+	private static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: display query can be extended with 'next' only";
+	private static final String NEXT = "next";
 	private static boolean isCaseDisplayCalendar; //display Calendar with date format
 	private static boolean isCaseKeywordCalendar; //display Calendar with keyword
 	private static int year, month, date, dayOfWeek;
+	private static String lastWord, lastTwoWords;
 
 	protected DisplayAnalyzer(String input) {
 		super(input);
@@ -48,11 +54,15 @@ public class DisplayAnalyzer extends TimeParser{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
 		isCaseKeywordCalendar = true;
+		lastWord = EMPTY;
+		lastTwoWords = EMPTY;
 
 		year = Calendar.getInstance().get(Calendar.YEAR);
 		month = Calendar.getInstance().get(Calendar.MONTH);
 		date = Calendar.getInstance().get(Calendar.DATE);
 		dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+
+		retrieveLastAndLastTwoWordsIfAvailable();
 
 		if (isCaseDisplayToday()) {
 			setToday();
@@ -88,6 +98,47 @@ public class DisplayAnalyzer extends TimeParser{
 		} else {
 			throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
 		}
+
+		if (isCaseDisplayMondaytoSundayOrNextWeekMonth()) {
+			int nNext = countExtraNext();
+			
+			if (isCaseDisplayNextMonth()) {
+				startCalendar.add(Calendar.MONTH, nNext);
+				endCalendar.add(Calendar.MONTH, nNext);
+			} else {
+				startCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+				endCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+			}
+		}
+	}
+
+	private static void retrieveLastAndLastTwoWordsIfAvailable() {
+		if (infoToBeProcessed.length >= 1) {
+			lastWord = infoToBeProcessed[infoToBeProcessed.length - 1];
+			if (infoToBeProcessed.length >= 2) {
+				lastTwoWords = infoToBeProcessed[infoToBeProcessed.length - 2] + SPACE + lastWord;
+			}
+		}
+	}
+
+	private static int countExtraNext() throws InvalidInputException {
+		int nNext = 0;
+
+		int toBeAnalyzedLength = infoToBeProcessed.length - 1; //last str
+
+		if (isCaseDisplayNextWeek() || isCaseDisplayNextMonth()) {
+			toBeAnalyzedLength --;
+		}
+		
+		for (int i = 0; i < toBeAnalyzedLength; i ++) {
+			if (infoToBeProcessed[i].equalsIgnoreCase(NEXT)) {
+				nNext ++;
+			} else {
+				throw new InvalidInputException(ERROR_ONLY_ALLOW_NEXT);
+			}
+		}
+
+		return nNext;
 	}
 
 	protected static boolean getDisplayCase() {
@@ -207,68 +258,68 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as the beginning of next month, end time as the end of next month
 		startCalendar = new GregorianCalendar(year, ++month, 1);
 		endCalendar = new GregorianCalendar(year, ++month, 1);
-		
+
 	}
-	
+
 	private static boolean isCaseDisplayToday() {
-		return commandDetails.equalsIgnoreCase(TODAY)
-				|| commandDetails.equalsIgnoreCase(TODAY_SHORT);
+		return lastWord.equalsIgnoreCase(TODAY)
+				|| lastWord.equalsIgnoreCase(TODAY_SHORT);
 	}
 
 	private static boolean isCaseDisplayTomorrow() {
-		return commandDetails.equalsIgnoreCase(TOMORROW)
-				|| commandDetails.equalsIgnoreCase(TOMORROW_SHORT);
+		return lastWord.equalsIgnoreCase(TOMORROW)
+				|| lastWord.equalsIgnoreCase(TOMORROW_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplayMonday() {
-		return commandDetails.equalsIgnoreCase(MONDAY)
-				|| commandDetails.equalsIgnoreCase(MONDAY_SHORT);
+		return lastWord.equalsIgnoreCase(MONDAY)
+				|| lastWord.equalsIgnoreCase(MONDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplayTuesday() {
-		return commandDetails.equalsIgnoreCase(TUESDAY)
-				|| commandDetails.equalsIgnoreCase(TUESDAY_SHORT);
+		return lastWord.equalsIgnoreCase(TUESDAY)
+				|| lastWord.equalsIgnoreCase(TUESDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplayWednesday() {
-		return commandDetails.equalsIgnoreCase(WEDNESDAY)
-				|| commandDetails.equalsIgnoreCase(WEDNESDAY_SHORT);
+		return lastWord.equalsIgnoreCase(WEDNESDAY)
+				|| lastWord.equalsIgnoreCase(WEDNESDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplayThursday() {
-		return commandDetails.equalsIgnoreCase(THURSDAY)
-				|| commandDetails.equalsIgnoreCase(THURSDAY_SHORT);
+		return lastWord.equalsIgnoreCase(THURSDAY)
+				|| lastWord.equalsIgnoreCase(THURSDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplayFriday() {
-		return commandDetails.equalsIgnoreCase(FRIDAY)
-				|| commandDetails.equalsIgnoreCase(FRIDAY_SHORT);
+		return lastWord.equalsIgnoreCase(FRIDAY)
+				|| lastWord.equalsIgnoreCase(FRIDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplaySaturday() {
-		return commandDetails.equalsIgnoreCase(SATURDAY)
-				|| commandDetails.equalsIgnoreCase(SATURDAY_SHORT);
+		return lastWord.equalsIgnoreCase(SATURDAY)
+				|| lastWord.equalsIgnoreCase(SATURDAY_SHORT);
 	}
-	
+
 	private static boolean isCaseDisplaySunday() {
-		return commandDetails.equalsIgnoreCase(SUNDAY)
-				|| commandDetails.equalsIgnoreCase(SUNDAY_SHORT);
+		return lastWord.equalsIgnoreCase(SUNDAY)
+				|| lastWord.equalsIgnoreCase(SUNDAY_SHORT);
 	}
 
 	private static boolean isCaseDisplayThisWeek() {
-		return commandDetails.equalsIgnoreCase(THIS_WEEK);
+		return lastTwoWords.equalsIgnoreCase(THIS_WEEK);
 	}
 
 	private static boolean isCaseDisplayNextWeek() {
-		return commandDetails.equalsIgnoreCase(NEXT_WEEK);
+		return lastTwoWords.equalsIgnoreCase(NEXT_WEEK);
 	}
 
 	private static boolean isCaseDisplayThisMonth() {
-		return commandDetails.equalsIgnoreCase(THIS_MONTH);
+		return lastTwoWords.equalsIgnoreCase(THIS_MONTH);
 	}
 
 	private static boolean isCaseDisplayNextMonth() {
-		return commandDetails.equalsIgnoreCase(NEXT_MONTH);
+		return lastTwoWords.equalsIgnoreCase(NEXT_MONTH);
 	}
 
 	//change for display string
@@ -289,5 +340,11 @@ public class DisplayAnalyzer extends TimeParser{
 	private static boolean isNextMonday(GregorianCalendar cal) {
 		return cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
 				&& endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE);
+	}
+
+	private static boolean isCaseDisplayMondaytoSundayOrNextWeekMonth() {
+		return isCaseKeywordCalendar && !isCaseDisplayToday()
+				&& !isCaseDisplayTomorrow() && !isCaseDisplayThisWeek()
+				&& !isCaseDisplayThisMonth();
 	}
 }

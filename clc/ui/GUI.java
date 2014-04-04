@@ -1,9 +1,12 @@
 package clc.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -68,11 +71,11 @@ public class GUI implements NativeKeyListener{
 		initializeInputTextBox();
 		actionWhenEnterIsPressed();
 		initiateWindowListener();
+		centreWindow(frameClc); 
 	}
 
 	private void setUpJFrame() {
 		frameClc = new JFrame();
-		frameClc.setAlwaysOnTop(true);
 		frameClc.setName("frame");
 		frameClc.getContentPane().setBackground(Color.GRAY);
 		frameClc.setTitle("CLC V0.3");
@@ -203,6 +206,13 @@ public class GUI implements NativeKeyListener{
 				initiateGlobalKeyListener();	
 			}
 		});
+	}
+	
+	public static void centreWindow(Window frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+	    frame.setLocation(x, y);
 	}
 
 	private void initializeDisplayBox() {
