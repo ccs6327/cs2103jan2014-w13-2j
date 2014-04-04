@@ -168,7 +168,6 @@ public class UpdateAnalyzer extends TimeParser {
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 				try {
-					System.out.println(toBeAnalyzedString);
 					analyzeTime(toBeAnalyzedString);
 					if (endCalendarIndex == -1) {
 						startCalendarIndex = loopIndex;

@@ -43,11 +43,12 @@ import static clc.common.Constants.FROM;
 import static clc.common.Constants.BY;
 import static clc.common.Constants.DUE;
 import static clc.common.Constants.AT;
+import static clc.common.Constants.NEXT;
 
 public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
 	private static boolean doesContainAmOrPm;
-	private static boolean isDate, isKeywordDate, isTime;
+	private static boolean isDate, isKeywordDate, isTime, isCaseTodayTomorrow;
 	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
 	private static GregorianCalendar analyzedCalendar;
 	protected static GregorianCalendar startCalendar, endCalendar;
@@ -56,6 +57,13 @@ public class TimeParser extends Analyzer {
 
 	protected TimeParser(String input) {
 		super(input);
+	}
+
+	protected static ArrayList<GregorianCalendar> getCalendar() {
+		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>();
+		time.add(startCalendar);
+		time.add(endCalendar);
+		return time;
 	}
 
 	protected static void processCalendarInfo() throws InvalidInputException {
@@ -69,13 +77,8 @@ public class TimeParser extends Analyzer {
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 				try {
 					analyzeTime(toBeAnalyzedString);
-					if (endCalendarIndex == -1) {
-						startCalendarIndex = loopIndex;
-						endCalendarIndex = loopIndex;
-					} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
-						startCalendarIndex = loopIndex;
-					}
-					currIndex = loopIndex;
+					currIndex = caseKeywordNextBeforeKeywordDate(loopIndex);
+					setStartAndEndCalendarIndex(currIndex, loopIndex);
 					break;
 				} catch (ParseException e) { //catch parsing error
 					if (loopIndex - 1 < 0) {
@@ -93,11 +96,41 @@ public class TimeParser extends Analyzer {
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfStartTimeLaterThanEndTime();
- 
-		adjustStartAndEndCalendarIndexToCorrectPosition();
+		removePrepositionOfCalendar();
 	}
 
-	private static void adjustStartAndEndCalendarIndexToCorrectPosition() {
+	private static int caseKeywordNextBeforeKeywordDate(int loopIndex) {
+		int nNext = 0;
+		if (isKeywordDate && !isCaseTodayTomorrow) {
+			nNext = countExtraNext(loopIndex);
+			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+		}
+		return loopIndex - nNext;
+	}
+
+	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
+		if (endCalendarIndex == -1) { //never set before
+			startCalendarIndex = currIndex; //consider case extra "next"
+			endCalendarIndex = loopIndex;
+		} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
+			startCalendarIndex = currIndex;
+		}
+	}
+
+	private static int countExtraNext(int loopIndex) {
+		int nNext = 0;
+		while (--loopIndex >= 0) {
+			if (infoToBeProcessed[loopIndex].equals(NEXT)) {
+				nNext ++;
+			}
+			else {
+				break;
+			}
+		}
+		return nNext;
+	}
+
+	private static void removePrepositionOfCalendar() {
 		int infoLength = infoToBeProcessed.length;
 
 		if (startCalendarIndex - 1 > 0) {
@@ -253,33 +286,34 @@ public class TimeParser extends Analyzer {
 
 	private static boolean parseIfKeywordDateFormat(String currStr) {
 		Calendar currTime = Calendar.getInstance(); //get current Calendar
-		boolean isCaseToday = false;
+		isCaseTodayTomorrow = false;
 		int addValue = -1;
 
-		if (currStr.equalsIgnoreCase(TODAY) || currStr.equalsIgnoreCase(TODAY_SHORT)) {
-			isCaseToday = true;
+		if (isToday(currStr)) {
+			isCaseTodayTomorrow = true;
 			addValue = 0;
-		} else if (currStr.equalsIgnoreCase(TOMORROW) || currStr.equalsIgnoreCase(TOMORROW_SHORT)) {
+		} else if (isTomorrow(currStr)) {
+			isCaseTodayTomorrow = true;
 			addValue = 1;
-		} else if (currStr.equalsIgnoreCase(MONDAY) || currStr.equalsIgnoreCase(MONDAY_SHORT)) {
+		} else if (isMonday(currStr)) {
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(TUESDAY) || currStr.equalsIgnoreCase(TUESDAY_SHORT)) {
+		} else if (isTuesday(currStr)) {
 			addValue = Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(WEDNESDAY) || currStr.equalsIgnoreCase(WEDNESDAY_SHORT)) {
+		} else if (isWednesday(currStr)) {
 			addValue = Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(THURSDAY) || currStr.equalsIgnoreCase(THURSDAY_SHORT)) {
+		} else if (isThursday(currStr)) {
 			addValue = Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(FRIDAY) || currStr.equalsIgnoreCase(FRIDAY_SHORT)) {
+		} else if (isFriday(currStr)) {
 			addValue = Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(SATURDAY) || currStr.equalsIgnoreCase(SATURDAY_SHORT)) {
+		} else if (isSaturday(currStr)) {
 			addValue = Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else if (currStr.equalsIgnoreCase(SUNDAY) || currStr.equalsIgnoreCase(SUNDAY_SHORT)) {
+		} else if (isSunday(currStr)) {
 			addValue = Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else {
 			return false;
 		}
 
-		if (!isCaseToday && addValue <= 0) { // day before today will get negative value
+		if (!isCaseTodayTomorrow && addValue <= 0) { // day before today will get negative value
 			addValue += 7;
 		}
 
@@ -388,11 +422,40 @@ public class TimeParser extends Analyzer {
 		return startCalendar == null && endCalendar != null;
 	}
 
-	protected static ArrayList<GregorianCalendar> getCalendar() {
-		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>();
-		time.add(startCalendar);
-		time.add(endCalendar);
-		return time;
+	private static boolean isToday(String currStr) {
+		return currStr.equalsIgnoreCase(TODAY) || currStr.equalsIgnoreCase(TODAY_SHORT);
+	}
+
+	private static boolean isTomorrow(String currStr) {
+		return currStr.equalsIgnoreCase(TOMORROW) || currStr.equalsIgnoreCase(TOMORROW_SHORT);
+	}
+
+	private static boolean isMonday(String currStr) {
+		return currStr.equalsIgnoreCase(MONDAY) || currStr.equalsIgnoreCase(MONDAY_SHORT);
+	}
+
+	private static boolean isTuesday(String currStr) {
+		return currStr.equalsIgnoreCase(TUESDAY) || currStr.equalsIgnoreCase(TUESDAY_SHORT);
+	}
+
+	private static boolean isWednesday(String currStr) {
+		return currStr.equalsIgnoreCase(WEDNESDAY) || currStr.equalsIgnoreCase(WEDNESDAY_SHORT);
+	}
+
+	private static boolean isThursday(String currStr) {
+		return currStr.equalsIgnoreCase(THURSDAY) || currStr.equalsIgnoreCase(THURSDAY_SHORT);
+	}
+
+	private static boolean isFriday(String currStr) {
+		return currStr.equalsIgnoreCase(FRIDAY) || currStr.equalsIgnoreCase(FRIDAY_SHORT);
+	}
+
+	private static boolean isSaturday(String currStr) {
+		return currStr.equalsIgnoreCase(SATURDAY) || currStr.equalsIgnoreCase(SATURDAY_SHORT);
+	}
+
+	private static boolean isSunday(String currStr) {
+		return currStr.equalsIgnoreCase(SUNDAY) || currStr.equalsIgnoreCase(SUNDAY_SHORT);
 	}
 
 	private static SimpleDateFormat[] initializeTime12Format() {
