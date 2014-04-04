@@ -39,8 +39,6 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 
 public class DisplayAnalyzer extends TimeParser{
-	private static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: display query can be extended with 'next' only";
-	private static final String NEXT = "next";
 	private static boolean isCaseDisplayCalendar; //display Calendar with date format
 	private static boolean isCaseKeywordCalendar; //display Calendar with keyword
 	private static int year, month, date, dayOfWeek;
