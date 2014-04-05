@@ -42,6 +42,10 @@ public class Add implements Command{
 		
 	}
 	
+	public void checkAndAddRecurringTask() {
+		
+	}
+	
 	private String formatDate(Calendar calendar) {
 		String date;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");

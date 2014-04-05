@@ -42,9 +42,8 @@ public class AddAnalyzer extends TimeParser {
 				taskToBeAdded.setReminder();
 			}
 			
-			if (isRecurringTime) {
-				System.out.println("YES");
-				taskToBeAdded.setRecurring();
+			if (isRecurringTime) { //support for unlimited time of recurring
+				taskToBeAdded.setRecurringTime(Integer.MAX_VALUE);
 			}
 		} else { // floating task
 			if (isReminderNeeded) {
@@ -54,6 +53,8 @@ public class AddAnalyzer extends TimeParser {
 			taskToBeAdded = new Task(taskName);
 		}
 	}
+	
+	
 
 	private static void setUpInfoToBeProcessed() {
 		isCaseQuoteTaskName = false;
