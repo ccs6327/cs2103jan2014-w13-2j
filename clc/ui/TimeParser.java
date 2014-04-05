@@ -29,7 +29,6 @@ import static clc.common.Constants.SATURDAY;
 import static clc.common.Constants.SATURDAY_SHORT;
 import static clc.common.Constants.SUNDAY;
 import static clc.common.Constants.SUNDAY_SHORT;
-import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.AM;
 import static clc.common.Constants.PM;
 import static clc.common.Constants.TIME_12H_PATTERNS;
@@ -81,7 +80,6 @@ public class TimeParser extends Analyzer {
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
-				System.out.println(toBeAnalyzedString);
 				try {
 					analyzeTime(toBeAnalyzedString);
 					currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
