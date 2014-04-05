@@ -6,7 +6,7 @@ import java.util.Scanner;
 import clc.common.InvalidInputException;
 import static clc.common.Constants.ERROR_CONTAIN_NON_NUMERIC_INFO;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
-import static clc.common.Constants.SPACE;
+import static clc.common.Constants.EMPTY;
 
 public class SequenceNumberExtractor extends Analyzer{
 	
@@ -22,7 +22,7 @@ public class SequenceNumberExtractor extends Analyzer{
 	private static ArrayList<Integer> parseDetailsToSequenceNum() throws InvalidInputException {
 		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
 		
-		determineIfCommandDetailsExist();
+		throwExceptionIfEmptyCommandDetails();
 		
 		Scanner sc = new Scanner(commandDetails);
 		while (sc.hasNext()) {
@@ -38,16 +38,5 @@ public class SequenceNumberExtractor extends Analyzer{
 		}
 		sc.close();
 		return new ArrayList<Integer>(taskSeqNo);
-	}
-
-	private static void determineIfCommandDetailsExist()
-			throws InvalidInputException {
-		if (!doesCommandDetailsExist()) {
-			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
-		}
-	}
-
-	private static boolean doesCommandDetailsExist() {
-		return !commandDetails.equals(SPACE);
 	}
 }
