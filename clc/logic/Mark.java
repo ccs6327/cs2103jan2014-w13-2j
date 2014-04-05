@@ -1,6 +1,7 @@
 package clc.logic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import clc.storage.History;
 import clc.storage.Storage;
@@ -61,9 +62,12 @@ public class Mark implements Command {
 			} else {
 				boolean isMarked = false;
 				int internalSeqNo = displayMem.get(seqNo - 1); 
-				System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
-				isMarked = internalMem.get(internalSeqNo).markDone();
-				System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
+				
+				Task toBeMarkedTask = internalMem.get(internalSeqNo);
+				
+				caseMarkRecurringTask(toBeMarkedTask);
+				
+				isMarked = toBeMarkedTask.markDone();
 				isChanged = true;
 				String taskName = internalMem.get(internalSeqNo).getTaskName();
 				if (isMarked) {
@@ -78,18 +82,24 @@ public class Mark implements Command {
 		}
 		
 		if (isChanged) {
-			System.out.println("currentVersion before = " + History.getCurrentVersion());//
-			System.out.println(History.getHistoryMem());//
-			System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
 			History.addNewVersion();
     		Storage.writeContentIntoFile();
-    		System.out.println("currentVersion after  = " + History.getCurrentVersion());//
-			System.out.println(History.getHistoryMem());//
-			System.out.println(History.getHistoryMem().get(1).get(0).isDone());//
-			System.out.println(History.getHistoryMem().get(2).get(0).isDone());//
 		}
 		
 		return feedback.toString().trim();
+	}
+
+	private void caseMarkRecurringTask(Task toBeMarkedTask) {
+		int nRecurring = toBeMarkedTask.getRecurringTime();
+		if (nRecurring > 0) {
+			Task newRecurringTask = new Task(toBeMarkedTask);
+			//pass the recurring time to the new task
+			toBeMarkedTask.setRecurringTime(0);
+			newRecurringTask.setRecurringTime(--nRecurring);
+			newRecurringTask.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR, 1);
+			Command addRecurringTask = new Add(newRecurringTask);
+			addRecurringTask.execute();
+		}
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {

@@ -86,6 +86,7 @@ public class UserInterface {
 		Command command = null;
 		Analyzer.analyze(input);
 		String commandType = Analyzer.getCommandType(); 
+		
 
 		try{
 			if (isCaseAdd(commandType)) {
