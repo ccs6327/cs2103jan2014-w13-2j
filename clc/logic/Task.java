@@ -140,6 +140,20 @@ public class Task {
 		return taskToString;
 	}
 	
+	public String toStringTimeFormatter(){
+	    if(taskType == TYPE_TIMED_TASK){
+    		String startTimeString = D_M_Y_TimeFormatter.format(startTime.getTime());
+    		String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
+	    	taskToString = String.format(TIMED_TASK_TO_STRING, taskName, startTimeString, endTimeString);
+	    }else if (taskType == TYPE_DEADLINE_TASK) {
+    		String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
+	    	taskToString = String.format(DEADLINE_TASK_TO_STRING, taskName, endTimeString);
+	    }else {
+	    	taskToString = String.format(FLOATING_TASK_TO_STRING, taskName);
+	    }
+		return taskToString;
+	}
+
 	public String taskTypeToString(){
 	    if(taskType == TYPE_TIMED_TASK){
 	    	taskTypeToString = STRING_TIMED_TASK;

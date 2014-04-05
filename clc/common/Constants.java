@@ -142,7 +142,8 @@ public class Constants {
 
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
-
+	public static SimpleDateFormat D_M_Y_TimeFormatter = new SimpleDateFormat("h.mm a");
+	
 	//Analyzer
 	public static final String EMPTY = "";
 	public static final String SLASH_R = "/r";

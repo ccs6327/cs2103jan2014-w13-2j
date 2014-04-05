@@ -224,7 +224,6 @@ public class Display implements Command {
 			startOfPeriod = time.get(0);
 			endOfPeriod = time.get(1);
 			//Process output
-			//DisplayOutput.add(D_M_Y_DateFormatter.format(startOfPeriod.getTime()) + TO + D_M_Y_DateFormatter.format(endOfPeriod.getTime()));
 			if(query != null){
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_QUERY, query));
 				DisplayOutput.add(ANOTHER_LINE);
@@ -238,6 +237,7 @@ public class Display implements Command {
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_IN_PERIOD, startTime, endTime));
 				DisplayOutput.add(ANOTHER_LINE);
 			}
+			
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
 			feedback.append("\n");
 			printOutDisplay();
@@ -257,16 +257,30 @@ public class Display implements Command {
 	
 	// Go through the internal memory and check whether the tasks are with in the time period
 		private void goThroughTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod) {
-			int displayNo = 1;
-			for (int i = 1; i <= internalMem.size(); i++) {
-				Task task = internalMem.get(i - 1);
-				Calendar taskStartTime = task.getStartTime();
-				Calendar taskEndTime = task.getEndTime();
-				if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
-			    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
-					displayMem.add(i - 1);
-					displayNo++;
+			if (startOfPeriod!= null && isWithinADay(startOfPeriod , endOfPeriod)){
+				int displayNo = 1;
+				for (int i = 1; i <= internalMem.size(); i++) {
+					Task task = internalMem.get(i - 1);
+					Calendar taskStartTime = task.getStartTime();
+					Calendar taskEndTime = task.getEndTime();
+					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
+					    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toStringTimeFormatter()));	
+							displayMem.add(i - 1);
+					        displayNo++;
+					}
 				}	
+			} else {
+				int displayNo = 1;
+				for (int i = 1; i <= internalMem.size(); i++) {
+					Task task = internalMem.get(i - 1);
+					Calendar taskStartTime = task.getStartTime();
+					Calendar taskEndTime = task.getEndTime();
+					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
+					    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
+							displayMem.add(i - 1);
+							displayNo++;
+					}
+				}
 			}
 		}
 
@@ -306,6 +320,14 @@ public class Display implements Command {
 		// Check whether the data which can be processed is empty
 		protected boolean isDataEmpty() {
 			return displayMem.isEmpty();
+		}
+		
+		protected boolean isWithinADay(Calendar calA, Calendar calB){
+			   return calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR)
+			            && calA.get(Calendar.MONTH) == calB.get(Calendar.MONTH)
+			            && (calA.get(Calendar.DAY_OF_MONTH) == calB.get(Calendar.DAY_OF_MONTH)
+			            || (calA.get(Calendar.DAY_OF_MONTH) + 1 == calB.get(Calendar.DAY_OF_MONTH) 
+			            && calB.get(Calendar.HOUR) == 0 && calB.get(Calendar.MINUTE) == 0 && calB.get(Calendar.SECOND) == 0));
 		}
 		
 		protected void sortTasks() {
