@@ -49,16 +49,19 @@ public class Add implements Command{
 		int taskListSize = internalMem.size();
 		for (int i = 0; i < taskListSize; i ++) {
 			Task currentTask = internalMem.get(i);
-			int nRecurring = currentTask.getRecurringTime();
+			int nRecurring = currentTask.getNumberOfRecurring();
 			if (isRecurringAndOverDueTask(currentTask)) {
 				task = new Task(currentTask);
-				currentTask.setRecurringTime(0);
-				task.setRecurringTime(--nRecurring);
-				task.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR, 1);
+				currentTask.setNumberOfRecurring(0);
+				task.setNumberOfRecurring(--nRecurring);
+				if (task.getRecurringPeriod() == EVERY_WEEK) {
+					task.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR);
+				} else if (task.getRecurringPeriod() == EVERYDAY) {
+					task.postponeStartAndEndTime(Calendar.DAY_OF_YEAR);
+				}
 				internalMem.add(task);
 			}
 		}
-		
 	}
 
 	private boolean isRecurringAndOverDueTask(Task currentTask) {
@@ -66,7 +69,7 @@ public class Add implements Command{
 		if (currentTask.getEndTime() != null) {
 			isOverdue = currentTask.getEndTime().compareTo(Calendar.getInstance());
 		}
-		return isOverdue <=0 && currentTask.getRecurringTime() > 0;
+		return isOverdue <=0 && currentTask.getNumberOfRecurring() > 0;
 	}
 	
 	private String formatDate(Calendar calendar) {

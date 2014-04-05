@@ -5,7 +5,12 @@ import java.util.Calendar;
 
 import clc.storage.History;
 import clc.storage.Storage;
-import static clc.common.Constants.*;
+
+import static clc.common.Constants.MESSAGE_OUT_OF_BOUND;
+import static clc.common.Constants.MESSAGE_MARK_DONE;
+import static clc.common.Constants.MESSAGE_PREVIOUSLY_MARK_DONE;
+import static clc.common.Constants.EVERYDAY;
+import static clc.common.Constants.EVERY_WEEK;
 
 public class Mark implements Command {
 	private ArrayList<Integer> taskSeqNo;
@@ -15,7 +20,6 @@ public class Mark implements Command {
 	private ArrayList<Task> reminderMem;
 	private boolean isReminderTask;
 	private long targetTaskId;
-	private boolean isChanged;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -77,7 +81,7 @@ public class Mark implements Command {
 				} else { //task is marked before this
 					feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
 					feedback.append("\n");
-				}	
+				}
 			}
 		}
 		
@@ -90,13 +94,17 @@ public class Mark implements Command {
 	}
 
 	private void caseMarkRecurringTask(Task toBeMarkedTask) {
-		int nRecurring = toBeMarkedTask.getRecurringTime();
+		int nRecurring = toBeMarkedTask.getNumberOfRecurring();
 		if (nRecurring > 0) {
 			Task newRecurringTask = new Task(toBeMarkedTask);
 			//pass the recurring time to the new task
-			toBeMarkedTask.setRecurringTime(0);
-			newRecurringTask.setRecurringTime(--nRecurring);
-			newRecurringTask.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR, 1);
+			toBeMarkedTask.setNumberOfRecurring(0);
+			newRecurringTask.setNumberOfRecurring(--nRecurring);
+			if (newRecurringTask.getRecurringPeriod().equals(EVERY_WEEK)) {
+				newRecurringTask.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR);
+			} else if (newRecurringTask.getRecurringPeriod().equals(EVERYDAY)) {
+				newRecurringTask.postponeStartAndEndTime(Calendar.DAY_OF_YEAR);
+			}
 			Command addRecurringTask = new Add(newRecurringTask);
 			addRecurringTask.execute();
 		}

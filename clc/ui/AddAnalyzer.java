@@ -22,12 +22,11 @@ public class AddAnalyzer extends TimeParser {
 
 	protected static void analyze() throws InvalidInputException {
 		determineIfReminderNeeded();
-
 		setUpInfoToBeProcessed();
 
 		if (doesContainTimeInfo()) { //timed task or deadline task
-			//merge the taskName
-			taskName = mergeNotQuotedTaskName();
+			//quoted one does not require to merge anymore
+			taskName = mergeNotQuotedWordsAsTaskName();
 			determineIfTaskNameProvided();
 
 			if (isCaseDeadlineTask()) {
@@ -38,13 +37,8 @@ public class AddAnalyzer extends TimeParser {
 				throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 			}
 
-			if (isReminderNeeded) {
-				taskToBeAdded.setReminder();
-			}
-			
-			if (isRecurringTime) { //support for unlimited time of recurring
-				taskToBeAdded.setRecurringTime(Integer.MAX_VALUE);
-			}
+			caseIfReminderNeeded();
+			caseIfRecurringTask();
 		} else { // floating task
 			if (isReminderNeeded) {
 				throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
@@ -53,9 +47,22 @@ public class AddAnalyzer extends TimeParser {
 			taskToBeAdded = new Task(taskName);
 		}
 	}
-	
-	
 
+	private static void caseIfReminderNeeded() {
+		if (isReminderNeeded) {
+			taskToBeAdded.setReminder();
+		}
+	}
+
+	private static void caseIfRecurringTask() {
+		if (isRecurringEveryWeek) { //support for unlimited time of recurring
+			taskToBeAdded.setNumberOfRecurring(Integer.MAX_VALUE);
+			taskToBeAdded.setRecurringPeriod(recurringPeriod);
+		} else if  (isRecurringEveryday) {
+			taskToBeAdded.setNumberOfRecurring(Integer.MAX_VALUE);
+		}
+	}
+	
 	private static void setUpInfoToBeProcessed() {
 		isCaseQuoteTaskName = false;
 		if (commandDetails.contains(QUOTATION_MARK)) {
@@ -105,7 +112,7 @@ public class AddAnalyzer extends TimeParser {
 		return taskToBeAdded;
 	}
 
-	private static String mergeNotQuotedTaskName() {
+	private static String mergeNotQuotedWordsAsTaskName() {
 		if (!isCaseQuoteTaskName){
 			taskName = EMPTY;
 			for (int i = 0; i < startCalendarIndex; i++) {

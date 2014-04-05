@@ -29,6 +29,7 @@ import static clc.common.Constants.SATURDAY;
 import static clc.common.Constants.SATURDAY_SHORT;
 import static clc.common.Constants.SUNDAY;
 import static clc.common.Constants.SUNDAY_SHORT;
+import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.AM;
 import static clc.common.Constants.PM;
 import static clc.common.Constants.TIME_12H_PATTERNS;
@@ -44,6 +45,9 @@ import static clc.common.Constants.BY;
 import static clc.common.Constants.DUE;
 import static clc.common.Constants.AT;
 import static clc.common.Constants.NEXT;
+import static clc.common.Constants.EVERY;
+import static clc.common.Constants.EVERYDAY;
+import static clc.common.Constants.EVERY_WEEK;
 
 public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
@@ -53,8 +57,9 @@ public class TimeParser extends Analyzer {
 	protected static GregorianCalendar startCalendar, endCalendar;
 	protected static String[] infoToBeProcessed = null;
 	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
-	protected static boolean isRecurringTime;
 	protected static int startCalendarIndex, endCalendarIndex;
+	protected static boolean isRecurringEveryWeek, isRecurringEveryday;
+	protected static String recurringPeriod;
 
 	protected TimeParser(String input) {
 		super(input);
@@ -76,6 +81,7 @@ public class TimeParser extends Analyzer {
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
+				System.out.println(toBeAnalyzedString);
 				try {
 					analyzeTime(toBeAnalyzedString);
 					currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
@@ -102,7 +108,7 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static void caseIfRecurringTimeBeforeCurrentTime() {
-		if (isMondayToSunday && isRecurringTime) {
+		if (isMondayToSunday && isRecurringEveryWeek) {
 			if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
 				startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
 				endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
@@ -123,8 +129,9 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static int checkIfKeywordEveryExists(int loopIndex) {
-		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase("every")) {
-			isRecurringTime = true;
+		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(EVERY)) {
+			isRecurringEveryWeek = true;
+			recurringPeriod = EVERY_WEEK;
 			return 1;
 		}
 		return 0; //no "every"
@@ -323,6 +330,11 @@ public class TimeParser extends Analyzer {
 		} else if (isTomorrow(currStr)) {
 			isMondayToSunday = false;
 			addValue = 1;
+		} else if (isEveryday(currStr)) {
+			isMondayToSunday = false;
+			addValue = 0;
+			isRecurringEveryday = true;
+			recurringPeriod = EVERYDAY;
 		} else if (isMonday(currStr)) {
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isTuesday(currStr)) {
@@ -455,6 +467,10 @@ public class TimeParser extends Analyzer {
 
 	private static boolean isTomorrow(String currStr) {
 		return currStr.equalsIgnoreCase(TOMORROW) || currStr.equalsIgnoreCase(TOMORROW_SHORT);
+	}
+
+	private static boolean isEveryday(String currStr) {
+		return currStr.equalsIgnoreCase(EVERYDAY);
 	}
 
 	private static boolean isMonday(String currStr) {

@@ -15,7 +15,8 @@ public class Task {
 	private int taskType;//0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
 	private boolean isDone;
 	private boolean isReminderNeeded; 
-	private int recurringTime;
+	private int numberOfRecurring;
+	private String recurringPeriod;
 
 	public Task() {
 		
@@ -38,7 +39,8 @@ public class Task {
 		taskType = oldTask.getTaskType();
 		isDone = false;
 		isReminderNeeded = oldTask.getIsReminderNeeded();
-		recurringTime = oldTask.getRecurringTime();
+		numberOfRecurring = oldTask.getNumberOfRecurring();
+		recurringPeriod = oldTask.getRecurringPeriod();
 	}
 
 	public Task(String _taskName, Calendar _startTime, Calendar _endTime) {
@@ -177,20 +179,28 @@ public class Task {
 		return isReminderNeeded;
 	}
 	
-	public void setRecurringTime(int nRecurring) {
-		recurringTime = nRecurring;
+	public void setNumberOfRecurring(int nRecurring) {
+		numberOfRecurring = nRecurring;
 	}
 	
-	public int getRecurringTime() {
-		return recurringTime;
+	public int getNumberOfRecurring() {
+		return numberOfRecurring;
 	}
 
-	public void postponeStartAndEndTime(int typeOfCalendar, int nTimes) {
+	public void setRecurringPeriod(String recurringPeriod) {
+		this.recurringPeriod = recurringPeriod;
+	}
+
+	public String getRecurringPeriod() {
+		return recurringPeriod;
+	}
+
+	public void postponeStartAndEndTime(int typeOfCalendar) {
 		if (startTime != null) {
-			startTime.add(typeOfCalendar, nTimes);
-			endTime.add(typeOfCalendar, nTimes);
+			startTime.add(typeOfCalendar, 1);
+			endTime.add(typeOfCalendar, 1);
 		} else if (endTime != null) {
-			endTime.add(typeOfCalendar, nTimes);
+			endTime.add(typeOfCalendar, 1);
 		}
 	}
 }
