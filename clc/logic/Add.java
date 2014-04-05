@@ -13,8 +13,11 @@ public class Add implements Command{
 	private Task task;
 	private ArrayList<Task> internalMem;
 	
+	public Add() {
+		internalMem = Storage.getInternalMem();
+	}
+	
 	public Add(Task task) {
-		// TODO Auto-generated constructor stub
 		this.task = task;
 		internalMem = Storage.getInternalMem();
 	}
@@ -42,8 +45,25 @@ public class Add implements Command{
 		
 	}
 	
-	public void checkAndAddRecurringTask() {
+	public void addOverdueRecurringTask() {
+		int taskListSize = internalMem.size();
+		for (int i = 0; i < taskListSize; i ++) {
+			Task currentTask = internalMem.get(i);
+			int nRecurring = currentTask.getRecurringTime();
+			if (isRecurringAndOverDueTask(currentTask)) {
+				task = new Task(currentTask);
+				currentTask.setRecurringTime(0);
+				task.setRecurringTime(--nRecurring);
+				task.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR, 1);
+				internalMem.add(task);
+			}
+		}
 		
+	}
+
+	private boolean isRecurringAndOverDueTask(Task currentTask) {
+		int isOverdue = currentTask.getEndTime().compareTo(Calendar.getInstance());
+		return isOverdue <=0 && currentTask.getRecurringTime() > 0;
 	}
 	
 	private String formatDate(Calendar calendar) {
