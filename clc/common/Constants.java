@@ -8,6 +8,9 @@ public class Constants {
 	public static final int TYPE_DEADLINE_TASK = 1; 
 	public static final int TYPE_FLOATING_TASK = 2;
 	public static final int TYPE_UNSUPPORTED_TASK = 3;
+	public static final String TIMED_TASK_TO_STRING = "[%2$s - %3$s] %1$s";
+	public static final String DEADLINE_TASK_TO_STRING = "[by %2$s] %1$s";
+	public static final String FLOATING_TASK_TO_STRING = "%s";
 
 	public static final String TYPE_ADD = "add";
 	public static final String TYPE_CREATE = "create";
@@ -65,9 +68,7 @@ public class Constants {
 	public static final String MESSAGE_SHOW_FLOATING_TASKS = "FLOATING TASKS";
 	public static final String MESSAGE_SHOW_DEADLINE_TASKS = "DEADLINE TASKS";
 	public static final String MESSAGE_SHOW_TIMED_TASKS = "TIMED TASKS";
-	public static final String MESSAGE_OUTPUT_TIMED_TASKS = "%1$d. [%3$s - %4$s] %2$s"; 
-	public static final String MESSAGE_OUTPUT_DEADLINE_TASKS = "%1$d. [by %3$s] %2$s";
-	public static final String MESSAGE_OUTPUT_FLOATING_TASKS = "%d. %s";
+	public static final String MESSAGE_OUTPUT_TASKS = "%d. %s";
 	public static final String MESSAGE_DISPLAY = "All tasks have been displayed.";
 	public static final String MESSAGE_DISPLAY_INCOMPLETE_TASKS = "All incomplete tasks have been displayed.";
 	public static final String MESSAGE_NO_INCOMPLETE_TASKS =  "All tasks are done.";
@@ -88,7 +89,14 @@ public class Constants {
 	public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
 	public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
 	public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
-
+	
+	// Search
+	public final static String BLANK_STRING = "";
+	public final static String MESSAGE_RESULTS_FOUND = "Found: ";
+    public final static String MESSAGE_MATCHING_ENTRIES = "All entries containing: '%s'";
+    public final static String MESSAGE_SEARCH_FEEDBACK = "Task(s) containing '%s' has(have) been displayed.";
+    public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
+	
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successful.";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successful.";
