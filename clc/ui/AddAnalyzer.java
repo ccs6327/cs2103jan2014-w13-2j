@@ -6,6 +6,7 @@ import static clc.common.Constants.ERROR_NO_TASK_NAME;
 import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 import static clc.common.Constants.QUOTATION_MARK;
+import static clc.common.Constants.SLASH_R;
 import clc.common.InvalidInputException;
 import clc.logic.Task;
 
@@ -39,6 +40,11 @@ public class AddAnalyzer extends TimeParser {
 
 			if (isReminderNeeded) {
 				taskToBeAdded.setReminder();
+			}
+			
+			if (isRecurringTime) {
+				System.out.println("YES");
+				taskToBeAdded.setRecurring();
 			}
 		} else { // floating task
 			if (isReminderNeeded) {
@@ -77,7 +83,7 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void determineIfReminderNeeded() {
 		isReminderNeeded = false;
-		if (getFirstWord(commandDetails).equals("/r")) {
+		if (getFirstWord(commandDetails).equalsIgnoreCase(SLASH_R)) {
 			isReminderNeeded = true;
 			commandDetails = removeFirstWord(commandDetails);
 		}

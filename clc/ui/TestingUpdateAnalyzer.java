@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import clc.common.InvalidInputException;
 
-import static clc.common.Constants.ERROR_NO_COMMA;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
@@ -170,16 +169,6 @@ public class TestingUpdateAnalyzer {
 			UpdateAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_NO_NEW_TASK_NAME, e.getMessage());
-		}
-		
-		
-		//no comma in calendar details
-		Analyzer.analyze("update 1 4pm 5pm");
-
-		try {
-			UpdateAnalyzer.analyze();
-		} catch (InvalidInputException e) {
-			assertEquals(ERROR_NO_COMMA, e.getMessage());
 		}
 	}
 }

@@ -3,7 +3,6 @@ package clc.ui;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.COMMA;
 import static clc.common.Constants.EMPTY;
-import static clc.common.Constants.ERROR_NO_COMMA;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;

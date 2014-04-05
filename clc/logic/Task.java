@@ -14,7 +14,7 @@ public class Task {
 	private Calendar endTime;
 	private int taskType;//0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
 	private boolean isDone;
-	private boolean isReminderNeeded;
+	private boolean isReminderNeeded, isRecurringTask;
 
 	public Task() {
 		
@@ -152,8 +152,16 @@ public class Task {
 		isReminderNeeded = true;
 	}
 
-	public boolean isReminderNeeded() {
+	public boolean getIsReminderNeeded() {
 		return isReminderNeeded;
+	}
+	
+	public void setRecurring() {
+		isRecurringTask = true;
+	}
+	
+	public boolean getIsRecurringTask() {
+		return isRecurringTask;
 	}
 }
 

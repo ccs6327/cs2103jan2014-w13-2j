@@ -30,7 +30,7 @@ public class Remind {
 		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (int i = 0; i < internalMem.size(); i ++) {
 			Task task = internalMem.get(i);
-			if (task.isReminderNeeded() && !task.isDone()) {
+			if (task.getIsReminderNeeded() && !task.isDone()) {
 				reminderMem.add(task);
 				taskIdToBeReminded.add(task.getTaskId());
 				switch (task.getTaskType()) {

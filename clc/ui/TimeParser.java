@@ -47,12 +47,13 @@ import static clc.common.Constants.NEXT;
 
 public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
-	private static boolean doesContainAmOrPm;
-	private static boolean isDate, isKeywordDate, isTime, isCaseTodayTomorrow;
-	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
 	private static GregorianCalendar analyzedCalendar;
+	private static boolean doesContainAmOrPm;
+	private static boolean isDate, isKeywordDate, isTime, isTodayTomorrow;
 	protected static GregorianCalendar startCalendar, endCalendar;
 	protected static String[] infoToBeProcessed = null;
+	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
+	protected static boolean isRecurringTime;
 	protected static int startCalendarIndex, endCalendarIndex;
 
 	protected TimeParser(String input) {
@@ -77,7 +78,7 @@ public class TimeParser extends Analyzer {
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 				try {
 					analyzeTime(toBeAnalyzedString);
-					currIndex = caseKeywordNextBeforeKeywordDate(loopIndex);
+					currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
 					setStartAndEndCalendarIndex(currIndex, loopIndex);
 					break;
 				} catch (ParseException e) { //catch parsing error
@@ -99,13 +100,22 @@ public class TimeParser extends Analyzer {
 		removePrepositionOfCalendar();
 	}
 
-	private static int caseKeywordNextBeforeKeywordDate(int loopIndex) {
-		int nNext = 0;
-		if (isKeywordDate && !isCaseTodayTomorrow) {
+	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {
+		int nNext = 0, nEvery = 0;
+		if (isKeywordDate && !isTodayTomorrow) {
 			nNext = countExtraNext(loopIndex);
+			nEvery = checkIfKeywordEveryExists(loopIndex);
 			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
 		}
-		return loopIndex - nNext;
+		return loopIndex - nNext - nEvery;
+	}
+
+	private static int checkIfKeywordEveryExists(int loopIndex) {
+		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase("every")) {
+			isRecurringTime = true;
+			return 1;
+		}
+		return 0; //no "every"
 	}
 
 	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
@@ -286,14 +296,14 @@ public class TimeParser extends Analyzer {
 
 	private static boolean parseIfKeywordDateFormat(String currStr) {
 		Calendar currTime = Calendar.getInstance(); //get current Calendar
-		isCaseTodayTomorrow = false;
+		isTodayTomorrow = false;
 		int addValue = -1;
 
 		if (isToday(currStr)) {
-			isCaseTodayTomorrow = true;
+			isTodayTomorrow = true;
 			addValue = 0;
 		} else if (isTomorrow(currStr)) {
-			isCaseTodayTomorrow = true;
+			isTodayTomorrow = true;
 			addValue = 1;
 		} else if (isMonday(currStr)) {
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
@@ -313,7 +323,7 @@ public class TimeParser extends Analyzer {
 			return false;
 		}
 
-		if (!isCaseTodayTomorrow && addValue <= 0) { // day before today will get negative value
+		if (!isTodayTomorrow && addValue <= 0) { // day before today will get negative value
 			addValue += 7;
 		}
 
