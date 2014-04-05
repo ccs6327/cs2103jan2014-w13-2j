@@ -106,12 +106,19 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static void caseIfRecurringTimeBeforeCurrentTime() {
-		if (isMondayToSunday && isRecurringEveryWeek) {
+		if (isRecurringEveryWeek) {
 			if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
 				startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
 				endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
 			} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
 				endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+			}
+		} else if (isRecurringEveryday) {
+			if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+				startCalendar.add(Calendar.DAY_OF_YEAR, 1);
+				endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+			} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
+				endCalendar.add(Calendar.DAY_OF_YEAR, 1);
 			}
 		}
 	}

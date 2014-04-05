@@ -60,6 +60,7 @@ public class AddAnalyzer extends TimeParser {
 			taskToBeAdded.setRecurringPeriod(recurringPeriod);
 		} else if  (isRecurringEveryday) {
 			taskToBeAdded.setNumberOfRecurring(Integer.MAX_VALUE);
+			taskToBeAdded.setRecurringPeriod(recurringPeriod);
 		}
 	}
 	
