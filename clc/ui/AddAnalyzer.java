@@ -21,6 +21,7 @@ public class AddAnalyzer extends TimeParser {
 	}
 
 	protected static void analyze() throws InvalidInputException {
+		throwExceptionIfEmptyCommandDetails();
 		determineIfReminderNeeded();
 		setUpInfoToBeProcessed();
 

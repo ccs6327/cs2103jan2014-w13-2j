@@ -1,6 +1,8 @@
 package clc.ui;
 
 import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import clc.common.InvalidInputException;
 
 public class Analyzer {
 
@@ -41,5 +43,12 @@ public class Analyzer {
 
 	protected static boolean doesCommandDetailsExist(String commandDetails) {
 		return !commandDetails.equals(EMPTY);
+	}
+
+	protected static void throwExceptionIfEmptyCommandDetails()
+			throws InvalidInputException {
+		if (commandDetails.equals(EMPTY)) {
+			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
+		}
 	}
 }
