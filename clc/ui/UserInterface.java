@@ -23,7 +23,6 @@ import clc.logic.Undo;
 import clc.logic.Update;
 import clc.logic.Unmark;
 import clc.storage.History;
-
 import static clc.common.Constants.MESSAGE_INVALID_FORMAT;
 import static clc.common.Constants.MESSAGE_WELCOME;
 import static clc.common.Constants.TYPE_ADD;
@@ -253,7 +252,9 @@ public class UserInterface {
 		int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
-			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();  
+			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
+			if (time.get(0)!=null)System.out.println(time.get(0).getTime().toString());
+			if (time.get(1)!=null)System.out.println(time.get(1).getTime().toString());
 			command = new Update(seqNo, caseCalendarProvided, time);
 		} else {
 			String newTaskName = UpdateAnalyzer.getNewTaskName();

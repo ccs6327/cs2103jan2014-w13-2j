@@ -137,7 +137,7 @@ public class Update implements Command {
 		}
 		
 		//update end time
-		System.out.println(newEndTime.getTime());
+		//System.out.println(newEndTime.getTime());
         //System.out.println(caseCalendarProvided);
 		if (newEndTime != null) {
 			if (taskOldType == TYPE_FLOATING_TASK){//for floating task

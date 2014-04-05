@@ -25,33 +25,35 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	protected static void analyze() throws InvalidInputException {
-		determineIfCommandDetailsEmpty();
+		determineIfEmptyCommandDetails();
 		
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
 		
 		determineIfSeqNoProvided();
-		processCalendarInfo();
 
 		if (doesContainTimeInfo()) { //case update calendar
-			if (!commandDetails.contains(COMMA)) {
-				throw new InvalidInputException(ERROR_NO_COMMA);
+			if (commandDetails.contains(COMMA)) {
+				int indexOfComma = findIndexOfComma();
+				analyzeUpdateStartTime(indexOfComma);
+				analyzeUpdateEndTime(indexOfComma);
+				startCalendar = tempStartCalendar;
+			} else { // one calendar -> endCalendar , two calendar -> start and end calendar
+				
+				determineIfStartDateIsProvided();
+				determineIfStartTimeIsProvided();
+				determineIfEndDateIsProvided();
+				determineIfEndTimeIsProvided();
 			}
-
-			int indexOfComma = findIndexOfComma();
-			analyzeUpdateStartTime(indexOfComma);
 			
-			analyzeUpdateEndTime(indexOfComma);
-			startCalendar = tempStartCalendar;
-
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
 		}
 	}
 
-	private static void determineIfCommandDetailsEmpty()
+	private static void determineIfEmptyCommandDetails()
 			throws InvalidInputException {
 		if (commandDetails.equals(EMPTY)) {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
@@ -74,7 +76,14 @@ public class UpdateAnalyzer extends TimeParser {
 				infoToBeProcessed[index ++] = tempInfo[i];
 			}
 			processCalendarInfo();
-
+			
+			if (isEndDateSet) {
+				isStartDateSet = true;
+			}
+			
+			if (isEndTimeSet) {
+				isStartTimeSet = true;
+			}
 			// as processCalendarInfo will set the time to endTime
 			// so we have to swap the value
 			tempStartCalendar = endCalendar;
@@ -101,13 +110,13 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	private static void determineIfStartDateIsProvided() {
-		if (isEndDateSet) {
+		if (isStartDateSet) {
 			calendarProvided += 8;
 		}
 	}
 
 	private static void determineIfStartTimeIsProvided() {
-		if (isEndTimeSet) {
+		if (isStartTimeSet) {
 			calendarProvided += 4;
 		}
 	}
@@ -158,6 +167,12 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 	
 	//override function in TimeParser
+	protected static boolean doesContainTimeInfo() throws InvalidInputException {
+		processCalendarInfo();
+		return isStartDateSet || isStartTimeSet 
+				|| isEndDateSet || isEndTimeSet;
+	}
+	
 	protected static void processCalendarInfo() throws InvalidInputException {
 		initializeVariable();
 		int currIndex = infoToBeProcessed.length - 1;
