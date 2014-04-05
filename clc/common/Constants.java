@@ -136,6 +136,8 @@ public class Constants {
 	// Storage
 	public static final int IS_DONE = 1;
 	public static final int IS_NOT_DONE = 0;
+	public static final int IS_REMINDER_NEEDED = 1;
+	public static final int IS_REMINDER_NOT_NEEDED = 0;
 
 
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();

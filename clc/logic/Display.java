@@ -104,7 +104,7 @@ public class Display implements Command {
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	
 	    	Task task = internalMem.get(i - 1);
-	    	if (!task.isDone()){
+	    	if (!task.getIsDone()){
 		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 		    	displayMem.add(i - 1);
 		    	displayNo++;

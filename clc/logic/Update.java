@@ -74,7 +74,7 @@ public class Update implements Command {
 		
 		//update name
 		if (newTaskName != null){
-            task.updateTaskName(newTaskName);
+            task.setTaskName(newTaskName);
             feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskName, newTaskName));
             feedback.append("\n");
 		}
@@ -88,7 +88,7 @@ public class Update implements Command {
 				if (caseCalendarProvided/8 == 1) {
 					taskName = task.getTaskName();
 					updateTime = updateNewDate(taskOldStartTime, newStartTime);
-				    task.updateStartTime(updateTime);
+				    task.setStartTime(updateTime);
 				    caseCalendarProvided -= 8;
 				} 
 				//update time
@@ -96,7 +96,7 @@ public class Update implements Command {
 					taskName = task.getTaskName();
 					updateTime = task.getStartTime();
 					updateTime = updateNewDate(newStartTime, updateTime);
-				    task.updateStartTime(updateTime);
+				    task.setStartTime(updateTime);
 				    caseCalendarProvided -= 4;
 				}
 				//process feedback
@@ -105,7 +105,7 @@ public class Update implements Command {
 				feedback.append("\n");
 				
 			} else if (taskOldType == TYPE_DEADLINE_TASK){//for deadline task
-				task.updateStartTime(newStartTime);
+				task.setStartTime(newStartTime);
 				updateTime = task.getStartTime();
 				task.setTaskType(TYPE_TIMED_TASK);
 				caseCalendarProvided %= 4;
@@ -118,7 +118,7 @@ public class Update implements Command {
 				
 			} else {//for floating task
 				if(newEndTime != null){
-					task.updateStartTime(newStartTime);
+					task.setStartTime(newStartTime);
 					updateTime = task.getStartTime();
 					//task.setTaskType(TYPE_DEADLINE_TASK);
 					
@@ -143,7 +143,7 @@ public class Update implements Command {
 			if (taskOldType == TYPE_FLOATING_TASK){//for floating task
 				floatingTaskStartTime = task.getStartTime();
 				if (floatingTaskStartTime == null){
-					task.updateEndTime(newEndTime);
+					task.setEndTime(newEndTime);
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_DEADLINE_TASK);
 					
@@ -154,7 +154,7 @@ public class Update implements Command {
 
 					
 				} else {
-					task.updateEndTime(newEndTime);
+					task.setEndTime(newEndTime);
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_TIMED_TASK);
 					
@@ -165,7 +165,7 @@ public class Update implements Command {
 					
 				}
 			}else if (taskOldType == TYPE_DEADLINE_TASK){// for deadline task
-				task.updateEndTime(newEndTime);
+				task.setEndTime(newEndTime);
 				updateTime = task.getEndTime();
 				
 				//process feedback
@@ -179,7 +179,7 @@ public class Update implements Command {
 				if (caseCalendarProvided/2 == 1) {
 					taskName = task.getTaskName();
 					updateTime = updateNewDate(taskOldEndTime, newEndTime);
-				    task.updateEndTime(updateTime);
+				    task.setEndTime(updateTime);
 				    caseCalendarProvided -= 2;
 				} 
 				
@@ -188,7 +188,7 @@ public class Update implements Command {
 					taskName = task.getTaskName();
 					updateTime = task.getEndTime();
 					updateTime = updateNewDate(newEndTime, updateTime);
-				    task.updateEndTime(updateTime);
+				    task.setEndTime(updateTime);
 				}
 				
 				// process feedback
@@ -218,8 +218,8 @@ public class Update implements Command {
 			String startTimeC = D_M_Y_DateFormatter.format(startTimeForChecking.getTime());
 			String endTimeC = D_M_Y_DateFormatter.format(endTimeForChecking.getTime());
 			
-			task.updateStartTime(taskOldStartTime);
-			task.updateEndTime(taskOldEndTime);
+			task.setStartTime(taskOldStartTime);
+			task.setEndTime(taskOldEndTime);
 			task.setTaskType(taskOldType);
 			
 			feedback.append("\n");

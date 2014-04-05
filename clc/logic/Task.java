@@ -23,25 +23,25 @@ public class Task {
 		
 	}
 	
-	public Task(Task oldTask) {
-		taskName = oldTask.getTaskName();
-		taskTypeToString = oldTask.taskTypeToString();
+	public Task(Task task) {
+		taskName = task.getTaskName();
+		taskTypeToString = task.taskTypeToString();
 		taskId = Calendar.getInstance().getTimeInMillis();
-		if (oldTask.getStartTime() != null) {
-			startTime = (Calendar) oldTask.getStartTime().clone();
+		if (task.getStartTime() != null) {
+			startTime = (Calendar) task.getStartTime().clone();
 		} else {
 			startTime = null;
 		}
-		if (oldTask.getEndTime() != null) {
-			endTime = (Calendar) oldTask.getEndTime().clone();
+		if (task.getEndTime() != null) {
+			endTime = (Calendar) task.getEndTime().clone();
 		} else {
 			endTime = null;
 		}
-		taskType = oldTask.getTaskType();
+		taskType = task.getTaskType();
 		isDone = false;
-		isReminderNeeded = oldTask.getIsReminderNeeded();
-		numberOfRecurring = oldTask.getNumberOfRecurring();
-		recurringPeriod = oldTask.getRecurringPeriod();
+		isReminderNeeded = task.getIsReminderNeeded();
+		numberOfRecurring = task.getNumberOfRecurring();
+		recurringPeriod = task.getRecurringPeriod();
 	}
 
 	public Task(String _taskName, Calendar _startTime, Calendar _endTime) {
@@ -75,13 +75,17 @@ public class Task {
 	}
 
 	public Task(String _taskName, Long _taskId, int _taskType,
-			Calendar _startTime, Calendar _endTime, boolean _isDone) {
+			Calendar _startTime, Calendar _endTime, boolean _isDone, 
+			boolean _isReminderNeeded, int _numberOfRecurring, String _recurringPeriod) {
 		taskName = _taskName;
 		taskId = _taskId;
 		taskType = _taskType;
 		startTime = _startTime;
 		endTime = _endTime;
 		isDone = _isDone;
+		isReminderNeeded = _isReminderNeeded;
+		numberOfRecurring = _numberOfRecurring;
+		recurringPeriod = _recurringPeriod;
 	}
 
 	//accessor
@@ -93,6 +97,10 @@ public class Task {
 		return taskId;
 	}
 	
+	public int getTaskType() {
+		return taskType;
+	}
+	
 	public Calendar getStartTime() {
 		return startTime;
 	}
@@ -100,9 +108,21 @@ public class Task {
 	public Calendar getEndTime() {
 		return endTime;
 	}
+
+	public boolean getIsDone() {
+		return isDone;
+	}
+
+	public boolean getIsReminderNeeded() {
+		return isReminderNeeded;
+	}
 	
-	public int getTaskType() {
-		return taskType;
+	public int getNumberOfRecurring() {
+		return numberOfRecurring;
+	}
+
+	public String getRecurringPeriod() {
+		return recurringPeriod;
 	}
 	
 	public String toString(){
@@ -132,21 +152,42 @@ public class Task {
 	    }
 		return taskTypeToString;
 	}
-	//mutator for update function
+	
+	//mutator 
+	public void setTaskName(String newTaskName) {
+		taskName = newTaskName;
+	}
+	
+	public long setTaskId() {
+		return System.currentTimeMillis();
+	}
+	
 	public void setTaskType(int _taskType){
 		taskType = _taskType;
 	}
 	
-	public void updateTaskName(String newTaskName) {
-		taskName = newTaskName;
+	public void setStartTime(Calendar startTime) {
+		this.startTime = startTime;
+	}
+	
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
+	}
+	
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
 	}
 
-	public void updateStartTime(Calendar newStartTime) {
-		startTime = newStartTime;
+	public void setReminder() {
+		isReminderNeeded = true;
+	}
+	
+	public void setNumberOfRecurring(int nRecurring) {
+		numberOfRecurring = nRecurring;
 	}
 
-	public void updateEndTime(Calendar newEndTime) {
-		endTime = newEndTime;
+	public void setRecurringPeriod(String recurringPeriod) {
+		this.recurringPeriod = recurringPeriod;
 	}
 	
 	// Check whether the task has both start time and end time
@@ -177,38 +218,6 @@ public class Task {
 			return true;
 		}
 		return false;
-	}
-	
-	private long setTaskId() {
-		return System.currentTimeMillis();
-	}
-
-	public boolean isDone() {
-		return isDone;
-	}
-
-	public void setReminder() {
-		isReminderNeeded = true;
-	}
-
-	public boolean getIsReminderNeeded() {
-		return isReminderNeeded;
-	}
-	
-	public void setNumberOfRecurring(int nRecurring) {
-		numberOfRecurring = nRecurring;
-	}
-	
-	public int getNumberOfRecurring() {
-		return numberOfRecurring;
-	}
-
-	public void setRecurringPeriod(String recurringPeriod) {
-		this.recurringPeriod = recurringPeriod;
-	}
-
-	public String getRecurringPeriod() {
-		return recurringPeriod;
 	}
 
 	public void postponeStartAndEndTime(int typeOfCalendar) {

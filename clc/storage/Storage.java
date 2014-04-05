@@ -14,11 +14,10 @@ import clc.logic.Task;
 import static clc.common.Constants.*;
 
 public class Storage {
-	
 	private static File dataFile;
 	private static ArrayList<Task> internalMem = new ArrayList<Task>();
 	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
-	
+
 	/* If the data file does not exist, create the data file. 
 	 *  Otherwise read in the content from the data file.
 	 */
@@ -35,31 +34,36 @@ public class Storage {
 			try {
 				readContentFromFile(OUTFILE);
 			} catch (Exception e) {
-					
+
 			}
 		}
 	}
-	
+
 	// Read from the data file and store them into the internal memory
 	public static void readContentFromFile(String path) {
 		File fileIn = new File(path);
 
 		try {
-			
+
 			BufferedReader bf = new BufferedReader(new FileReader(fileIn));
+			
 			String contentToRead = null;
 			String taskName;
-			Long taskId;
+			String recurringPeriod;
 			int taskType;
+			int numberOfRecurring;
+			Long taskId;
 			Calendar startTime = null;
 			Calendar endTime = null;
 			boolean isDone;
-			
+			boolean isReminderNeeded;
+
 			while((contentToRead = bf.readLine()) != null) {
 				Task task;
 				taskName = contentToRead;
 				taskId = Long.parseLong(bf.readLine());
 				taskType = Integer.parseInt(bf.readLine());
+				//start time and end time
 				switch (taskType) {
 				case TYPE_TIMED_TASK:
 					startTime = new GregorianCalendar();
@@ -77,23 +81,33 @@ public class Storage {
 					endTime = null;
 					break;
 				}
+				// is done
 				if (Integer.parseInt(bf.readLine()) == IS_DONE) {
 					isDone = true;
 				} else {
 					isDone = false;
 				}
-				
-				task = new Task(taskName, taskId, taskType, startTime, endTime, isDone);
+				// is reminder needed
+				if (Integer.parseInt(bf.readLine()) == IS_REMINDER_NEEDED) {
+					isReminderNeeded = true;
+				} else {
+					isReminderNeeded = false;
+				}
+				numberOfRecurring = Integer.parseInt(bf.readLine());
+				recurringPeriod = bf.readLine();
+
+				task = new Task(taskName, taskId, taskType, startTime, endTime, isDone
+								, isReminderNeeded, numberOfRecurring, recurringPeriod);
 				if (hasNoIdenticalTask(task)) {
 					internalMem.add(task);
 				}
 			}
-			
+
 			bf.close();
 		} catch (IOException e) {
-			
+
 		}
-	         
+
 	}
 
 	private static boolean hasNoIdenticalTask(Task task) {
@@ -103,71 +117,89 @@ public class Storage {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	// Write contents in the list into the data file
 	public static void writeContentIntoFile() {
 		try {
-			
+
 			Formatter formatter = new Formatter(OUTFILE);
-	        for (Task task : internalMem) {
-	       	 	formatter.format(task.getTaskName());
-	       	 	formatter.format(NEW_LINE);
-	       	 	formatter.format(String.valueOf(task.getTaskId()));
-	       	 	formatter.format(NEW_LINE);
-	       	 	formatter.format(String.valueOf(task.getTaskType()));
-	       	 	formatter.format(NEW_LINE);
-	       	 	switch (task.getTaskType()) {
-	       	 	case TYPE_TIMED_TASK:
-	       	 		formatter.format(String.valueOf(task.getStartTime().getTimeInMillis()));
-	       	 		formatter.format(NEW_LINE);
-	       	 		formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
-	       	 		formatter.format(NEW_LINE);
-	       	 		break;
-	       	 	case TYPE_DEADLINE_TASK:
-	       	 		formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
-	       	 		formatter.format(NEW_LINE);
-	       	 		break;
-	       	 	case TYPE_FLOATING_TASK:
-	       	 		break;
-	       	 	}
-	       	 	if (task.isDone()) {
-	       	 		formatter.format(String.valueOf(IS_DONE));
-	       	 	} else {
-	       	 		formatter.format(String.valueOf(IS_NOT_DONE));
-	       	 	}
-	       	 	formatter.format(NEW_LINE);
-	        }
-	        formatter.flush();
-	        formatter.close();
+			for (Task task : internalMem) {
+				//task name
+				formatter.format(task.getTaskName());
+				formatter.format(NEW_LINE);
+				//task id
+				formatter.format(String.valueOf(task.getTaskId()));
+				formatter.format(NEW_LINE);
+				//task type
+				formatter.format(String.valueOf(task.getTaskType()));
+				formatter.format(NEW_LINE);
+				//start time and end time
+				switch (task.getTaskType()) {
+				case TYPE_TIMED_TASK:
+					formatter.format(String.valueOf(task.getStartTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					break;
+				case TYPE_DEADLINE_TASK:
+					formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					break;
+				case TYPE_FLOATING_TASK:
+					break;
+				}
+				//is done
+				if (task.getIsDone()) {
+					formatter.format(String.valueOf(IS_DONE));
+				} else {
+					formatter.format(String.valueOf(IS_NOT_DONE));
+				}
+				formatter.format(NEW_LINE);
+				// is reminder needed
+				if (task.getIsReminderNeeded()) {
+					formatter.format(String.valueOf(IS_REMINDER_NEEDED));
+				} else {
+					formatter.format(String.valueOf(IS_REMINDER_NOT_NEEDED));
+				}
+				formatter.format(NEW_LINE);
+				// number of recurring
+				formatter.format(String.valueOf(task.getNumberOfRecurring()));
+				formatter.format(NEW_LINE);
+				// recurring period
+				formatter.format(String.valueOf(task.getRecurringPeriod()));
+				formatter.format(NEW_LINE);
+			}
+			formatter.flush();
+			formatter.close();
 		} catch (Exception e) {
-			
+
 		}
 	}
-	
+
 	// Read from the Help.txt and return to string
 	public static String readManualFromHelpFile() {
 		File fileIn = new File(HELPFILE);
 		StringBuilder sb = new StringBuilder();
 		try {
-			
+
 			BufferedReader bf = new BufferedReader(new FileReader(fileIn));
 			String contentToRead = null;
-			
+
 			while((contentToRead = bf.readLine()) != null) {
 				sb.append(contentToRead);
 				sb.append("\n");
 			}
-			
+
 			bf.close();
 		} catch (IOException e) {
-			
+
 		}
 		return sb.toString();
 	}
-	
+
 	public static ArrayList<Task> getInternalMem() {
 		return internalMem;
 	}
@@ -195,7 +227,7 @@ public class Storage {
 		}
 		return MESSAGE_EXPORT;
 	}
-	
+
 	public static String importDataFile(String path) {
 		try {
 			readContentFromFile(path + OUTFILE);
