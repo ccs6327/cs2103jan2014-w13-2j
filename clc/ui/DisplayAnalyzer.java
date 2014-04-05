@@ -131,6 +131,7 @@ public class DisplayAnalyzer extends TimeParser{
 		for (int i = 0; i < toBeAnalyzedLength; i ++) {
 			if (infoToBeProcessed[i].equalsIgnoreCase(NEXT)) {
 				nNext ++;
+				commandDetails = NEXT + SPACE + commandDetails;
 			} else {
 				throw new InvalidInputException(ERROR_ONLY_ALLOW_NEXT);
 			}

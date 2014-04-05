@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 import clc.common.InvalidInputException;
 import static clc.common.Constants.ERROR_CONTAIN_NON_NUMERIC_INFO;
-import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
-import static clc.common.Constants.EMPTY;
 
 public class SequenceNumberExtractor extends Analyzer{
 	
