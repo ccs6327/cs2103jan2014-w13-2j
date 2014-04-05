@@ -49,7 +49,7 @@ public class TimeParser extends Analyzer {
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
 	private static GregorianCalendar analyzedCalendar;
 	private static boolean doesContainAmOrPm;
-	private static boolean isDate, isKeywordDate, isTime, isTodayTomorrow;
+	private static boolean isDate, isKeywordDate, isTime, isMondayToSunday;
 	protected static GregorianCalendar startCalendar, endCalendar;
 	protected static String[] infoToBeProcessed = null;
 	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
@@ -97,12 +97,12 @@ public class TimeParser extends Analyzer {
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartTimeLaterThanEndTime();
-		removePrepositionOfCalendar();
+		adjustToCorrectCalendarIndex();
 	}
 
 	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {
 		int nNext = 0, nEvery = 0;
-		if (isKeywordDate && !isTodayTomorrow) {
+		if (isMondayToSunday) {
 			nNext = countExtraNext(loopIndex);
 			nEvery = checkIfKeywordEveryExists(loopIndex);
 			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
@@ -140,7 +140,7 @@ public class TimeParser extends Analyzer {
 		return nNext;
 	}
 
-	private static void removePrepositionOfCalendar() {
+	private static void adjustToCorrectCalendarIndex() {
 		int infoLength = infoToBeProcessed.length;
 
 		if (startCalendarIndex - 1 > 0) {
@@ -151,24 +151,30 @@ public class TimeParser extends Analyzer {
 				startCalendarIndex --;
 			}
 		}
-		
-		try {	
-			if (startCalendarIndex != -1 && endCalendarIndex != -1) {
-				if (endCalendarIndex + 1 < infoLength) {
-					checkIfContainCalendarInfo(infoToBeProcessed[endCalendarIndex] + infoToBeProcessed[endCalendarIndex + 1]);
-					endCalendarIndex ++;
-				} else if (endCalendarIndex + 2 < infoLength) {
-					checkIfContainCalendarInfo(infoToBeProcessed[endCalendarIndex] + infoToBeProcessed[endCalendarIndex + 1] 
-							+ infoToBeProcessed[endCalendarIndex + 2]);
+
+		if (isStartAndEndCalendarIndexSet() && !doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
+			if (endCalendarIndex + 2 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] //three words is a calendar
+						+ infoToBeProcessed[endCalendarIndex + 1] 
+								+ infoToBeProcessed[endCalendarIndex + 2])) {
 					endCalendarIndex += 2;
 				}
+			} else if (endCalendarIndex + 1 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] 
+						+ infoToBeProcessed[endCalendarIndex + 1])) { //two words is a calendar
+					endCalendarIndex ++;
+				}
 			}
-		} catch (ParseException e) {}
+		}
+
 	}
 
-	private static void checkIfContainCalendarInfo (String currStr) throws ParseException {
-		parseIfDateFormat(currStr);
-		parseIfTime12Format(currStr);
+	private static boolean isStartAndEndCalendarIndexSet() {
+		return startCalendarIndex != -1 && endCalendarIndex != -1;
+	}
+
+	private static boolean doesContainCalendarInfo (String currStr) {
+		return parseIfDateFormat(currStr) || parseIfTime12Format(currStr);
 		//Time24Format does not contains Date Format that is represent by more than one String
 	}
 
@@ -213,7 +219,7 @@ public class TimeParser extends Analyzer {
 
 	protected static void caseIfCalendarBeforeCurrentTime()
 			throws InvalidInputException {
-		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) { 
 			throw new InvalidInputException(ERROR_START_TIME);
 		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == -1) {
 			throw new InvalidInputException(ERROR_END_TIME);
@@ -229,7 +235,6 @@ public class TimeParser extends Analyzer {
 	private static void caseIfStartAndEndCalendarShareOneDate() {
 		if (startCalendar != null && endCalendar != null 
 				&& !isEndDateSet && isStartCalendarLaterThanEndCalendar()) {
-			System.out.println("YES");
 			endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
 			endCalendar.set(Calendar.MONTH, startCalendar.get(Calendar.MONTH));
 			endCalendar.set(Calendar.DATE, startCalendar.get(Calendar.DATE));
@@ -297,14 +302,14 @@ public class TimeParser extends Analyzer {
 
 	private static boolean parseIfKeywordDateFormat(String currStr) {
 		Calendar currTime = Calendar.getInstance(); //get current Calendar
-		isTodayTomorrow = false;
+		isMondayToSunday = true;
 		int addValue = -1;
 
 		if (isToday(currStr)) {
-			isTodayTomorrow = true;
+			isMondayToSunday = false;
 			addValue = 0;
 		} else if (isTomorrow(currStr)) {
-			isTodayTomorrow = true;
+			isMondayToSunday = false;
 			addValue = 1;
 		} else if (isMonday(currStr)) {
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
@@ -324,7 +329,7 @@ public class TimeParser extends Analyzer {
 			return false;
 		}
 
-		if (!isTodayTomorrow && addValue < 0) { // day before today will get negative value
+		if (isMondayToSunday && addValue < 0) { // day before today will get negative value
 			addValue += 7;
 		}
 
@@ -364,7 +369,6 @@ public class TimeParser extends Analyzer {
 				date = time12Format[i].parse(currStr);
 				analyzedCalendar = new GregorianCalendar();
 				analyzedCalendar.setTime(date);
-				//System.out.println("[" + currStr + "]: " + analyzedCalendar.getTime().toString());
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -378,7 +382,6 @@ public class TimeParser extends Analyzer {
 				date = time24Format[i].parse(currStr);
 				analyzedCalendar = new GregorianCalendar();
 				analyzedCalendar.setTime(date);
-				//System.out.println("[" + currStr + "]: " + analyzedCalendar.getTime().toString());
 				return true;
 			} catch (ParseException e) {}
 		}
