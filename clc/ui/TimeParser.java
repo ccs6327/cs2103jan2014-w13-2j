@@ -94,8 +94,8 @@ public class TimeParser extends Analyzer {
 
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
-		caseIfCalendarBeforeCurrentTime();
 		caseIfStartAndEndCalendarShareOneDate();
+		caseIfCalendarBeforeCurrentTime();
 		caseIfStartTimeLaterThanEndTime();
 		removePrepositionOfCalendar();
 	}
@@ -229,6 +229,7 @@ public class TimeParser extends Analyzer {
 	private static void caseIfStartAndEndCalendarShareOneDate() {
 		if (startCalendar != null && endCalendar != null 
 				&& !isEndDateSet && isStartCalendarLaterThanEndCalendar()) {
+			System.out.println("YES");
 			endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
 			endCalendar.set(Calendar.MONTH, startCalendar.get(Calendar.MONTH));
 			endCalendar.set(Calendar.DATE, startCalendar.get(Calendar.DATE));
