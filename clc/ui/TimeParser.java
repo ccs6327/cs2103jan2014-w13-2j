@@ -95,9 +95,18 @@ public class TimeParser extends Analyzer {
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
 		caseIfStartAndEndCalendarShareOneDate();
+		caseIfRecurringTimeBeforeCurrentTime();
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartTimeLaterThanEndTime();
 		adjustToCorrectCalendarIndex();
+	}
+
+	private static void caseIfRecurringTimeBeforeCurrentTime() {
+		if (isMondayToSunday && isRecurringTime && startCalendar != null
+				&& startCalendar.compareTo(Calendar.getInstance()) == -1) {
+			startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+			endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+		}
 	}
 
 	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {

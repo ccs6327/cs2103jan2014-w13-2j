@@ -62,7 +62,10 @@ public class Add implements Command{
 	}
 
 	private boolean isRecurringAndOverDueTask(Task currentTask) {
-		int isOverdue = currentTask.getEndTime().compareTo(Calendar.getInstance());
+		int isOverdue = -1;
+		if (currentTask.getEndTime() != null) {
+			currentTask.getEndTime().compareTo(Calendar.getInstance());
+		}
 		return isOverdue <=0 && currentTask.getRecurringTime() > 0;
 	}
 	
