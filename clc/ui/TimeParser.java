@@ -409,7 +409,8 @@ public class TimeParser extends Analyzer {
 				&& isEndDateSet && isEndTimeSet;
 	}
 
-	protected static boolean doesContainTimeInfo() {
+	protected static boolean doesContainTimeInfo() throws InvalidInputException {
+		processCalendarInfo();
 		return isStartDateSet || isStartTimeSet 
 				|| isEndDateSet || isEndTimeSet;
 	}

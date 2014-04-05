@@ -331,7 +331,6 @@ public class DisplayAnalyzer extends TimeParser{
 	}
 
 	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
-		processCalendarInfo();
 		return doesContainTimeInfo();
 	}
 

@@ -24,8 +24,6 @@ public class AddAnalyzer extends TimeParser {
 
 		setUpInfoToBeProcessed();
 
-		processCalendarInfo();
-
 		if (doesContainTimeInfo()) { //timed task or deadline task
 			//merge the taskName
 			taskName = mergeNotQuotedTaskName();
