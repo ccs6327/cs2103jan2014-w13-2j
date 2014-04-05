@@ -83,21 +83,8 @@ public class Display implements Command {
 		DisplayOutput.add(ANOTHER_LINE);
 		
 	    for (int i = 1; i<= internalMem.size(); i++){
-	    	
 	    	Task task = internalMem.get(i - 1);
-	    	if(task.getTaskType() == TYPE_TIMED_TASK){
-	    		
-	    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
-	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, i, task.getTaskName(), startTime, endTime));
-	    		
-	    	} else if (task.getTaskType() == TYPE_DEADLINE_TASK){
-	    		
-	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, i, task.getTaskName(), endTime));
-	    	} else {
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, i, task.getTaskName()));
-	    	}
+	    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, i, task.toString()));	
 	    	displayMem.add(i - 1);
 	    }
 	    
@@ -118,25 +105,12 @@ public class Display implements Command {
 	    	
 	    	Task task = internalMem.get(i - 1);
 	    	if (!task.isDone()){
-		    	if(task.getTaskType() == TYPE_TIMED_TASK){
-		    		
-		    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
-		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, displayNo, task.getTaskName(), startTime, endTime));
-		    		
-		    	} else if (task.getTaskType() == TYPE_DEADLINE_TASK){
-		    		
-		    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, displayNo, task.getTaskName(), endTime));
-		    	} else {
-		    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, displayNo, task.getTaskName()));
-		    	}
+		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 		    	displayMem.add(i - 1);
 		    	displayNo++;
 	    	}
 
 	    }
-	    
 	    feedback.append("\n");
 	    printOutDisplay();
 	    
@@ -162,7 +136,7 @@ public class Display implements Command {
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_FLOATING_TASK){
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_FLOATING_TASKS, displayNo, task.getTaskName()));
+		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 	    		displayMem.add(i - 1);
 	    		displayNo++;
 	    	}
@@ -193,8 +167,7 @@ public class Display implements Command {
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_DEADLINE_TASK){
-	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, displayNo, task.getTaskName(), endTime));
+		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 	    		displayMem.add(i - 1);
 	    		displayNo++;
 	    	}
@@ -225,10 +198,7 @@ public class Display implements Command {
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
 	    	if(task.getTaskType() == TYPE_TIMED_TASK){
-	    		
-	    		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
-	    		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-	    		DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, displayNo, task.getTaskName(), startTime, endTime));
+		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 	    		displayMem.add(i - 1);
 	    		displayNo++;
 	    	}
@@ -247,7 +217,6 @@ public class Display implements Command {
 			feedback.append(MESSAGE_NO_TIMED_TASKS);
 			feedback.append("\n");
 		}
-	   
 	}
 
 	
@@ -288,22 +257,15 @@ public class Display implements Command {
 	
 	// Go through the internal memory and check whether the tasks are with in the time period
 		private void goThroughTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod) {
-			int taskNo = 1;
+			int displayNo = 1;
 			for (int i = 1; i <= internalMem.size(); i++) {
 				Task task = internalMem.get(i - 1);
 				Calendar taskStartTime = task.getStartTime();
 				Calendar taskEndTime = task.getEndTime();
 				if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
-					if (task.getTaskType() == TYPE_DEADLINE_TASK) {
-						String taskEndTimeString = D_M_Y_DateFormatter.format(taskEndTime.getTime());
-						DisplayOutput.add(String.format(MESSAGE_OUTPUT_DEADLINE_TASKS, taskNo, task.getTaskName(), taskEndTimeString));
-					} else {
-						String taskStartTimeString = D_M_Y_DateFormatter.format(taskStartTime.getTime());
-			    		String taskEndTimeString = D_M_Y_DateFormatter.format(taskEndTime.getTime());
-						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TIMED_TASKS, taskNo, task.getTaskName(), taskStartTimeString, taskEndTimeString));
-					}
+			    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
 					displayMem.add(i - 1);
-					taskNo++;
+					displayNo++;
 				}	
 			}
 		}

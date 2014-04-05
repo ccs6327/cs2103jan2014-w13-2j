@@ -18,6 +18,7 @@ import clc.logic.Import;
 import clc.logic.Mark;
 import clc.logic.Redo;
 import clc.logic.Remind;
+import clc.logic.Search;
 import clc.logic.Task;
 import clc.logic.Undo;
 import clc.logic.Update;
