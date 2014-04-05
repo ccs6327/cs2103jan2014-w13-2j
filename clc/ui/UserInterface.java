@@ -83,6 +83,8 @@ public class UserInterface {
 	}
 
 	private static String executeCommand() {
+		addOverdueRecurringTask();
+		
 		Command command = null;
 		Analyzer.analyze(input);
 		String commandType = Analyzer.getCommandType(); 
@@ -129,6 +131,11 @@ public class UserInterface {
 		} catch (InvalidInputException iie) {
 			return iie.getMessage();
 		}
+	}
+
+	private static void addOverdueRecurringTask() {
+		Add add = new Add();
+		add.addOverdueRecurringTask();
 	}
 
 	private static boolean isCaseAdd(String commandType) {

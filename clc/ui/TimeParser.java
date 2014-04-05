@@ -324,7 +324,7 @@ public class TimeParser extends Analyzer {
 			return false;
 		}
 
-		if (!isTodayTomorrow && addValue <= 0) { // day before today will get negative value
+		if (!isTodayTomorrow && addValue < 0) { // day before today will get negative value
 			addValue += 7;
 		}
 
