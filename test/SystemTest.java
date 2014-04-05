@@ -59,7 +59,7 @@ public class SystemTest {
 	@Test
 	public void test() {	
 		for(int i = 0; i < inputList.size(); i++) {
-			actualFeedback = start.setInputAndExecute(inputList.get(i));
+			//actualFeedback = start.setInputAndExecute(inputList.get(i));
 			//System.out.println(actualFeedback);
 			//System.out.println(feedbackList.get(i));
 			assertEquals(feedbackList.get(i), actualFeedback);
