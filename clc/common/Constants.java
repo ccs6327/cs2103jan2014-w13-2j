@@ -192,7 +192,7 @@ public class Constants {
 	public static final String BY = "by";
 	public static final String DUE = "due";
 	public static final String AT = "at";
-	public static final String NEXT = "next";
+	public static final String NEXT = "Next";
 	public static final String EVERY = "every";
 	public static final String EVERY_WEEK = "every week";
 	public static final String EVERYDAY = "everyday";
