@@ -28,120 +28,189 @@ public class TestingUpdateAnalyzer {
 		 * D for Date
 		 * T for Time
 		 */
-		
+
 		//case update , T
 		Analyzer.analyze("update 1 , 1159pm");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(1, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update , D
 		Analyzer.analyze("update 1 , 1/1/2100");
 
 		UpdateAnalyzer.analyze();
 		assertEquals(2, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update , D T
 		Analyzer.analyze("update 1 , 1/1/2100 1159pm");
 
 		UpdateAnalyzer.analyze();
 		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update T ,
 		Analyzer.analyze("update 1 1159pm ,");
 
 		UpdateAnalyzer.analyze();
 		assertEquals(4, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update T , T
 		Analyzer.analyze("update 1 1158pm , 1159pm");
 
 		UpdateAnalyzer.analyze();
 		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update T , D
 		Analyzer.analyze("update 1 1159pm , 1/1/2100");
 
 		UpdateAnalyzer.analyze();
 		assertEquals(6, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update T , D T
 		Analyzer.analyze("update 1 1159pm , 1/1/2100 1159pm");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D ,
 		Analyzer.analyze("update 1 1/1/2100 ,");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(8, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D , T
 		Analyzer.analyze("update 1 1/1/2100 , 1159pm");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(9, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D , D
 		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(10, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D , D T
 		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100 1159pm");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(11, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D T ,
 		Analyzer.analyze("update 1 1/1/2100 1159pm ,");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(12, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D T , T
 		Analyzer.analyze("update 1 1/1/2100 1159pm , 1159pm");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(13, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D T , D
 		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100");
-		
+
 		UpdateAnalyzer.analyze();
 		assertEquals(14, UpdateAnalyzer.getCalendarProvidedCase());
-		
+
 		//case update D T , D T
 		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100 1159pm");
-		
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+
+		/* 
+		 * without comma, user CANNOT
+		 * update start date only 
+		 * OR update start time only 
+		 * OR update start date and start time only
+		 * OR update start time and end date only
+		 * OR update start date and end time only
+		 */
+
+		//case update , T
+		Analyzer.analyze("update 1 , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(1, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update , D
+		Analyzer.analyze("update 1 , 1/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(2, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update , D T
+		Analyzer.analyze("update 1 , 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update T , T
+		Analyzer.analyze("update 1 1158pm , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update T , D T
+		Analyzer.analyze("update 1 1159pm , 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update D , D
+		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(10, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update D , D T
+		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(11, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update D T , T
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(13, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update D T , D
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(14, UpdateAnalyzer.getCalendarProvidedCase());
+
+		//case update D T , D T
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100 1159pm");
+
 		UpdateAnalyzer.analyze();
 		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
 	}
-	
+
 	@Test
 	public void test() {
 		//no details
 		Analyzer.analyze("update");
-		
+
 		try {
 			UpdateAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
 		}
-		
-		
+
+
 		//spaces details
 		Analyzer.analyze("update           ");
-		
+
 		try {
 			UpdateAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
 		}
-		
-		
+
+
 		//no sequence number
 		//case1 update task name
 		Analyzer.analyze("update taskname");
@@ -151,7 +220,7 @@ public class TestingUpdateAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_NO_SEQUENCE_NUMBER, e.getMessage());
 		}
-		
+
 		//case 2 update calendar
 		Analyzer.analyze("update 12/12/2112 4pm ,");
 
@@ -160,8 +229,8 @@ public class TestingUpdateAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_NO_SEQUENCE_NUMBER, e.getMessage());
 		}
-		
-		
+
+
 		//no task name **CALENDAR CASE IS CONSIDERED BY doesContainTimeInfo() ALREADY
 		Analyzer.analyze("update 1");
 
