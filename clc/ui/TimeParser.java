@@ -129,6 +129,7 @@ public class TimeParser extends Analyzer {
 			nNext = countExtraNext(loopIndex);
 			nEvery = checkIfKeywordEveryExists(loopIndex);
 			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+			//System.out.println(analyzedCalendar.getTime().toString());
 		}
 		return loopIndex - nNext - nEvery;
 	}
@@ -154,7 +155,7 @@ public class TimeParser extends Analyzer {
 	private static int countExtraNext(int loopIndex) {
 		int nNext = 0;
 		while (--loopIndex >= 0) {
-			if (infoToBeProcessed[loopIndex].equals(NEXT)) {
+			if (infoToBeProcessed[loopIndex].equalsIgnoreCase(NEXT)) {
 				nNext ++;
 			}
 			else {
