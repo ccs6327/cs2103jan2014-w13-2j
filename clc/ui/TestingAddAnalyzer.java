@@ -128,20 +128,20 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 		
 		//case 3: date time time date
-		Analyzer.analyze("add taskname9 1/1/2100 1159pm 1159pm 2/1/2100");
+		Analyzer.analyze("add taskname 9 1/1/2100 1159pm 1159pm 2/1/2100");
 
 		AddAnalyzer.analyze();
-		assertEquals("taskname9", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals("taskname 9", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 		
 		//case 4: time date date time
-		Analyzer.analyze("add taskname10 1159pm 1/1/2100 2/1/2100 1159pm");
+		Analyzer.analyze("add task name 10 1159pm 1/1/2100 2/1/2100 1159pm");
 
 		AddAnalyzer.analyze();
-		assertEquals("taskname10", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals("task name 10", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
@@ -149,16 +149,59 @@ public class TestingAddAnalyzer {
 		
 
 		//command details with keyword "today" and "tomorrow"
-		//similar to previous tests have 4 cases
-		Analyzer.analyze("add taskname11 today 1159pm tomorrow 1159pm"); 
+		//case 1 with full word today and tomorrow
+		Analyzer.analyze("add task name 11 today 1159pm tomorrow 1159pm"); 
 
 		AddAnalyzer.analyze();
-		assertEquals("taskname11", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals("task name 11", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		//case 2 with acronym of today and tomorrow
+		Analyzer.analyze("add task name 11 tdy 1159pm tmr 1159pm"); 
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 11", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
+		//name after calendar information
+		//case 1 timed task
+		Analyzer.analyze("add from tomorrow 4pm to 5pm task name 12");
+		
+		AddAnalyzer.analyze();
+		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 16, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 17, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		//case 2 deadline task
+		Analyzer.analyze("add by tomorrow 4pm task name 12");
+		
+		AddAnalyzer.analyze();
+		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 16, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
+		//Monday to Sunday case
+		
+		//every Monday to Sunday case
+		//before current time**
+		
+		//everyday case
+		
+		//next Monday to Sunday case
+		
+		//task name quoted with ' '
+		
+		//all calendar pattern
 	}
 
 	@Test

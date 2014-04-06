@@ -168,7 +168,7 @@ public class TimeParser extends Analyzer {
 	private static void adjustToCorrectCalendarIndex() {
 		int infoLength = infoToBeProcessed.length;
 
-		if (startCalendarIndex - 1 > 0) {
+		if (startCalendarIndex - 1 >= 0) {
 			if (infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(FROM)
 					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(BY)
 					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(DUE)
