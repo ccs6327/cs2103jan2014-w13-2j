@@ -129,7 +129,6 @@ public class TimeParser extends Analyzer {
 			nNext = countExtraNext(loopIndex);
 			nEvery = checkIfKeywordEveryExists(loopIndex);
 			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
-			//System.out.println(analyzedCalendar.getTime().toString());
 		}
 		return loopIndex - nNext - nEvery;
 	}
@@ -211,9 +210,6 @@ public class TimeParser extends Analyzer {
 		isStartTimeSet = false; 
 		isEndDateSet = false; 
 		isEndTimeSet = false;
-		isDate = false;
-		isKeywordDate = false;
-		isTime = false;
 		startCalendar = new GregorianCalendar();
 		endCalendar = new GregorianCalendar();
 		startCalendarIndex = -1;
@@ -222,14 +218,18 @@ public class TimeParser extends Analyzer {
 
 	public static void analyzeTime(String currStr) throws ParseException {
 		doesContainAmOrPm = false;
+		isMondayToSunday = false;
+		isTime = false;
+		isDate = false;
+		isKeywordDate = false;
 		determineIfFormatError(currStr); //e.g. 13pm or 13 am etc
 
-		isDate = parseIfDateFormat(currStr);
-		isKeywordDate = parseIfKeywordDateFormat(currStr);
 		if (doesContainAmOrPm) {
 			isTime = parseIfTime12Format(currStr);
 		} else {
 			isTime = parseIfTime24Format(currStr);
+			isDate = parseIfDateFormat(currStr);
+			isKeywordDate = parseIfKeywordDateFormat(currStr);
 		}
 		determineIfFailsAllParsing();
 	}
@@ -327,7 +327,6 @@ public class TimeParser extends Analyzer {
 
 	private static boolean parseIfKeywordDateFormat(String currStr) {
 		Calendar currTime = Calendar.getInstance(); //get current Calendar
-		isMondayToSunday = true;
 		int addValue = -1;
 
 		if (isToday(currStr)) {
@@ -342,18 +341,25 @@ public class TimeParser extends Analyzer {
 			isRecurringEveryday = true;
 			recurringPeriod = EVERYDAY;
 		} else if (isMonday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isTuesday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isWednesday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isThursday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isFriday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isSaturday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else if (isSunday(currStr)) {
+			isMondayToSunday = true;
 			addValue = Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK);
 		} else {
 			return false;
