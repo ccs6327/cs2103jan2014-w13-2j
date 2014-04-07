@@ -203,7 +203,7 @@ public class GUI implements NativeKeyListener{
 			public void windowDeiconified(WindowEvent arg0) {}
 			public void windowIconified(WindowEvent arg0) {}
 			public void windowOpened(WindowEvent arg0) {
-				initiateGlobalKeyListener();	
+				initiateGlobalKeyListener();
 			}
 		});
 	}

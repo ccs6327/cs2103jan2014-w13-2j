@@ -1,7 +1,6 @@
 package clc.ui;
 
 import static org.junit.Assert.*;
-
 import static clc.common.Constants.ERROR_NO_TASK_NAME;
 import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
@@ -116,7 +115,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 		//case 2: time date time date
 		Analyzer.analyze("add taskname8 1159pm 1/1/2100 1159pm 2/1/2100");
 
@@ -126,7 +125,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 		//case 3: date time time date
 		Analyzer.analyze("add taskname 9 1/1/2100 1159pm 1159pm 2/1/2100");
 
@@ -136,7 +135,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 		//case 4: time date date time
 		Analyzer.analyze("add task name 10 1159pm 1/1/2100 2/1/2100 1159pm");
 
@@ -146,7 +145,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 
 		//command details with keyword "today" and "tomorrow"
 		//case 1 with full word today and tomorrow
@@ -159,6 +158,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
 		//case 2 with acronym of today and tomorrow
 		Analyzer.analyze("add task name 11 tdy 1159pm tmr 1159pm"); 
 
@@ -169,11 +169,11 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 		//name after calendar information
 		//case 1 timed task
 		Analyzer.analyze("add from tomorrow 4pm to 5pm task name 12");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
@@ -181,27 +181,334 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 17, 0);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
 		//case 2 deadline task
 		Analyzer.analyze("add by tomorrow 4pm task name 12");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar();
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 16, 0);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
-		//Monday to Sunday case
-		
-		//every Monday to Sunday case
-		//before current time**
-		
-		//everyday case
-		
-		//next Monday to Sunday case
-		
+
+
+		//Monday to Sunday case + next Monday to Sunday case
+		//case 1 timed task
+		GregorianCalendar currTime = new GregorianCalendar();
+
+		Analyzer.analyze("add task name 13 from monday 1159pm to next tuesday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 13", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		//case 2 deadline task
+		Analyzer.analyze("add task name 14 by wednesday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 14", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), currTime.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3 timed task with acronym
+		Analyzer.analyze("add task name 15 from thu 1159pm to next next fri 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 15", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 14, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 4 deadline with acronym
+		Analyzer.analyze("add task name 16 at sat 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 16", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 5 timed task with full word and acronym
+		Analyzer.analyze("add task name 17 from sunday 1159pm to next monday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 17", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//everyday case, postpone to next day if before now
+		//case 1 deadline task before now
+		Analyzer.analyze("add task name 18 everyday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 18", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 deadline task after now
+		Analyzer.analyze("add task name 19 everyday 1159pm");
+
+		AddAnalyzer.analyze(); 
+		assertEquals("task name 19", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3 timed task before now
+		Analyzer.analyze("add task name 20 everyday 1201am to 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 20", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 4 timed task after now
+		Analyzer.analyze("add task name 21 everyday 1158pm to 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 21", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//every Monday to Sunday case, first task postpone one week if entered time is before now
+		//case 1 timed task at the same day
+		Analyzer.analyze("add task name 22 every mon from 1201am to 1202am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 22", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.MINUTE, 2);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 timed task at different day
+		boolean isPostponed = false;
+		Analyzer.analyze("add task name 23 every tue from 1201am to next tue 1202am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 23", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+			isPostponed = true;
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 0, 2);
+		if (isPostponed) {
+			gc.add(Calendar.DATE, 7);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 deadline task
+		Analyzer.analyze("add task name 24 every wed 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 24", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//the rest is use to make sure postpone is taken place
+		Analyzer.analyze("add task name 25 every thursday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 25", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 26 every friday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 26", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 27 every saturday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 27", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 28 every sunday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 28", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
 		//task name quoted with ' '
+		//case 1 without any time information
+		Analyzer.analyze("add 'task name 29 with today or sunday or 23/4/12 is okay'");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 29 with today or sunday or 23/4/12 is okay", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getEndTime());
+		//case 2 with time information
+		Analyzer.analyze("add 'task name 30 with today or sunday or 23/4/12 is okay' 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 30 with today or sunday or 23/4/12 is okay", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//task with reminder
+		//case 1 deadline task
+		Analyzer.analyze("add /r taskname 31 1159pm");
+
+		AddAnalyzer.analyze();
+		assertTrue(AddAnalyzer.getToBeAddedTask().getIsReminderNeeded());
+		assertEquals("taskname 31", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 timed task		
+		Analyzer.analyze("add /r taskname 32 1158pm 1159pm");
+
+		AddAnalyzer.analyze();
+		assertTrue(AddAnalyzer.getToBeAddedTask().getIsReminderNeeded());
+		assertEquals("taskname 32", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
 		
 		//all calendar pattern
+		Analyzer.analyze("add taskname 33 1jan2100 1:23pm 2january2100 2.34pm");
+		
+		AddAnalyzer.analyze();
+		assertEquals("taskname 33", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 13, 23);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 34);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
+		Analyzer.analyze("add taskname 34 31 dec 23:58 31december 23:59");
+		
+		AddAnalyzer.analyze();
+		assertEquals("taskname 34", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 35 31/12 11.59 pm 2/1/2100 2:34 pm");
+		
+		AddAnalyzer.analyze();
+		assertEquals("taskname 35", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 34);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 36 31-12 1159 pm 2-1-2100 2 pm");
+		
+		AddAnalyzer.analyze();
+		assertEquals("taskname 36", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 37 31.12 1159 pm 2.1.2100 2pm");
+		
+		AddAnalyzer.analyze();
+		assertEquals("taskname 37", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 	}
 
 	@Test
@@ -269,6 +576,13 @@ public class TestingAddAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_NO_EXACT_TIME, e.getMessage());
 		}
-
+		
+		//add reminder for floating task
+		Analyzer.analyze("add /r floating task");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_REMINDER_FOR_FLOATING_TASK, e.getMessage());
+		}
 	}
 }

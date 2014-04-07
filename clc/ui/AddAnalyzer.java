@@ -44,7 +44,9 @@ public class AddAnalyzer extends TimeParser {
 			if (isReminderNeeded) {
 				throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
 			}
-			taskName = commandDetails;
+			if (!isCaseQuoteTaskName) {
+				taskName = commandDetails;
+			}
 			taskToBeAdded = new Task(taskName);
 		}
 	}
@@ -64,7 +66,7 @@ public class AddAnalyzer extends TimeParser {
 			taskToBeAdded.setRecurringPeriod(recurringPeriod);
 		}
 	}
-	
+
 	private static void setUpInfoToBeProcessed() {
 		isCaseQuoteTaskName = false;
 		if (commandDetails.contains(QUOTATION_MARK)) {
