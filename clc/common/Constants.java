@@ -200,16 +200,17 @@ public class Constants {
 	
 
 	//InvalidInputException messages
-	public static final String ERROR_NO_TASK_NAME = "ERROR: no task name is given";
-	public static final String ERROR_REMINDER_FOR_FLOATING_TASK = "ERROR: no reminder is allowed for floating task";
-	public static final String ERROR_EMPTY_COMMAND_DETAILS = "ERROR: empty command details";
-	public static final String ERROR_START_TIME = "ERROR: start time is a calendar before now";
-	public static final String ERROR_END_TIME = "ERROR: end time is a calendar before now";
+	public static final String ERROR_NO_TASK_NAME = "ERROR: No task name is given";
+	public static final String ERROR_REMINDER_FOR_FLOATING_TASK = "ERROR: No reminder is allowed for floating task";
+	public static final String ERROR_EMPTY_COMMAND_DETAILS = "ERROR: Empty command details";
+	public static final String ERROR_START_TIME = "ERROR: Start time is a calendar before now";
+	public static final String ERROR_END_TIME = "ERROR: End time is a calendar before now";
 	public static final String ERROR_START_TIME_LATER_THAN_END_TIME = "ERROR: Start time is later than end time";
-	public static final String ERROR_NO_EXACT_TIME = "ERROR: no exact time is given";
+	public static final String ERROR_NO_EXACT_TIME = "ERROR: No exact time is given";
 	public static final String ERROR_INVALID_DISPLAY_REQUEST = "ERROR: Invalid display request";
-	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: no new task name is given";
-	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: please indicate the sequence number";
-	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: command details contain non-numeric info";
-	public static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: display query can be extended with 'next' only";
+	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: No new task name is given";
+	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: Please indicate the sequence number";
+	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: Command details contain non-numeric info";
+	public static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: Display query can be extended with 'next' only";
+	public static final String ERROR_DAILY_RECURRING_ONE_DATE_ONLY = "ERROR: daily recurring event can contain one date only";
 }
