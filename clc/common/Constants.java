@@ -130,8 +130,8 @@ public class Constants {
 	public static final String MESSAGE_IMPORT_FILE_CORRUPTED = "The data file is corrupted.";
 	
 	//Filename
-	public static final String OUTFILE = "clcMetadata.txt";
-	public static final String HELPFILE = "generalHelp.txt";
+	public static final String OUTFILE = "metadata.clc";
+	public static final String HELPFILE = "generalHelp.clc";
 
 	// Storage
 	public static final int IS_DONE = 1;
