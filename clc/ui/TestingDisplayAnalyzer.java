@@ -92,11 +92,8 @@ public class TestingDisplayAnalyzer {
 		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
 		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 		GregorianCalendar gc = new GregorianCalendar();
-		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
-		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
-		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
-		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
-		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		//millisecond difference is minor for our product, use to String() to compare current time
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR, 0);
 		gc.set(Calendar.MINUTE, 0);
@@ -125,11 +122,7 @@ public class TestingDisplayAnalyzer {
 		assertEquals(THIS_WEEK, DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
-		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
-		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
-		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
-		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		gc.set(Calendar.HOUR, 0);
 		gc.set(Calendar.MINUTE, 0);
@@ -172,11 +165,7 @@ public class TestingDisplayAnalyzer {
 		assertEquals(THIS_MONTH, DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
-		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
-		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
-		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
-		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.MONTH, 1);
 		gc.set(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR, 0);
