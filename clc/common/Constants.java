@@ -134,6 +134,7 @@ public class Constants {
 	//Filename
 	public static final String OUTFILE = "metadata.clc";
 	public static final String HELPFILE = "generalHelp.clc";
+	public static final String CLC_EXPORT_DIRECTORY = "CLC Exported Files\\";
 
 	// Storage
 	public static final int IS_DONE = 1;
