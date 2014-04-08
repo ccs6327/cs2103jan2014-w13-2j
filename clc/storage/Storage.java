@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.nio.file.Files;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
@@ -221,7 +222,9 @@ public class Storage {
 	public static String exportDataFile(String path) {
 		File destination = new File(path + OUTFILE);
 		try {
-			Files.copy(dataFile.toPath(), destination.toPath());
+			Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
+		} catch (NullPointerException e) {
+			return MESSAGE_EXPORT_FAILED;
 		} catch (IOException e) {
 			return MESSAGE_EXPORT_FAILED;
 		}
