@@ -1,7 +1,6 @@
 package clc.ui;
 
 import static org.junit.Assert.*;
-
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
 import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
@@ -25,6 +24,13 @@ import static clc.common.Constants.TIMED_TASK;
 import static clc.common.Constants.DEADLINE_TASK;
 import static clc.common.Constants.FLOATING_TASK;
 
+
+
+
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.After;
 import org.junit.Before;
@@ -58,53 +64,6 @@ public class TestingDisplayAnalyzer {
 		assertEquals(ALL, DisplayAnalyzer.getDisplayQuery());
 
 
-		//display today
-		Analyzer.analyze("display today");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
-
-
-		//display tomorrow
-		Analyzer.analyze("display tomorrow");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(TOMORROW, DisplayAnalyzer.getDisplayQuery());
-
-
-		//display this week
-		Analyzer.analyze("display this week");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(THIS_WEEK, DisplayAnalyzer.getDisplayQuery());
-
-
-		//display next week
-		Analyzer.analyze("display next week");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
-
-		//display coming week with multiple "next"
-		Analyzer.analyze("display next next next week");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(NEXT + SPACE + NEXT + SPACE + NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
-
-		//display this month
-		Analyzer.analyze("display this month");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(THIS_MONTH, DisplayAnalyzer.getDisplayQuery());
-
-
-		//display next month
-		Analyzer.analyze("display next month");
-
-		DisplayAnalyzer.analyze();
-		assertEquals(NEXT_MONTH, DisplayAnalyzer.getDisplayQuery());
-
-
 		//display timed task
 		Analyzer.analyze("display timed tasks");
 
@@ -126,16 +85,160 @@ public class TestingDisplayAnalyzer {
 		assertEquals(FLOATING_TASK, DisplayAnalyzer.getDisplayQuery());
 
 
+		//display today
+		Analyzer.analyze("display today");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
+		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
+		GregorianCalendar gc = new GregorianCalendar();
+		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
+		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
+		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
+		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
+		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		gc.add(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display tomorrow
+		GregorianCalendar currTime = new GregorianCalendar();
+		Analyzer.analyze("display tomorrow");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TOMORROW, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE) + 1, 0, 0);
+		assertEquals(gc, time.get(0));
+		gc.add(Calendar.DATE, 1);
+		assertEquals(gc, time.get(1));
+
+
+		//display this week
+		Analyzer.analyze("display this week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THIS_WEEK, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
+		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
+		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
+		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
+		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+		
+
+		//display next week
+		Analyzer.analyze("display next week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//display coming week with multiple "next"
+		Analyzer.analyze("display next next next week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
+
+		//display this month
+		Analyzer.analyze("display this month");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THIS_MONTH, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		assertEquals(gc.get(Calendar.YEAR), time.get(0).get(Calendar.YEAR));
+		assertEquals(gc.get(Calendar.MONTH), time.get(0).get(Calendar.MONTH));
+		assertEquals(gc.get(Calendar.DATE), time.get(0).get(Calendar.DATE));
+		assertEquals(gc.get(Calendar.HOUR), time.get(0).get(Calendar.HOUR));
+		assertEquals(gc.get(Calendar.MINUTE), time.get(0).get(Calendar.MINUTE));
+		gc.add(Calendar.MONTH, 1);
+		gc.set(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display next month
+		Analyzer.analyze("display next month");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT_MONTH, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH) + 1, 1);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH) + 2, 1);
+		assertEquals(gc, time.get(1));
+
+
 		//display Monday
 		Analyzer.analyze("display monday");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display mon");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Tuesday
@@ -143,11 +246,41 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display tue");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Wednesday
@@ -155,11 +288,41 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display wed");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Thursday
@@ -167,11 +330,41 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display thu");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Friday
@@ -179,11 +372,42 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
 
 		Analyzer.analyze("display fri");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Saturday
@@ -191,11 +415,41 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display sat");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Sunday
@@ -203,17 +457,62 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		Analyzer.analyze("display sun");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		//display next Monday
 		Analyzer.analyze("display next Monday");
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 		
 
 		//display Tuesday
@@ -221,6 +520,21 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + NEXT + SPACE + TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Wednesday
@@ -228,6 +542,21 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + NEXT + SPACE + NEXT + SPACE + WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 21);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 22);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Thursday
@@ -235,6 +564,21 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Friday
@@ -242,6 +586,21 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + NEXT + SPACE + FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Saturday
@@ -249,6 +608,21 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 
 		//display Sunday
@@ -256,18 +630,43 @@ public class TestingDisplayAnalyzer {
 
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + NEXT + SPACE + SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
 
 		//display calendar by a specific time
 		Analyzer.analyze("display 31/12 1159pm");
 
 		DisplayAnalyzer.analyze();
 		assertEquals("31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, time.get(1));
+
 		
 		//display calendar in a specific period of time
-		Analyzer.analyze("dipslay 30/12 1159pm 31/12 1159pm");
+		Analyzer.analyze("display 30/12 1159pm 31/12 1159pm");
 		
 		DisplayAnalyzer.analyze();
 		assertEquals("30/12 1159pm 31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 30, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, time.get(1));
 	}
 
 	@Test
