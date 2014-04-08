@@ -2,13 +2,16 @@ package clc.logic;
 
 import clc.storage.Storage;
 import static clc.common.Constants.BACKSLASH;
+import static clc.common.Constants.CLC_EXPORT_DIRECTORY;
 
 public class Import implements Command {
 	
-	private String path;
+	private String inputPath;
+	private String actualPath;
 
 	public Import(String commandDetails) {
-		path = formatPath(commandDetails);
+		inputPath = formatPath(commandDetails);
+		actualPath = inputPath + CLC_EXPORT_DIRECTORY;
 	}
 
 	private String formatPath(String commandDetails) {
@@ -21,7 +24,7 @@ public class Import implements Command {
 
 	@Override
 	public String execute() {
-		return String.format(Storage.importDataFile(path), path);
+		return String.format(Storage.importDataFile(actualPath), inputPath);
 	}
 
 }
