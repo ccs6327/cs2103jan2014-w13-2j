@@ -115,9 +115,13 @@ public class Display implements Command {
 	    printOutDisplay();
 	    
 		// Process feedback
-		if (!isDataEmpty()) {
+		if (getDataAmount() > 1) {
 			feedback.append("\n");
-			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS);
+			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS_PLURAL);
+			feedback.append("\n");
+		} else if (getDataAmount() == 1) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS_SINGULAR);
 			feedback.append("\n");
 		} else {
 			feedback.append("\n");
@@ -146,9 +150,13 @@ public class Display implements Command {
 		printOutDisplay();
 		
 		// Process feedback
-		if (!isDataEmpty()) {
+		if (getDataAmount() > 1) {
 			feedback.append("\n");
-			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS);
+			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS_PLURAL);
+			feedback.append("\n");
+		} else if (getDataAmount() == 1) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS_SINGULAR);
 			feedback.append("\n");
 		} else {
 			feedback.append("\n");
@@ -177,9 +185,13 @@ public class Display implements Command {
 		printOutDisplay();
 		
 		// Process feedback
-		if (!isDataEmpty()) {
+		if (getDataAmount() > 1) {
 			feedback.append("\n");
-			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS);
+			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS_PLURAL);
+			feedback.append("\n");
+		} else if (getDataAmount() == 1) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS_SINGULAR);
 			feedback.append("\n");
 		} else {
 			feedback.append("\n");
@@ -208,9 +220,13 @@ public class Display implements Command {
 		printOutDisplay();
 		
 		// Process feedback
-		if (!isDataEmpty()) {
+		if (getDataAmount() > 1) {
 			feedback.append("\n");
-			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS);
+			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS_PLURAL);
+			feedback.append("\n");
+		} else if (getDataAmount() == 1) {
+			feedback.append("\n");
+			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS_SINGULAR);
 			feedback.append("\n");
 		} else {
 			feedback.append("\n");
@@ -243,9 +259,13 @@ public class Display implements Command {
 			printOutDisplay();
 			
 			// Process feedback
-			if (!isDataEmpty()) {
+			if (getDataAmount() > 1) {
 				feedback.append("\n");
-				feedback.append(MESSAGE_DISPLAY_IN_PERIOD);
+				feedback.append(MESSAGE_DISPLAY_IN_PERIOD_PLURAL);
+				feedback.append("\n");
+			} else if (getDataAmount() == 1) {
+				feedback.append("\n");
+				feedback.append(MESSAGE_DISPLAY_IN_PERIOD_SINGULAR);
 				feedback.append("\n");
 			} else {
 				feedback.append("\n");
@@ -318,8 +338,12 @@ public class Display implements Command {
 		}
 		
 		// Check whether the data which can be processed is empty
-		protected boolean isDataEmpty() {
-			return displayMem.isEmpty();
+		//protected boolean isDataEmpty() {
+		//	return displayMem.isEmpty();
+		//}
+		
+		protected int getDataAmount() {
+			return displayMem.size();
 		}
 		
 		protected boolean isWithinADay(Calendar calA, Calendar calB){
