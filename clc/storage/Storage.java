@@ -5,7 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
@@ -221,10 +224,14 @@ public class Storage {
 
 	public static String exportDataFile(String path) {
 		File destination = new File(path + OUTFILE);
+		File destinationDirectory = new File(path);
 		try {
+			Files.createDirectories(destinationDirectory.toPath());
 			Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
 		} catch (NullPointerException e) {
 			return MESSAGE_EXPORT_FAILED;
+		} catch (NoSuchFileException e) {
+			return MESSAGE_EXPORT_FAILED_CANNOT_WRITE;
 		} catch (IOException e) {
 			return MESSAGE_EXPORT_FAILED;
 		}

@@ -125,6 +125,8 @@ public class Constants {
 	public static final String BACKSLASH = "\\";
 	public static final String MESSAGE_EXPORT = "Your calendar has been exported to %1$s";
 	public static final String MESSAGE_EXPORT_FAILED = "Failed to export to %1$s. Please check the destination path.";
+	public static final String MESSAGE_EXPORT_FAILED_CANNOT_WRITE = "Failed to export to %1$s since CLC cannot access the destination."
+			+ "\r\nPlease grant the access permission. You may have to provide administrator permission to do so.";
 	public static final String MESSAGE_IMPORT = "Your calendar has been imported from %1$s";
 	public static final String MESSAGE_IMPORT_NO_ACCESS = "Failed to import from %1$s. Please check the origin path.";
 	public static final String MESSAGE_IMPORT_FILE_CORRUPTED = "The data file is corrupted.";
