@@ -227,9 +227,8 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as now, end time as the end of the week
 		startCalendar = new GregorianCalendar();
 		endCalendar = new GregorianCalendar(year, month , date);
-		while (!isNextMonday(endCalendar)) { //end of the week = beginning of next week
-			endCalendar.add(Calendar.DAY_OF_WEEK, + 1);
-		}
+		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		endCalendar.add(Calendar.DATE, addValue);
 	}
 
 	private static void setNextWeek() {
@@ -237,12 +236,11 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as next Monday, end time as the end of next week
 		startCalendar = new GregorianCalendar(year, month, date);
 		endCalendar = new GregorianCalendar(year, month , date);
-		while (!isNextMonday(startCalendar)) { //end of the week = beginning of next week
-			startCalendar.add(Calendar.DAY_OF_WEEK, + 1);
-		}
-		while (!isNextMonday(endCalendar)) { //end of the week = beginning of next week
-			endCalendar.add(Calendar.DAY_OF_WEEK, + 1);
-		}
+		
+		int addValue = (Calendar.MONDAY - startCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		startCalendar.add(Calendar.DATE, addValue);
+		addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
+		endCalendar.add(Calendar.DATE, addValue);
 	}
 
 	private static void setThisMonth() {
@@ -257,7 +255,6 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as the beginning of next month, end time as the end of next month
 		startCalendar = new GregorianCalendar(year, ++month, 1);
 		endCalendar = new GregorianCalendar(year, ++month, 1);
-
 	}
 
 	private static boolean isCaseDisplayToday() {
@@ -333,11 +330,6 @@ public class DisplayAnalyzer extends TimeParser{
 
 	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
 		return doesContainTimeInfo();
-	}
-
-	private static boolean isNextMonday(GregorianCalendar cal) {
-		return cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
-				&& endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE);
 	}
 
 	private static boolean isCaseDisplayMondaytoSundayOrNextWeekMonth() {
