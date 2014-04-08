@@ -239,12 +239,15 @@ public class Storage {
 	}
 
 	public static String importDataFile(String path) {
+		File origin = new File(path + OUTFILE);
 		try {
-			readContentFromFile(path + OUTFILE);
+			Files.copy(origin.toPath(), dataFile.toPath(), REPLACE_EXISTING);
+			History.addNewVersion();
 		} catch (Exception e) {
 			return MESSAGE_IMPORT_NO_ACCESS;
 		} 
-		writeContentIntoFile();
+		internalMem.clear();
+		readContentFromFile(OUTFILE);
 		return MESSAGE_IMPORT;
 	}
 }
