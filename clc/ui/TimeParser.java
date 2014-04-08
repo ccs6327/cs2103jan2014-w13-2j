@@ -11,6 +11,7 @@ import clc.common.InvalidInputException;
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_DAILY_RECURRING_ONE_DATE_ONLY;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TODAY_SHORT;
 import static clc.common.Constants.TOMORROW;
@@ -216,7 +217,7 @@ public class TimeParser extends Analyzer {
 		endCalendarIndex = -1;
 	}
 
-	public static void analyzeTime(String currStr) throws ParseException {
+	public static void analyzeTime(String currStr) throws ParseException, InvalidInputException {
 		doesContainAmOrPm = false;
 		isMondayToSunday = false;
 		isTime = false;
@@ -325,7 +326,7 @@ public class TimeParser extends Analyzer {
 		endCalendar.set(Calendar.DATE, analyzedCalendar.get(Calendar.DATE));
 	}
 
-	private static boolean parseIfKeywordDateFormat(String currStr) {
+	private static boolean parseIfKeywordDateFormat(String currStr) throws InvalidInputException {
 		Calendar currTime = Calendar.getInstance(); //get current Calendar
 		int addValue = -1;
 
@@ -336,10 +337,14 @@ public class TimeParser extends Analyzer {
 			isMondayToSunday = false;
 			addValue = 1;
 		} else if (isEveryday(currStr)) {
+			if (!isEndDateSet) {
 			isMondayToSunday = false;
 			addValue = 0;
 			isRecurringEveryday = true;
 			recurringPeriod = EVERYDAY;
+			} else {
+				throw new InvalidInputException(ERROR_DAILY_RECURRING_ONE_DATE_ONLY);
+			}
 		} else if (isMonday(currStr)) {
 			isMondayToSunday = true;
 			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);

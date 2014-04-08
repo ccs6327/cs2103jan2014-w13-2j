@@ -3,6 +3,8 @@ package clc.ui;
 import static org.junit.Assert.*;
 
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TOMORROW;
 import static clc.common.Constants.MONDAY;
@@ -255,7 +257,17 @@ public class TestingDisplayAnalyzer {
 		DisplayAnalyzer.analyze();
 		assertEquals(NEXT + SPACE + NEXT + SPACE + SUNDAY, DisplayAnalyzer.getDisplayQuery());
 
-		//display calendar **
+		//display calendar by a specific time
+		Analyzer.analyze("display 31/12 1159pm");
+
+		DisplayAnalyzer.analyze();
+		assertEquals("31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
+		
+		//display calendar in a specific period of time
+		Analyzer.analyze("dipslay 30/12 1159pm 31/12 1159pm");
+		
+		DisplayAnalyzer.analyze();
+		assertEquals("30/12 1159pm 31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
 	}
 
 	@Test
@@ -268,6 +280,24 @@ public class TestingDisplayAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_INVALID_DISPLAY_REQUEST, e.getMessage());
 		}
-
+		
+		//display date before current time
+		Analyzer.analyze("display 1/1/2010 12am");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_END_TIME, e.getMessage());
+		}
+		
+		//display period that end time before start time
+		Analyzer.analyze("display 1159pm 1158pm");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
+		}
+		
 	}
 }
