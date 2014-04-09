@@ -320,12 +320,11 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 22", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
 		}
-		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc.set(Calendar.MINUTE, 2);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
@@ -336,17 +335,15 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 23", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
 			isPostponed = true;
 		}
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
-		gc = new GregorianCalendar();
-		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 0, 2);
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 2);
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		if (isPostponed) {
 			gc.add(Calendar.DATE, 7);
 		}
@@ -358,7 +355,7 @@ public class TestingAddAnalyzer {
 		AddAnalyzer.analyze();
 		assertEquals("task name 24", AddAnalyzer.getToBeAddedTask().getTaskName());
 		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
@@ -371,7 +368,7 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 25", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
@@ -383,7 +380,7 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 26", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
@@ -395,7 +392,7 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 27", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);
@@ -407,7 +404,7 @@ public class TestingAddAnalyzer {
 
 		AddAnalyzer.analyze();
 		assertEquals("task name 28", AddAnalyzer.getToBeAddedTask().getTaskName());
-		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		if (gc.compareTo(Calendar.getInstance()) == -1) {
 			gc.add(Calendar.DATE, 7);

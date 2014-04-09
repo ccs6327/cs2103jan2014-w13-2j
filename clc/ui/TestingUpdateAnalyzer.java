@@ -40,7 +40,7 @@ public class TestingUpdateAnalyzer {
 		ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
 		assertEquals(null, time.get(0));
 		GregorianCalendar gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -79,7 +79,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(4, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -93,7 +93,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 58);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -108,7 +108,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(6, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -126,7 +126,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
@@ -158,7 +158,7 @@ public class TestingUpdateAnalyzer {
 		gc.set(Calendar.DATE, 1);
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -215,7 +215,7 @@ public class TestingUpdateAnalyzer {
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -265,7 +265,7 @@ public class TestingUpdateAnalyzer {
 		time = UpdateAnalyzer.getCalendar();
 		assertEquals(null, time.get(0));
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -302,7 +302,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 58);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -317,7 +317,7 @@ public class TestingUpdateAnalyzer {
 		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
@@ -366,7 +366,7 @@ public class TestingUpdateAnalyzer {
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
