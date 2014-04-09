@@ -110,14 +110,14 @@ public class UserInterface {
 				command = analyzeExport();
 			} else if (isCaseSearch(commandType)) {
 				command = analyzeSearch();
+			} else if (isCaseHelp(commandType)) {
+				command = analyzeHelp();
 			} else if (isCaseClear(commandType)) {
 				command = new Clear();
 			} else if (isCaseUndo(commandType)) {
 				command = new Undo();
 			} else if (isCaseRedo(commandType)) {
 				command = new Redo();
-			} else if (isCaseHelp(commandType)) {
-				command = new Help();
 			} else if (isCaseExit(commandType)) {
 				command = new Exit();
 			} else {
@@ -287,6 +287,12 @@ public class UserInterface {
 	private static Command analyzeSearch() {
 		Command command;
 		command = new Search(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static Command analyzeHelp() {
+		Command command;
+		command = new Help(Analyzer.getCommandDetails());
 		return command;
 	}
 

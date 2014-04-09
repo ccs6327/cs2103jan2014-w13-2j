@@ -184,8 +184,9 @@ public class Storage {
 	}
 
 	// Read from the Help.txt and return to string
-	public static String readManualFromHelpFile() {
-		File fileIn = new File(HELPFILE);
+	public static String readManualFromHelpFile(String fileName) {
+		File fileIn = new File(fileName);
+		
 		StringBuilder sb = new StringBuilder();
 		try {
 
