@@ -95,7 +95,7 @@ public class TestingDisplayAnalyzer {
 		//millisecond difference is minor for our product, use to String() to compare current time
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -124,12 +124,12 @@ public class TestingDisplayAnalyzer {
 		gc = new GregorianCalendar();
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(1));
-		
+
 
 		//display next week
 		Analyzer.analyze("display next week");
@@ -139,14 +139,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -168,7 +168,7 @@ public class TestingDisplayAnalyzer {
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.MONTH, 1);
 		gc.set(Calendar.DATE, 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -196,14 +196,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -216,14 +216,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -238,14 +238,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -258,14 +258,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -280,14 +280,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -300,14 +300,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -322,14 +322,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -342,14 +342,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -364,14 +364,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -385,14 +385,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -407,14 +407,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -427,14 +427,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -449,14 +449,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -469,14 +469,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -490,19 +490,19 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(1));
-		
+
 
 		//display Tuesday
 		Analyzer.analyze("display NEXT NEXT tUESDAY");
@@ -512,14 +512,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -534,14 +534,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 21);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 22);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -556,14 +556,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -578,14 +578,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -600,14 +600,14 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
@@ -622,39 +622,66 @@ public class TestingDisplayAnalyzer {
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
-		gc.set(Calendar.HOUR, 0);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(1));
 
+
 		//display calendar by a specific time
 		Analyzer.analyze("display 31/12 1159pm");
 
 		DisplayAnalyzer.analyze();
-		assertEquals("31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		assertEquals(null, time.get(0));
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
 		assertEquals(gc, time.get(1));
 
-		
+
 		//display calendar in a specific period of time
 		Analyzer.analyze("display 30/12 1159pm 31/12 1159pm");
-		
+
 		DisplayAnalyzer.analyze();
-		assertEquals("30/12 1159pm 31/12 1159pm", DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 30, 23, 59);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, time.get(1));
+
+
+		//display calendar by a specific time
+		Analyzer.analyze("display 1159pm sunday");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		
+		//display calendar in a specific period of time with keyword Monday to Sunday
+		Analyzer.analyze("display from 12am monday to 1159pm next sunday");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 0);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 23, 59);
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		assertEquals(gc, time.get(1));
 	}
 
@@ -668,24 +695,24 @@ public class TestingDisplayAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_INVALID_DISPLAY_REQUEST, e.getMessage());
 		}
-		
+
 		//display date before current time
 		Analyzer.analyze("display 1/1/2010 12am");
-		
+
 		try {
 			DisplayAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_END_TIME, e.getMessage());
 		}
-		
+
 		//display period that end time before start time
 		Analyzer.analyze("display 1159pm 1158pm");
-		
+
 		try {
 			DisplayAnalyzer.analyze();
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
 		}
-		
+
 	}
 }

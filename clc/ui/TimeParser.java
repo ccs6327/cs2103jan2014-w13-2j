@@ -50,6 +50,7 @@ import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.EVERY_WEEK;
 
 public class TimeParser extends Analyzer {
+	private static final String TO = "to";
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
 	private static GregorianCalendar analyzedCalendar;
 	private static boolean doesContainAmOrPm;
@@ -78,6 +79,9 @@ public class TimeParser extends Analyzer {
 
 		while (currIndex >= 0 && !hasAllTimeSet()) {
 			String toBeAnalyzedString = EMPTY;
+
+			currIndex = skipCurrentIndexIfPreposition(currIndex);
+
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
@@ -104,6 +108,13 @@ public class TimeParser extends Analyzer {
 		caseIfCalendarBeforeCurrentTime();
 		caseIfStartTimeLaterThanEndTime();
 		adjustToCorrectCalendarIndex();
+	}
+
+	private static int skipCurrentIndexIfPreposition(int currIndex) {
+		if (isPrepositionOfTime(infoToBeProcessed[currIndex])) {
+			return currIndex - 1;
+		}
+		return currIndex;
 	}
 
 	private static void caseIfRecurringTimeBeforeCurrentTime() {
@@ -169,10 +180,7 @@ public class TimeParser extends Analyzer {
 		int infoLength = infoToBeProcessed.length;
 
 		if (startCalendarIndex - 1 >= 0) {
-			if (infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(FROM)
-					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(BY)
-					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(DUE)
-					|| infoToBeProcessed[startCalendarIndex -1].equalsIgnoreCase(AT)) {
+			if (isPrepositionOfTime(infoToBeProcessed[startCalendarIndex - 1])) {
 				startCalendarIndex --;
 			}
 		}
@@ -192,6 +200,14 @@ public class TimeParser extends Analyzer {
 			}
 		}
 
+	}
+
+	private static boolean isPrepositionOfTime(String currWord) {
+		return currWord.equalsIgnoreCase(FROM)
+				|| currWord.equalsIgnoreCase(BY)
+				|| currWord.equalsIgnoreCase(DUE)
+				|| currWord.equalsIgnoreCase(AT)
+				|| currWord.equalsIgnoreCase(TO);
 	}
 
 	private static boolean isStartAndEndCalendarIndexSet() {
