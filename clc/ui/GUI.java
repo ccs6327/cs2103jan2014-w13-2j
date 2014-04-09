@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -31,7 +33,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 
 import static clc.common.Constants.*;
 
-public class GUI implements NativeKeyListener{
+public class GUI implements NativeKeyListener {
 
 	private JFrame frameClc;
 	private JTextField inputTextBox = new JTextField();
@@ -44,8 +46,8 @@ public class GUI implements NativeKeyListener{
 	private int inputIndex = 0;
 	protected boolean isWindowActivated;
 	private boolean isPressingShift;
-	
-	protected GUI() {
+
+	protected GUI() { 
 		initialize();
 	}
 
@@ -55,6 +57,7 @@ public class GUI implements NativeKeyListener{
 				try {
 					GUI window = new GUI();
 					window.frameClc.setVisible(true);
+					initiateKeyListener();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -145,19 +148,9 @@ public class GUI implements NativeKeyListener{
 				initializeInputTextBox();
 			}
 
-			private void clearDisplayBoxAndStayTop(String feedback) {
-				try {
-					doc.remove(0,doc.getLength());
-					showToUser(feedback);
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
-				}
-				scrollPane.getVerticalScrollBar().setValue(0);
-			}
-
 			private boolean isCaseDisplayOrHelp() {
 				String[] command = input.split(SPACE);
-				
+
 				return command[0].equalsIgnoreCase(TYPE_DISPLAY)
 						|| command[0].equalsIgnoreCase(TYPE_DISPLAY_SHORT)
 						|| command[0].equalsIgnoreCase(TYPE_SHOW)
@@ -175,16 +168,14 @@ public class GUI implements NativeKeyListener{
 		});
 	}
 
-	private void initiateGlobalKeyListener() {
+	private void clearDisplayBoxAndStayTop(String feedback) {
 		try {
-			GlobalScreen.registerNativeHook();
+			doc.remove(0,doc.getLength());
+			showToUser(feedback);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
 		}
-		catch (NativeHookException ex) {
-			System.exit(1);
-		}
-
-		//Construct the example object and initialize native hook.
-		GlobalScreen.getInstance().addNativeKeyListener(this);
+		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
 	private void initiateWindowListener() {
@@ -204,15 +195,53 @@ public class GUI implements NativeKeyListener{
 			public void windowIconified(WindowEvent arg0) {}
 			public void windowOpened(WindowEvent arg0) {
 				initiateGlobalKeyListener();
+				initiateKeyListener();
 			}
 		});
 	}
-	
+
+	private void initiateGlobalKeyListener() {
+		try {
+			GlobalScreen.registerNativeHook();
+		}
+		catch (NativeHookException ex) {
+			System.exit(1);
+		}
+
+		//Construct the example object and initialize native hook.
+		GlobalScreen.getInstance().addNativeKeyListener(this);
+	}
+
+	private void initiateKeyListener() {
+		inputTextBox.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) { 
+				if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+					isPressingCtrl = true;
+				}
+
+				showHelpIfPressedF1(e);
+				clearInputTextBoxIfPressedEsc(e);
+				if (isPressingCtrl) {
+					scrollUpOrDownDisplayBoxIfPressedCtrlUpOrDown(e);
+				} else {
+					traversePreviousInputIfPressedUpOrDown(e);
+				}
+			}
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+					isPressingCtrl = false;
+				}
+			}
+			public void keyTyped(KeyEvent e) {}
+		});
+	}
+
 	public static void centreWindow(Window frame) {
-	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-	    frame.setLocation(x, y);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+		frame.setLocation(x, y);
 	}
 
 	private void initializeDisplayBox() {
@@ -230,28 +259,15 @@ public class GUI implements NativeKeyListener{
 
 	@Override //NativeKeyListener
 	public void nativeKeyPressed(NativeKeyEvent e) {
-		if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
-			isPressingCtrl = true;
-		} else if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
 			isPressingShift = true;
 		}
 		if (isPressingShift) {
 			changeWindowVisibility(e);
 		}	
-		if (isWindowActivated) {
-			if (!isPressingCtrl) {
-				traversePreviousInput(e);
-			}
-			clearInputTextBox(e);
-			if (isPressingCtrl) {
-				scrollUpAndDownDisplayBox(e);
-			}
-		}
 	}
 	public void nativeKeyReleased(NativeKeyEvent e) {
-		if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
-			isPressingCtrl = false;
-		} else if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
 			isPressingShift = false;
 		}
 	}
@@ -267,39 +283,46 @@ public class GUI implements NativeKeyListener{
 			} 
 		}
 	}
-	
 
-	private void traversePreviousInput(NativeKeyEvent e) { 
+	private void traversePreviousInputIfPressedUpOrDown(KeyEvent e) { 
 		String cachedInput;
-		if (e.getKeyCode() == NativeKeyEvent.VK_ENTER) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			inputIndex = previousInput.size();
 		}
 
-		if (e.getKeyCode() == NativeKeyEvent.VK_UP && inputIndex - 1 >= 0) {
+		if (e.getKeyCode() == KeyEvent.VK_UP && inputIndex - 1 >= 0) {
 			cachedInput = previousInput.get(--inputIndex);
 			inputTextBox.setText(SPACE + cachedInput);
 			inputTextBox.setCaretPosition(cachedInput.length() + 1);
-		} else if (e.getKeyCode() == NativeKeyEvent.VK_DOWN && inputIndex + 1 < previousInput.size()) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN && inputIndex + 1 < previousInput.size()) {
 			cachedInput = previousInput.get(++inputIndex);
 			inputTextBox.setText(SPACE + cachedInput);
 			inputTextBox.setCaretPosition(cachedInput.length() + 1);
 		}
 	}
 
-	private void scrollUpAndDownDisplayBox(NativeKeyEvent e) {
+	private void scrollUpOrDownDisplayBoxIfPressedCtrlUpOrDown(KeyEvent e) {
 		int incrementValue = scrollPane.getVerticalScrollBar().getBlockIncrement();
-		if (e.getKeyCode() == NativeKeyEvent.VK_UP) { //ctrl + up
+		if (e.getKeyCode() == KeyEvent.VK_UP) { //ctrl + up
 			int currPosition = scrollPane.getVerticalScrollBar().getValue(); 
 			scrollPane.getVerticalScrollBar().setValue(currPosition - incrementValue);
-		} else if (e.getKeyCode() == NativeKeyEvent.VK_DOWN) { //ctrl + down
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) { //ctrl + down
 			int currPosition = scrollPane.getVerticalScrollBar().getValue(); 
 			scrollPane.getVerticalScrollBar().setValue(currPosition + incrementValue);
 		}
 	}
 
-	private void clearInputTextBox(NativeKeyEvent e) {
-		if (e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
+	private void clearInputTextBoxIfPressedEsc(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			initializeInputTextBox();
+		}
+	}
+
+	private void showHelpIfPressedF1(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_F1) {
+			String feedback = UserInterface.setInputAndExecute(TYPE_HELP);
+			clearDisplayBoxAndStayTop(feedback);
+			displayBox.setCaretPosition(0);
 		}
 	}
 }
