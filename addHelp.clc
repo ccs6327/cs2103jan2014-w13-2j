@@ -33,7 +33,7 @@ If you want to add a floating task
 ========================================================================= 
 
 If you want to be reminded of a timed task or a deadline task 
---> Enter: add /r ……
+--> Enter: add /r ......
 
 --> e.g. add /r attend lecture friday from 4pm to 6pm
 --> e.g. add /r submit weekly report friday 5pm
@@ -42,12 +42,12 @@ You will be reminded of a timed task 15 minutes before the start time or a deadl
 ========================================================================= 
 
 If you want to add a recurring task, you may enter the command with the keywords every.
---> Enter: add /r …… every [start time] [end time]
+--> Enter: add /r ...... every [start time] [end time]
 
 --> e.g. add lecture every friday 4pm 6pm
 ========================================================================= 
 
 If your task name includes the keyword "today" "tomorrow" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" or "Sunday", you can use ' ' to quote the task name.
---> Enter: add '……'
+--> Enter: add '......'
 
 --> e.g. add 'watch the day after tomorrow' by tomorrow 8pm
