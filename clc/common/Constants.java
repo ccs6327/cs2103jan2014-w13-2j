@@ -146,7 +146,6 @@ public class Constants {
 	//Filename
 	public static final String OUTFILE = "metadata.clc";
 	public static final String CLC_EXPORT_DIRECTORY = "CLC Exported Files\\";
-	public static final String UNDO_REDO_HELP_FILE = "undoRedoHelp.clc";
 	public static final String SEARCH_HELP_FILE = "searchHelp.clc";
 	public static final String IMPORT_EXPORT_HELP_FILE = "importExportHelp.clc";
 	public static final String UPDATE_HELP_FILE = "updateHelp.clc";
@@ -155,6 +154,8 @@ public class Constants {
 	public static final String DELETE_HELP_FILE = "deleteHelp.clc";
 	public static final String ADD_HELP_FILE = "addHelp.clc";
 	public static final String GENERAL_HELP_FILE = "generalHelp.clc";
+	public static final String DATE_HELP_FILE = "dateHelp.clc";
+	public static final String HOTKEY_HELP_FILE = "hotkeyHelp.clc";
 
 	// Storage
 	public static final int IS_DONE = 1;
