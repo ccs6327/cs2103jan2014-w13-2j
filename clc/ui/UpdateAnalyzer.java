@@ -3,6 +3,7 @@ package clc.ui;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.COMMA;
 import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.QUOTATION_MARK;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 
@@ -12,7 +13,7 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 
 public class UpdateAnalyzer extends TimeParser {
-	private static boolean isCaseUpdateCalendar;
+	private static boolean isCaseUpdateCalendar, isCaseQuotedTaskName;
 	private static String[] tempInfo;
 	private static int calendarProvided = 0;
 	private static int seqNo;
@@ -24,21 +25,21 @@ public class UpdateAnalyzer extends TimeParser {
 
 	protected static void analyze() throws InvalidInputException {
 		throwExceptionIfEmptyCommandDetails();
-		
+		throwExceptionIfNoSeqNumberProvided();
+		checkIfQuotedTaskName();
+
+		isCaseQuotedTaskName = false;
 		calendarProvided = 0;
 		tempInfo = commandDetails.split(SPACE);
 		infoToBeProcessed = tempInfo;
-		
-		determineIfSeqNoProvided();
 
-		if (doesContainTimeInfo()) { //case update calendar
+		if (!isCaseQuotedTaskName && doesContainTimeInfo()) { //case update calendar
 			if (commandDetails.contains(COMMA)) {
 				int indexOfComma = findIndexOfComma();
 				analyzeUpdateStartTime(indexOfComma);
 				analyzeUpdateEndTime(indexOfComma);
 				startCalendar = tempStartCalendar;
 			} else { // one calendar -> endCalendar , two calendar -> start and end calendar
-				
 				determineIfStartDateIsProvided();
 				determineIfStartTimeIsProvided();
 				determineIfEndDateIsProvided();
@@ -51,19 +52,33 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
-	private static void determineIfSeqNoProvided() throws InvalidInputException {
+	private static void checkIfQuotedTaskName() {
+		if (isQuotedCommandDetails()) {
+			isCaseQuotedTaskName = true;
+			//trim away '
+			commandDetails = commandDetails.substring(1, commandDetails.length() - 1);
+		}
+	}
+
+	private static boolean isQuotedCommandDetails() {
+		return commandDetails.indexOf(QUOTATION_MARK) == 0 
+				&& commandDetails.lastIndexOf(QUOTATION_MARK) == commandDetails.length() - 1;
+	}
+
+	private static void throwExceptionIfNoSeqNumberProvided() throws InvalidInputException {
 		if (!isNumeric(getFirstWord(commandDetails))) {
 			throw new InvalidInputException(ERROR_NO_SEQUENCE_NUMBER);
 		} else {
 			seqNo = Integer.parseInt(getFirstWord(commandDetails));
+			commandDetails = removeFirstWord(commandDetails);
 		}
 	}
 
 	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
 		int index = 0;
 		if (indexOfComma > 0) {
-			infoToBeProcessed = new String[indexOfComma - 1];
-			for (int i = 1; i < indexOfComma; i ++) { //first one is sequence no
+			infoToBeProcessed = new String[indexOfComma];
+			for (int i = 0; i < indexOfComma; i ++) {
 				infoToBeProcessed[index ++] = tempInfo[i];
 			}
 			processCalendarInfo();
@@ -89,7 +104,7 @@ public class UpdateAnalyzer extends TimeParser {
 		int index = 0;
 		if (tempInfo.length != indexOfComma + 1) {
 			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
-			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) { //first one is sequence no
+			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) {
 				infoToBeProcessed[index ++] = tempInfo[i];
 			}
 	
@@ -142,11 +157,10 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	protected static String getNewTaskName() throws InvalidInputException {
-		String newTaskName = removeFirstWord(commandDetails);
-		if (isNewTaskNameProvided(newTaskName)) {
+		if (isNewTaskNameProvided(commandDetails)) {
 			throw new InvalidInputException(ERROR_NO_NEW_TASK_NAME);
 		}
-		return newTaskName;
+		return commandDetails;
 	}
 
 	private static boolean isNewTaskNameProvided(String newTaskName) {
@@ -155,13 +169,6 @@ public class UpdateAnalyzer extends TimeParser {
 
 	public static int getCalendarProvidedCase() {
 		return calendarProvided;
-	}
-	
-	//override function in TimeParser
-	protected static boolean doesContainTimeInfo() throws InvalidInputException {
-		processCalendarInfo();
-		return isStartDateSet || isStartTimeSet 
-				|| isEndDateSet || isEndTimeSet;
 	}
 	
 	protected static void processCalendarInfo() throws InvalidInputException {

@@ -61,7 +61,6 @@ public class Constants {
 	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
 
 	//Display
-	public static final String TO = " to ";
 	public static final String ANOTHER_LINE = "";
 	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
 	public static final String MESSAGE_SHOW_INCOMPLETE_TASKS = "INCOMPLETE TASKS";
@@ -125,7 +124,10 @@ public class Constants {
     		+ "                                                  is before/equal \r\n"
     		+ "                                             start time [%1$s].\r\n\r\n=*=*=*=UPDATE UNSUCCESSFUL!=*=*=*=";
     		
-
+    //Help
+	public static final String DATE = "date";
+	public static final String HOTKEY = "hotkey";
+    
 	//Remind
 	public static final int INTERVAL_TO_REMIND = -15; //minutes
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
@@ -143,8 +145,16 @@ public class Constants {
 	
 	//Filename
 	public static final String OUTFILE = "metadata.clc";
-	public static final String HELPFILE = "generalHelp.clc";
 	public static final String CLC_EXPORT_DIRECTORY = "CLC Exported Files\\";
+	public static final String UNDO_REDO_HELP_FILE = "undoRedoHelp.clc";
+	public static final String SEARCH_HELP_FILE = "searchHelp.clc";
+	public static final String IMPORT_EXPORT_HELP_FILE = "importExportHelp.clc";
+	public static final String UPDATE_HELP_FILE = "updateHelp.clc";
+	public static final String MARK_UNMARK_HELP_FILE = "markUnmarkHelp.clc";
+	public static final String DISPLAY_HELP_FILE = "displayHelp.clc";
+	public static final String DELETE_HELP_FILE = "deleteHelp.clc";
+	public static final String ADD_HELP_FILE = "addHelp.clc";
+	public static final String GENERAL_HELP_FILE = "generalHelp.clc";
 
 	// Storage
 	public static final int IS_DONE = 1;
@@ -205,6 +215,7 @@ public class Constants {
 	public static final String BY = "by";
 	public static final String DUE = "due";
 	public static final String AT = "at";
+	public static final String TO = "to";
 	public static final String NEXT = "Next";
 	public static final String EVERY = "every";
 	public static final String EVERY_WEEK = "every week";

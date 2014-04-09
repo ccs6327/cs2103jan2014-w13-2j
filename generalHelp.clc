@@ -1,112 +1,28 @@
 Getting Started
- ----------------
- In Command Line Calendar (CLC), three kinds of tasks are
- defined.
- i) timed tasks - with a start time and end time
- ii) deadline tasks - with a specific deadline
- iii) floating tasks - without any start time or end time.  
- In the following user guide, the terms in square brackets [ ] are parameters. 
- In some circumstances, parameters can be omitted.
+In Command Line Calendar (CLC), three kinds of tasks are defined.
+i) timed tasks - with a start time and end time
+ii) deadline tasks - with a specific deadline
+iii) floating tasks - without any start time or end time
+=========================================================================
 
- =========================================================
+ADD/CREATE                    – add a new task to the task list
+DISPLAY/SHOW/LIST       – display what you have added to the task list
+DELETE/REMOVE/ERASE – delete unwanted task in the task list
+MARK/UNMARK              – mark tasks as done or undone (originally mark as undone)
+UPDATE/EDIT                   – update the task name or calendar information 
+UNDO/REDO                    – redo or undo the operation you have recently executed
+IMPORT/EXPORT             – export a backup file or import from other device or folder
+CLEAR                               – delete all the tasks in the task list
+EXIT                                   – close the CLC to-do manager
 
- Add
- ---
- If you want to add a timed task with time
- --> Enter: add [task name] [start date] [start time] [end date] [end time]
- i)normal 
- ---> e.g. add meeting 23/8 2pm 24/8 4pm
- i)add task without end date(end on the same date) 
- ---> e.g. add meeting 23/8 2pm 4pm 
+*You are required to display the tasks list before execute the command
+=========================================================================
 
- If you want to add a deadline task 
- --> Enter: add [task name] [end date] [end time]
- ---> e.g. add submit homework next fri 11.59pm 
-
- If you want to add a floating task 
- --> Enter: add [task name]
- ---> e.g. add watch webcast
-
- =========================================================
-
- Display
- -------
- If you want to display all tasks 
- --> Enter: display all
-
- If you want to display tasks during specific period of time
- --> Enter: display tasks [start date] [start time] [end date] [end time]
-
- If you want to display tasks ending at a specific time
- --> Enter: display tasks end [end date] [end time]
- i) display tasks ending at a specific time 
- ---> e.g. display tasks end 23/9 9pm
-
- =========================================================
-
- Update
- ------
- Before you update a task, you are required to display tasks first. 
-
- If you want to update the name of the task
- --> Enter: update [sequence no. of the task] [new task name]
-
- If you want to update the time of a timed task, leave the part blank if you wish
- to remain it unchanged
- --> Enter: update [sequence no. of the task] [new date] [start time+”,”+end time]
- i) update the start time only 
- ---> e.g. update 1 3pm ,
- ii) update the end time only 
- ---> e.g. update 1 , 9pm
- iii) update both start and end time 
- ---> e.g. update 1 3pm , 9pm
-
- If you want to update the time of a deadline task, leave the blank if you wish to 
- remain it unchanged
- --> Enter: update [sequence no. of the task] [new date] [end time]
- i)update the end time only 
- ---> e.g. update 1 9pm
-
- If you want to add date and time to a floating task
- i)make it into a timed task 
- --> Enter: update [sequence no. of the task] [new date] [start time] [end time]
- ii)make it into a deadline task 
- --> Enter: update [sequence no. of the task] [new date] [end time]
-
- =========================================================
-
- Delete
- ------
- Before you delete a task or multiple tasks, you are required to display tasks first.
-
- If you want to delete a single task 
- --> Enter: delete [sequence no. of the task]
-
- If you want to delete multiple tasks, simply delete their sequence numbers
- --> Enter: delete [sequence no. of the task] [sequence no. of the task] …
-
- =========================================================
-
- Undo
- ----
- If you want to cancel the last change you have operated 
- --> Enter: undo
- If you want to cancel duno 
- --> Enter: redo
-
- =========================================================
- 
- Mark As Done
- ------------
- Before you mark a task or multiple tasks as done, you are required to display 
- tasks first.
-
- If you want to mark a task as done 
- --> Enter: mark [sequence no. of the task]
- 
- =========================================================
-
- Help
- ----
- If you want to retrieve a help manual of a function 
- --> Enter: help [command name] 
+Get more specific help with the command below:
+ADD/CREATE                    :  “help add” or “help create” 
+DISPLAY/SHOW/LIST       :  “help display” or “help show” or “help list”
+DELETE/REMOVE/ERASE :  “help delete” or “help remove” or “help erase”
+MARK/UNMARK              :  “help mark” or help “unmark”
+UPDATE/EDIT                   :  “help update” or “edit”
+UNDO/REDO                    :  “help undo” or help “redo”
+IMPORT/EXPORT             :  “help import” or “help export”

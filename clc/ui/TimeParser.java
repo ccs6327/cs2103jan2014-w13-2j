@@ -44,13 +44,13 @@ import static clc.common.Constants.FROM;
 import static clc.common.Constants.BY;
 import static clc.common.Constants.DUE;
 import static clc.common.Constants.AT;
+import static clc.common.Constants.TO;
 import static clc.common.Constants.NEXT;
 import static clc.common.Constants.EVERY;
 import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.EVERY_WEEK;
 
 public class TimeParser extends Analyzer {
-	private static final String TO = "to";
 	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
 	private static GregorianCalendar analyzedCalendar;
 	private static boolean doesContainAmOrPm;
@@ -199,7 +199,6 @@ public class TimeParser extends Analyzer {
 				}
 			}
 		}
-
 	}
 
 	private static boolean isPrepositionOfTime(String currWord) {

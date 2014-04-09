@@ -365,11 +365,6 @@ public class TestingUpdateAnalyzer {
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(0));
-		gc = new GregorianCalendar();
-		gc.set(Calendar.HOUR_OF_DAY, 23);
-		gc.set(Calendar.MINUTE, 59);
-		gc.set(Calendar.SECOND, 0);
-		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(1));
 
 		//case update D T , D T
