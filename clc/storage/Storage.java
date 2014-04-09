@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.NoSuchFileException;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -232,6 +233,8 @@ public class Storage {
 			return MESSAGE_EXPORT_FAILED;
 		} catch (NoSuchFileException e) {
 			return MESSAGE_EXPORT_FAILED_CANNOT_WRITE;
+		} catch (InvalidPathException e) {
+			return MESSAGE_EXPORT_FAILED_INVALID_PATH;
 		} catch (IOException e) {
 			return MESSAGE_EXPORT_FAILED;
 		}
