@@ -23,7 +23,6 @@ import static clc.common.Constants.TYPE_UNMARK;
 import static clc.common.Constants.TYPE_UNMARK_SHORT;
 import static clc.common.Constants.TYPE_UPDATE;
 import static clc.common.Constants.TYPE_UPDATE_SHORT;
-import static clc.common.Constants.UNDO_REDO_HELP_FILE;
 import static clc.common.Constants.SEARCH_HELP_FILE;
 import static clc.common.Constants.IMPORT_EXPORT_HELP_FILE;
 import static clc.common.Constants.UPDATE_HELP_FILE;
@@ -32,9 +31,10 @@ import static clc.common.Constants.DISPLAY_HELP_FILE;
 import static clc.common.Constants.DELETE_HELP_FILE;
 import static clc.common.Constants.ADD_HELP_FILE;
 import static clc.common.Constants.GENERAL_HELP_FILE;
+import static clc.common.Constants.DATE_HELP_FILE;
+import static clc.common.Constants.HOTKEY_HELP_FILE;
 import static clc.common.Constants.HOTKEY;
 import static clc.common.Constants.DATE;
-
 import clc.storage.Storage;
 
 public class Help implements Command {
@@ -61,12 +61,10 @@ public class Help implements Command {
 			fileName = IMPORT_EXPORT_HELP_FILE;
 		} else if (isCaseSearch(query)) {
 			fileName = SEARCH_HELP_FILE;
-		} else if (isCaseUndo(query) || isCaseRedo(query)) {
-			fileName = UNDO_REDO_HELP_FILE;
 		} else if (isCaseHotkey(query)) {
-			fileName = "hotkeyHelp.clc";
+			fileName = HOTKEY_HELP_FILE;
 		} else if (isCaseDate(query)) {
-			fileName = "dateHelp.clc";
+			fileName = DATE_HELP_FILE;
 		} else {
 			fileName = GENERAL_HELP_FILE;
 		}
@@ -126,14 +124,6 @@ public class Help implements Command {
 
 	private static boolean isCaseSearch(String query) {
 		return query.equalsIgnoreCase("search");
-	}
-
-	private static boolean isCaseUndo(String query) {
-		return query.equalsIgnoreCase(TYPE_UNDO);
-	}
-
-	private static boolean isCaseRedo(String query) {
-		return query.equalsIgnoreCase(TYPE_REDO);
 	}
 
 	private static boolean isCaseHotkey(String query) {

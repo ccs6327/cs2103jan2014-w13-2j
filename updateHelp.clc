@@ -1,7 +1,7 @@
 Update
 Alternative command: edit/up
 
-Before you update a task, you are required to display tasks first.
+Before you update a task, you are required to display or search tasks first.
 
 If you want to update the name of the task
 --> Enter: update [sequence no. of the task] [new task name] 
