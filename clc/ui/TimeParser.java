@@ -80,8 +80,6 @@ public class TimeParser extends Analyzer {
 		while (currIndex >= 0 && !hasAllTimeSet()) {
 			String toBeAnalyzedString = EMPTY;
 
-			currIndex = skipCurrentIndexIfPreposition(currIndex);
-
 			int loopIndex = currIndex;
 			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
 				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
@@ -99,6 +97,8 @@ public class TimeParser extends Analyzer {
 			}
 			currIndex --;
 			setCalendar();
+
+			currIndex = skipNextIndexIfPreposition(currIndex);
 		}
 
 		setStartCalendarAsNullIfNotSet();
@@ -110,8 +110,8 @@ public class TimeParser extends Analyzer {
 		adjustToCorrectCalendarIndex();
 	}
 
-	private static int skipCurrentIndexIfPreposition(int currIndex) {
-		if (isPrepositionOfTime(infoToBeProcessed[currIndex])) {
+	private static int skipNextIndexIfPreposition(int currIndex) {
+		if (currIndex >= 0 && isPrepositionOfTime(infoToBeProcessed[currIndex])) {
 			return currIndex - 1;
 		}
 		return currIndex;
