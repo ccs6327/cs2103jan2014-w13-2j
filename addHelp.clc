@@ -47,7 +47,7 @@ If you want to add a recurring task, you may enter the command with the keywords
 --> e.g. add lecture every friday 4pm 6pm
 ========================================================================= 
 
-If your task name includes the keyword “today” “tomorrow” “Monday” “Tuesday” “Wednesday” “Thursday” “Friday” “Saturday” or “Sunday”, you can use ‘ ’ to quote the task name.
---> Enter: add ‘……’
+If your task name includes the keyword "today" "tomorrow" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" or "Sunday", you can use ' ' to quote the task name.
+--> Enter: add '……'
 
---> e.g. add ‘watch the day after tomorrow’ by tomorrow 8pm
+--> e.g. add 'watch the day after tomorrow' by tomorrow 8pm
