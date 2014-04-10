@@ -687,7 +687,7 @@ public class TestingDisplayAnalyzer {
 	}
 
 	@Test
-	public void testInvalidInputException() {
+	public void testInvalidInputException() throws InvalidInputException {
 		//display unsupported query
 		Analyzer.analyze("display /oj1289asdf;l@#$");
 

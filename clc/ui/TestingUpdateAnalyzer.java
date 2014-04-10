@@ -395,7 +395,7 @@ public class TestingUpdateAnalyzer {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws InvalidInputException {
 		//no details
 		Analyzer.analyze("update");
 

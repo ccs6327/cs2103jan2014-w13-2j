@@ -509,7 +509,7 @@ public class TestingAddAnalyzer {
 	}
 
 	@Test
-	public void testInvalidInputException() {
+	public void testInvalidInputException() throws InvalidInputException {
 		//empty command details
 		Analyzer.analyze("add");
 		try {

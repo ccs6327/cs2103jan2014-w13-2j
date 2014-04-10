@@ -45,7 +45,7 @@ public class AddAnalyzer extends TimeParser {
 		}
 	}
 
-	private static void determineIfReminderNeeded() {
+	private static void determineIfReminderNeeded() throws InvalidInputException {
 		isReminderNeeded = false;
 		if (getFirstWord(commandDetails).equalsIgnoreCase(SLASH_R)) {
 			isReminderNeeded = true;

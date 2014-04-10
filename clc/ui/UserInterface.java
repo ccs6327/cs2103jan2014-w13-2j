@@ -99,11 +99,10 @@ public class UserInterface {
 		addOverdueRecurringTask();
 		
 		Command command = null;
-		Analyzer.analyze(input);
-		String commandType = Analyzer.getCommandType(); 
-		
-
 		try{
+			Analyzer.analyze(input);
+			String commandType = Analyzer.getCommandType(); 
+			
 			if (isCaseAdd(commandType)) {
 				command = analyzeAdd();
 			} else if (isCaseDelete(commandType)) {
