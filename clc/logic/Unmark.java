@@ -35,18 +35,22 @@ public class Unmark implements Command {
 		boolean isChanged = false;
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
-			isChanged = markTaskIfInBoundary(isChanged, seqNo);
+			isChanged = unmarkTaskIfInBoundary(isChanged, seqNo);
 		}
 		return isChanged;
 	}
 
-	private boolean markTaskIfInBoundary(boolean isChanged, int seqNo) {
+	private boolean unmarkTaskIfInBoundary(boolean isChanged, int seqNo) {
 		if (isOutOfBound(displayMem.size(), seqNo)) {
 			appendOutOfBoundMessage(seqNo);
 		} else {
-			isChanged = markTaskAndAppendFeedbackMessage(isChanged, seqNo);
+			isChanged = unmarkTaskAndAppendFeedbackMessage(isChanged, seqNo);
 		}
 		return isChanged;
+	}
+
+	private boolean isOutOfBound(int taskListSize, int seqNo) {
+		return (taskListSize < seqNo || seqNo <= 0);
 	}
 
 	private void appendOutOfBoundMessage(int seqNo) {
@@ -54,7 +58,7 @@ public class Unmark implements Command {
 		feedback.append(NEWLINE);
 	}
 
-	private boolean markTaskAndAppendFeedbackMessage(boolean isChanged, int seqNo) {
+	private boolean unmarkTaskAndAppendFeedbackMessage(boolean isChanged, int seqNo) {
 		boolean isUnmarked = false;
 		int internalSeqNo = displayMem.get(seqNo - 1);
 		isUnmarked = internalMem.get(internalSeqNo).markUndone();
@@ -84,10 +88,6 @@ public class Unmark implements Command {
 			History.addNewVersion();
 			Storage.writeContentIntoFile();
 		}
-	}
-
-	private boolean isOutOfBound(int taskListSize, int seqNo) {
-		return (taskListSize < seqNo || seqNo <= 0);
 	}
 }
 
