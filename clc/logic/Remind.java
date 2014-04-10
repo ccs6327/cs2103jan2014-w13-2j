@@ -1,3 +1,5 @@
+//author A0112089J
+
 package clc.logic;
 
 import static clc.common.Constants.MESSAGE_REMIND_TIMED_TASKS;
@@ -30,20 +32,25 @@ public class Remind {
 		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (int i = 0; i < internalMem.size(); i ++) {
 			Task task = internalMem.get(i);
-			if (task.getIsReminderNeeded() && !task.getIsDone()) {
-				reminderMem.add(task);
-				taskIdToBeReminded.add(task.getTaskId());
-				switch (task.getTaskType()) {
-				case TYPE_TIMED_TASK:
-					remindTimedTask(taskInfo, task);
-					break;
-				case TYPE_DEADLINE_TASK:
-					remindDeadlineTask(taskInfo, task);
-					break;
-				}
-			}
+			retrieveTaskInfoIfReminderNeeded(taskInfo, task);
 		}
 		return taskInfo;
+	}
+
+	private void retrieveTaskInfoIfReminderNeeded(ArrayList<String> taskInfo,
+			Task task) {
+		if (task.getIsReminderNeeded() && !task.getIsDone()) {
+			reminderMem.add(task);
+			taskIdToBeReminded.add(task.getTaskId());
+			switch (task.getTaskType()) {
+			case TYPE_TIMED_TASK:
+				remindTimedTask(taskInfo, task);
+				break;
+			case TYPE_DEADLINE_TASK:
+				remindDeadlineTask(taskInfo, task);
+				break;
+			}
+		}
 	}
 
 	private void remindDeadlineTask(ArrayList<String> taskInfo, Task task) {
