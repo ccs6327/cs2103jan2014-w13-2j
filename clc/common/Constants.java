@@ -86,8 +86,8 @@ public class Constants {
 	public static final String MESSAGE_DISPLAY_TIMED_TASKS_SINGULAR = "The timed task has been displayed.";
 	public static final String MESSAGE_NO_TIMED_TASKS =  "No timed task is found";
 	public static final String MESSAGE_DISPLAY_QUERY = "[%1$s's Tasks]";
-	public static final String MESSAGE_DISPLAY_TASKS_BY_DEADLINE = "Task(s) end before [%1$s]";
-	public static final String MESSAGE_DISPLAY_TASKS_IN_PERIOD = "Task(s) from [%1$s] to [%2$s]";
+	public static final String MESSAGE_DISPLAY_TASKS_BY_DEADLINE = "Tasks end before [%1$s]";
+	public static final String MESSAGE_DISPLAY_TASKS_IN_PERIOD = "Tasks from [%1$s] to [%2$s]";
 	public static final String MESSAGE_EMPTY_LIST = "Your task list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD_PLURAL = "This period's tasks have been displayed.";
@@ -104,6 +104,8 @@ public class Constants {
 	public final static String MESSAGE_RESULTS_FOUND = "Found: ";
     public final static String MESSAGE_MATCHING_ENTRIES = "All entries containing: '%s'";
     public final static String MESSAGE_SEARCH_FEEDBACK = "Task(s) containing '%s' has(have) been displayed.";
+    public final static String MESSAGE_SEARCH_FEEDBACK_PLURAL = "Tasks containing '%s' have been displayed.";
+    public final static String MESSAGE_SEARCH_FEEDBACK_SINGULAR = "The task containing '%s' has been displayed.";
     public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
 	
 	//Update

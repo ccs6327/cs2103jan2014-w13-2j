@@ -53,11 +53,13 @@ public class Search implements Command {
 
 	// Get the feedback according to the result of search
 	private String getFeedbackToUser() {
-		if (!displayMem.isEmpty()) {
+		if (getDataAmount() > 0) {
 			if (commandDetails.equals(BLANK_STRING)) {
 				return MESSAGE_RESULTS_FOUND + MESSAGE_DISPLAY;
+			} else if (getDataAmount() > 1) {
+				return MESSAGE_RESULTS_FOUND + String.format(MESSAGE_SEARCH_FEEDBACK_PLURAL, commandDetails);
 			} else {
-				return MESSAGE_RESULTS_FOUND + String.format(MESSAGE_SEARCH_FEEDBACK, commandDetails);
+				return MESSAGE_RESULTS_FOUND + String.format(MESSAGE_SEARCH_FEEDBACK_SINGULAR, commandDetails);
 			}
 		} else {
 			return String.format(ERROR_TASK_NOT_FOUND, commandDetails);
@@ -74,5 +76,9 @@ public class Search implements Command {
 	}
 	protected void sortTasks() {
 		Collections.sort(internalMem, new  TaskComparator());
+	}
+	
+	protected int getDataAmount() {
+		return displayMem.size();
 	}
 }
