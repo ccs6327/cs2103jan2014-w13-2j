@@ -242,6 +242,37 @@ public class Task {
 			endTime.add(typeOfCalendar, 1);
 		}
 	}
+
+	public Task getNewCopy() {
+		Task task = new Task();
+		
+		task.setTaskName(taskName);
+	    task.setTaskToString(taskToString);
+		task.setTaskTypeToString(taskTypeToString);
+		task.setTaskId(taskId);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
+		task.setTaskType(taskType);
+		task.setIsDone(isDone);
+		task.setIsDone(isReminderNeeded); 
+		task.setNumberOfRecurring(numberOfRecurring);
+		task.setRecurringPeriod(recurringPeriod);
+		
+		return task;
+	}
+
+	private void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	private void setTaskTypeToString(String taskTypeToString) {
+		this.taskTypeToString = taskTypeToString;
+		
+	}
+
+	private void setTaskToString(String taskToString) {
+		this.taskToString = taskToString;
+	}
 }
 
 class TaskComparator implements Comparator<Task> {
