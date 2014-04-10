@@ -3,6 +3,7 @@
 package clc.ui;
 
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.ERROR_DISPLAY_WITH_RECCURING_TIME;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.NEXT;
@@ -169,12 +170,19 @@ public class DisplayAnalyzer extends TimeParser{
 		if (!isCaseKeywordCalendar) {
 			if (isCaseDisplayCalendar()) {
 				isCaseKeywordCalendar = false;
+				throwExceptionIfDisplayWithRecurringTime();
 			} else if(isCaseDisplayString()){
 				isCaseDisplayCalendar = false;
 				isCaseKeywordCalendar = false;
 			} else {
 				throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
 			}
+		}
+	}
+
+	private static void throwExceptionIfDisplayWithRecurringTime() throws InvalidInputException {
+		if (isRecurringEveryWeek || isRecurringEveryday) {
+			throw new InvalidInputException(ERROR_DISPLAY_WITH_RECCURING_TIME);
 		}
 	}
 

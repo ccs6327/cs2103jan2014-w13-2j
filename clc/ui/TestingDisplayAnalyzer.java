@@ -23,11 +23,7 @@ import static clc.common.Constants.SPACE;
 import static clc.common.Constants.TIMED_TASK;
 import static clc.common.Constants.DEADLINE_TASK;
 import static clc.common.Constants.FLOATING_TASK;
-
-
-
-
-
+import static clc.common.Constants.ERROR_DISPLAY_WITH_RECCURING_TIME;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +36,7 @@ import org.junit.Test;
 import clc.common.InvalidInputException;
 
 public class TestingDisplayAnalyzer {
+
 
 	@Before
 	public void setUp() throws Exception {
@@ -714,6 +711,23 @@ public class TestingDisplayAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
 		}
-
+		
+		//display with everyday
+		Analyzer.analyze("display everyday");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
+		}
+		
+		//display with every Monday ~ Sunday
+		Analyzer.analyze("display every mon");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
+		}
 	}
 }

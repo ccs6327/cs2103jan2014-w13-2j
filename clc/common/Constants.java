@@ -243,5 +243,7 @@ public class Constants {
 	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: Please indicate the sequence number";
 	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: Command details contain non-numeric info";
 	public static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: Display query can be extended with 'next' only";
-	public static final String ERROR_DAILY_RECURRING_ONE_DATE_ONLY = "ERROR: daily recurring event can contain one date only";
+	public static final String ERROR_DAILY_RECURRING_ONE_DATE_ONLY = "ERROR: Daily recurring event can contain one date only";
+	public static final String ERROR_DISPLAY_WITH_RECCURING_TIME = "ERROR: Cannot display with reccuring time";
+	public static final String ERROR_CANNOT_UPDATE_TO_RECURRING_TASK = "ERROR: Cannot update to recurring task";
 }
