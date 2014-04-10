@@ -1,0 +1,70 @@
+Display
+Alternative command: list/show/dis
+
+If you want to display incomplete tasks 
+--> Enter: display
+
+If you want to display all tasks (including completed task)
+--> Enter: display all
+========================================================================= 
+
+If you want to display tasks during specific period of time
+--> Enter: display [start date] [start time] [end date] [end time]
+
+1) normal 
+--> e.g. display 23/8 2pm 24/8 4pm
+--> e.g. display 2pm 23/8 4pm 24/8
+
+2) display incomplete tasks without end date(end on the same date)
+--> e.g. display 23/8 2pm 4pm
+
+3) display incomplete tasks without start date(start from today)
+--> e.g. display 2pm 23/8 4pm
+--> e.g. display 2pm 4pm 23/8
+
+4) display incomplete tasks without start date and end date
+--> e.g. display 2pm 4pm
+========================================================================= 
+
+If you want to display tasks starting or ending by a specific time 
+--> Enter: display [end date] [end time]   
+
+--> e.g. display 23/9 9pm
+--> e.g. display 9pm 23/9
+========================================================================= 
+
+If you want to display task of today
+--> Enter: display today
+
+If you want to display task of tomorrow
+--> Enter: display tomorrow
+
+If you want to display task of this week
+--> Enter: display this week
+
+If you want to display task of next week, you can type in multiple next
+--> Enter: display next week
+
+If you want to display task of this month
+--> Enter: display this month
+
+If you want to display task of next month, you can type in multiple next
+--> Enter: display next month
+
+If you want to display task in a day with day of week e.g. Monday, Tuesday, etc
+--> Enter: display [Monday ~ Sunday]
+
+--> e.g. display Monday
+========================================================================= 
+
+If you want to display all incomplete tasks 
+--> Enter: display incomplete tasks
+
+If you want to display all timed tasks 
+--> Enter: display timed tasks
+
+If you want to display all deadline tasks 
+--> Enter: display deadline tasks
+
+If you want to display all floating tasks 
+--> Enter: display floating tasks
