@@ -46,13 +46,4 @@ public class SequenceNumberExtractor extends Analyzer{
 			}
 		}
 	}
-	
-	private static boolean isNumeric(String currWord) {
-		try {
-			Integer.parseInt(currWord);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	}
 }

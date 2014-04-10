@@ -60,6 +60,7 @@ public class UserInterface {
 	private static Timer timer;
 	public UserInterface() {}
 
+	//method for Main
 	public void executeCommandsUntilExit() {
 		gui.launchAndGetInputAndExecute();
 		History.addNewVersion();
@@ -77,10 +78,21 @@ public class UserInterface {
 			timer.schedule(new Reminder(reminderInfo.get(i), reminderTaskId.get(i)), reminderTime.get(i));
 		}
 	}
-
+	
+	//three methods below are for GUI
 	protected static String setInputAndExecute(String line) {
 		input = line;
 		return executeCommand();
+	}
+
+	protected static String getWelcomeMessage() {
+		return MESSAGE_WELCOME;
+	}
+
+	protected static void markReminderTask(long taskId) {
+		Command command;
+		command = new Mark(taskId);
+		command.execute();
 	}
 
 	private static String executeCommand() {
@@ -229,10 +241,10 @@ public class UserInterface {
 		if (isCaseDisplayCalendar) {
 			boolean isCaseKeywordCalendar = DisplayAnalyzer.getIsCaseKeywordCalendar();
 			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
-			if (isCaseKeywordCalendar) {
+			if (isCaseKeywordCalendar) { //display with calendar keyword
 				String query = DisplayAnalyzer.getDisplayQuery();
 				command = new Display(time, query);
-			} else {
+			} else { //normal display calendar
 				command = new Display(time);
 			}
 		} else {
@@ -262,10 +274,8 @@ public class UserInterface {
 		if (isCaseUpdateCalendar) {
 			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
 			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
-			if (time.get(0)!=null)System.out.println(time.get(0).getTime().toString());
-			if (time.get(1)!=null)System.out.println(time.get(1).getTime().toString());
 			command = new Update(seqNo, caseCalendarProvided, time);
-		} else {
+		} else { //update task name
 			String newTaskName = UpdateAnalyzer.getNewTaskName();
 			command = new Update(seqNo, newTaskName);
 		}
@@ -300,15 +310,5 @@ public class UserInterface {
 		timer.cancel();
 		timer.purge();
 		setTimerForReminder();
-	}
-
-	protected static String getWelcomeMessage() {
-		return MESSAGE_WELCOME;
-	}
-
-	public static void markReminderTask(long taskId) {
-		Command command;
-		command = new Mark(taskId);
-		command.execute();
 	}
 }

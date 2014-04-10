@@ -44,4 +44,13 @@ public class Analyzer {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 	}
+	
+	protected static boolean isNumeric(String currWord) {
+		try {
+			Integer.parseInt(currWord);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
 }
