@@ -6,7 +6,7 @@ import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
-import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
 import static clc.common.Constants.ERROR_NO_EXACT_TIME;
 
 import java.util.Calendar;
@@ -455,20 +455,20 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
-		
+
+
 		//all calendar pattern
 		Analyzer.analyze("add taskname 33 1jan2100 1:23pm 2january2100 2.34pm");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("taskname 33", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar(2100, 0, 1, 13, 23);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(2100, 0, 2, 14, 34);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-		
+
 		Analyzer.analyze("add taskname 34 31 dec 23:58 31december 23:59");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("taskname 34", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
@@ -478,7 +478,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
 		Analyzer.analyze("add taskname 35 31/12 11.59 pm 2/1/2100 2:34 pm");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("taskname 35", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
@@ -488,7 +488,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
 		Analyzer.analyze("add taskname 36 31-12 1159 pm 2-1-2100 2 pm");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("taskname 36", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
@@ -498,7 +498,7 @@ public class TestingAddAnalyzer {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
 		Analyzer.analyze("add taskname 37 31.12 1159 pm 2.1.2100 2pm");
-		
+
 		AddAnalyzer.analyze();
 		assertEquals("taskname 37", AddAnalyzer.getToBeAddedTask().getTaskName());
 		gc = new GregorianCalendar();
@@ -547,7 +547,15 @@ public class TestingAddAnalyzer {
 		try {
 			AddAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
+		}
+
+		//command details end time is equal to start time
+		Analyzer.analyze("add taskname 25/5/2100 4pm 25/5/2100 4pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
 		}
 
 		//start time(or both) is earlier than current time
@@ -573,7 +581,7 @@ public class TestingAddAnalyzer {
 		} catch (InvalidInputException e) {
 			assertEquals(ERROR_NO_EXACT_TIME, e.getMessage());
 		}
-		
+
 		//add reminder for floating task
 		Analyzer.analyze("add /r floating task");
 		try {

@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
 import clc.common.InvalidInputException;
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
-import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
 import static clc.common.Constants.ERROR_DAILY_RECURRING_ONE_DATE_ONLY;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TODAY_SHORT;
@@ -75,147 +75,14 @@ public class TimeParser extends Analyzer {
 
 	protected static void processCalendarInfo() throws InvalidInputException {
 		initializeVariable();
-		int currIndex = infoToBeProcessed.length - 1;
-
-		while (currIndex >= 0 && !hasAllTimeSet()) {
-			String toBeAnalyzedString = EMPTY;
-
-			int loopIndex = currIndex;
-			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
-				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
-				try {
-					analyzeTime(toBeAnalyzedString);
-					currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
-					setStartAndEndCalendarIndex(currIndex, loopIndex);
-					break;
-				} catch (ParseException e) { //catch parsing error
-					if (loopIndex - 1 < 0) {
-						break;
-					}
-				}
-				loopIndex --;
-			}
-			currIndex --;
-			setCalendar();
-
-			currIndex = skipNextIndexIfPreposition(currIndex);
-		}
-
+		analyzeAndSetCalendar();
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfRecurringTimeBeforeCurrentTime();
 		caseIfCalendarBeforeCurrentTime();
-		caseIfStartTimeLaterThanEndTime();
+		caseIfStartTimeLaterThanOrEqualToEndTime();
 		adjustToCorrectCalendarIndex();
-	}
-
-	private static int skipNextIndexIfPreposition(int currIndex) {
-		if (currIndex >= 0 && isPrepositionOfTime(infoToBeProcessed[currIndex])) {
-			return currIndex - 1;
-		}
-		return currIndex;
-	}
-
-	private static void caseIfRecurringTimeBeforeCurrentTime() {
-		if (isRecurringEveryWeek) {
-			if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
-				startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-				endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-			} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
-				endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-			}
-		} else if (isRecurringEveryday) {
-			if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
-				startCalendar.add(Calendar.DAY_OF_YEAR, 1);
-				endCalendar.add(Calendar.DAY_OF_YEAR, 1);
-			} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
-				endCalendar.add(Calendar.DAY_OF_YEAR, 1);
-			}
-		}
-	}
-
-	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {
-		int nNext = 0, nEvery = 0;
-		if (isMondayToSunday) {
-			nNext = countExtraNext(loopIndex);
-			nEvery = checkIfKeywordEveryExists(loopIndex);
-			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
-		}
-		return loopIndex - nNext - nEvery;
-	}
-
-	private static int checkIfKeywordEveryExists(int loopIndex) {
-		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(EVERY)) {
-			isRecurringEveryWeek = true;
-			recurringPeriod = EVERY_WEEK;
-			return 1;
-		}
-		return 0; //no "every"
-	}
-
-	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
-		if (endCalendarIndex == -1) { //never set before
-			startCalendarIndex = currIndex; //consider case extra "next"
-			endCalendarIndex = loopIndex;
-		} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
-			startCalendarIndex = currIndex;
-		}
-	}
-
-	private static int countExtraNext(int loopIndex) {
-		int nNext = 0;
-		while (--loopIndex >= 0) {
-			if (infoToBeProcessed[loopIndex].equalsIgnoreCase(NEXT)) {
-				nNext ++;
-			}
-			else {
-				break;
-			}
-		}
-		return nNext;
-	}
-
-	private static void adjustToCorrectCalendarIndex() {
-		int infoLength = infoToBeProcessed.length;
-
-		if (startCalendarIndex - 1 >= 0) {
-			if (isPrepositionOfTime(infoToBeProcessed[startCalendarIndex - 1])) {
-				startCalendarIndex --;
-			}
-		}
-
-		if (isStartAndEndCalendarIndexSet() && !doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
-			if (endCalendarIndex + 2 < infoLength) { //doesn't exceed the infoLength
-				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] //three words is a calendar
-						+ infoToBeProcessed[endCalendarIndex + 1] 
-								+ infoToBeProcessed[endCalendarIndex + 2])) {
-					endCalendarIndex += 2;
-				}
-			} else if (endCalendarIndex + 1 < infoLength) { //doesn't exceed the infoLength
-				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] 
-						+ infoToBeProcessed[endCalendarIndex + 1])) { //two words is a calendar
-					endCalendarIndex ++;
-				}
-			}
-		}
-	}
-
-	private static boolean isPrepositionOfTime(String currWord) {
-		return currWord.equalsIgnoreCase(FROM)
-				|| currWord.equalsIgnoreCase(BY)
-				|| currWord.equalsIgnoreCase(DUE)
-				|| currWord.equalsIgnoreCase(AT)
-				|| currWord.equalsIgnoreCase(TO);
-	}
-
-	private static boolean isStartAndEndCalendarIndexSet() {
-		return startCalendarIndex != -1 && endCalendarIndex != -1;
-	}
-
-	private static boolean doesContainCalendarInfo (String currStr) {
-		return parseIfDateFormat(currStr) || parseIfTime12Format(currStr);
-		//Time24Format does not contains Date Format that is represent by more than one String
 	}
 
 	protected static void initializeVariable() {
@@ -232,7 +99,158 @@ public class TimeParser extends Analyzer {
 		endCalendarIndex = -1;
 	}
 
-	public static void analyzeTime(String currStr) throws ParseException, InvalidInputException {
+	protected static void analyzeAndSetCalendar() throws InvalidInputException {
+		int currIndex = infoToBeProcessed.length - 1;
+		while (currIndex >= 0 && !hasAllTimeSet()) {
+			String toBeAnalyzedString = EMPTY;
+
+			currIndex = analyzeCalendar(currIndex, toBeAnalyzedString);
+			setCalendar();
+
+			currIndex --;
+			currIndex = skipNextIndexIfPreposition(currIndex);
+		}
+	}
+
+	private static int analyzeCalendar(int currIndex, String toBeAnalyzedString)
+			throws InvalidInputException {
+		for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 words
+			int loopIndex = currIndex - i;
+			toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
+			try {
+				parseCalendar(toBeAnalyzedString);
+				currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
+				setStartAndEndCalendarIndex(currIndex, loopIndex);
+				break;
+			} catch (ParseException e) { //catch parsing error
+				if (loopIndex - 1 < 0) {
+					break;
+				}
+			}
+		}
+		return currIndex;
+	}
+
+	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
+		if (endCalendarIndex == -1) { //never set before
+			startCalendarIndex = currIndex; //consider case extra "next"
+			endCalendarIndex = loopIndex;
+		} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
+			startCalendarIndex = currIndex;
+		}
+	}
+
+	private static int skipNextIndexIfPreposition(int currIndex) {
+		if (currIndex >= 0 && isPrepositionOfTime(infoToBeProcessed[currIndex])) {
+			return currIndex - 1;
+		}
+		return currIndex;
+	}
+
+	private static boolean isPrepositionOfTime(String currWord) {
+		return currWord.equalsIgnoreCase(FROM)
+				|| currWord.equalsIgnoreCase(BY)
+				|| currWord.equalsIgnoreCase(DUE)
+				|| currWord.equalsIgnoreCase(AT)
+				|| currWord.equalsIgnoreCase(TO);
+	}
+
+	private static void caseIfRecurringTimeBeforeCurrentTime() {
+		if (isRecurringEveryWeek) {
+			postponeStartAndEndCalendarToNextWeekIfRequired();
+		} else if (isRecurringEveryday) {
+			postponeStartAndEndCalendarToNextDayIfRequired();
+		}
+	}
+
+	private static void postponeStartAndEndCalendarToNextWeekIfRequired() {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+			startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+			endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
+			endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+		}
+	}
+
+	private static void postponeStartAndEndCalendarToNextDayIfRequired() {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+			startCalendar.add(Calendar.DAY_OF_YEAR, 1);
+			endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
+			endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+		}
+	}
+
+	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {
+		int nNext = 0, nEvery = 0;
+		if (isMondayToSunday) {
+			nNext = countExtraNext(loopIndex);
+			nEvery = checkIfKeywordEveryExists(loopIndex);
+			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+		}
+		return loopIndex - nNext - nEvery;
+	}
+
+	private static int countExtraNext(int loopIndex) {
+		int nNext = 0;
+		while (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(NEXT)) {
+			nNext ++;
+		}
+		return nNext;
+	}
+
+	private static int checkIfKeywordEveryExists(int loopIndex) {
+		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(EVERY)) {
+			isRecurringEveryWeek = true;
+			recurringPeriod = EVERY_WEEK;
+			return 1;
+		}
+		return 0; //no "every"
+	}
+
+	private static void adjustToCorrectCalendarIndex() {
+		determineIfWordBeforeIsPreposition();
+		
+		int infoLength = infoToBeProcessed.length;
+		determineIfEndCalendarIndexIsCorrect(infoLength);
+	}
+
+	private static void determineIfWordBeforeIsPreposition() {
+		if (startCalendarIndex - 1 >= 0) {
+			if (isPrepositionOfTime(infoToBeProcessed[startCalendarIndex - 1])) {
+				startCalendarIndex --;
+			}
+		}
+	}
+
+	private static void determineIfEndCalendarIndexIsCorrect(int infoLength) {
+		if (isStartAndEndCalendarIndexSet() 
+				&& !doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
+			if (endCalendarIndex + 1 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] 
+						+ infoToBeProcessed[endCalendarIndex + 1])) { //two words is a calendar
+					endCalendarIndex ++;
+				}
+			} else if (endCalendarIndex + 2 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] //three words is a calendar
+						+ infoToBeProcessed[endCalendarIndex + 1] 
+								+ infoToBeProcessed[endCalendarIndex + 2])) {
+					endCalendarIndex += 2;
+				}
+			}
+		}
+	}
+
+	private static boolean isStartAndEndCalendarIndexSet() {
+		return startCalendarIndex != -1 && endCalendarIndex != -1;
+	}
+
+	private static boolean doesContainCalendarInfo (String currStr) {
+		return parseIfDateFormat(currStr) || parseIfTime12Format(currStr);
+		//Time24Format does not contains time format that is represented by more than one String
+	}
+
+	public static void parseCalendar(String currStr) throws ParseException, InvalidInputException {
 		doesContainAmOrPm = false;
 		isMondayToSunday = false;
 		isTime = false;
@@ -247,7 +265,7 @@ public class TimeParser extends Analyzer {
 			isDate = parseIfDateFormat(currStr);
 			isKeywordDate = parseIfKeywordDateFormat(currStr);
 		}
-		determineIfFailsAllParsing();
+		throwParseExceptionIfFailsAllParsing();
 	}
 
 	protected static void setCalendar() {
@@ -267,15 +285,15 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static void caseIfStartTimeLaterThanEndTime() throws InvalidInputException {
-		if (startCalendar != null && endCalendar != null && isStartCalendarLaterThanEndCalendar()) {
-			throw new InvalidInputException(ERROR_START_TIME_LATER_THAN_END_TIME);
+	private static void caseIfStartTimeLaterThanOrEqualToEndTime() throws InvalidInputException {
+		if (startCalendar != null && endCalendar != null && isStartCalendarLaterThanOrEqualToEndCalendar()) {
+			throw new InvalidInputException(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME);
 		}
 	}
 
 	private static void caseIfStartAndEndCalendarShareOneDate() {
 		if (startCalendar != null && endCalendar != null 
-				&& !isEndDateSet && isStartCalendarLaterThanEndCalendar()) {
+				&& !isEndDateSet && isStartCalendarLaterThanOrEqualToEndCalendar()) {
 			endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
 			endCalendar.set(Calendar.MONTH, startCalendar.get(Calendar.MONTH));
 			endCalendar.set(Calendar.DATE, startCalendar.get(Calendar.DATE));
@@ -319,7 +337,7 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static void setDate() {
-		//if isStartTimeSet is true implies that the date is before the start time
+		//if isStartTimeSet is true implies that the date is placed before the start time
 		if (!isEndDateSet && !isStartTimeSet) { 
 			setEndDate();
 		} else if (!isStartDateSet) {
@@ -352,41 +370,30 @@ public class TimeParser extends Analyzer {
 			isMondayToSunday = false;
 			addValue = 1;
 		} else if (isEveryday(currStr)) {
-			if (!isEndDateSet) {
-			isMondayToSunday = false;
-			addValue = 0;
-			isRecurringEveryday = true;
-			recurringPeriod = EVERYDAY;
-			} else {
-				throw new InvalidInputException(ERROR_DAILY_RECURRING_ONE_DATE_ONLY);
-			}
+			addValue = setAsEverydayIfNoEndDateIsSet(addValue);
 		} else if (isMonday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isTuesday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isWednesday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isThursday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isFriday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isSaturday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK);
+			addValue = (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		} else if (isSunday(currStr)) {
 			isMondayToSunday = true;
-			addValue = Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK);
-		} else {
+			addValue = (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else { //not calendar keyword
 			return false;
-		}
-
-		if (isMondayToSunday && addValue < 0) { // day before today will get negative value
-			addValue += 7;
 		}
 
 		analyzedCalendar = new GregorianCalendar();
@@ -395,27 +402,16 @@ public class TimeParser extends Analyzer {
 		return true;
 	}
 
-	private static boolean parseIfDateFormat(String currStr) {
-		Date date;
-		for (int i = 0; i < dateFormat.length; i++) { //check if date format
-			try {
-				date = dateFormat[i].parse(currStr);
-				analyzedCalendar = new GregorianCalendar();
-				analyzedCalendar.setTime(date);
-
-				if (analyzedCalendar.get(Calendar.YEAR) < 100) { //two digits year is given
-					analyzedCalendar.add(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR)/100*100);
-				}
-
-				if (analyzedCalendar.get(Calendar.YEAR) == 1970) { //calendar provided without year
-					analyzedCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-				}
-
-				return true;
-			} catch (ParseException e) {}
+	private static int setAsEverydayIfNoEndDateIsSet(int addValue) throws InvalidInputException {
+		if (!isEndDateSet) {
+			isMondayToSunday = false;
+			addValue = 0;
+			isRecurringEveryday = true;
+			recurringPeriod = EVERYDAY;
+		} else {
+			throw new InvalidInputException(ERROR_DAILY_RECURRING_ONE_DATE_ONLY);
 		}
-
-		return false;
+		return addValue;
 	}
 
 	private static boolean parseIfTime12Format(String currStr) {
@@ -423,8 +419,7 @@ public class TimeParser extends Analyzer {
 		for (int i = 0; i < time12Format.length; i++) { //check if time format
 			try {
 				date = time12Format[i].parse(currStr);
-				analyzedCalendar = new GregorianCalendar();
-				analyzedCalendar.setTime(date);
+				setAnalyzedCalendarWithDateParsed(date);
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -436,23 +431,53 @@ public class TimeParser extends Analyzer {
 		for (int i = 0; i < time24Format.length; i++) { //check if time format
 			try {
 				date = time24Format[i].parse(currStr);
-				analyzedCalendar = new GregorianCalendar();
-				analyzedCalendar.setTime(date);
+				setAnalyzedCalendarWithDateParsed(date);
 				return true;
 			} catch (ParseException e) {}
 		}
 		return false;
 	}
 
+	private static boolean parseIfDateFormat(String currStr) {
+		Date date;
+		for (int i = 0; i < dateFormat.length; i++) { //check if date format
+			try {
+				date = dateFormat[i].parse(currStr);
+				setAnalyzedCalendarWithDateParsed(date);
+				parseInto4DigitsYearIf2DigitsYearIsGiven();
+				parseIntoCurrentYearIfNoYearInfoIsGiven();
+				return true;
+			} catch (ParseException e) {}
+		}
+		return false;
+	}
+
+	private static void setAnalyzedCalendarWithDateParsed(Date date) {
+		analyzedCalendar = new GregorianCalendar();
+		analyzedCalendar.setTime(date);
+	}
+
+	private static void parseInto4DigitsYearIf2DigitsYearIsGiven() {
+		if (analyzedCalendar.get(Calendar.YEAR) < 100) { //two digits year is given
+			analyzedCalendar.add(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR)/100*100);
+		}
+	}
+
+	private static void parseIntoCurrentYearIfNoYearInfoIsGiven() {
+		if (analyzedCalendar.get(Calendar.YEAR) == 1970) { //calendar provided without year
+			analyzedCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+		}
+	}
+
 	private static void determineIfFormatError(String currStr) throws ParseException {
-		if (currStr.length() > 2 && (currStr.toLowerCase().contains(AM) || currStr.toLowerCase().contains(PM))) {
+		if (currStr.toLowerCase().contains(AM) || currStr.toLowerCase().contains(PM)) {
 			doesContainAmOrPm = true;
-			if (!currStr.contains(DOT) && !currStr.contains(COLON) && !currStr.contains(SLASH) && !currStr.contains(DASH)) {
-				//remove am or pm
-				String firstTwoChar = currStr.substring(0,currStr.length() - 2).trim(); //firstTwoCharacter
+			if (!doesContainSpecialNotation(currStr)) {
+				String strAfterRemovingAmOrPm = currStr.substring(0,currStr.length() - 2);
 				try {
-					if (Integer.parseInt(firstTwoChar) > 12 && Integer.parseInt(firstTwoChar) < 100) {
-						throw new ParseException(EMPTY, 0); //handle this e.g. 13pm
+					if (Integer.parseInt(strAfterRemovingAmOrPm) > 12 
+							&& Integer.parseInt(strAfterRemovingAmOrPm) < 100) {
+						throw new ParseException(EMPTY, 0); //handle case e.g. 13pm to 99pm
 					}
 				}
 				catch(NumberFormatException nfe) {}
@@ -460,18 +485,23 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static void determineIfFailsAllParsing() throws ParseException {
+	private static boolean doesContainSpecialNotation(String currStr) {
+		return currStr.contains(DOT) && currStr.contains(COLON) 
+				&& currStr.contains(SLASH) && currStr.contains(DASH);
+	}
+
+	private static void throwParseExceptionIfFailsAllParsing() throws ParseException {
 		if (hasFailedAllParsing()) { // all nFail
 			throw new ParseException(EMPTY, 0);
 		}
 	}
 
 	private static boolean hasFailedAllParsing() {
-		return !isTime && !isDate && !isKeywordDate; //not time nor date / not supported
+		return !isTime && !isDate && !isKeywordDate;
 	}
 
-	private static boolean isStartCalendarLaterThanEndCalendar() {
-		return startCalendar.compareTo(endCalendar) == 1;
+	private static boolean isStartCalendarLaterThanOrEqualToEndCalendar() {
+		return startCalendar.compareTo(endCalendar) != -1;
 	}
 
 	protected static boolean hasAllTimeSet() {

@@ -15,7 +15,7 @@ public class Analyzer {
 	
 	protected static void analyze(String input) {
 		commandType = getFirstWord(input);
-		commandDetails = removeFirstWord(input).trim();
+		commandDetails = removeFirstWord(input);
 	}
 
 	protected static String getCommandType() {
@@ -32,7 +32,7 @@ public class Analyzer {
 	}
 
 	protected static String removeFirstWord(String input) {
-		return input.replaceFirst(commandType, EMPTY).trim();
+		return input.replaceFirst(getFirstWord(input), EMPTY).trim();
 	}
 
 	protected static boolean doesCommandDetailsExist(String commandDetails) {
