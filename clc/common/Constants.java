@@ -107,9 +107,9 @@ public class Constants {
     public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
 	
 	//Update
-	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successful.";
-	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successful.";
-	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] end  time is updated to [%2$s] successful.";
+	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successfully.";
+	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successfully.";
+	public static final String MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] end  time is updated to [%2$s] successfully.";
 	public static final String MESSAGE_TASK_TYPE_CHANGED = "No.%1$d [%3$s] [%2$s] TASK-TYPE changes to [%4$s]";
 	public static final String MESSAGE_NO_TASK_TO_UPDATE = "Your list is empty! There is nothing to update.";
 	public static final String MESSAGE_INEXISTANCE_SEQNO = "You have input an inexistence sequence number.";
