@@ -33,10 +33,18 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import static clc.common.Constants.*;
+import static clc.common.Constants.MESSAGE_SEPARATOR;
+import static clc.common.Constants.NEWLINE;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.THIS_WEEK;
+import static clc.common.Constants.TYPE_DISPLAY;
+import static clc.common.Constants.TYPE_DISPLAY_SHORT;
+import static clc.common.Constants.TYPE_SHOW;
+import static clc.common.Constants.TYPE_LIST;
+import static clc.common.Constants.TYPE_HELP;
 
 public class GUI implements NativeKeyListener {
-
 	private JFrame frameClc;
 	private JTextField inputTextBox = new JTextField();
 	private JTextPane displayBox = new JTextPane();
@@ -248,12 +256,15 @@ public class GUI implements NativeKeyListener {
 
 	private void initializeDisplayBox() {
 		showToUser(UserInterface.getWelcomeMessage());
+		String feedback = UserInterface.setInputAndExecute(TYPE_DISPLAY + SPACE + THIS_WEEK);
+		showToUser(feedback);
+		displayBox.setCaretPosition(0);
 	}
 
 	private void showToUser(String string) {
 		try {
-			doc.insertString(doc.getLength(), string + "\n", null);
-			doc.insertString(doc.getLength(), "=========================================================================\n", null);
+			doc.insertString(doc.getLength(), string + NEWLINE, null);
+			doc.insertString(doc.getLength(), MESSAGE_SEPARATOR, null);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}

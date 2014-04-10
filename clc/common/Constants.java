@@ -42,7 +42,7 @@ public class Constants {
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
 
-	public static final String MESSAGE_WELCOME = "Welcome to CLC.";
+	public static final String MESSAGE_WELCOME = "Welcome to CLC.\nPress F1 for help";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
 	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format";
 	public static final String MESSAGE_TIMED_TASK_ADDED = "%1$s(%2$s - %3$s) is added.";
@@ -88,7 +88,7 @@ public class Constants {
 	public static final String MESSAGE_DISPLAY_QUERY = "[%1$s's Tasks]";
 	public static final String MESSAGE_DISPLAY_TASKS_BY_DEADLINE = "Task(s) end before [%1$s]";
 	public static final String MESSAGE_DISPLAY_TASKS_IN_PERIOD = "Task(s) from [%1$s] to [%2$s]";
-	public static final String MESSAGE_EMPTY_LIST = "Your list is empty.";
+	public static final String MESSAGE_EMPTY_LIST = "Your task list is empty.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD = "This period's task(s) has(have) been displayed.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD_PLURAL = "This period's tasks have been displayed.";
 	public static final String MESSAGE_DISPLAY_IN_PERIOD_SINGULAR = "This period's task has been displayed.";
@@ -223,7 +223,9 @@ public class Constants {
 	public static final String EVERY_WEEK = "every week";
 	public static final String EVERYDAY = "everyday";
 	
-	
+	//GUI
+	public static final String MESSAGE_SEPARATOR = "=========================================================================\n";
+	public static final String NEWLINE = "\n";
 
 	//InvalidInputException messages
 	public static final String ERROR_NO_TASK_NAME = "ERROR: No task name is given";

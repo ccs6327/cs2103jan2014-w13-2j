@@ -62,9 +62,9 @@ public class UserInterface {
 
 	//method for Main
 	public void executeCommandsUntilExit() {
-		gui.launchAndGetInputAndExecute();
 		History.addNewVersion();
 		setTimerForReminder();
+		gui.launchAndGetInputAndExecute();
 	}
 
 	private static void setTimerForReminder() {
@@ -307,8 +307,10 @@ public class UserInterface {
 	}
 
 	private static void clearAndResetTimer() {
-		timer.cancel();
-		timer.purge();
-		setTimerForReminder();
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();  
+			setTimerForReminder();
+		}
 	}
 }
