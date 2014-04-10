@@ -42,6 +42,7 @@ public class Mark implements Command {
 	public String execute() {
 		if (isReminderTask) {
 			markReminderMem();
+			//mark task when reminder pop up does not need to return feedback message
 			return EMPTY;
 		}
 		return markDisplayMem();

@@ -1,3 +1,5 @@
+//author A0112089J
+
 package clc.logic;
 
 import java.util.ArrayList;
@@ -5,7 +7,10 @@ import java.util.Collections;
 
 import clc.storage.Storage;
 import clc.storage.History;
-import static clc.common.Constants.*;
+
+import static clc.common.Constants.MESSAGE_OUT_OF_BOUND;
+import static clc.common.Constants.MESSAGE_TASK_DELETED;
+import static clc.common.Constants.NEWLINE;
 
 public class Delete implements Command {
 	private ArrayList<Integer> taskSeqNo;
@@ -22,26 +27,44 @@ public class Delete implements Command {
 	public String execute() {
 		StringBuilder feedback = new StringBuilder();
 		boolean isChanged = false;
+
+		//save a backup for undo
+		History.setDisplayMem();
+		appendMessageAccordingToSequence(feedback);
+		isChanged = deleteFromTheBackIfInBoundary(isChanged);
+		updateHistoryAndDatabaseIfChanged(isChanged);
 		
-		// append message with the sequence enter by user
+		//after delete function displayMem is different
+		//displayMem must be cleared otherwise delete function can still be function after first deletion
+		displayMem.clear();
+		return feedback.toString();
+	}
+
+	private void appendMessageAccordingToSequence(StringBuilder feedback) {
 		for (int i = 0; i < taskSeqNo.size(); i++) {
 			int seqNo = taskSeqNo.get(i);
 			if (isOutOfBound(displayMem.size(), seqNo)) {
-				//build error message
-				feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
-				feedback.append("\n");
+				appendOutOfBoundaryMessage(feedback, seqNo);
 			} else {
-				int internalSeqNo = displayMem.get(seqNo - 1);
-				String taskName = internalMem.get(internalSeqNo).getTaskName();
-				feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
-				feedback.append("\n");
+				appendTaskDeletedMessage(feedback, seqNo);
 			}
 		}
-		
-		History.setDisplayMem();
+	}
+
+	private void appendOutOfBoundaryMessage(StringBuilder feedback, int seqNo) {
+		feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+		feedback.append(NEWLINE);
+	}
+
+	private void appendTaskDeletedMessage(StringBuilder feedback, int seqNo) {
+		int internalSeqNo = displayMem.get(seqNo - 1);
+		String taskName = internalMem.get(internalSeqNo).getTaskName();
+		feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private boolean deleteFromTheBackIfInBoundary(boolean isChanged) {
 		Collections.sort(taskSeqNo);
-		
-		//delete from the back of the list
 		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
 			int seqNo = taskSeqNo.get(i);
 			
@@ -52,17 +75,17 @@ public class Delete implements Command {
 				internalMem.remove(internalSeqNo);
 			}
 		}
-		
-		if (isChanged) {
-			History.addNewVersion();
-			Storage.writeContentIntoFile();
-		}
-		
-		displayMem.clear();
-		return feedback.toString();
+		return isChanged;
 	}
 
 	private boolean isOutOfBound(int taskListSize, int seqNo) {
 		return (taskListSize < seqNo || seqNo <= 0);
+	}
+
+	private void updateHistoryAndDatabaseIfChanged(boolean isChanged) {
+		if (isChanged) {
+			History.addNewVersion();
+			Storage.writeContentIntoFile();
+		}
 	}
 }

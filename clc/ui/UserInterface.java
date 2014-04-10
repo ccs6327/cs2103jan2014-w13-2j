@@ -52,6 +52,7 @@ import static clc.common.Constants.TYPE_IMPORT;
 import static clc.common.Constants.TYPE_IMPORT_SHORT;
 import static clc.common.Constants.TYPE_EXPORT;
 import static clc.common.Constants.TYPE_EXPORT_SHORT;
+import static clc.common.Constants.TYPE_SEARCH;
 
 
 public class UserInterface {
@@ -196,7 +197,7 @@ public class UserInterface {
 	}
 
 	private static boolean isCaseSearch(String commandType) {
-		return commandType.equalsIgnoreCase("search");
+		return commandType.equalsIgnoreCase(TYPE_SEARCH);
 	}
 
 	private static boolean isCaseClear(String commandType) {

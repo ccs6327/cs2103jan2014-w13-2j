@@ -1,3 +1,5 @@
+//author A0112089J
+
 package clc.logic;
 
 import static clc.common.Constants.TYPE_ADD;
@@ -21,6 +23,7 @@ import static clc.common.Constants.TYPE_UNMARK;
 import static clc.common.Constants.TYPE_UNMARK_SHORT;
 import static clc.common.Constants.TYPE_UPDATE;
 import static clc.common.Constants.TYPE_UPDATE_SHORT;
+import static clc.common.Constants.TYPE_SEARCH;
 import static clc.common.Constants.SEARCH_HELP_FILE;
 import static clc.common.Constants.IMPORT_EXPORT_HELP_FILE;
 import static clc.common.Constants.UPDATE_HELP_FILE;
@@ -121,7 +124,7 @@ public class Help implements Command {
 	}
 
 	private static boolean isCaseSearch(String query) {
-		return query.equalsIgnoreCase("search");
+		return query.equalsIgnoreCase(TYPE_SEARCH);
 	}
 
 	private static boolean isCaseHotkey(String query) {
