@@ -1,0 +1,37 @@
+Getting Started
+In Command Line Calendar (CLC), three kinds of tasks are defined.
+i) timed tasks - with a start time and end time
+ii) deadline tasks - with a specific deadline
+iii) floating tasks - without any start time or end time
+=========================================================================
+
+ADD/CREATE                      - add a new task to the task list
+DISPLAY/SHOW/LIST         - display what you have added to the task list
+*DELETE/REMOVE/ERASE - delete unwanted task in the task list
+*MARK/UNMARK              - mark tasks as done or undone (originally mark as undone)
+UPDATE/EDIT                     - update the task name or calendar information 
+SEARCH                              - search tasks with certain words in the task name
+UNDO/REDO                      - redo or undo the operation you have recently executed
+IMPORT/EXPORT               - export a backup file or import from other device or folder
+CLEAR                                 - delete all the tasks in the task list
+EXIT                                     - close the CLC to-do manager
+
+*You are required to display or search the tasks list before execute the command
+=========================================================================
+
+Get more specific help with the command below:
+ADD/CREATE                    :  "help add" or "help create" 
+DISPLAY/SHOW/LIST       :  "help display" or "help show" or "help list"
+DELETE/REMOVE/ERASE :  "help delete" or "help remove" or "help erase"
+MARK/UNMARK              :  "help mark" or help "help unmark"
+UPDATE/EDIT                   :  "help update" or "help edit"
+SEARCH                            :  "help search"
+IMPORT/EXPORT             :  "help import" or "help export"
+=========================================================================
+
+Learn about the hotkey provided by CLC:
+"help hotkey"
+
+Learn about the date and time format supported by CLC:
+"help date"
+
