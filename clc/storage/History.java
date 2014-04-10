@@ -46,7 +46,10 @@ public class History {
 	public static void addNewVersion() {
 		currentVersion++;
 		ArrayList<Task> tempMem = new ArrayList<Task>();
-		tempMem.addAll(Storage.getInternalMem());
+		// tempMem.addAll(Storage.getInternalMem());
+		for (Task task : Storage.getInternalMem()) {
+			tempMem.add(task.getNewCopy());
+		}
 		for (int i = historyMem.size() - 1; i >= currentVersion ; i--) {
 			historyMem.remove(i);
 		}
