@@ -1,9 +1,12 @@
+//author A0112089J
+
 package clc.ui;
 
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.NEXT;
+import static clc.common.Constants.ALL;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TODAY_SHORT;
 import static clc.common.Constants.TOMORROW;
@@ -26,7 +29,6 @@ import static clc.common.Constants.THIS_WEEK;
 import static clc.common.Constants.THIS_MONTH;
 import static clc.common.Constants.NEXT_WEEK;
 import static clc.common.Constants.NEXT_MONTH;
-import static clc.common.Constants.ALL;
 import static clc.common.Constants.INCOMPLETE_TASK;
 import static clc.common.Constants.TIMED_TASK;
 import static clc.common.Constants.DEADLINE_TASK;
@@ -47,6 +49,18 @@ public class DisplayAnalyzer extends TimeParser{
 		super(input);
 	}
 
+	protected static boolean getIsCaseDisplayCalendar() {
+		return isCaseDisplayCalendar;
+	}
+
+	protected static boolean getIsCaseKeywordCalendar() {
+		return isCaseKeywordCalendar;
+	}
+
+	protected static String getDisplayQuery() {
+		return commandDetails;
+	}
+
 	protected static void analyze() throws InvalidInputException{
 		infoToBeProcessed = commandDetails.split(SPACE);
 		isCaseDisplayCalendar = true;
@@ -54,73 +68,20 @@ public class DisplayAnalyzer extends TimeParser{
 		lastWord = EMPTY;
 		lastTwoWords = EMPTY;
 
+		// calendar keywords are today, tomorrow, etc ..
+		setDisplayTimeIfConsistOfCalendarKeyword(); 
+		setDisplayInfoWithCalendarOrString();
+	}
+
+	private static void setDisplayTimeIfConsistOfCalendarKeyword() throws InvalidInputException {
 		year = Calendar.getInstance().get(Calendar.YEAR);
 		month = Calendar.getInstance().get(Calendar.MONTH);
 		date = Calendar.getInstance().get(Calendar.DATE);
 		dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-
+		
 		retrieveLastAndLastTwoWordsIfAvailable();
-
-		int nNext = 0;
-		if (isCaseDisplayToday()) {
-			setToday();
-		} else if (isCaseDisplayTomorrow()) {
-			setTomorrow();
-		} else if (isCaseDisplayMonday()) {
-			setMonday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayTuesday()) {
-			setTuesday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayWednesday()) {
-			setWednesday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayThursday()) {
-			setThursday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayFriday()) {
-			setFriday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplaySaturday()) {
-			setSaturday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplaySunday()) {
-			setSunday();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayThisWeek()) {
-			setThisWeek();
-		} else if (isCaseDisplayNextWeek()) {
-			setNextWeek();
-			nNext = countExtraNext();
-		} else if (isCaseDisplayThisMonth()) {
-			setThisMonth();
-		} else if (isCaseDisplayNextMonth()) {
-			setNextMonth();
-			nNext = countExtraNext();
-		} else {
-			isCaseKeywordCalendar = false;
-		}
-
-		if (isCaseKeywordCalendar) {
-			if (isCaseDisplayMondayToSundayOrNextWeekMonth()) {
-			if (isCaseDisplayNextMonth()) {
-				startCalendar.add(Calendar.MONTH, nNext);
-				endCalendar.add(Calendar.MONTH, nNext);
-			} else {
-				startCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
-				endCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
-			}
-			}
-		} else {
-			if (isCaseDisplayCalendar()) {
-				isCaseKeywordCalendar = false;
-			} else if(isCaseDisplayString()){
-				isCaseDisplayCalendar = false;
-				isCaseKeywordCalendar = false;
-			} else {
-				throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
-			}
-		}
+		setDisplayTimeIfLastOrLastTwoWordsMatchCalendarKeyword();
+		updateDisplayTimeIfCalendarKeywordExtendedWithNextKeyword();
 	}
 
 	private static void retrieveLastAndLastTwoWordsIfAvailable() {
@@ -132,10 +93,59 @@ public class DisplayAnalyzer extends TimeParser{
 		}
 	}
 
+	private static void setDisplayTimeIfLastOrLastTwoWordsMatchCalendarKeyword() {
+		if (isCaseDisplayToday()) {
+			setToday();
+		} else if (isCaseDisplayTomorrow()) {
+			setTomorrow();
+		} else if (isCaseDisplayMonday()) {
+			setMonday();
+		} else if (isCaseDisplayTuesday()) {
+			setTuesday();
+		} else if (isCaseDisplayWednesday()) {
+			setWednesday();
+		} else if (isCaseDisplayThursday()) {
+			setThursday();
+		} else if (isCaseDisplayFriday()) {
+			setFriday();
+		} else if (isCaseDisplaySaturday()) {
+			setSaturday();
+		} else if (isCaseDisplaySunday()) {
+			setSunday();
+		} else if (isCaseDisplayThisWeek()) {
+			setThisWeek();
+		} else if (isCaseDisplayNextWeek()) {
+			setNextWeek();
+		} else if (isCaseDisplayThisMonth()) {
+			setThisMonth();
+		} else if (isCaseDisplayNextMonth()) {
+			setNextMonth();
+		} else {
+			isCaseKeywordCalendar = false;
+		}
+	}
+
+	private static void updateDisplayTimeIfCalendarKeywordExtendedWithNextKeyword() throws InvalidInputException {
+		int nNext = 0;
+		if (isCaseKeywordCalendar) {
+			if (isCaseDisplayMondayToSundayOrNextWeekMonth()) {
+				nNext = countExtraNext();
+				if (isCaseDisplayNextMonth()) {
+					startCalendar.add(Calendar.MONTH, nNext);
+					endCalendar.add(Calendar.MONTH, nNext);
+				} else {
+					startCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+					endCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+				}
+			}
+		}
+	}
+
 	private static int countExtraNext() throws InvalidInputException {
 		int nNext = 0;
 
-		int toBeAnalyzedLength = infoToBeProcessed.length - 1; //last str
+		//the last word is calendar keyword
+		int toBeAnalyzedLength = infoToBeProcessed.length - 1;
 
 		//ignore the first "next" of next week and next month
 		if (isCaseDisplayNextWeek() || isCaseDisplayNextMonth()) {
@@ -151,20 +161,21 @@ public class DisplayAnalyzer extends TimeParser{
 				return 0;
 			}
 		}
-		
+
 		return nNext;
 	}
 
-	protected static boolean getDisplayCase() {
-		return isCaseDisplayCalendar;
-	}
-
-	protected static boolean getDisplayCalendarCase() {
-		return isCaseKeywordCalendar;
-	}
-
-	protected static String getDisplayQuery() {
-		return commandDetails;
+	private static void setDisplayInfoWithCalendarOrString() throws InvalidInputException {
+		if (!isCaseKeywordCalendar) {
+			if (isCaseDisplayCalendar()) {
+				isCaseKeywordCalendar = false;
+			} else if(isCaseDisplayString()){
+				isCaseDisplayCalendar = false;
+				isCaseKeywordCalendar = false;
+			} else {
+				throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
+			}
+		}
 	}
 
 	private static void setToday() {
@@ -333,7 +344,10 @@ public class DisplayAnalyzer extends TimeParser{
 		return lastTwoWords.equalsIgnoreCase(NEXT_MONTH);
 	}
 
-	//change for display string
+	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
+		return doesContainTimeInfo();
+	}
+
 	private static boolean isCaseDisplayString() {
 
 		return commandDetails.equals(ALL) ||
@@ -341,10 +355,6 @@ public class DisplayAnalyzer extends TimeParser{
 				commandDetails.equals(FLOATING_TASK) ||
 				commandDetails.equals(DEADLINE_TASK) ||
 				commandDetails.equals(TIMED_TASK);
-	}
-
-	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
-		return doesContainTimeInfo();
 	}
 
 	private static boolean isCaseDisplayMondayToSundayOrNextWeekMonth() {
