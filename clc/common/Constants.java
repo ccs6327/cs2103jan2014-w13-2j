@@ -38,6 +38,7 @@ public class Constants {
 	public static final String TYPE_IMPORT_SHORT = "imp";
 	public static final String TYPE_EXPORT = "export";
 	public static final String TYPE_EXPORT_SHORT = "exp";
+	public static final String TYPE_SEARCH = "search";
 
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
