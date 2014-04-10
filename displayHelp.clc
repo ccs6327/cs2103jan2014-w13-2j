@@ -57,6 +57,9 @@ If you want to display task in a day with day of week e.g. Monday, Tuesday, etc
 --> e.g. display Monday
 ========================================================================= 
 
+If you want to display all incomplete tasks 
+--> Enter: display incomplete tasks
+
 If you want to display all timed tasks 
 --> Enter: display timed tasks
 

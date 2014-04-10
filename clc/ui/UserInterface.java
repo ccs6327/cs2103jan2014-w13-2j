@@ -225,9 +225,9 @@ public class UserInterface {
 	private static Command analyzeDisplay() throws InvalidInputException{
 		Command command;
 		DisplayAnalyzer.analyze();
-		boolean isCaseDisplayCalendar = DisplayAnalyzer.getDisplayCase();
+		boolean isCaseDisplayCalendar = DisplayAnalyzer.getIsCaseDisplayCalendar();
 		if (isCaseDisplayCalendar) {
-			boolean isCaseKeywordCalendar = DisplayAnalyzer.getDisplayCalendarCase();
+			boolean isCaseKeywordCalendar = DisplayAnalyzer.getIsCaseKeywordCalendar();
 			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 			if (isCaseKeywordCalendar) {
 				String query = DisplayAnalyzer.getDisplayQuery();
