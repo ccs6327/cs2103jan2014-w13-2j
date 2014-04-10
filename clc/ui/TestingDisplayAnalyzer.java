@@ -2,7 +2,7 @@ package clc.ui;
 
 import static org.junit.Assert.*;
 import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
-import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.TODAY;
 import static clc.common.Constants.TOMORROW;
@@ -23,6 +23,7 @@ import static clc.common.Constants.SPACE;
 import static clc.common.Constants.TIMED_TASK;
 import static clc.common.Constants.DEADLINE_TASK;
 import static clc.common.Constants.FLOATING_TASK;
+
 
 
 
@@ -711,7 +712,7 @@ public class TestingDisplayAnalyzer {
 		try {
 			DisplayAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			assertEquals(ERROR_START_TIME_LATER_THAN_END_TIME, e.getMessage());
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
 		}
 
 	}

@@ -7,7 +7,6 @@ import static clc.common.Constants.QUOTATION_MARK;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 
-import java.text.ParseException;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
@@ -34,28 +33,34 @@ public class UpdateAnalyzer extends TimeParser {
 		infoToBeProcessed = tempInfo;
 
 		if (!isCaseQuotedTaskName && doesContainTimeInfo()) { //case update calendar
-			if (commandDetails.contains(COMMA)) {
-				int indexOfComma = findIndexOfComma();
-				analyzeUpdateStartTime(indexOfComma);
-				analyzeUpdateEndTime(indexOfComma);
-				startCalendar = tempStartCalendar;
-			} else { // one calendar -> endCalendar , two calendar -> start and end calendar
-				determineIfStartDateIsProvided();
-				determineIfStartTimeIsProvided();
-				determineIfEndDateIsProvided();
-				determineIfEndTimeIsProvided();
-			}
-			
+			setCalendarInfoForUpdate();
 			isCaseUpdateCalendar = true;
 		} else { //case update task name
 			isCaseUpdateCalendar = false;
 		}
 	}
 
+	private static void setCalendarInfoForUpdate() throws InvalidInputException {
+		if (commandDetails.contains(COMMA)) {
+			int indexOfComma = findIndexOfComma();
+			analyzeUpdateStartTime(indexOfComma);
+			analyzeUpdateEndTime(indexOfComma);
+			
+			//comma case parse two string separately 
+			//tempStartCalendar is required to store the startCalendar 
+			startCalendar = tempStartCalendar;
+		} else { //update without using comma
+			determineIfStartDateIsProvided();
+			determineIfStartTimeIsProvided();
+			determineIfEndDateIsProvided();
+			determineIfEndTimeIsProvided();
+		}
+	}
+
 	private static void checkIfQuotedTaskName() {
 		if (isQuotedCommandDetails()) {
 			isCaseQuotedTaskName = true;
-			//trim away '
+			//trim away quotation mark
 			commandDetails = commandDetails.substring(1, commandDetails.length() - 1);
 		}
 	}
@@ -75,21 +80,16 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
-		int index = 0;
-		if (indexOfComma > 0) {
-			infoToBeProcessed = new String[indexOfComma];
-			for (int i = 0; i < indexOfComma; i ++) {
-				infoToBeProcessed[index ++] = tempInfo[i];
-			}
+		
+		if (doesContainCalendarInfoBeforeComma(indexOfComma)) {
+			setStartTimeInfo(indexOfComma);
 			processCalendarInfo();
 			
-			if (isEndDateSet) {
-				isStartDateSet = true;
-			}
+			//TimeParser parse calendar information from the back
+			//therefore, have to set separately
+			setIsStartDateTrueIfDateIsSet();
+			setIsStartTimeTrueIfTimeIsSet();
 			
-			if (isEndTimeSet) {
-				isStartTimeSet = true;
-			}
 			// as processCalendarInfo will set the time to endTime
 			// so we have to swap the value
 			tempStartCalendar = endCalendar;
@@ -100,14 +100,35 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
-	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
+	private static void setIsStartTimeTrueIfTimeIsSet() {
+		if (isEndTimeSet) {
+			isStartTimeSet = true;
+		}
+	}
+
+	private static void setIsStartDateTrueIfDateIsSet() {
+		if (isEndDateSet) {
+			isStartDateSet = true;
+		}
+	}
+
+	private static void setStartTimeInfo(int indexOfComma) {
 		int index = 0;
-		if (tempInfo.length != indexOfComma + 1) {
-			infoToBeProcessed = new String[tempInfo.length - indexOfComma - 1];
-			for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) {
-				infoToBeProcessed[index ++] = tempInfo[i];
-			}
-	
+		int size = indexOfComma;
+		infoToBeProcessed = new String[size];
+		for (int i = 0; i < indexOfComma; i ++) {
+			infoToBeProcessed[index ++] = tempInfo[i];
+		}
+	}
+
+	private static boolean doesContainCalendarInfoBeforeComma(int indexOfComma) {
+		return indexOfComma > 0;
+	}
+
+	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
+		if (doesContainCalendarInfoAfterComma(indexOfComma)) {
+			setEndTimeInfo(indexOfComma);
+			
 			processCalendarInfo();
 
 			determineIfEndDateIsProvided();
@@ -115,6 +136,38 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
+	private static void setEndTimeInfo(int indexOfComma) {
+		int index = 0;
+		int size = tempInfo.length - indexOfComma - 1;
+		infoToBeProcessed = new String[size];
+		for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) {
+			infoToBeProcessed[index ++] = tempInfo[i];
+		}
+	}
+
+	private static boolean doesContainCalendarInfoAfterComma(int indexOfComma) {
+		return tempInfo.length != indexOfComma + 1;
+	}
+
+	/*
+	 * calendarProvided
+	 * case 1: update end time only
+	 * case 2: update end date only
+	 * case 3: update end date and end time only
+	 * case 4: update start time only
+	 * case 5: update start time and end time only
+	 * case 6: update start time and end date only
+	 * case 7: update start time, end date and end time
+	 * case 8: update start date only
+	 * case 9: update start date and end time only
+	 * case 10: update start date and end date only
+	 * case 11: update start date, end date and end time
+	 * case 12: update start date and start time only
+	 * case 13: update start date, start time and end time
+	 * case 14: update start date, start time and end date
+	 * case 15: update start date, start time, end date and end time
+	 */
+	
 	private static void determineIfStartDateIsProvided() {
 		if (isStartDateSet) {
 			calendarProvided += 8;
@@ -171,36 +224,16 @@ public class UpdateAnalyzer extends TimeParser {
 		return calendarProvided;
 	}
 	
+	//Override TimeParser methods
+	protected static boolean doesContainTimeInfo() throws InvalidInputException {
+		processCalendarInfo();
+		return isStartDateSet || isStartTimeSet 
+				|| isEndDateSet || isEndTimeSet;
+	}
+	
 	protected static void processCalendarInfo() throws InvalidInputException {
 		initializeVariable();
-		int currIndex = infoToBeProcessed.length - 1;
-		
-		while (currIndex >= 0 && !hasAllTimeSet()) {
-			String toBeAnalyzedString = EMPTY;
-			int loopIndex = currIndex;
-			for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 Strings
-				toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
-				try {
-					analyzeTime(toBeAnalyzedString);
-					if (endCalendarIndex == -1) {
-						startCalendarIndex = loopIndex;
-						endCalendarIndex = loopIndex;
-					} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
-						startCalendarIndex = loopIndex;
-					}
-					currIndex = loopIndex;
-					break;
-				} catch (ParseException e) { //catch parsing error
-					if (loopIndex - 1 < 0) {
-						break;
-					}
-				}
-				loopIndex --;
-			}
-			currIndex --;
-			setCalendar();
-		}
-		
+		analyzeAndSetCalendar();
 		setStartCalendarAsNullIfNotSet();
 		setEndCalendarAsNullIfNotSet();
 	}
