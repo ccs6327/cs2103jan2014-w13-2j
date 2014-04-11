@@ -25,19 +25,22 @@ sun
 
 All the date formats below are supported:
 1/1
+1/1/14
 1/1/2014
 1-1
+1-1-14
 1-1-2014
 1.1
+1.1.14
 1.1.2014
-1 january
 1 jan
-1 january 2014
+1 january
 1 jan 2014
-1january
+1 january 2014
 1jan
-1january2014
+1january
 1jan2014
+1january2014
 =========================================================================
 
 All the time formats below are supported:

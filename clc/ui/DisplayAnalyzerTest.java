@@ -90,7 +90,8 @@ public class DisplayAnalyzerTest {
 		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
 		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 		GregorianCalendar gc = new GregorianCalendar();
-		//millisecond difference is minor for our product, use to String() to compare current time
+		//millisecond difference is minor for our product
+		//as we construct current time not at the same time there fore there's diferrence
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
@@ -713,13 +714,11 @@ public class DisplayAnalyzerTest {
 		}
 		
 		//display with everyday
-		Analyzer.analyze("display everyday");
+		Analyzer.analyze("display everyday 1pm");
 		
 		try {
 			DisplayAnalyzer.analyze();
 		} catch (InvalidInputException e) {
-			//as everyday is read as today therefore might throw another exception
-			//which is "ERROR: End time is a calendar before now"
 			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
 		}
 		
