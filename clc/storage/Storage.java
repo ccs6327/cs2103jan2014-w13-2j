@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
-
+import java.util.logging.Level;
+import clc.common.LogHelper;
 import clc.logic.Task;
 import static clc.common.Constants.*;
 
@@ -44,6 +45,8 @@ public class Storage {
 
 			}
 		}
+		
+		assert dataFile.exists();
 	}
 
 	// Read from the data file and store them into the internal memory
