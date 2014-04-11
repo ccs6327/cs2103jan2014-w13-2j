@@ -80,7 +80,7 @@ public class TimeParser extends Analyzer {
 		setEndCalendarAsNullIfNotSet();
 		caseIfStartAndEndCalendarShareOneDate();
 		caseIfRecurringTimeBeforeCurrentTime();
-		caseIfCalendarBeforeCurrentTime();
+		caseIfCalendarBeforeOrEqualToCurrentTime();
 		caseIfStartTimeLaterThanOrEqualToEndTime();
 		adjustToCorrectCalendarIndex();
 	}
@@ -283,11 +283,11 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	protected static void caseIfCalendarBeforeCurrentTime()
+	protected static void caseIfCalendarBeforeOrEqualToCurrentTime()
 			throws InvalidInputException {
-		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) { 
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) != 1) { 
 			throw new InvalidInputException(ERROR_START_TIME);
-		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == -1) {
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) != 1) {
 			throw new InvalidInputException(ERROR_END_TIME);
 		}
 	}

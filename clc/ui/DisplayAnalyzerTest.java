@@ -718,6 +718,8 @@ public class DisplayAnalyzerTest {
 		try {
 			DisplayAnalyzer.analyze();
 		} catch (InvalidInputException e) {
+			//as everyday is read as today therefore might throw another exception
+			//which is "ERROR: End time is a calendar before now"
 			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
 		}
 		

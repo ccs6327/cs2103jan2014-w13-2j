@@ -32,11 +32,12 @@ If you want to add a floating task
 --> e.g. add watch movie tonight
 ========================================================================= 
 
-If you want to be reminded of a timed task or a deadline task 
---> Enter: add /r ......
+If you want to be reminded of a timed task or a deadline task, you can leave the interval blank if you want to be reminded 15 minutes before the start time or deadline.
+--> Enter: add /r [interval(minutes)] ……
 
---> e.g. add /r attend lecture friday from 4pm to 6pm
---> e.g. add /r submit weekly report friday 5pm
+--> e.g. add /r group meeting sat 3pm
+--> e.g. add /r 60 attend lecture friday from 4pm to 6pm
+--> e.g. add /r 30 submit weekly report friday 5pm
 
 You will be reminded of a timed task 15 minutes before the start time or a deadline task before the end time. 
 ========================================================================= 

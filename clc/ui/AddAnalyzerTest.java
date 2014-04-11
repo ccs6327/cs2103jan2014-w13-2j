@@ -29,7 +29,7 @@ public class AddAnalyzerTest {
 	}
 
 	@Test
-	public void test() throws InvalidInputException {
+	public void testGetToBeAddedTask() throws InvalidInputException {
 
 		//command details without date and time 
 		Analyzer.analyze("add taskname");
@@ -509,6 +509,7 @@ public class AddAnalyzerTest {
 	}
 
 	@Test
+	//throws exception for Analyzer.analyze() as it is tested in other test driver
 	public void testInvalidInputException() throws InvalidInputException {
 		//empty command details
 		Analyzer.analyze("add");
