@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import clc.common.InvalidInputException;
 
-public class TestingAddAnalyzer {
+public class AddAnalyzerTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -29,7 +29,7 @@ public class TestingAddAnalyzer {
 	}
 
 	@Test
-	public void test() throws InvalidInputException {
+	public void testGetToBeAddedTask() throws InvalidInputException {
 
 		//command details without date and time 
 		Analyzer.analyze("add taskname");
@@ -209,6 +209,7 @@ public class TestingAddAnalyzer {
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
 		//case 2 deadline task
 		Analyzer.analyze("add task name 14 by wednesday 1159pm");
 
@@ -509,6 +510,7 @@ public class TestingAddAnalyzer {
 	}
 
 	@Test
+	//throws exception for Analyzer.analyze() as it is tested in other test driver
 	public void testInvalidInputException() throws InvalidInputException {
 		//empty command details
 		Analyzer.analyze("add");

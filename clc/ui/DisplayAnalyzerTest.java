@@ -35,7 +35,7 @@ import org.junit.Test;
 
 import clc.common.InvalidInputException;
 
-public class TestingDisplayAnalyzer {
+public class DisplayAnalyzerTest {
 
 
 	@Before
@@ -90,7 +90,8 @@ public class TestingDisplayAnalyzer {
 		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
 		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 		GregorianCalendar gc = new GregorianCalendar();
-		//millisecond difference is minor for our product, use to String() to compare current time
+		//millisecond difference is minor for our product
+		//as we construct current time not at the same time there fore there's diferrence
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
 		gc.add(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
@@ -713,7 +714,7 @@ public class TestingDisplayAnalyzer {
 		}
 		
 		//display with everyday
-		Analyzer.analyze("display everyday");
+		Analyzer.analyze("display everyday 1pm");
 		
 		try {
 			DisplayAnalyzer.analyze();
