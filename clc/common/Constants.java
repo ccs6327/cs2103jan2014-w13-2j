@@ -163,6 +163,7 @@ public class Constants {
 	public static final String GENERAL_HELP_FILE = "generalHelp.clc";
 	public static final String DATE_HELP_FILE = "dateHelp.clc";
 	public static final String HOTKEY_HELP_FILE = "hotkeyHelp.clc";
+	public static final String LOG_FILE = "clc.log";
 
 	// Storage
 	public static final int IS_DONE = 1;

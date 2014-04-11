@@ -6,12 +6,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import static clc.common.Constants.*;
+
 public class LogHelper {
 	
 	public static void log(Level level, String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -27,8 +30,9 @@ public class LogHelper {
 	
 	public static void info(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -44,8 +48,9 @@ public class LogHelper {
 	
 	public static void all(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -61,8 +66,9 @@ public class LogHelper {
 	
 	public static void config(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -78,8 +84,9 @@ public class LogHelper {
 	
 	public static void fine(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -95,8 +102,9 @@ public class LogHelper {
 	
 	public static void finer(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -112,8 +120,9 @@ public class LogHelper {
 	
 	public static void finest(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -129,8 +138,9 @@ public class LogHelper {
 	
 	public static void off(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -146,8 +156,9 @@ public class LogHelper {
 	
 	public static void severe(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -163,8 +174,9 @@ public class LogHelper {
 	
 	public static void warning(String message) {
 		try {
-			FileHandler fileHandler = new FileHandler("clc.log", true);
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
