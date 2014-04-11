@@ -88,6 +88,8 @@ public class Constants {
 	public static final String MESSAGE_DISPLAY_TIMED_TASKS_SINGULAR = "The timed task has been displayed.";
 	public static final String MESSAGE_NO_TIMED_TASKS =  "No timed task is found";
 	public static final String MESSAGE_DISPLAY_QUERY = "[%1$s's Tasks]";
+	public static final String MESSAGE_COMPLETE_TASKS = "===COMPLETE    Tasks===";
+	public static final String MESSAGE_INCOMPLETE_TASKS = "===INCOMPLETE Tasks===";
 	public static final String MESSAGE_DISPLAY_TASKS_BY_DEADLINE = "Tasks end before [%1$s]";
 	public static final String MESSAGE_DISPLAY_TASKS_IN_PERIOD = "Tasks from [%1$s] to [%2$s]";
 	public static final String MESSAGE_EMPTY_LIST = "Your task list is empty.";

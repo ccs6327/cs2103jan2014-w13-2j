@@ -15,7 +15,7 @@ import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 
-public class TestingUpdateAnalyzer {
+public class UpdateAnalyzerTest {
 
 	@Before
 	public void setUp() throws Exception {

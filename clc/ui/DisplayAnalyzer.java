@@ -188,8 +188,8 @@ public class DisplayAnalyzer extends TimeParser{
 
 	private static void setToday() {
 		commandDetails = TODAY;
-		// set the start time as now, end time as the end of today
-		startCalendar = new GregorianCalendar();
+		// set the start time as 12am, end time as the end of today
+		startCalendar = new GregorianCalendar(year, month, date);
 		endCalendar = new GregorianCalendar(year, month, ++date);
 	}
 
@@ -258,9 +258,10 @@ public class DisplayAnalyzer extends TimeParser{
 
 	private static void setThisWeek() {
 		commandDetails = THIS_WEEK;
-		// set the start time as now, end time as the end of the week
-		startCalendar = new GregorianCalendar();
-		endCalendar = new GregorianCalendar(year, month , date);
+		// set the start time as Monday, end time as the end of the week
+		int deductValue = Calendar.MONDAY - dayOfWeek;
+		startCalendar = new GregorianCalendar(year, month, date + deductValue);
+		endCalendar = new GregorianCalendar(year, month, date);
 		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		endCalendar.add(Calendar.DATE, addValue);
 	}
@@ -280,7 +281,7 @@ public class DisplayAnalyzer extends TimeParser{
 	private static void setThisMonth() {
 		commandDetails = THIS_MONTH;
 		// set the start time as now, end time as the end of the month
-		startCalendar = new GregorianCalendar();
+		startCalendar = new GregorianCalendar(year, month, 1);
 		endCalendar = new GregorianCalendar(year, ++month, 1);
 	}
 

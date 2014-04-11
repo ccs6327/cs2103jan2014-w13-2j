@@ -16,6 +16,8 @@ public class Display implements Command {
     private Calendar startOfPeriod = null, endOfPeriod = null;
 	private ArrayList<Task> internalMem;
 	private ArrayList<Integer> displayMem;
+	private ArrayList<Integer> internalMemCompleteTasks = new ArrayList<Integer>();
+	private ArrayList<Integer> internalMemIncompleteTasks = new ArrayList<Integer>();
 	
 	public Display(ArrayList<GregorianCalendar> time) {
 		this.time = time;
@@ -101,14 +103,13 @@ public class Display implements Command {
 		DisplayOutput.add(MESSAGE_SHOW_INCOMPLETE_TASKS);
 		DisplayOutput.add(ANOTHER_LINE);
 		
-	    for (int i = 1; i<= internalMem.size(); i++){
-	    	
-	    	Task task = internalMem.get(i - 1);
-	    	if (!task.getIsDone()){
-		    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
-		    	displayMem.add(i - 1);
-		    	displayNo++;
-	    	}
+		seprateTasksByCompletion();
+	    for (int i = 1; i<= internalMemIncompleteTasks.size(); i++){
+	    	int taskNo = internalMemIncompleteTasks.get(i - 1);
+	    	Task task = internalMem.get(taskNo);
+		    DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
+		    displayMem.add(taskNo);
+		    displayNo++;
 
 	    }
 	    feedback.append("\n");
@@ -253,7 +254,6 @@ public class Display implements Command {
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_IN_PERIOD, startTime, endTime));
 				DisplayOutput.add(ANOTHER_LINE);
 			}
-			
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
 			feedback.append("\n");
 			printOutDisplay();
@@ -277,31 +277,67 @@ public class Display implements Command {
 	
 	// Go through the internal memory and check whether the tasks are with in the time period
 		private void goThroughTimePeriod(Calendar startOfPeriod, Calendar endOfPeriod) {
+			seprateTasksByCompletion();
 			if (startOfPeriod!= null && isWithinADay(startOfPeriod , endOfPeriod)){
 				int displayNo = 1;
-				for (int i = 1; i <= internalMem.size(); i++) {
-					Task task = internalMem.get(i - 1);
+				DisplayOutput.add(MESSAGE_INCOMPLETE_TASKS);
+				DisplayOutput.add(ANOTHER_LINE);
+				for (int i = 1; i <= internalMemIncompleteTasks.size(); i++) {
+					int taskNo =  internalMemIncompleteTasks.get(i - 1);
+					Task task = internalMem.get(taskNo);
 					Calendar taskStartTime = task.getStartTime();
 					Calendar taskEndTime = task.getEndTime();
 					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
-					    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toStringTimeFormatter()));	
-							displayMem.add(i - 1);
-					        displayNo++;
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toStringTimeFormatter()));	
+						displayMem.add(i - 1);
+					    displayNo++;
+					}
+				}	
+				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(MESSAGE_COMPLETE_TASKS);
+				DisplayOutput.add(ANOTHER_LINE);
+				for (int i = 1; i <= internalMemCompleteTasks.size(); i++) {
+					int taskNo =  internalMemCompleteTasks.get(i - 1);
+					Task task = internalMem.get(taskNo);
+					Calendar taskStartTime = task.getStartTime();
+					Calendar taskEndTime = task.getEndTime();
+					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toStringTimeFormatter()));	
+						displayMem.add(i - 1);
+					    displayNo++;
 					}
 				}	
 			} else {
 				int displayNo = 1;
-				for (int i = 1; i <= internalMem.size(); i++) {
-					Task task = internalMem.get(i - 1);
+				DisplayOutput.add(MESSAGE_INCOMPLETE_TASKS);
+				DisplayOutput.add(ANOTHER_LINE);
+				for (int i = 1; i <= internalMemIncompleteTasks.size(); i++) {
+					int taskNo =  internalMemIncompleteTasks.get(i - 1);
+					Task task = internalMem.get(taskNo);
 					Calendar taskStartTime = task.getStartTime();
 					Calendar taskEndTime = task.getEndTime();
 					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
-					    	DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
-							displayMem.add(i - 1);
-							displayNo++;
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));		
+						displayMem.add(i - 1);
+					    displayNo++;
 					}
-				}
-			}
+				}	
+				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(MESSAGE_COMPLETE_TASKS);
+				DisplayOutput.add(ANOTHER_LINE);
+				for (int i = 1; i <= internalMemCompleteTasks.size(); i++) {
+					int taskNo =  internalMemCompleteTasks.get(i - 1);
+					Task task = internalMem.get(taskNo);
+					Calendar taskStartTime = task.getStartTime();
+					Calendar taskEndTime = task.getEndTime();
+					if (isWithinTimePeriod(startOfPeriod, endOfPeriod, taskStartTime, taskEndTime)) {
+						DisplayOutput.add(String.format(MESSAGE_OUTPUT_TASKS, displayNo, task.toString()));	
+						displayMem.add(i - 1);
+					    displayNo++;
+					}
+				}	
+				
+			}				
 		}
 
 		// check it is in the time period
@@ -356,6 +392,19 @@ public class Display implements Command {
 		
 		protected void sortTasks() {
 			Collections.sort(internalMem, new  TaskComparator());
+		}
+		
+		protected void seprateTasksByCompletion() {
+			internalMemCompleteTasks.clear();
+			internalMemIncompleteTasks.clear();
+			for(int i=1; i<=internalMem.size(); i++){
+			    	Task task = internalMem.get(i - 1);
+			    	if (!task.getIsDone()){
+			    		internalMemIncompleteTasks.add(i-1);
+			    	} else {
+			    		internalMemCompleteTasks.add(i-1);
+			    	}
+			}
 		}
 		
 		private void printOutDisplay(){
