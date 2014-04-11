@@ -232,9 +232,9 @@ public class Storage {
 	}
 
 	public static String exportDataFile(String path) {
-		File destination = new File(path + OUTFILE);
-		File destinationDirectory = new File(path);
 		try {
+			File destination = new File(path + OUTFILE);
+			File destinationDirectory = new File(path);
 			Files.createDirectories(destinationDirectory.toPath());
 			Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
 		} catch (NullPointerException e) {
