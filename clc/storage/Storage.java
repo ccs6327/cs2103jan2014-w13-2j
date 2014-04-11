@@ -58,6 +58,7 @@ public class Storage {
 			String taskName;
 			String recurringPeriod;
 			int taskType;
+			int intervalToBeReminded = 0;
 			int numberOfRecurring;
 			Long taskId;
 			Calendar startTime = null;
@@ -100,11 +101,12 @@ public class Storage {
 				} else {
 					isReminderNeeded = false;
 				}
+				intervalToBeReminded = Integer.parseInt(bf.readLine());
 				numberOfRecurring = Integer.parseInt(bf.readLine());
 				recurringPeriod = bf.readLine();
 
 				task = new Task(taskName, taskId, taskType, startTime, endTime, isDone
-								, isReminderNeeded, numberOfRecurring, recurringPeriod);
+								, isReminderNeeded, intervalToBeReminded, numberOfRecurring, recurringPeriod);
 				if (hasNoIdenticalTask(task)) {
 					internalMem.add(task);
 				}
@@ -172,6 +174,9 @@ public class Storage {
 					formatter.format(String.valueOf(IS_REMINDER_NOT_NEEDED));
 				}
 				formatter.format(NEW_LINE);
+				// interval to be reminded
+				formatter.format(String.valueOf(task.getReminderInterval()));
+				formatter.format(NEW_LINE);
 				// number of recurring
 				formatter.format(String.valueOf(task.getNumberOfRecurring()));
 				formatter.format(NEW_LINE);
@@ -198,7 +203,7 @@ public class Storage {
 
 			while((contentToRead = bf.readLine()) != null) {
 				sb.append(contentToRead);
-				sb.append("\n");
+				sb.append(NEWLINE);
 			}
 
 			bf.close();

@@ -18,6 +18,7 @@ public class Task {
 	private boolean isReminderNeeded; 
 	private int numberOfRecurring;
 	private String recurringPeriod;
+	private int intervalToBeReminded;
 
 	public Task() {
 		
@@ -76,7 +77,7 @@ public class Task {
 
 	public Task(String _taskName, Long _taskId, int _taskType,
 			Calendar _startTime, Calendar _endTime, boolean _isDone, 
-			boolean _isReminderNeeded, int _numberOfRecurring, String _recurringPeriod) {
+			boolean _isReminderNeeded, int _numberOfRecurring, int _intervalToBeReminded, String _recurringPeriod) {
 		taskName = _taskName;
 		taskId = _taskId;
 		taskType = _taskType;
@@ -84,6 +85,7 @@ public class Task {
 		endTime = _endTime;
 		isDone = _isDone;
 		isReminderNeeded = _isReminderNeeded;
+		intervalToBeReminded = _intervalToBeReminded;
 		numberOfRecurring = _numberOfRecurring;
 		recurringPeriod = _recurringPeriod;
 	}
@@ -115,6 +117,10 @@ public class Task {
 
 	public boolean getIsReminderNeeded() {
 		return isReminderNeeded;
+	}
+	
+	public int getReminderInterval() {
+		return intervalToBeReminded;
 	}
 	
 	public int getNumberOfRecurring() {
@@ -192,8 +198,9 @@ public class Task {
 		this.isDone = isDone;
 	}
 
-	public void setReminder() {
+	public void setReminder(int _intervalToBeReminded) {
 		isReminderNeeded = true;
+		intervalToBeReminded = _intervalToBeReminded;
 	}
 	
 	public void setNumberOfRecurring(int nRecurring) {

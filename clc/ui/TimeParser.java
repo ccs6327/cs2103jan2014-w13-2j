@@ -102,9 +102,7 @@ public class TimeParser extends Analyzer {
 	protected static void analyzeAndSetCalendar() throws InvalidInputException {
 		int currIndex = infoToBeProcessed.length - 1;
 		while (currIndex >= 0 && !hasAllTimeSet()) {
-			String toBeAnalyzedString = EMPTY;
-
-			currIndex = analyzeCalendar(currIndex, toBeAnalyzedString);
+			currIndex = analyzeCalendar(currIndex);
 			setCalendar();
 
 			currIndex --;
@@ -112,13 +110,15 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static int analyzeCalendar(int currIndex, String toBeAnalyzedString)
+	private static int analyzeCalendar(int currIndex)
 			throws InvalidInputException {
+		String toBeAnalyzedString = EMPTY;
 		for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 words
 			int loopIndex = currIndex - i;
 			toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 			try {
-				parseCalendar(toBeAnalyzedString);
+				parseCalendarAndSetAnalyzedCalendar(toBeAnalyzedString);
+				checkIfDateFormatParsedCorrectly(infoToBeProcessed[loopIndex]);
 				currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
 				setStartAndEndCalendarIndex(currIndex, loopIndex);
 				break;
@@ -129,6 +129,12 @@ public class TimeParser extends Analyzer {
 			}
 		}
 		return currIndex;
+	}
+
+	private static void checkIfDateFormatParsedCorrectly(String currWord) {
+		if (isDate) { //avoid case "1/1/20 34" parse as "1/1/2034"
+			 parseIfDateFormat(currWord);
+		}
 	}
 
 	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
@@ -210,7 +216,7 @@ public class TimeParser extends Analyzer {
 
 	private static void adjustToCorrectCalendarIndex() {
 		determineIfWordBeforeIsPreposition();
-		
+
 		int infoLength = infoToBeProcessed.length;
 		determineIfEndCalendarIndexIsCorrect(infoLength);
 	}
@@ -224,8 +230,8 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static void determineIfEndCalendarIndexIsCorrect(int infoLength) {
-		if (isStartAndEndCalendarIndexSet() 
-				&& !doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
+		if (isStartAndEndCalendarIndexSet() && 
+				!doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
 			if (endCalendarIndex + 1 < infoLength) { //doesn't exceed the infoLength
 				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] 
 						+ infoToBeProcessed[endCalendarIndex + 1])) { //two words is a calendar
@@ -250,7 +256,8 @@ public class TimeParser extends Analyzer {
 		//Time24Format does not contains time format that is represented by more than one String
 	}
 
-	public static void parseCalendar(String currStr) throws ParseException, InvalidInputException {
+	public static void parseCalendarAndSetAnalyzedCalendar(String currStr) 
+			throws ParseException, InvalidInputException {
 		doesContainAmOrPm = false;
 		isMondayToSunday = false;
 		isTime = false;

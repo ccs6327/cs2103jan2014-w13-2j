@@ -9,6 +9,7 @@ import static clc.common.Constants.SLASH_R;
 import static clc.common.Constants.ERROR_NO_TASK_NAME;
 import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
 
 import clc.common.InvalidInputException;
 
@@ -19,6 +20,7 @@ public class AddAnalyzer extends TimeParser {
 	private static Task taskToBeAdded;
 	private static boolean isReminderNeeded;
 	private static boolean isCaseQuotedTaskName;
+	private static int intervalToBeReminded;
 
 	protected AddAnalyzer(String input) {
 		super(input);
@@ -47,9 +49,23 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void determineIfReminderNeeded() throws InvalidInputException {
 		isReminderNeeded = false;
-		if (getFirstWord(commandDetails).equalsIgnoreCase(SLASH_R)) {
+		if (isFirstWordSlashR()) {
 			isReminderNeeded = true;
 			commandDetails = removeFirstWord(commandDetails);
+			setReminderInterval();
+		}
+	}
+
+	private static boolean isFirstWordSlashR() {
+		return getFirstWord(commandDetails).equalsIgnoreCase(SLASH_R);
+	}
+
+	private static void setReminderInterval() throws InvalidInputException {
+		if (isNumeric(getFirstWord(commandDetails))) {
+			intervalToBeReminded = Integer.parseInt(getFirstWord(commandDetails));
+			commandDetails = removeFirstWord(commandDetails);
+		} else {
+			intervalToBeReminded = DEFAULT_REMINDER_INTERVAL;
 		}
 	}
 
@@ -145,7 +161,7 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void caseIfReminderNeeded() {
 		if (isReminderNeeded) {
-			taskToBeAdded.setReminder();
+			taskToBeAdded.setReminder(intervalToBeReminded);
 		}
 	}
 
@@ -159,11 +175,10 @@ public class AddAnalyzer extends TimeParser {
 		}
 	}
 
-	private static void throwExceptionIfReminderNeeded()
-			throws InvalidInputException {
+	private static void throwExceptionIfReminderNeeded() throws InvalidInputException {
 		if (isReminderNeeded) {
 			throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
-		}
+	 	}
 	}
 
 	private static void setCommandDetailsAsTaskNameIfNotQuotedTaskName() {

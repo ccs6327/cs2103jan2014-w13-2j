@@ -132,7 +132,7 @@ public class Constants {
 	public static final String HOTKEY = "hotkey";
     
 	//Remind
-	public static final int INTERVAL_TO_REMIND = -15; //minutes
+	public static final int DEFAULT_REMINDER_INTERVAL = 15; //minutes
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
 	public static final String MESSAGE_REMIND_DEADLINE_TASKS = "%1$s, (ends at %2$s)";
 
