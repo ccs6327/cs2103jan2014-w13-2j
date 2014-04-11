@@ -18,6 +18,8 @@ public class StorageTest {
 		
 		Storage.initializeDataFile();
 		
+		System.out.println("Testing exportDataFile");
+		
 		// Test case 1: path is null
 		assertEquals(MESSAGE_EXPORT_FAILED, Storage.exportDataFile(null));
 		System.out.println("Test case 1 passed");
@@ -46,6 +48,38 @@ public class StorageTest {
 		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_NESTED_DIRECTORIES));
 		System.out.println("Test case 6 passed");
 		
-		System.out.println("All test cases passed");
+		System.out.println("All test cases passed\r\n");
+	}
+	
+	@Test
+	public void testImportDataFile() {
+		
+		System.out.println("Testing importDataFile");
+		
+		// Test case 1: path is null
+		assertEquals(MESSAGE_IMPORT_NO_ACCESS, Storage.importDataFile(null));
+		System.out.println("Test case 1 passed");
+		
+		// Test case 2: path is invalid
+		assertEquals(MESSAGE_IMPORT_NO_ACCESS, Storage.importDataFile(PATH_INVALID));
+		System.out.println("Test case 2 passed");
+		
+		// Test case 3: path is the root of workspace
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_ROOT));
+		System.out.println("Test case 3 passed");
+		
+		// Test case 4: path is other root
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_ROOT_C));
+		System.out.println("Test case 4 passed");
+		
+		// Test case 5: path is the workspace
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_WORKSPACE));
+		System.out.println("Test case 5 passed");
+		
+		// Test case 6: path is in general
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_NESTED_DIRECTORIES));
+		System.out.println("Test case 6 passed");
+		
+		System.out.println("All test cases passed\r\n");
 	}
 }
