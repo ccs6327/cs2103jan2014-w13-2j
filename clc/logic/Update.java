@@ -42,10 +42,10 @@ public class Update implements Command {
 	public String execute() {
 		if (isDataEmpty()) {
 			feedback.append(MESSAGE_NO_TASK_TO_UPDATE);
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 		} else if (isOutOfBound()) {
 			feedback.append(MESSAGE_INEXISTANCE_SEQNO);
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 		} else {
 			int internalSeqNo = displayMem.get(seqNo - 1);
 			task = internalMem.get(internalSeqNo);
@@ -76,7 +76,7 @@ public class Update implements Command {
 		if (newTaskName != null){
             task.setTaskName(newTaskName);
             feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskName, newTaskName));
-            feedback.append("\n");
+            feedback.append(NEWLINE);
 		}
 		
 		 //System.out.println(caseCalendarProvided);
@@ -102,7 +102,7 @@ public class Update implements Command {
 				//process feedback
 				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-				feedback.append("\n");
+				feedback.append(NEWLINE);
 				
 			} else if (taskOldType == TYPE_DEADLINE_TASK){//for deadline task
 				task.setStartTime(newStartTime);
@@ -113,7 +113,7 @@ public class Update implements Command {
 				//process feedback
 				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-				feedback.append("\n");
+				feedback.append(NEWLINE);
 
 				
 			} else {//for floating task
@@ -125,12 +125,12 @@ public class Update implements Command {
 					//process feedback
 					String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 					feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-					feedback.append("\n");
+					feedback.append(NEWLINE);
 				} else {
 					
 					//process feedback
 					feedback.append(MESSAGE_ERROR_UPDATE_FLOATING);
-					feedback.append("\n");
+					feedback.append(NEWLINE);
 				}
 			}
 			
@@ -150,7 +150,7 @@ public class Update implements Command {
 					//process feedback
 					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-					feedback.append("\n");
+					feedback.append(NEWLINE);
 
 					
 				} else {
@@ -161,7 +161,7 @@ public class Update implements Command {
 					//process feedback
 					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-					feedback.append("\n");
+					feedback.append(NEWLINE);
 					
 				}
 			}else if (taskOldType == TYPE_DEADLINE_TASK){// for deadline task
@@ -171,7 +171,7 @@ public class Update implements Command {
 				//process feedback
 				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-				feedback.append("\n");
+				feedback.append(NEWLINE);
 
 			} else { // for timed task
 				
@@ -195,7 +195,7 @@ public class Update implements Command {
 				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				//System.out.println(endTime);
 				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-				feedback.append("\n");
+				feedback.append(NEWLINE);
 			}
 		} 
 		
@@ -203,9 +203,9 @@ public class Update implements Command {
 		int taskNewType = task.getTaskType();
 		String taskNewTypeString = task.taskTypeToString();
 		if(isTaskTypeChanged(taskOldType, taskNewType)){
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 			feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, seqNo ,taskName, taskOldTypeString, taskNewTypeString));
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 		}
 		
 		
@@ -222,15 +222,15 @@ public class Update implements Command {
 			task.setEndTime(taskOldEndTime);
 			task.setTaskType(taskOldType);
 			
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 			feedback.append(String.format(MESSAGE_UPDATE_TIME_ERROR, startTimeC, endTimeC));
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 		}
 		
 		//check if nothing changes
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
 			feedback.append(MESSAGE_NO_CHANGE);
-			feedback.append("\n");
+			feedback.append(NEWLINE);
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package clc.ui;
 
+import static clc.common.Constants.ERROR_CANNOT_UPDATE_TO_RECURRING_TASK;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.COMMA;
 import static clc.common.Constants.EMPTY;
@@ -85,6 +86,8 @@ public class UpdateAnalyzer extends TimeParser {
 			setStartTimeInfo(indexOfComma);
 			processCalendarInfo();
 			
+			throwExceptionIfUpdateWithRecurringTime();
+			
 			//TimeParser parse calendar information from the back
 			//therefore, have to set separately
 			setIsStartDateTrueIfDateIsSet();
@@ -97,6 +100,12 @@ public class UpdateAnalyzer extends TimeParser {
 
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
+		}
+	}
+
+	private static void throwExceptionIfUpdateWithRecurringTime() throws InvalidInputException {
+		if (isRecurringEveryWeek || isRecurringEveryday) {
+			throw new InvalidInputException(ERROR_CANNOT_UPDATE_TO_RECURRING_TASK);
 		}
 	}
 

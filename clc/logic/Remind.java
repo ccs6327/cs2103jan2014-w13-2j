@@ -6,7 +6,6 @@ import static clc.common.Constants.MESSAGE_REMIND_TIMED_TASKS;
 import static clc.common.Constants.MESSAGE_REMIND_DEADLINE_TASKS;
 import static clc.common.Constants.TYPE_DEADLINE_TASK;
 import static clc.common.Constants.TYPE_TIMED_TASK;
-import static clc.common.Constants.INTERVAL_TO_REMIND;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +56,8 @@ public class Remind {
 		String endTime = formatDate(task.getEndTime());
 		taskInfo.add(String.format(MESSAGE_REMIND_DEADLINE_TASKS, task.getTaskName(), endTime));
 		Calendar reminderCalendar = (Calendar) task.getEndTime().clone();
-		reminderCalendar.add(Calendar.MINUTE, INTERVAL_TO_REMIND);
+		int intervalToBeReminded = -1*task.getReminderInterval();
+		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
 		timeToBeReminded.add(reminderCalendar.getTime());
 	}
 
@@ -66,7 +66,8 @@ public class Remind {
 		String endTime = formatDate(task.getEndTime());
 		taskInfo.add(String.format(MESSAGE_REMIND_TIMED_TASKS, task.getTaskName(), startTime, endTime));
 		Calendar reminderCalendar = (Calendar) task.getStartTime().clone();
-		reminderCalendar.add(Calendar.MINUTE, INTERVAL_TO_REMIND);
+		int intervalToBeReminded = -1*task.getReminderInterval();
+		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
 		timeToBeReminded.add(reminderCalendar.getTime());
 	}
 
