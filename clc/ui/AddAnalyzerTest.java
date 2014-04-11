@@ -209,6 +209,7 @@ public class AddAnalyzerTest {
 		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
 		//case 2 deadline task
 		Analyzer.analyze("add task name 14 by wednesday 1159pm");
 
