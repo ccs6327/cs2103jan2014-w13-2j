@@ -33,6 +33,7 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import clc.common.LogHelper;
 import static clc.common.Constants.MESSAGE_SEPARATOR;
 import static clc.common.Constants.NEWLINE;
 import static clc.common.Constants.EMPTY;
@@ -59,20 +60,21 @@ public class GUI implements NativeKeyListener {
 
 	protected GUI() { 
 		initialize();
+		LogHelper.info("GUI components initialized");
 	}
 
-	protected void launchAndGetInputAndExecute() {
+	protected static void launchAndGetInputAndExecute() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					GUI window = new GUI();
 					window.frameClc.setVisible(true);
-					initiateKeyListener();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		LogHelper.info("GUI launched");
 	}
 
 	private void initialize() {
@@ -85,6 +87,7 @@ public class GUI implements NativeKeyListener {
 		actionWhenEnterIsPressed();
 		initiateWindowListener();
 		centreWindow(frameClc); 
+		initiateKeyListener();
 	}
 
 	private void setUpJFrame() {
@@ -290,9 +293,11 @@ public class GUI implements NativeKeyListener {
 		if (e.getKeyCode() == NativeKeyEvent.VK_SPACE) { //shift  + space
 			if (frameClc.isVisible()) { 
 				frameClc.setVisible(false);
+				LogHelper.info("set windows visible to false");
 			} else if (!frameClc.isVisible()){
 				frameClc.setVisible(true);
 				frameClc.setState(Frame.NORMAL);
+				LogHelper.info("set windows visible to true");
 			} 
 		}
 	}

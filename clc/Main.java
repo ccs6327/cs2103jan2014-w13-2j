@@ -21,16 +21,15 @@ public class Main {
 	
 	private static void checkIfRunning() {
 		try { 
-			new ServerSocket(6327); 
-			//cannot construct if it is previously construct by the application
-			//not the best way **
+			//if the socket is used by other application, software cannot be launched
+			new ServerSocket(6327);
 		}
 		catch (BindException e) {
-			System.err.println("Already running.");
+			LogHelper.warning("Already running");
 			System.exit(1);
 		}
 		catch (IOException e) {
-			System.err.println("Unexpected error.");
+			LogHelper.warning("Unexpected error");
 			e.printStackTrace();
 			System.exit(2);
 		} 

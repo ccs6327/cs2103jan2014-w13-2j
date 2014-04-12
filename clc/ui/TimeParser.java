@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 import static clc.common.Constants.ERROR_START_TIME;
 import static clc.common.Constants.ERROR_END_TIME;
 import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
@@ -97,6 +98,7 @@ public class TimeParser extends Analyzer {
 		endCalendar = new GregorianCalendar();
 		startCalendarIndex = -1;
 		endCalendarIndex = -1;
+		LogHelper.info("TimeParser variables initialized");
 	}
 
 	protected static void analyzeAndSetCalendar() throws InvalidInputException {
@@ -118,6 +120,7 @@ public class TimeParser extends Analyzer {
 			toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
 			try {
 				parseCalendarAndSetAnalyzedCalendar(toBeAnalyzedString);
+				LogHelper.info("'" + toBeAnalyzedString + "'" + " PARSE INTO " + analyzedCalendar.getTime().toString());
 				checkIfDateFormatParsedCorrectly(infoToBeProcessed[loopIndex]);
 				currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
 				setStartAndEndCalendarIndex(currIndex, loopIndex);
@@ -132,8 +135,9 @@ public class TimeParser extends Analyzer {
 	}
 
 	private static void checkIfDateFormatParsedCorrectly(String currWord) {
-		if (isDate) { //avoid case "1/1/20 34" parse as "1/1/2034"
+		if (isDate) { //avoid case "1/1/20 34" parse into "1/1/2034"
 			 parseIfDateFormat(currWord);
+			 LogHelper.info("'" + currWord + "'" + " PARSE INTO " + analyzedCalendar.getTime().toString());
 		}
 	}
 
@@ -148,6 +152,7 @@ public class TimeParser extends Analyzer {
 
 	private static int skipNextIndexIfPreposition(int currIndex) {
 		if (currIndex >= 0 && isPrepositionOfTime(infoToBeProcessed[currIndex])) {
+			LogHelper.info("Preposition of time found: " + infoToBeProcessed[currIndex]);
 			return currIndex - 1;
 		}
 		return currIndex;
@@ -202,6 +207,7 @@ public class TimeParser extends Analyzer {
 		while (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(NEXT)) {
 			nNext ++;
 		}
+		LogHelper.info("Keyword 'next' found: " + nNext);
 		return nNext;
 	}
 
@@ -209,6 +215,7 @@ public class TimeParser extends Analyzer {
 		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(EVERY)) {
 			isRecurringEveryWeek = true;
 			recurringPeriod = EVERY_WEEK;
+			LogHelper.info("Keyword 'every' found");
 			return 1;
 		}
 		return 0; //no "every"
@@ -286,25 +293,33 @@ public class TimeParser extends Analyzer {
 	protected static void caseIfCalendarBeforeOrEqualToCurrentTime()
 			throws InvalidInputException {
 		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) != 1) { 
+			LogHelper.info("Start time is before or equal to current time");
 			throw new InvalidInputException(ERROR_START_TIME);
 		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) != 1) {
+			LogHelper.info("End time is before or equal to current time");
 			throw new InvalidInputException(ERROR_END_TIME);
 		}
 	}
 
 	private static void caseIfStartTimeLaterThanOrEqualToEndTime() throws InvalidInputException {
-		if (startCalendar != null && endCalendar != null && isStartCalendarLaterThanOrEqualToEndCalendar()) {
+		if (doesStartAndEndCalendarExist() && isStartCalendarLaterThanOrEqualToEndCalendar()) {
+			LogHelper.info("Start time is later than or equal to end time");
 			throw new InvalidInputException(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME);
 		}
 	}
 
 	private static void caseIfStartAndEndCalendarShareOneDate() {
-		if (startCalendar != null && endCalendar != null 
-				&& !isEndDateSet && isStartCalendarLaterThanOrEqualToEndCalendar()) {
+		if (doesStartAndEndCalendarExist() && !isEndDateSet 
+				&& isStartCalendarLaterThanOrEqualToEndCalendar()) {
+			//e.g. 1/1/2100 5pm 6pm
 			endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
 			endCalendar.set(Calendar.MONTH, startCalendar.get(Calendar.MONTH));
 			endCalendar.set(Calendar.DATE, startCalendar.get(Calendar.DATE));
 		}
+	}
+
+	private static boolean doesStartAndEndCalendarExist() {
+		return startCalendar != null && endCalendar != null;
 	}
 
 	protected static void setStartCalendarAsNullIfNotSet() {
@@ -322,8 +337,10 @@ public class TimeParser extends Analyzer {
 	private static void setTime() {
 		if (!isEndTimeSet) {
 			setEndTime();
+			LogHelper.info("End time is set: " + endCalendar.getTime().toString());
 		} else if (!isStartTimeSet) {
 			setStartTime();
+			LogHelper.info("Start time is set: " + startCalendar.getTime().toString());
 		}
 	}
 
@@ -347,8 +364,10 @@ public class TimeParser extends Analyzer {
 		//if isStartTimeSet is true implies that the date is placed before the start time
 		if (!isEndDateSet && !isStartTimeSet) { 
 			setEndDate();
+			LogHelper.info("End date is set: " + endCalendar.getTime().toString());
 		} else if (!isStartDateSet) {
 			setStartDate();
+			LogHelper.info("Start date is set: " + startCalendar.getTime().toString());
 		}
 	}
 
@@ -427,6 +446,7 @@ public class TimeParser extends Analyzer {
 			try {
 				date = time12Format[i].parse(currStr);
 				setAnalyzedCalendarWithDateParsed(date);
+				LogHelper.info("'" + currStr + "'" + "is 12 hour format");
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -439,6 +459,7 @@ public class TimeParser extends Analyzer {
 			try {
 				date = time24Format[i].parse(currStr);
 				setAnalyzedCalendarWithDateParsed(date);
+				LogHelper.info("'" + currStr + "'" + "is 24 hour format");
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -453,6 +474,7 @@ public class TimeParser extends Analyzer {
 				setAnalyzedCalendarWithDateParsed(date);
 				parseInto4DigitsYearIf2DigitsYearIsGiven();
 				parseIntoCurrentYearIfNoYearInfoIsGiven();
+				LogHelper.info("'" + currStr + "'" + "is date format");
 				return true;
 			} catch (ParseException e) {}
 		}
@@ -484,6 +506,7 @@ public class TimeParser extends Analyzer {
 				try {
 					if (Integer.parseInt(strAfterRemovingAmOrPm) > 12 
 							&& Integer.parseInt(strAfterRemovingAmOrPm) < 100) {
+						LogHelper.info("'" + currStr + "'" + " is invalid hour format");
 						throw new ParseException(EMPTY, 0); //handle case e.g. 13pm to 99pm
 					}
 				}
@@ -523,7 +546,7 @@ public class TimeParser extends Analyzer {
 	}
 
 	protected static boolean isCaseTimedTask() {
-		return startCalendar != null && endCalendar != null;
+		return doesStartAndEndCalendarExist();
 	}
 
 	protected static boolean isCaseDeadlineTask() {
