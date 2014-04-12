@@ -281,4 +281,11 @@ public class Constants {
 		"update start date, start time and end date",
 		"update start date, start time, end date and end time"
 	};
+	
+	//@author A0105712U
+	// Main
+	public static final String CLC_LAUNCHED = "CLC launched.";
+	public static final String ALREADY_RUNNING = "Already running";
+	public static final String UNEXPECTED_ERROR = "Unexpected error";
+	public static final int PORT = 6327;
 }
