@@ -255,10 +255,58 @@ public class UpdateAnalyzerTest {
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		//case comma stick to the left info
+		Analyzer.analyze("update 1 1/1/2100 1159pm, 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
 		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		//case comma stick to the right info
+		Analyzer.analyze("update 1 1/1/2100 1159pm ,2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));
 
+		//update calendar with comma but contain redundant/invalid info
+		Analyzer.analyze("update 1 .1/1/2100 .1159pm , 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		Analyzer.analyze("update 1 1/1/2100 1159pm , .2/1/2100 .1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(12, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		assertEquals(null, time.get(1));
+		
+		Analyzer.analyze("update 1 .1/1/2100 .1159pm , .2/1/2100 .1159pm");
+
+		UpdateAnalyzer.analyze();
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(".1/1/2100 .1159pm , .2/1/2100 .1159pm", UpdateAnalyzer.getNewTaskName());
+		assertEquals(null, time.get(0));
+		assertEquals(null, time.get(1));
+		
 		/* 
 		 * without comma, user CANNOT
 		 * update start date only 
@@ -395,6 +443,19 @@ public class UpdateAnalyzerTest {
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));
+		
+		//update calendar without comma but contain redundant info
+		Analyzer.analyze("update 1 1/1/2100 cd123dfa1 1159pm 345 2/1/2100 abcde 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
 	}
 
 	@Test
