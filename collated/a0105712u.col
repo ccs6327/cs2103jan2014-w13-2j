@@ -126,6 +126,23 @@
 
 
 	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+	 */
+
+	// Main
+	public static final String CLC_LAUNCHED = "CLC launched.";
+	public static final String ALREADY_RUNNING = "Already running";
+	public static final String UNEXPECTED_ERROR = "Unexpected error";
+	public static final int PORT = 6327;
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+
+
+
+
+
+	/**
 	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\LogHelper.java
 	 */
 
@@ -349,6 +366,10 @@ public class LogHelper {
 	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
 	 */
 
+public class Add implements Command{
+	private Task task;
+	private ArrayList<Task> internalMem;
+	
 	public Add() {
 		internalMem = Storage.getInternalMem();
 	}
