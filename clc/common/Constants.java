@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
 public class Constants {
+	//@author A0105712U
 	public static final int TYPE_TIMED_TASK = 0;
 	public static final int TYPE_DEADLINE_TASK = 1; 
 	public static final int TYPE_FLOATING_TASK = 2;
@@ -61,7 +62,8 @@ public class Constants {
 	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
 	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
 	public static final String MESSAGE_UNHANDLED_COMMAND = "Unhandled command";
-
+	
+	//@author A0105749Y
 	//Display
 	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
 	public static final String MESSAGE_SHOW_INCOMPLETE_TASKS = "INCOMPLETE TASKS";
@@ -109,7 +111,7 @@ public class Constants {
     public final static String MESSAGE_SEARCH_FEEDBACK_SINGULAR = "The task containing '%s' has been displayed.";
     public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
     public static final String LOG_SEARCH_STARTED = "SEARCH Operating: Starting to sort events";
-    
+
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successfully.";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successfully.";
@@ -127,7 +129,7 @@ public class Constants {
     public static final String MESSAGE_UPDATE_TIME_ERROR = "UPDATE ERROR: The task's end  time [%2$s] \r\n"
     		+ "                                                  is before/equal \r\n"
     		+ "                                             start time [%1$s].\r\n\r\n=*=*=*=UPDATE UNSUCCESSFUL!=*=*=*=";
-    		
+    //@author A0112089J		
     //Help
 	public static final String DATE = "date";
 	public static final String HOTKEY = "hotkey";
@@ -136,7 +138,8 @@ public class Constants {
 	public static final int DEFAULT_REMINDER_INTERVAL = 15; //minutes
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
 	public static final String MESSAGE_REMIND_DEADLINE_TASKS = "%1$s, (ends at %2$s)";
-
+	
+	//@author A0105712U
 	// Export/Import
 	public static final String BACKSLASH = "\\";
 	public static final String MESSAGE_EXPORT = "Your calendar has been exported to %1$s";
@@ -180,6 +183,7 @@ public class Constants {
 	public static final String LOG_EXPORTED = "Exported to %1$s";
     public static final String LOG_IMPORTED = "Imported from %1$s";
     
+    //@author A0112089J
 	//Analyzer
 	public static final String EMPTY = "";
 	public static final String SLASH_R = "/r";
@@ -255,5 +259,22 @@ public class Constants {
 	public static final String ERROR_DISPLAY_WITH_RECCURING_TIME = "ERROR: Cannot display with reccuring time";
 	public static final String ERROR_CANNOT_UPDATE_TO_RECURRING_TASK = "ERROR: Cannot update to recurring task";
 	
-	
+	//Logging
+	public static final String[] CALENDAR_PROVIDED = {
+		"update end time only",
+		"update end date only",
+		"update end date and end time only",
+		"update start time only",
+		"update start time and end time only",
+		"update start time and end date only",
+		"update start time, end date and end time",
+		"update start date only",
+		"update start date and end time only",
+		"update start date and end date only",
+		"update start date, end date and end time",
+		"update start date and start time only",
+		"update start date, start time and end time",
+		"update start date, start time and end date",
+		"update start date, start time, end date and end time"
+	};
 }
