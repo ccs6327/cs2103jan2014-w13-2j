@@ -96,7 +96,6 @@ If you want to add a start time to a deadline task, leave the end date and end t
 --> e.g. update 1 23/9 9pm , 29/9 10pm
 ========================================================================= 
 
-
 If you want to add date and time to a floating task, start date and end date can be omitted if the date is today
 --> Enter: update [sequence no. of the task] [start date] [start time] , [end date] [end time]
 
@@ -107,3 +106,9 @@ If you want to add date and time to a floating task, start date and end date can
 2) make it into a deadline task 
 --> e.g. update 1 29/9 10pm
 --> e.g. update 1 , 29/9 10pm
+========================================================================= 
+
+If you want to update a task name that includes calendar keywords like "today" "tomorrow" "monday" "tuesday" etc.
+--> Enter: update [sequence no. of the task] '...'
+
+--> e.g. update 1 'watch the day after tomorrow'
