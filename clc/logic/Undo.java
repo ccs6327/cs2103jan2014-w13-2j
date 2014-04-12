@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Undo.java
+ * 
+ * This Undo class implements Command. Its instance executes undo command.
+ */
 package clc.logic;
 
 import static clc.common.Constants.*;

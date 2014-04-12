@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Exit.java
+ * 
+ * This Exit class implements Command. Its instance executes exit command.
+ */
 package clc.logic;
 
 import clc.common.LogHelper;

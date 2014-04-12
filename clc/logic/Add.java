@@ -2,7 +2,7 @@
  * Command Line Calendar (CLC)
  * 
  * Add.java
- * This Add class implements Command.
+ * This Add class implements Command. Its instance execute add command.
  */
 package clc.logic;
 
@@ -87,10 +87,8 @@ public class Add implements Command{
 	//@author A0105712U
 	private String formatDate(Calendar calendar) {
 		String date;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(ADD_DATE_FORMAT);
 		date = dateFormat.format(calendar.getTime());
-		date = date.replaceAll("AM", "am");
-		date = date.replaceAll("PM", "pm");
 		return date;
 	}
 }

@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Export.java
+ * 
+ * This Export class implements Command. Its instance executes export command.
+ */
 package clc.logic;
 
 import clc.storage.Storage;

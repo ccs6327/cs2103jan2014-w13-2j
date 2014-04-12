@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Redo.java
+ * 
+ * This Redo class implements Command. Its instance executes Redo command.
+ */
 package clc.logic;
 
 import static clc.common.Constants.*;
