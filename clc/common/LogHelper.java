@@ -10,11 +10,21 @@ import static clc.common.Constants.*;
 
 public class LogHelper {
 	
+	private static boolean isPrintedInConsole = true;
+	
+	public static void enablePrintInConsole() {
+		isPrintedInConsole = true;
+	}
+	
+	public static void disablePrintInConsole() {
+		isPrintedInConsole = false;
+	}
+	
 	public static void log(Level level, String message) {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -32,7 +42,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -50,7 +60,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -68,7 +78,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -86,7 +96,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -104,7 +114,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -122,7 +132,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -140,7 +150,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -158,7 +168,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
@@ -176,7 +186,7 @@ public class LogHelper {
 		try {
 			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
 			Logger logger = Logger.getLogger("log");
-			logger.setUseParentHandlers(false);
+			logger.setUseParentHandlers(isPrintedInConsole);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();  
 		    fileHandler.setFormatter(formatter);  
