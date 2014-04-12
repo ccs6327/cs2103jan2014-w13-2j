@@ -204,6 +204,7 @@ public class Storage {
 		}
 	}
 
+	//@author A0105749Y
 	/**
 	 * Read from the Help.txt and return to string
 	 * @param fileName The file name of help manual file
@@ -230,7 +231,8 @@ public class Storage {
 		}
 		return sb.toString();
 	}
-
+	
+    //@author A0105712U
 	public static ArrayList<Task> getInternalMem() {
 		return internalMem;
 	}

@@ -1,5 +1,10 @@
 package clc.logic;
 
+//@author A0105749Y
+/**
+ * This class is used to filter tasks by date, week, month or year
+ */
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,10 +15,10 @@ import static clc.common.Constants.*;
 
 public class Display implements Command {
     private StringBuilder feedback = new StringBuilder();
-    private String commandDetails = null;
     private String query;
-    private ArrayList<GregorianCalendar> time;
+    private String commandDetails = null;
     private Calendar startOfPeriod = null, endOfPeriod = null;
+    private ArrayList<GregorianCalendar> time;
 	private ArrayList<Task> internalMem;
 	private ArrayList<Integer> displayMem;
 	private ArrayList<Integer> internalMemCompleteTasks = new ArrayList<Integer>();
@@ -46,9 +51,9 @@ public class Display implements Command {
 		sortTasks();
 		
 		if(internalMem.isEmpty()) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback = feedback.append(MESSAGE_EMPTY_LIST);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else if (commandDetails!= null) {
 			
 			switch (commandDetails){
@@ -82,7 +87,7 @@ public class Display implements Command {
 	//display all tasks
 	private void displayAllTasks(){
 		DisplayOutput.add(MESSAGE_SHOW_ALL_TASKS);
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
@@ -90,18 +95,18 @@ public class Display implements Command {
 	    	displayMem.add(i - 1);
 	    }
 	    
-	    feedback.append("\n");
+	    feedback.append(NEW_LINE);
 	    printOutDisplay();
-	    feedback.append("\n");
+	    feedback.append(NEW_LINE);
 	    feedback.append(MESSAGE_DISPLAY);
-	    feedback.append("\n");
+	    feedback.append(NEW_LINE);
 	}
 	
 	//display incomplete tasks
 	private void displayIncompleteTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_INCOMPLETE_TASKS);
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 		
 		seprateTasksByCompletion();
 	    for (int i = 1; i<= internalMemIncompleteTasks.size(); i++){
@@ -112,22 +117,22 @@ public class Display implements Command {
 		    displayNo++;
 
 	    }
-	    feedback.append("\n");
+	    feedback.append(NEW_LINE);
 	    printOutDisplay();
 	    
 		// Process feedback
 		if (getDataAmount() > 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS_PLURAL);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else if (getDataAmount() == 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_INCOMPLETE_TASKS_SINGULAR);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_NO_INCOMPLETE_TASKS);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		}
         
 	}
@@ -136,7 +141,7 @@ public class Display implements Command {
 	private void displayFloatingTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_FLOATING_TASKS);
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
@@ -147,22 +152,22 @@ public class Display implements Command {
 	    	}
 	    }
 	    
-		feedback.append("\n");
+		feedback.append(NEW_LINE);
 		printOutDisplay();
 		
 		// Process feedback
 		if (getDataAmount() > 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS_PLURAL);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else if (getDataAmount() == 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_FLOATING_TASKS_SINGULAR);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_NO_FLOATING_TASKS);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		}
 	   
 	}
@@ -171,7 +176,7 @@ public class Display implements Command {
 	private void displayDeadlineTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_DEADLINE_TASKS);
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 		
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
@@ -182,22 +187,22 @@ public class Display implements Command {
 	    	}
 	    }
 	    
-		feedback.append("\n");
+		feedback.append(NEW_LINE);
 		printOutDisplay();
 		
 		// Process feedback
 		if (getDataAmount() > 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS_PLURAL);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else if (getDataAmount() == 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_DEADLINE_TASKS_SINGULAR);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_NO_DEADLINE_TASKS);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		}
 	   
 	}
@@ -206,7 +211,7 @@ public class Display implements Command {
 	private void displayTimedTasks(){
 		int displayNo = 1;
 		DisplayOutput.add(MESSAGE_SHOW_TIMED_TASKS);
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 
 	    for (int i = 1; i<= internalMem.size(); i++){
 	    	Task task = internalMem.get(i - 1);
@@ -217,22 +222,22 @@ public class Display implements Command {
 	    	}
 	    }
 	    
-		feedback.append("\n");
+		feedback.append(NEW_LINE);
 		printOutDisplay();
 		
 		// Process feedback
 		if (getDataAmount() > 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS_PLURAL);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else if (getDataAmount() == 1) {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_DISPLAY_TIMED_TASKS_SINGULAR);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		} else {
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			feedback.append(MESSAGE_NO_TIMED_TASKS);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 		}
 	}
 
@@ -243,34 +248,34 @@ public class Display implements Command {
 			//Process output
 			if(query != null){
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_QUERY, query));
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 			} else if (startOfPeriod == null){
 				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_BY_DEADLINE, endTime));
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 			} else {
 				String startTime = D_M_Y_DateFormatter.format(startOfPeriod.getTime());
 				String endTime = D_M_Y_DateFormatter.format(endOfPeriod.getTime());
 				DisplayOutput.add(String.format(MESSAGE_DISPLAY_TASKS_IN_PERIOD, startTime, endTime));
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 			}
 			goThroughTimePeriod(startOfPeriod, endOfPeriod);
-			feedback.append("\n");
+			feedback.append(NEW_LINE);
 			printOutDisplay();
 			
 			// Process feedback
 			if (getDataAmount() > 1) {
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 				feedback.append(MESSAGE_DISPLAY_IN_PERIOD_PLURAL);
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 			} else if (getDataAmount() == 1) {
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 				feedback.append(MESSAGE_DISPLAY_IN_PERIOD_SINGULAR);
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 			} else {
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 				feedback.append(MESSAGE_NO_TASKS_IN_PERIOD);
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 			}
 	
 	}
@@ -281,7 +286,7 @@ public class Display implements Command {
 			if (startOfPeriod!= null && isWithinADay(startOfPeriod , endOfPeriod)){
 				int displayNo = 1;
 				DisplayOutput.add(MESSAGE_INCOMPLETE_TASKS);
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				for (int i = 1; i <= internalMemIncompleteTasks.size(); i++) {
 					int taskNo =  internalMemIncompleteTasks.get(i - 1);
 					Task task = internalMem.get(taskNo);
@@ -293,9 +298,9 @@ public class Display implements Command {
 					    displayNo++;
 					}
 				}	
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				DisplayOutput.add(MESSAGE_COMPLETE_TASKS);
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				for (int i = 1; i <= internalMemCompleteTasks.size(); i++) {
 					int taskNo =  internalMemCompleteTasks.get(i - 1);
 					Task task = internalMem.get(taskNo);
@@ -310,7 +315,7 @@ public class Display implements Command {
 			} else {
 				int displayNo = 1;
 				DisplayOutput.add(MESSAGE_INCOMPLETE_TASKS);
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				for (int i = 1; i <= internalMemIncompleteTasks.size(); i++) {
 					int taskNo =  internalMemIncompleteTasks.get(i - 1);
 					Task task = internalMem.get(taskNo);
@@ -322,9 +327,9 @@ public class Display implements Command {
 					    displayNo++;
 					}
 				}	
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				DisplayOutput.add(MESSAGE_COMPLETE_TASKS);
-				DisplayOutput.add(ANOTHER_LINE);
+				DisplayOutput.add(EMPTY_STRING);
 				for (int i = 1; i <= internalMemCompleteTasks.size(); i++) {
 					int taskNo =  internalMemCompleteTasks.get(i - 1);
 					Task task = internalMem.get(taskNo);
@@ -373,11 +378,20 @@ public class Display implements Command {
 			}
 		}
 		
-		// Check whether the data which can be processed is empty
-		//protected boolean isDataEmpty() {
-		//	return displayMem.isEmpty();
-		//}
+		private void seprateTasksByCompletion() {
+			internalMemCompleteTasks.clear();
+			internalMemIncompleteTasks.clear();
+			for(int i=1; i<=internalMem.size(); i++){
+			    	Task task = internalMem.get(i - 1);
+			    	if (!task.getIsDone()){
+			    		internalMemIncompleteTasks.add(i-1);
+			    	} else {
+			    		internalMemCompleteTasks.add(i-1);
+			    	}
+			}
+		}
 		
+		// Check whether the data which can be processed is empty
 		protected int getDataAmount() {
 			return displayMem.size();
 		}
@@ -394,23 +408,11 @@ public class Display implements Command {
 			Collections.sort(internalMem, new  TaskComparator());
 		}
 		
-		protected void seprateTasksByCompletion() {
-			internalMemCompleteTasks.clear();
-			internalMemIncompleteTasks.clear();
-			for(int i=1; i<=internalMem.size(); i++){
-			    	Task task = internalMem.get(i - 1);
-			    	if (!task.getIsDone()){
-			    		internalMemIncompleteTasks.add(i-1);
-			    	} else {
-			    		internalMemCompleteTasks.add(i-1);
-			    	}
-			}
-		}
 		
-		private void printOutDisplay(){
+		protected void printOutDisplay(){
 			for (int i = 0; i < DisplayOutput.size(); i++) {
 				feedback.append(DisplayOutput.get(i));
-				feedback.append("\n");
+				feedback.append(NEW_LINE);
 				//System.out.println(DisplayOutput.get(i));
 			}
 		}
