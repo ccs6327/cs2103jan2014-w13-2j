@@ -26,8 +26,10 @@ public class Unmark implements Command {
 
 	@Override
 	public String execute() {
+		assert taskSeqNo != null; 
 		boolean isChanged = unmarkTasks();
 		updateHistoryAndDatabaseIfChanged(isChanged);
+		assert feedback != null;
 		return feedback.toString().trim();
 	}
 

@@ -25,6 +25,8 @@ public class Delete implements Command {
 	
 	@Override
 	public String execute() {
+		assert taskSeqNo != null; 
+		
 		StringBuilder feedback = new StringBuilder();
 		boolean isChanged = false;
 
@@ -37,6 +39,9 @@ public class Delete implements Command {
 		//after delete function displayMem is different
 		//displayMem must be cleared otherwise delete function can still be function after first deletion
 		displayMem.clear();
+		
+		assert feedback != null;
+		
 		return feedback.toString();
 	}
 

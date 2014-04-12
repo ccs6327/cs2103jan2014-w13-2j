@@ -58,7 +58,6 @@ import static clc.common.Constants.TYPE_SEARCH;
 
 
 public class UserInterface {
-	//private GUI gui = new GUI();
 	private static String input;
 	private static Timer timer;
 	public UserInterface() {}

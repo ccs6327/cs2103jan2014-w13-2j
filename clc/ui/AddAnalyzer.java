@@ -163,6 +163,14 @@ public class AddAnalyzer extends TimeParser {
 		caseIfReminderNeeded();
 		caseIfRecurringTask();
 	}
+	
+	private static boolean isCaseTimedTask() {
+		return doesStartAndEndCalendarExist();
+	}
+
+	private static boolean isCaseDeadlineTask() {
+		return startCalendar == null && endCalendar != null;
+	}
 
 	private static void caseIfReminderNeeded() {
 		if (isReminderNeeded) {

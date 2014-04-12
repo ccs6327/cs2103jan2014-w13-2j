@@ -59,7 +59,7 @@ public class TimeParser extends Analyzer {
 	private static boolean doesContainAmOrPm;
 	private static boolean isDate, isKeywordDate, isTime, isMondayToSunday;
 	protected static GregorianCalendar startCalendar, endCalendar;
-	protected static String[] infoToBeProcessed = null;
+	protected static String[] infoToBeProcessed;
 	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
 	protected static int startCalendarIndex, endCalendarIndex;
 	protected static boolean isRecurringEveryWeek, isRecurringEveryday;
@@ -265,7 +265,7 @@ public class TimeParser extends Analyzer {
 		//Time24Format does not contains time format that is represented by more than one String
 	}
 
-	public static void parseCalendarAndSetAnalyzedCalendar(String currStr) 
+	private static void parseCalendarAndSetAnalyzedCalendar(String currStr) 
 			throws ParseException, InvalidInputException {
 		doesContainAmOrPm = false;
 		isMondayToSunday = false;
@@ -284,7 +284,7 @@ public class TimeParser extends Analyzer {
 		throwParseExceptionIfFailsAllParsing();
 	}
 
-	protected static void setCalendar() {
+	private static void setCalendar() {
 		if (isDate || isKeywordDate) {
 			setDate();
 		} else if (isTime) {
@@ -292,7 +292,7 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	protected static void caseIfCalendarBeforeOrEqualToCurrentTime()
+	private static void caseIfCalendarBeforeOrEqualToCurrentTime()
 			throws InvalidInputException {
 		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) != 1) { 
 			LogHelper.info("Start time is before or equal to current time");
@@ -320,7 +320,7 @@ public class TimeParser extends Analyzer {
 		}
 	}
 
-	private static boolean doesStartAndEndCalendarExist() {
+	protected static boolean doesStartAndEndCalendarExist() {
 		return startCalendar != null && endCalendar != null;
 	}
 
@@ -545,14 +545,6 @@ public class TimeParser extends Analyzer {
 		processCalendarInfo();
 		return isStartDateSet || isStartTimeSet 
 				|| isEndDateSet || isEndTimeSet;
-	}
-
-	protected static boolean isCaseTimedTask() {
-		return doesStartAndEndCalendarExist();
-	}
-
-	protected static boolean isCaseDeadlineTask() {
-		return startCalendar == null && endCalendar != null;
 	}
 
 	private static boolean isToday(String currStr) {
