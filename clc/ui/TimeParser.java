@@ -1,3 +1,5 @@
+//@author A0112089J
+
 package clc.ui;
 
 import java.text.ParseException;
@@ -446,7 +448,7 @@ public class TimeParser extends Analyzer {
 			try {
 				date = time12Format[i].parse(currStr);
 				setAnalyzedCalendarWithDateParsed(date);
-				LogHelper.info("'" + currStr + "'" + "is 12 hour format");
+				LogHelper.info("'" + currStr + "'" + " is 12 hour format");
 				return true;
 			} catch (ParseException e) {}
 		}

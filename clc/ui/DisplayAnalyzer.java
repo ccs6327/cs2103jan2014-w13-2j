@@ -1,4 +1,4 @@
-//author A0112089J
+//@author A0112089J
 
 package clc.ui;
 
@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 
 public class DisplayAnalyzer extends TimeParser{
 	private static boolean isCaseDisplayCalendar; //display Calendar with date format
@@ -88,8 +89,10 @@ public class DisplayAnalyzer extends TimeParser{
 	private static void retrieveLastAndLastTwoWordsIfAvailable() {
 		if (infoToBeProcessed.length >= 1) {
 			lastWord = infoToBeProcessed[infoToBeProcessed.length - 1];
+			LogHelper.info("Last word: " + lastWord);
 			if (infoToBeProcessed.length >= 2) {
 				lastTwoWords = infoToBeProcessed[infoToBeProcessed.length - 2] + SPACE + lastWord;
+				LogHelper.info("Last two words: " + lastTwoWords);
 			}
 		}
 	}
@@ -156,7 +159,9 @@ public class DisplayAnalyzer extends TimeParser{
 		for (int i = 0; i < toBeAnalyzedLength; i ++) {
 			if (infoToBeProcessed[i].equalsIgnoreCase(NEXT)) {
 				nNext ++;
+				LogHelper.info("Keyword 'next' found: " + nNext);
 				commandDetails = NEXT + SPACE + commandDetails;
+				LogHelper.info("Set to display " + commandDetails);
 			} else {
 				isCaseKeywordCalendar = false;
 				return 0;
@@ -191,6 +196,7 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as 12am, end time as the end of today
 		startCalendar = new GregorianCalendar(year, month, date);
 		endCalendar = new GregorianCalendar(year, month, ++date);
+		LogHelper.info("Set to display today's tasks");
 	}
 
 	private static void setTomorrow() {
@@ -198,6 +204,7 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as tomorrow 0000, end time as the end of the day
 		startCalendar = new GregorianCalendar(year, month, ++date);
 		endCalendar = new GregorianCalendar(year, month, ++date);
+		LogHelper.info("Set to display tomorrow's tasks");
 	}
 
 	private static void setMonday() {
@@ -206,6 +213,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.MONDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Monday's tasks");
 	}
 
 	private static void setTuesday() {
@@ -214,6 +222,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.TUESDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Tuesday's tasks");
 	}
 
 	private static void setWednesday() {
@@ -222,6 +231,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.WEDNESDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Wednesday's tasks");
 	}
 
 	private static void setThursday() {
@@ -230,6 +240,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.THURSDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Thursday's tasks");
 	}
 
 	private static void setFriday() {
@@ -238,6 +249,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.FRIDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Friday's tasks");
 	}
 
 	private static void setSaturday() {
@@ -246,6 +258,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.SATURDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Saturday's tasks");
 	}
 
 	private static void setSunday() {
@@ -254,6 +267,7 @@ public class DisplayAnalyzer extends TimeParser{
 		int addValue = (Calendar.SUNDAY - dayOfWeek + 7) % 7;
 		startCalendar = new GregorianCalendar(year, month, date + addValue);
 		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Sunday's tasks");
 	}
 
 	private static void setThisWeek() {
@@ -264,6 +278,7 @@ public class DisplayAnalyzer extends TimeParser{
 		endCalendar = new GregorianCalendar(year, month, date);
 		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
 		endCalendar.add(Calendar.DATE, addValue);
+		LogHelper.info("Set to display this week's tasks");
 	}
 
 	private static void setNextWeek() {
@@ -276,6 +291,7 @@ public class DisplayAnalyzer extends TimeParser{
 		startCalendar.add(Calendar.DATE, addValue);
 		addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
 		endCalendar.add(Calendar.DATE, addValue);
+		LogHelper.info("Set to display next week's tasks");
 	}
 
 	private static void setThisMonth() {
@@ -283,6 +299,7 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as now, end time as the end of the month
 		startCalendar = new GregorianCalendar(year, month, 1);
 		endCalendar = new GregorianCalendar(year, ++month, 1);
+		LogHelper.info("Set to display this month's tasks");
 	}
 
 	private static void setNextMonth() {
@@ -290,6 +307,7 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as the beginning of next month, end time as the end of next month
 		startCalendar = new GregorianCalendar(year, ++month, 1);
 		endCalendar = new GregorianCalendar(year, ++month, 1);
+		LogHelper.info("Set to display next month's tasks");
 	}
 
 	private static boolean isCaseDisplayToday() {

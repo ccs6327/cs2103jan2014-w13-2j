@@ -1,3 +1,5 @@
+//@author A0112089J
+
 package clc.ui;
 
 import static clc.common.Constants.ERROR_CANNOT_UPDATE_TO_RECURRING_TASK;
@@ -7,10 +9,12 @@ import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.QUOTATION_MARK;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
 import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
+import static clc.common.Constants.CALENDAR_PROVIDED;
 
 import java.util.GregorianCalendar;
 
 import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 
 public class UpdateAnalyzer extends TimeParser {
 	private static boolean isCaseUpdateCalendar, isCaseQuotedTaskName;
@@ -56,6 +60,7 @@ public class UpdateAnalyzer extends TimeParser {
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
 		}
+		LogHelper.info("Update case: " + CALENDAR_PROVIDED[calendarProvided - 1]);
 	}
 
 	private static void checkIfQuotedTaskName() {
@@ -63,6 +68,7 @@ public class UpdateAnalyzer extends TimeParser {
 			isCaseQuotedTaskName = true;
 			//trim away quotation mark
 			commandDetails = commandDetails.substring(1, commandDetails.length() - 1);
+			LogHelper.info("New quoted task name: " + commandDetails);
 		}
 	}
 
@@ -73,6 +79,7 @@ public class UpdateAnalyzer extends TimeParser {
 
 	private static void throwExceptionIfNoSeqNumberProvided() throws InvalidInputException {
 		if (!isNumeric(getFirstWord(commandDetails))) {
+			LogHelper.info("No sequence number is indicated");
 			throw new InvalidInputException(ERROR_NO_SEQUENCE_NUMBER);
 		} else {
 			seqNo = Integer.parseInt(getFirstWord(commandDetails));
@@ -100,6 +107,7 @@ public class UpdateAnalyzer extends TimeParser {
 
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
+			LogHelper.info("New start calendar: " + tempStartCalendar.getTime().toString());
 		}
 	}
 
@@ -142,6 +150,7 @@ public class UpdateAnalyzer extends TimeParser {
 
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
+			LogHelper.info("New end calendar: " + endCalendar.getTime().toString());
 		}
 	}
 
