@@ -25,7 +25,7 @@ public class Storage {
 	private static File dataFile;
 	private static ArrayList<Task> internalMem = new ArrayList<Task>();
 	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
-
+	//@author A0105749Y
 	/**
 	 * Create the data file if it does not exist. 
 	 * Otherwise read in the content from the data file.
@@ -52,7 +52,8 @@ public class Storage {
 		
 		assert dataFile.exists();
 	}
-
+	
+	//@author A0105712U
 	/**
 	 * Read from the data file and store them into the internal memory
 	 * @param path The location of the file to be read
@@ -125,7 +126,7 @@ public class Storage {
 
 			bf.close();
 		} catch (IOException e) {
-
+			LogHelper.severe(e.getMessage());
 		}
 
 	}
@@ -268,7 +269,6 @@ public class Storage {
 			LogHelper.warning(e.getMessage());
 			return MESSAGE_EXPORT_FAILED;
 		}
-		LogHelper.info(String.format(LOG_EXPORTED, path));
 		return MESSAGE_EXPORT;
 	}
 
@@ -277,6 +277,7 @@ public class Storage {
 		File destinationDirectory = new File(path);
 		Files.createDirectories(destinationDirectory.toPath());
 		Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
+		LogHelper.info(String.format(LOG_EXPORTED, destination.getPath()));
 	}
 
 	/**
@@ -290,10 +291,12 @@ public class Storage {
 			Files.copy(origin.toPath(), dataFile.toPath(), REPLACE_EXISTING);
 			History.addNewVersion();
 		} catch (Exception e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_IMPORT_NO_ACCESS;
 		} 
 		internalMem.clear();
 		readContentFromFile(OUTFILE);
+		LogHelper.info(String.format(LOG_IMPORTED, path));
 		return MESSAGE_IMPORT;
 	}
 }
