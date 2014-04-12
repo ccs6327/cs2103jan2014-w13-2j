@@ -60,6 +60,7 @@ public class Constants {
 	public static final String MESSAGE_REDONE = "Last command has been redone.";
 	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
 	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
+	public static final String MESSAGE_UNHANDLED_COMMAND = "Unhandled command";
 
 	//Display
 	public static final String ANOTHER_LINE = "";
@@ -163,6 +164,7 @@ public class Constants {
 	public static final String DATE_HELP_FILE = "dateHelp.clc";
 	public static final String HOTKEY_HELP_FILE = "hotkeyHelp.clc";
 	public static final String LOG_FILE = "clc.log";
+	public static final String LOG_EXIT = "CLC exited";
 
 	// Storage
 	public static final int IS_DONE = 1;
@@ -171,6 +173,7 @@ public class Constants {
 	public static final int IS_REMINDER_NOT_NEEDED = 0;
 	public static final String LOG_DATA_FILE_CREATED = "Database %1$s created";
 	public static final String LOG_DATA_FILE_READ = "Database %1$s accessed";
+	public static final String LOG_DATA_FILE_WRITTEN = "Database %1$s written";
 	public static final String LOG_EXPORTED = "Exported to %1$s";
 	public static final String LOG_IMPORTED = "Imported from %1$s";
 	
