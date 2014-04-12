@@ -6,7 +6,7 @@ import static clc.common.Constants.*;
 
 public class Task {
 	
-	
+	//@author A0105712U
 	private String taskName;
     private String taskToString;
 	private String taskTypeToString;

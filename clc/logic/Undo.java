@@ -1,9 +1,11 @@
+//@author A0105712U
 package clc.logic;
 
 import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 
+import clc.common.LogHelper;
 import clc.storage.History;
 import clc.storage.Storage;
 
@@ -27,9 +29,11 @@ public class Undo implements Command {
 			Storage.setDisplayMem(displayMem);
 			currentVersion = History.decreaseCurrentVersion();
 		} catch (Exception exception) {
+			LogHelper.info(MESSAGE_UNDONE_FAILED);
 			return MESSAGE_UNDONE_FAILED;
 		}
 		
+		LogHelper.info(MESSAGE_UNDONE);
 		return MESSAGE_UNDONE;
 	}
 
