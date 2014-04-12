@@ -1,9 +1,11 @@
+//@author A0105712U
 package clc.logic;
 
 import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 
+import clc.common.LogHelper;
 import clc.storage.Storage;
 import clc.storage.History;
 
@@ -22,9 +24,11 @@ public class Redo implements Command {
 			Storage.writeContentIntoFile();
 			currentVersion = History.increaseCurrentVersion();
 		} catch (Exception exception) {
+			LogHelper.info(MESSAGE_REDONE_FAILED);
 			return MESSAGE_REDONE_FAILED;
 		}
 		
+		LogHelper.info(MESSAGE_REDONE);
 		return MESSAGE_REDONE;
 	}
 
