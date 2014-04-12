@@ -6,12 +6,26 @@ package clc.logic;
  * 
  */
 
-import static clc.common.Constants.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import static clc.common.Constants.MESSAGE_TASK_NAME_UPDATED_SUCCESS; 
+import static clc.common.Constants.MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS;
+import static clc.common.Constants.MESSAGE_TASK_TYPE_CHANGED;
+import static clc.common.Constants.MESSAGE_NO_TASK_TO_UPDATE;
+import static clc.common.Constants.MESSAGE_INEXISTANCE_SEQNO;
+import static clc.common.Constants.MESSAGE_NO_CHANGE;
+import static clc.common.Constants.TYPE_FLOATING_TASK;
+import static clc.common.Constants.TYPE_DEADLINE_TASK;
+import static clc.common.Constants.TYPE_TIMED_TASK;
+import static clc.common.Constants.MESSAGE_FLOATING_TASK_UPDATED_ERROR;
+import static clc.common.Constants.MESSAGE_UPDATE_TIME_ERROR;
+import static clc.common.Constants.NEWLINE;
+import static clc.common.Constants.D_M_Y_DateFormatter;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 import clc.storage.History;
 import clc.storage.Storage;
 
@@ -21,6 +35,7 @@ public class Update implements Command {
     private int seqNo;
     private int caseCalendarProvided;
     private Task task; 
+    private Task taskCopy;
     private String newTaskName = null;
     private StringBuilder feedback = new StringBuilder();
     private ArrayList<GregorianCalendar> time;
@@ -56,9 +71,18 @@ public class Update implements Command {
 		} else {
 			int internalSeqNo = displayMem.get(seqNo - 1);
 			task = internalMem.get(internalSeqNo);
-            updateTask();
+			taskCopy = task.getNewCopy();
+			
+		    try {    
+			    updateTask();
+				taskIfStartTimeLaterThanOrEqualToEndTime(task);
+				
+			} catch (InvalidInputException iie) {
+	            internalMem.set(internalSeqNo, taskCopy);
+				return iie.getMessage();
+			}
             
-            //have a backup for undo
+            //have a backup for undo operation
     		History.addNewVersion();
     		Storage.writeContentIntoFile();
 		}
@@ -67,7 +91,7 @@ public class Update implements Command {
 		return feedback.toString();
 	}
 	
-	private void updateTask(){
+	private void updateTask() throws InvalidInputException{
 		
 		String taskName = task.getTaskName();
 		int taskOldType = task.getTaskType();
@@ -77,10 +101,6 @@ public class Update implements Command {
 		
 		Calendar updateTime = null;
 		Calendar floatingTaskStartTime = null;
-		
-		//for checking start time >= end time
-		Calendar startTimeForChecking = null;
-		Calendar endTimeForChecking = null;
 		
 		//update name
 		if (isUpdatedNameCase(newTaskName)){
@@ -104,11 +124,8 @@ public class Update implements Command {
 				    task.setStartTime(updateTime);
 				    caseCalendarProvided -= 4;
 				}
-				taskName = task.getTaskName();
 				//process feedback
-				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-				feedback.append(NEWLINE);
+				appendTaskStartTimeUpdatedMessage(feedback, task, seqNo);
 				
 			} else if (taskOldType == TYPE_DEADLINE_TASK){//for deadline task
 				task.setStartTime(newStartTime);
@@ -117,34 +134,26 @@ public class Update implements Command {
 				caseCalendarProvided %= 4;
 				
 				//process feedback
-				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-				feedback.append(NEWLINE);
+				appendTaskStartTimeUpdatedMessage(feedback, task, seqNo);
 
 				
 			} else {//for floating task
 				if(newEndTime != null){
 					task.setStartTime(newStartTime);
 					updateTime = task.getStartTime();
-					//task.setTaskType(TYPE_DEADLINE_TASK);
 					
 					//process feedback
-					String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-					feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
-					feedback.append(NEWLINE);
+					appendTaskStartTimeUpdatedMessage(feedback, task, seqNo);
+					
 				} else {
-					
-					//process feedback
-					feedback.append(MESSAGE_ERROR_UPDATE_FLOATING);
-					feedback.append(NEWLINE);
+					LogHelper.warning("user updates floating task's start time only");
+					throw new InvalidInputException(MESSAGE_FLOATING_TASK_UPDATED_ERROR);
 				}
 			}
 			
 		}
 		
 		//update end time
-		//System.out.println(newEndTime.getTime());
-        //System.out.println(caseCalendarProvided);
 		if (isUpdatedEndTimeCase(newEndTime)) {
 			if (taskOldType == TYPE_FLOATING_TASK){//for floating task
 				floatingTaskStartTime = task.getStartTime();
@@ -153,22 +162,11 @@ public class Update implements Command {
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_DEADLINE_TASK);
 					
-					//process feedback
-					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-					feedback.append(NEWLINE);
-
 					
 				} else {
 					task.setEndTime(newEndTime);
 					updateTime = task.getEndTime();
 					task.setTaskType(TYPE_TIMED_TASK);
-					
-					//process feedback
-					String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-					feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-					feedback.append(NEWLINE);
-					
 				}
 			} else { // for deadline & timed task
 				
@@ -185,39 +183,16 @@ public class Update implements Command {
 					updateTime = updateNewTime(updateTime, newEndTime);
 				    task.setEndTime(updateTime);
 				}
-				
-				// process feedback
-				taskName = task.getTaskName();
-				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-				//System.out.println(endTime);
-				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-				feedback.append(NEWLINE);
 			}
+			// process feedback
+			appendTaskEndTimeUpdatedMessage(feedback, task, seqNo);
 		} 
-		
+
 		//check if task type changed
 		int taskNewType = task.getTaskType();
 		String taskNewTypeString = task.taskTypeToString();
 		if(isTaskTypeChanged(taskOldType, taskNewType)){
-			appendTaskTypeChangedMessage(feedback, seqNo, taskName, taskOldTypeString, taskNewTypeString);
-		}
-		
-        //check if startTime before endTime
-		startTimeForChecking = task.getStartTime();
-		endTimeForChecking = task.getEndTime();
-		
-		if (isStartTimeLaterThanEndTime(startTimeForChecking, endTimeForChecking)) {
-			
-			String startTimeC = D_M_Y_DateFormatter.format(startTimeForChecking.getTime());
-			String endTimeC = D_M_Y_DateFormatter.format(endTimeForChecking.getTime());
-			
-			task.setStartTime(taskOldStartTime);
-			task.setEndTime(taskOldEndTime);
-			task.setTaskType(taskOldType);
-			
-			feedback.append(NEWLINE);
-			feedback.append(String.format(MESSAGE_UPDATE_TIME_ERROR, startTimeC, endTimeC));
-			feedback.append(NEWLINE);
+			LogHelper.warning(String.format(MESSAGE_TASK_TYPE_CHANGED, seqNo ,taskName, taskOldTypeString, taskNewTypeString));
 		}
 		
 		//check if nothing changes
@@ -251,19 +226,35 @@ public class Update implements Command {
 		feedback.append(NEWLINE);
 	}
 	
-	private void appendTaskTypeChangedMessage(StringBuilder feedback, int seqNo, String taskName, String taskOldType, String taskNewType) {
-		feedback.append(NEWLINE);
-		feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, seqNo ,taskName, taskOldType, taskNewType));
-		feedback.append(NEWLINE);
-	}
-	
 	private void appendTaskUpdatedNewNameMessage(StringBuilder feedback, String taskOldName, String taskNewName) {
 	       feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskOldName, taskNewName));
            feedback.append(NEWLINE);
 	}
 	
-
-	// Check whether the data which can be processed is empty
+	private void appendTaskStartTimeUpdatedMessage(StringBuilder feedback,Task task, int seqNo){
+		String taskName = task.getTaskName();
+		String startTime = D_M_Y_DateFormatter.format(task.getStartTime().getTime());
+		feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
+		feedback.append(NEWLINE);
+	}
+	
+	private void appendTaskEndTimeUpdatedMessage(StringBuilder feedback,Task task, int seqNo){
+		String taskName = task.getTaskName();
+		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
+		feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
+		feedback.append(NEWLINE);
+	}
+    
+    // check if task start time is later or equal than task end time, throw error message
+	private static void taskIfStartTimeLaterThanOrEqualToEndTime(Task task) throws InvalidInputException {
+		Calendar startTime = task.getStartTime();
+		Calendar endTime = task.getEndTime();
+		if (startTime != null && startTime.compareTo(endTime) >= 0) {
+			LogHelper.warning("Start time is later than or equal to end time");
+			throw new InvalidInputException(MESSAGE_UPDATE_TIME_ERROR);
+		}
+	}
+	
 	private boolean isDataEmpty() {
 		return displayMem.isEmpty();
 	}
@@ -272,9 +263,6 @@ public class Update implements Command {
 		return seqNo > displayMem.size();
 	}
 	
-	private boolean isStartTimeLaterThanEndTime(Calendar startTime, Calendar endTime) {
-		return startTime != null && startTime.compareTo(endTime) >= 0;
-	}
 	
 	private boolean isTaskTypeChanged(int taskOldType, int taskNewType) {
 		return taskOldType != taskNewType;
