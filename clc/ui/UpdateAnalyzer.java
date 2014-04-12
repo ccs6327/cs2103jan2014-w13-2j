@@ -5,6 +5,8 @@ package clc.ui;
 import static clc.common.Constants.ERROR_CANNOT_UPDATE_TO_RECURRING_TASK;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.COMMA;
+import static clc.common.Constants.CHAR_SPACE;
+import static clc.common.Constants.CHAR_COMMA;
 import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.QUOTATION_MARK;
 import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
@@ -31,6 +33,7 @@ public class UpdateAnalyzer extends TimeParser {
 		throwExceptionIfEmptyCommandDetails();
 		throwExceptionIfNoSeqNumberProvided();
 		checkIfQuotedTaskName();
+		addSpaceToCommaIfNotQuotedTaskName();
 
 		isCaseQuotedTaskName = false;
 		calendarProvided = 0;
@@ -45,12 +48,51 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
+	private static void addSpaceToCommaIfNotQuotedTaskName() {
+		if (commandDetails.contains(COMMA)) {
+			int indexOfFirstComma = commandDetails.indexOf(COMMA);
+			int indexOfLastComma = commandDetails.lastIndexOf(COMMA);
+			indexOfLastComma = findCommaAndAddSpaces(indexOfFirstComma,
+														indexOfLastComma);
+		}
+	}
+
+	private static int findCommaAndAddSpaces(int indexOfFirstComma,
+			int indexOfLastComma) {
+		for (int i = indexOfFirstComma; i <= indexOfLastComma; i ++) {
+			if (commandDetails.charAt(i) == CHAR_COMMA) {
+				i = addSpaceToTheFrontOfCommaIfNotSpace(i);
+				indexOfLastComma += addSpaceToTheBackOfCommaIfNotSpace(i);
+			}
+		}
+		return indexOfLastComma;
+	}
+
+	private static int addSpaceToTheBackOfCommaIfNotSpace(int i) {
+		if (i + 1 < commandDetails.length() 
+				&& commandDetails.charAt(i + 1) != CHAR_SPACE) {
+			commandDetails = commandDetails.substring(0, i + 1) + SPACE
+					+ commandDetails.substring(i + 1, commandDetails.length());
+			return 1;
+		}
+		return 0;
+	}
+
+	private static int addSpaceToTheFrontOfCommaIfNotSpace(int i) {
+		if (i - 1 >= 0 && commandDetails.charAt(i - 1) != ' ') {
+			commandDetails = commandDetails.substring(0, i) + SPACE
+					+ commandDetails.substring(i, commandDetails.length());
+			i ++;
+		}
+		return i;
+	}
+
 	private static void setCalendarInfoForUpdate() throws InvalidInputException {
 		if (commandDetails.contains(COMMA)) {
 			int indexOfComma = findIndexOfComma();
 			analyzeUpdateStartTime(indexOfComma);
 			analyzeUpdateEndTime(indexOfComma);
-			
+
 			//comma case parse two string separately 
 			//tempStartCalendar is required to store the startCalendar 
 			startCalendar = tempStartCalendar;
@@ -88,18 +130,18 @@ public class UpdateAnalyzer extends TimeParser {
 	}
 
 	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
-		
-		if (doesContainCalendarInfoBeforeComma(indexOfComma)) {
+
+		if (doesContainInfoBeforeComma(indexOfComma)) {
 			setStartTimeInfo(indexOfComma);
 			processCalendarInfo();
-			
+
 			throwExceptionIfUpdateWithRecurringTime();
-			
+
 			//TimeParser parse calendar information from the back
 			//therefore, have to set separately
 			setIsStartDateTrueIfDateIsSet();
 			setIsStartTimeTrueIfTimeIsSet();
-			
+
 			// as processCalendarInfo will set the time to endTime
 			// so we have to swap the value
 			tempStartCalendar = endCalendar;
@@ -107,7 +149,9 @@ public class UpdateAnalyzer extends TimeParser {
 
 			determineIfStartDateIsProvided();
 			determineIfStartTimeIsProvided();
-			LogHelper.info("New start calendar: " + tempStartCalendar.getTime().toString());
+			if (tempStartCalendar != null) {
+				LogHelper.info("New start calendar: " + tempStartCalendar.getTime().toString());
+			}
 		}
 	}
 
@@ -138,19 +182,21 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
-	private static boolean doesContainCalendarInfoBeforeComma(int indexOfComma) {
+	private static boolean doesContainInfoBeforeComma(int indexOfComma) {
 		return indexOfComma > 0;
 	}
 
 	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
-		if (doesContainCalendarInfoAfterComma(indexOfComma)) {
+		if (doesContainInfoAfterComma(indexOfComma)) {
 			setEndTimeInfo(indexOfComma);
-			
+
 			processCalendarInfo();
 
 			determineIfEndDateIsProvided();
 			determineIfEndTimeIsProvided();
-			LogHelper.info("New end calendar: " + endCalendar.getTime().toString());
+			if (endCalendar != null) {
+				LogHelper.info("New end calendar: " + endCalendar.getTime().toString());
+			}
 		}
 	}
 
@@ -163,7 +209,7 @@ public class UpdateAnalyzer extends TimeParser {
 		}
 	}
 
-	private static boolean doesContainCalendarInfoAfterComma(int indexOfComma) {
+	private static boolean doesContainInfoAfterComma(int indexOfComma) {
 		return tempInfo.length != indexOfComma + 1;
 	}
 
@@ -185,7 +231,7 @@ public class UpdateAnalyzer extends TimeParser {
 	 * case 14: update start date, start time and end date
 	 * case 15: update start date, start time, end date and end time
 	 */
-	
+
 	private static void determineIfStartDateIsProvided() {
 		if (isStartDateSet) {
 			calendarProvided += 8;
@@ -241,14 +287,14 @@ public class UpdateAnalyzer extends TimeParser {
 	protected static int getCalendarProvidedCase() {
 		return calendarProvided;
 	}
-	
+
 	//Override TimeParser methods
 	protected static boolean doesContainTimeInfo() throws InvalidInputException {
 		processCalendarInfo();
 		return isStartDateSet || isStartTimeSet 
 				|| isEndDateSet || isEndTimeSet;
 	}
-	
+
 	protected static void processCalendarInfo() throws InvalidInputException {
 		initializeVariable();
 		analyzeAndSetCalendar();
