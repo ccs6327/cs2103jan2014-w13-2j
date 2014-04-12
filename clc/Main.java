@@ -9,10 +9,12 @@ import clc.common.LogHelper;
 import clc.storage.Storage;
 import clc.ui.UserInterface;
 
+import static clc.common.Constants.*;
+
 public class Main {
 	
 	public static void main(String[] args) { 
-		LogHelper.info("CLC launched.");
+		LogHelper.info(CLC_LAUNCHED);
 		checkIfRunning();
 		UserInterface userInterface = new UserInterface();
 		Storage.initializeDataFile();
@@ -22,14 +24,14 @@ public class Main {
 	private static void checkIfRunning() {
 		try { 
 			//if the socket is used by other application, software cannot be launched
-			new ServerSocket(6327);
+			new ServerSocket(PORT);
 		}
 		catch (BindException e) {
-			LogHelper.warning("Already running");
+			LogHelper.warning(ALREADY_RUNNING);
 			System.exit(1);
 		}
 		catch (IOException e) {
-			LogHelper.warning("Unexpected error");
+			LogHelper.warning(UNEXPECTED_ERROR);
 			e.printStackTrace();
 			System.exit(2);
 		} 

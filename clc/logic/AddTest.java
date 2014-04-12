@@ -1,10 +1,10 @@
+//@author A0105712U
 /**
  * Command Line Calendar (CLC)
  * AddTest.java
  * 
  * This is JUnit test cases for Add.
  */
-//@author A0105712U
 package clc.logic;
 
 import static clc.common.Constants.*;
