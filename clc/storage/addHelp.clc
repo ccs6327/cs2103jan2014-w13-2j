@@ -1,0 +1,54 @@
+Add 
+alternative command: create
+
+If you want to add a timed task with time
+--> Enter: add [task name] [start date] [start time] [end date] [end time]
+
+1) normal 
+--> e.g. add meeting 23/8 2pm 24/8 4pm
+--> e.g. add meeting 2pm 23/8 4pm 24/8
+
+2) add a task without end date(end on the same date)
+--> e.g. add meeting 23/8 2pm 4pm
+
+3) add a task without start date(start from today)
+--> e.g. add meeting 2pm 23/8 4pm
+--> e.g. add meeting 2pm 4pm 23/8
+
+4) add a task without start date and end date
+--> e.g. add meeting 2pm 4pm
+=========================================================================
+
+If you want to add a deadline task 
+--> Enter: add [task name] [end date] [end time]
+
+--> e.g. add submit homework friday 11.59pm
+--> e.g. add submit homework 11.59pm friday
+=========================================================================
+
+If you want to add a floating task 
+--> Enter: add [task name]
+
+--> e.g. add watch movie tonight
+========================================================================= 
+
+If you want to be reminded of a timed task or a deadline task, you can leave the interval blank if you want to be reminded 15 minutes before the start time or deadline.
+--> Enter: add /r [interval(minutes)] ……
+
+--> e.g. add /r group meeting sat 3pm
+--> e.g. add /r 60 attend lecture friday from 4pm to 6pm
+--> e.g. add /r 30 submit weekly report friday 5pm
+
+You will be reminded of a timed task 15 minutes before the start time or a deadline task before the end time. 
+========================================================================= 
+
+If you want to add a recurring task, you may enter the command with the keywords every.
+--> Enter: add /r ...... every [start time] [end time]
+
+--> e.g. add lecture every friday 4pm 6pm
+========================================================================= 
+
+If your task name includes the keyword "today" "tomorrow" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" or "Sunday", you can use ' ' to quote the task name.
+--> Enter: add '......'
+
+--> e.g. add 'watch the day after tomorrow' by tomorrow 8pm
