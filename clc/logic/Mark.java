@@ -45,6 +45,7 @@ public class Mark implements Command {
 			//mark task when reminder pop up does not need to return feedback message
 			return EMPTY;
 		}
+		assert taskSeqNo != null; 
 		return markDisplayMem();
 	}
 
@@ -54,6 +55,7 @@ public class Mark implements Command {
 			if (task.getTaskId() == targetTaskId) {
 				task.markDone();
 	    		Storage.writeContentIntoFile();
+	    		appendMarkDoneMessage(task.getTaskName());
 				break;
 			}
 		}
@@ -62,6 +64,7 @@ public class Mark implements Command {
 	private String markDisplayMem() {
 		boolean isChanged = markTasks();
 		updateHistoryAndDatabaseIfChanged(isChanged);
+		assert feedback != null;
 		return feedback.toString().trim();
 	}
 

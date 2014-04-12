@@ -219,7 +219,7 @@ public class UpdateAnalyzer extends TimeParser {
 		return -1;
 	}
 
-	public static boolean getUpdateCase() {
+	protected static boolean getUpdateCase() {
 		return isCaseUpdateCalendar;
 	}
 
@@ -238,7 +238,7 @@ public class UpdateAnalyzer extends TimeParser {
 		return newTaskName.equals(EMPTY);
 	}
 
-	public static int getCalendarProvidedCase() {
+	protected static int getCalendarProvidedCase() {
 		return calendarProvided;
 	}
 	
