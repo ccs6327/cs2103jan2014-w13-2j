@@ -1,3 +1,5 @@
+//@author A0112089J
+
 package clc.ui;
 
 import static org.junit.Assert.*;
@@ -90,9 +92,11 @@ public class DisplayAnalyzerTest {
 		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
 		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
 		GregorianCalendar gc = new GregorianCalendar();
-		//millisecond difference is minor for our product
-		//as we construct current time not at the same time there fore there's diferrence
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
 		gc.add(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
@@ -121,7 +125,13 @@ public class DisplayAnalyzerTest {
 		assertEquals(THIS_WEEK, DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.add(Calendar.DATE, Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK));
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
 		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
@@ -164,7 +174,13 @@ public class DisplayAnalyzerTest {
 		assertEquals(THIS_MONTH, DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
+		gc.set(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar();
 		gc.add(Calendar.MONTH, 1);
 		gc.set(Calendar.DATE, 1);
 		gc.set(Calendar.HOUR_OF_DAY, 0);

@@ -1,4 +1,4 @@
-//author A0112089J
+//@author A0112089J
 
 package clc.ui;
 
@@ -10,9 +10,8 @@ import static clc.common.Constants.ERROR_NO_TASK_NAME;
 import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
 import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
-
 import clc.common.InvalidInputException;
-
+import clc.common.LogHelper;
 import clc.logic.Task;
 
 public class AddAnalyzer extends TimeParser {
@@ -50,6 +49,7 @@ public class AddAnalyzer extends TimeParser {
 	private static void determineIfReminderNeeded() throws InvalidInputException {
 		isReminderNeeded = false;
 		if (isFirstWordSlashR()) {
+			LogHelper.info("Requested to add reminder task");
 			isReminderNeeded = true;
 			commandDetails = removeFirstWord(commandDetails);
 			setReminderInterval();
@@ -114,6 +114,7 @@ public class AddAnalyzer extends TimeParser {
 	private static void setQuotedStringAsTaskName(int startQuotationIndex, int endQuotationIndex) {
 		if (isCaseQuotedTaskName) {
 			taskName = commandDetails.substring(startQuotationIndex + 1, endQuotationIndex);
+			LogHelper.info("Quoted Task Name: " + taskName);
 		}
 	}
 
@@ -122,6 +123,7 @@ public class AddAnalyzer extends TimeParser {
 			taskName = EMPTY;
 			mergeWordsBeforeCalendarInformation();
 			mergeWordsAfterCalendarInformation();
+			LogHelper.info("Merged Task Name: " + taskName);
 		}
 	}
 
@@ -141,6 +143,7 @@ public class AddAnalyzer extends TimeParser {
 	private static void determineIfTaskNameProvided()
 			throws InvalidInputException {
 		if (isEmptyTaskName()) {
+			LogHelper.info("No task name found");
 			throw new InvalidInputException(ERROR_NO_TASK_NAME);
 		}
 	}
@@ -149,8 +152,10 @@ public class AddAnalyzer extends TimeParser {
 	private static void setUpCalendarTask() throws InvalidInputException {
 		if (isCaseDeadlineTask()) {
 			taskToBeAdded = new Task(taskName, endCalendar);
+			LogHelper.info("Deadline Task constructed");
 		} else if (isCaseTimedTask()) {
 			taskToBeAdded = new Task(taskName, startCalendar, endCalendar);
+			LogHelper.info("Timed Task constructed");
 		} else {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
@@ -177,6 +182,7 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void throwExceptionIfReminderNeeded() throws InvalidInputException {
 		if (isReminderNeeded) {
+			LogHelper.info("Invalid reminder request for floating task");
 			throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
 	 	}
 	}
@@ -189,6 +195,7 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void setUpFloatingTask() {
 		taskToBeAdded = new Task(taskName);
+		LogHelper.info("Floating Task constructed");
 	}
 
 	private static boolean isEmptyTaskName() {

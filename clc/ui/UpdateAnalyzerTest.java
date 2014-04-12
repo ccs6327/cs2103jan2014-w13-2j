@@ -1,3 +1,5 @@
+//@author A0112089J
+
 package clc.ui;
 
 import static org.junit.Assert.*;
@@ -180,7 +182,8 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
 		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		long millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);

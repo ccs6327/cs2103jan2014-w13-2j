@@ -1,4 +1,4 @@
-//author A0112089J
+//@author A0112089J
 
 package clc.ui;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 import static clc.common.Constants.ERROR_CONTAIN_NON_NUMERIC_INFO;
 
 public class SequenceNumberExtractor extends Analyzer{
@@ -40,8 +41,10 @@ public class SequenceNumberExtractor extends Analyzer{
 				if (!taskSeqNo.contains(seqNo)) { //avoid duplicate
 					taskSeqNo.add(seqNo);
 				}
+				LogHelper.info("'" + currWord + "'" + " is numeric");
 			} else {
 				sc.close();
+				LogHelper.info("'" + currWord + "'" + " is non-numeric");
 				throw new InvalidInputException(ERROR_CONTAIN_NON_NUMERIC_INFO);
 			}
 		}

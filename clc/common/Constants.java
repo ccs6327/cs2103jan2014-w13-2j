@@ -101,16 +101,16 @@ public class Constants {
 	public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
 	public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
 	public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
-	
+
 	// Search
 	public final static String BLANK_STRING = "";
 	public final static String MESSAGE_RESULTS_FOUND = "Found: ";
-    public final static String MESSAGE_MATCHING_ENTRIES = "All entries containing: '%s'";
-    public final static String MESSAGE_SEARCH_FEEDBACK = "Task(s) containing '%s' has(have) been displayed.";
-    public final static String MESSAGE_SEARCH_FEEDBACK_PLURAL = "Tasks containing '%s' have been displayed.";
-    public final static String MESSAGE_SEARCH_FEEDBACK_SINGULAR = "The task containing '%s' has been displayed.";
-    public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
-	
+	public final static String MESSAGE_MATCHING_ENTRIES = "All entries containing: '%s'";
+	public final static String MESSAGE_SEARCH_FEEDBACK = "Task(s) containing '%s' has(have) been displayed.";
+	public final static String MESSAGE_SEARCH_FEEDBACK_PLURAL = "Tasks containing '%s' have been displayed.";
+	public final static String MESSAGE_SEARCH_FEEDBACK_SINGULAR = "The task containing '%s' has been displayed.";
+	public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
+
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successfully.";
 	public static final String MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS = "Task No.%3$d [%1$s] start time is updated to [%2$s] successfully.";
@@ -124,15 +124,15 @@ public class Constants {
 	public static final String STRING_DEADLINE_TASK = "TYPE DEADLINE";
 	public static final String STRING_TIMED_TASK = "TYPE TIMED";
 	public static final String STRING_UNSUPPORTED_TASK = "TYPE UNSUPPORTED";
-    public static final String MESSAGE_UPDUATE_SUCCESSFUL = "Updated Sucessful!";
-    public static final String MESSAGE_UPDATE_TIME_ERROR = "UPDATE ERROR: The task's end  time [%2$s] \r\n"
-    		+ "                                                  is before/equal \r\n"
-    		+ "                                             start time [%1$s].\r\n\r\n=*=*=*=UPDATE UNSUCCESSFUL!=*=*=*=";
-    		
-    //Help
+	public static final String MESSAGE_UPDUATE_SUCCESSFUL = "Updated Sucessful!";
+	public static final String MESSAGE_UPDATE_TIME_ERROR = "UPDATE ERROR: The task's end  time [%2$s] \r\n"
+			+ "                                                  is before/equal \r\n"
+			+ "                                             start time [%1$s].\r\n\r\n=*=*=*=UPDATE UNSUCCESSFUL!=*=*=*=";
+
+	//Help
 	public static final String DATE = "date";
 	public static final String HOTKEY = "hotkey";
-    
+
 	//Remind
 	public static final int DEFAULT_REMINDER_INTERVAL = 15; //minutes
 	public static final String MESSAGE_REMIND_TIMED_TASKS = "%1$s, (starts at %2$s; ends at %3$s)"; 
@@ -148,7 +148,7 @@ public class Constants {
 	public static final String MESSAGE_IMPORT = "Your calendar has been imported from %1$s";
 	public static final String MESSAGE_IMPORT_NO_ACCESS = "Failed to import from %1$s. Please check the origin path.";
 	public static final String MESSAGE_IMPORT_FILE_CORRUPTED = "The data file is corrupted.";
-	
+
 	//Filename
 	public static final String OUTFILE = "metadata.clc";
 	public static final String CLC_EXPORT_DIRECTORY = "CLC Exported Files\\";
@@ -177,7 +177,7 @@ public class Constants {
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 	public static SimpleDateFormat D_M_Y_TimeFormatter = new SimpleDateFormat("h.mm a");
-	
+
 	//Analyzer
 	public static final String EMPTY = "";
 	public static final String SLASH_R = "/r";
@@ -231,7 +231,7 @@ public class Constants {
 	public static final String EVERY = "every";
 	public static final String EVERY_WEEK = "every week";
 	public static final String EVERYDAY = "everyday";
-	
+
 	//GUI
 	public static final String MESSAGE_SEPARATOR = "=========================================================================\n";
 	public static final String NEWLINE = "\n";
@@ -252,6 +252,24 @@ public class Constants {
 	public static final String ERROR_DAILY_RECURRING_ONE_DATE_ONLY = "ERROR: Daily recurring event can contain one date only";
 	public static final String ERROR_DISPLAY_WITH_RECCURING_TIME = "ERROR: Cannot display with reccuring time";
 	public static final String ERROR_CANNOT_UPDATE_TO_RECURRING_TASK = "ERROR: Cannot update to recurring task";
-	
-	
+
+	//Logging
+	public static final String[] CALENDAR_PROVIDED = {
+		"update end time only", 
+		"update end date only",
+		"update end date and end time only",
+		"update start time only",
+		"update start time and end time only",
+		"update start time and end date only",
+		"update start time, end date and end time",
+		"update start date only",
+		"update start date and end time only",
+		"update start date and end date only",
+		"update start date, end date and end time",
+		"update start date and start time only",
+		"update start date, start time and end time",
+		"update start date, start time and end date",
+		"update start date, start time, end date and end time"
+	};
+
 }

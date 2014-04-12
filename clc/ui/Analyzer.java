@@ -1,4 +1,4 @@
-//author A0112089J
+//@author A0112089J
 
 package clc.ui;
 
@@ -10,6 +10,7 @@ import static clc.common.Constants.MESSAGE_INVALID_FORMAT;
 import java.util.regex.PatternSyntaxException;
 
 import clc.common.InvalidInputException;
+import clc.common.LogHelper;
 
 public class Analyzer {
 
@@ -19,7 +20,9 @@ public class Analyzer {
 	
 	protected static void analyze(String input) throws InvalidInputException {
 		commandType = getFirstWord(input);
+		LogHelper.info("Command type: " + commandType);
 		commandDetails = removeFirstWord(input);
+		LogHelper.info("Command details: " + commandDetails);
 	}
 
 	protected static String getCommandType() {
@@ -50,7 +53,8 @@ public class Analyzer {
 	}
 
 	protected static void throwExceptionIfEmptyCommandDetails() throws InvalidInputException {
-		if (commandDetails.equals(EMPTY)) {
+		if (!doesCommandDetailsExist(commandDetails)) {
+			LogHelper.info("No command details");
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 	}
@@ -58,6 +62,7 @@ public class Analyzer {
 	protected static boolean isNumeric(String currWord) {
 		try {
 			Integer.parseInt(currWord);
+			LogHelper.info("'" + currWord + "'" + " is numeric");
 		} catch (NumberFormatException e) {
 			return false;
 		}
