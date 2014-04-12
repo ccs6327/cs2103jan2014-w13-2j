@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Clear.java
+ * 
+ * This Clear class implements Command. Its instance executes clear command.
+ */
 package clc.logic;
 
 import static clc.common.Constants.*;

@@ -1,3 +1,10 @@
+/**
+ * Command Line Calendar (CLC)
+ * Task.java
+ * 
+ * Each Task instance represents a single task. 
+ * The information of the task (task name, type, time information, etc) is included.
+ */
 package clc.logic;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -5,15 +12,15 @@ import java.util.Comparator;
 import static clc.common.Constants.*;
 
 public class Task {
-	
+
 	//@author A0105712U
 	private String taskName;
-    private String taskToString;
+	private String taskToString;
 	private String taskTypeToString;
 	private long taskId;
 	private Calendar startTime;
 	private Calendar endTime;
-	private int taskType;//0 timed task, 1 deadline task, 2 floating task, 3 unsupported task
+	private int taskType;
 	private boolean isDone;
 	private boolean isReminderNeeded; 
 	private int numberOfRecurring;
@@ -21,9 +28,9 @@ public class Task {
 	private int intervalToBeReminded;
 
 	public Task() {
-		
+
 	}
-	
+
 	public Task(Task task) {
 		taskName = task.getTaskName();
 		taskTypeToString = task.taskTypeToString();
@@ -54,7 +61,7 @@ public class Task {
 		isDone = false;
 		setTaskId();
 	}
-	
+
 	public Task(String _taskName, Calendar _endTime) {
 		taskName = _taskName;
 		taskId = setTaskId();
@@ -64,7 +71,7 @@ public class Task {
 		isDone = false;
 		setTaskId();
 	}
-	
+
 	public Task(String _taskName) {
 		taskName = _taskName;
 		taskId = setTaskId();
@@ -94,15 +101,15 @@ public class Task {
 	public String getTaskName() {
 		return taskName;
 	}
-	
+
 	public long getTaskId() {
 		return taskId;
 	}
-	
+
 	public int getTaskType() {
 		return taskType;
 	}
-	
+
 	public Calendar getStartTime() {
 		return startTime;
 	}
@@ -118,11 +125,11 @@ public class Task {
 	public boolean getIsReminderNeeded() {
 		return isReminderNeeded;
 	}
-	
+
 	public int getReminderInterval() {
 		return intervalToBeReminded;
 	}
-	
+
 	public int getNumberOfRecurring() {
 		return numberOfRecurring;
 	}
@@ -130,72 +137,72 @@ public class Task {
 	public String getRecurringPeriod() {
 		return recurringPeriod;
 	}
-	
+
 	//@author A0105749Y
 	public String toString(){
-		
-	    if(taskType == TYPE_TIMED_TASK){
-    		String startTimeString = D_M_Y_DateFormatter.format(startTime.getTime());
-    		String endTimeString = D_M_Y_DateFormatter.format(endTime.getTime());
-	    	taskToString = String.format(TIMED_TASK_TO_STRING, taskName, startTimeString, endTimeString);
-	    }else if (taskType == TYPE_DEADLINE_TASK) {
-    		String endTimeString = D_M_Y_DateFormatter.format(endTime.getTime());
-	    	taskToString = String.format(DEADLINE_TASK_TO_STRING, taskName, endTimeString);
-	    }else {
-	    	taskToString = String.format(FLOATING_TASK_TO_STRING, taskName);
-	    }
+
+		if(taskType == TYPE_TIMED_TASK){
+			String startTimeString = D_M_Y_DateFormatter.format(startTime.getTime());
+			String endTimeString = D_M_Y_DateFormatter.format(endTime.getTime());
+			taskToString = String.format(TIMED_TASK_TO_STRING, taskName, startTimeString, endTimeString);
+		}else if (taskType == TYPE_DEADLINE_TASK) {
+			String endTimeString = D_M_Y_DateFormatter.format(endTime.getTime());
+			taskToString = String.format(DEADLINE_TASK_TO_STRING, taskName, endTimeString);
+		}else {
+			taskToString = String.format(FLOATING_TASK_TO_STRING, taskName);
+		}
 		return taskToString;
 	}
-	
+
 	public String toStringTimeFormatter(){
-	    if(taskType == TYPE_TIMED_TASK){
-    		String startTimeString = D_M_Y_TimeFormatter.format(startTime.getTime());
-    		String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
-	    	taskToString = String.format(TIMED_TASK_TO_STRING, taskName, startTimeString, endTimeString);
-	    }else if (taskType == TYPE_DEADLINE_TASK) {
-    		String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
-	    	taskToString = String.format(DEADLINE_TASK_TO_STRING, taskName, endTimeString);
-	    }else {
-	    	taskToString = String.format(FLOATING_TASK_TO_STRING, taskName);
-	    }
+		if(taskType == TYPE_TIMED_TASK){
+			String startTimeString = D_M_Y_TimeFormatter.format(startTime.getTime());
+			String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
+			taskToString = String.format(TIMED_TASK_TO_STRING, taskName, startTimeString, endTimeString);
+		}else if (taskType == TYPE_DEADLINE_TASK) {
+			String endTimeString = D_M_Y_TimeFormatter.format(endTime.getTime());
+			taskToString = String.format(DEADLINE_TASK_TO_STRING, taskName, endTimeString);
+		}else {
+			taskToString = String.format(FLOATING_TASK_TO_STRING, taskName);
+		}
 		return taskToString;
 	}
 
 	public String taskTypeToString(){
-	    if(taskType == TYPE_TIMED_TASK){
-	    	taskTypeToString = STRING_TIMED_TASK;
-	    }else if (taskType == TYPE_DEADLINE_TASK) {
-	    	taskTypeToString = STRING_DEADLINE_TASK;
-	    }else if (taskType == TYPE_FLOATING_TASK){
-	    	taskTypeToString = STRING_FLOATING_TASK;
-	    }else {
-	    	taskTypeToString = STRING_UNSUPPORTED_TASK;
-	    }
+		if(taskType == TYPE_TIMED_TASK){
+			taskTypeToString = STRING_TIMED_TASK;
+		}else if (taskType == TYPE_DEADLINE_TASK) {
+			taskTypeToString = STRING_DEADLINE_TASK;
+		}else if (taskType == TYPE_FLOATING_TASK){
+			taskTypeToString = STRING_FLOATING_TASK;
+		}else {
+			taskTypeToString = STRING_UNSUPPORTED_TASK;
+		}
 		return taskTypeToString;
 	}
-	
+
 	//@author A0105712U
 	//mutator 
 	public void setTaskName(String newTaskName) {
 		taskName = newTaskName;
 	}
-	
+
 	public long setTaskId() {
 		return System.currentTimeMillis();
 	}
-	
+
 	public void setTaskType(int _taskType){
 		taskType = _taskType;
 	}
-	
+
 	public void setStartTime(Calendar startTime) {
 		this.startTime = startTime;
 	}
-	
+
 	public void setEndTime(Calendar endTime) {
 		this.endTime = endTime;
 	}
-	
+
 	public void setIsDone(boolean isDone) {
 		this.isDone = isDone;
 	}
@@ -204,7 +211,7 @@ public class Task {
 		isReminderNeeded = true;
 		intervalToBeReminded = _intervalToBeReminded;
 	}
-	
+
 	public void setNumberOfRecurring(int nRecurring) {
 		numberOfRecurring = nRecurring;
 	}
@@ -212,7 +219,7 @@ public class Task {
 	public void setRecurringPeriod(String recurringPeriod) {
 		this.recurringPeriod = recurringPeriod;
 	}
-	
+
 	// Check whether the task has both start time and end time
 	public boolean isTimedTask() {
 		return getStartTime() != null && getEndTime() != null;
@@ -225,7 +232,7 @@ public class Task {
 	public boolean isFloatingTask() {
 		return getStartTime() == null && getEndTime() == null;
 	}
-	
+
 	//public method
 	public boolean markDone() {
 		if (!isDone) {
@@ -254,9 +261,9 @@ public class Task {
 
 	public Task getNewCopy() {
 		Task task = new Task();
-		
+
 		task.setTaskName(taskName);
-	    task.setTaskToString(taskToString);
+		task.setTaskToString(taskToString);
 		task.setTaskTypeToString(taskTypeToString);
 		task.setTaskId(taskId);
 		task.setStartTime(startTime);
@@ -266,7 +273,7 @@ public class Task {
 		task.setIsDone(isReminderNeeded); 
 		task.setNumberOfRecurring(numberOfRecurring);
 		task.setRecurringPeriod(recurringPeriod);
-		
+
 		return task;
 	}
 
@@ -276,7 +283,7 @@ public class Task {
 
 	private void setTaskTypeToString(String taskTypeToString) {
 		this.taskTypeToString = taskTypeToString;
-		
+
 	}
 
 	private void setTaskToString(String taskToString) {

@@ -1,4 +1,11 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * History.java
+ * 
+ * This class is part of Storage component.
+ * It handles the history information like database in previous versions.
+ */
 package clc.storage;
 
 import java.util.ArrayList;
@@ -47,7 +54,6 @@ public class History {
 	public static void addNewVersion() {
 		currentVersion++;
 		ArrayList<Task> tempMem = new ArrayList<Task>();
-		// tempMem.addAll(Storage.getInternalMem());
 		for (Task task : Storage.getInternalMem()) {
 			tempMem.add(task.getNewCopy());
 		}

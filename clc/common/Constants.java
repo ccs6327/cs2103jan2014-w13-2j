@@ -43,7 +43,9 @@ public class Constants {
 
 	public static final String EMPTY_STRING = "";
 	public static final String NEW_LINE = "\r\n";
-
+	
+	public static final String ADD_DATE_FORMAT = "EEE, d MMM yyyy h.mm a";
+	
 	public static final String MESSAGE_WELCOME = "Welcome to CLC.\nPress F1 for help";
 	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
 	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format: %1$s";

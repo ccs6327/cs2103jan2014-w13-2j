@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * Import.java
+ * 
+ * THis Import class implements Command. Its instance executes import command.
+ */
 package clc.logic;
 
 import clc.storage.Storage;

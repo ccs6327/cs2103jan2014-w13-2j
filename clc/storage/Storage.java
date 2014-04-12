@@ -1,3 +1,10 @@
+/**
+ * Command Line Calendar (CLC)
+ * Storage.java
+ * 
+ * This class is part of Storage component.
+ * It handles the current information and I/O operations.
+ */
 package clc.storage;
 
 import java.io.File;
