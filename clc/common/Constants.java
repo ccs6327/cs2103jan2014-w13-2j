@@ -1,7 +1,6 @@
 package clc.common;
 
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
 import java.text.SimpleDateFormat;
 
 public class Constants {
