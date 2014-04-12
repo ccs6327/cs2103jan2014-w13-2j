@@ -1,11 +1,27 @@
 package clc.logic;
 
-import static clc.common.Constants.*;
+/**
+ * This class is used to search events by the keyword
+ **/
+
+//@author A0105749Y
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import clc.storage.Storage;
+import clc.common.LogHelper;
+import static clc.common.Constants.MESSAGE_MATCHING_ENTRIES;
+import static clc.common.Constants.MESSAGE_OUTPUT_TASKS;
+import static clc.common.Constants.MESSAGE_RESULTS_FOUND;
+import static clc.common.Constants.MESSAGE_DISPLAY;
+import static clc.common.Constants.MESSAGE_SEARCH_FEEDBACK_PLURAL;
+import static clc.common.Constants.MESSAGE_SEARCH_FEEDBACK_SINGULAR;
+import static clc.common.Constants.ERROR_TASK_NOT_FOUND;
+import static clc.common.Constants.EMPTY_STRING;
+import static clc.common.Constants.NEW_LINE;
+import static clc.common.Constants.DisplayOutput;
+import static clc.common.Constants.LOG_SEARCH_STARTED;
 
 
 public class Search implements Command {
@@ -22,20 +38,21 @@ public class Search implements Command {
 	}
 	public String execute() {
 		searchAndprocessOutput();
-		feedback.append("\n");
-		feedback.append(getFeedbackToUser());
-		feedback.append("\n");
+		appendTaskSearchMessage(feedback, getFeedbackToUser());
+		assert feedback != null;
 		return feedback.toString();
 	}
    
 	// Search the internal memory for the keyword and process the output
 	private void searchAndprocessOutput() {
+		
+	    //before searching DisplayOutput and displayMem must be cleared
 		DisplayOutput.clear();
 		displayMem.clear();
 		DisplayOutput.add(String.format(MESSAGE_MATCHING_ENTRIES, commandDetails));
-		DisplayOutput.add(ANOTHER_LINE);
+		DisplayOutput.add(EMPTY_STRING);
 		
-		//logger.log(Level.INFO, "Starting to sort events");
+		LogHelper.info(LOG_SEARCH_STARTED);
 		if (!internalMem.isEmpty()) {
 			sortTasks();
 			int displayNo = 1;
@@ -48,13 +65,13 @@ public class Search implements Command {
 				}	
 			}
 		}
-	    printOutDisplay();
+		appendDisplayOutputMessage();
 	}
 
 	// Get the feedback according to the result of search
 	private String getFeedbackToUser() {
 		if (getDataAmount() > 0) {
-			if (commandDetails.equals(BLANK_STRING)) {
+			if (commandDetails.equals(EMPTY_STRING)) {
 				return MESSAGE_RESULTS_FOUND + MESSAGE_DISPLAY;
 			} else if (getDataAmount() > 1) {
 				return MESSAGE_RESULTS_FOUND + String.format(MESSAGE_SEARCH_FEEDBACK_PLURAL, commandDetails);
@@ -66,19 +83,24 @@ public class Search implements Command {
 		}
 	}
 	
-	
-	private void printOutDisplay(){
-		for (int i = 0; i < DisplayOutput.size(); i++) {
-			feedback.append(DisplayOutput.get(i));
-			feedback.append("\n");
-			//System.out.println(DisplayOutput.get(i));
-		}
+	private int getDataAmount() {
+		return displayMem.size();
 	}
-	protected void sortTasks() {
+	
+	private void sortTasks() {
 		Collections.sort(internalMem, new  TaskComparator());
 	}
 	
-	protected int getDataAmount() {
-		return displayMem.size();
+	private void appendTaskSearchMessage(StringBuilder feedback, String feedbackMessage) {
+		feedback.append(NEW_LINE);
+		feedback.append(feedbackMessage);
+		feedback.append(NEW_LINE);
+	}
+	
+	private void appendDisplayOutputMessage(){
+		for (int i = 0; i < DisplayOutput.size(); i++) {
+			feedback.append(DisplayOutput.get(i));
+			feedback.append(NEW_LINE);
+		}
 	}
 }
