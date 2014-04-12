@@ -169,8 +169,11 @@ public class Constants {
 	public static final int IS_NOT_DONE = 0;
 	public static final int IS_REMINDER_NEEDED = 1;
 	public static final int IS_REMINDER_NOT_NEEDED = 0;
-
-
+	public static final String LOG_DATA_FILE_CREATED = "Database %1$s created";
+	public static final String LOG_DATA_FILE_READ = "Database %1$s accessed";
+	public static final String LOG_EXPORTED = "Exported to %1$s";
+	public static final String LOG_IMPORTED = "Imported from %1$s";
+	
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
 	public static SimpleDateFormat D_M_Y_TimeFormatter = new SimpleDateFormat("h.mm a");

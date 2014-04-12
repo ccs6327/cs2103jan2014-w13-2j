@@ -25,31 +25,40 @@ public class Storage {
 	private static File dataFile;
 	private static ArrayList<Task> internalMem = new ArrayList<Task>();
 	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
-
-	/* If the data file does not exist, create the data file. 
-	 *  Otherwise read in the content from the data file.
+	//@author A0105749Y
+	/**
+	 * Create the data file if it does not exist. 
+	 * Otherwise read in the content from the data file.
 	 */
+	
 	public static void initializeDataFile() {
 		dataFile = new File(OUTFILE);
 		if (!dataFile.exists()) {
 			// Create the file if it does not exist
 			try {
 				dataFile.createNewFile();
+				LogHelper.info(String.format(LOG_DATA_FILE_CREATED, dataFile.getPath()));
 			} catch (IOException e) {
-				System.out.println(e.getMessage());
+				LogHelper.severe(e.getMessage());
 			}
 		} else {
 			try {
 				readContentFromFile(OUTFILE);
+				LogHelper.info(String.format(LOG_DATA_FILE_READ, dataFile.getPath()));
 			} catch (Exception e) {
-
+				LogHelper.severe(e.getMessage());
 			}
 		}
 		
 		assert dataFile.exists();
 	}
-
-	// Read from the data file and store them into the internal memory
+	
+	//@author A0105712U
+	/**
+	 * Read from the data file and store them into the internal memory
+	 * @param path The location of the file to be read
+	 */
+	
 	public static void readContentFromFile(String path) {
 		File fileIn = new File(path);
 
@@ -117,14 +126,13 @@ public class Storage {
 
 			bf.close();
 		} catch (IOException e) {
-
+			LogHelper.severe(e.getMessage());
 		}
 
 	}
 
 	private static boolean hasNoIdenticalTask(Task task) {
 		for (Task taskInInternalMem : internalMem) {
-			// Should compare all Task attributes
 			if (taskInInternalMem.getTaskId() == task.getTaskId()) {
 				return false;
 			}
@@ -133,22 +141,24 @@ public class Storage {
 		return true;
 	}
 
-	// Write contents in the list into the data file
+	/**
+	 * Write contents in the list into the data file
+	 */
 	public static void writeContentIntoFile() {
 		try {
 
 			Formatter formatter = new Formatter(OUTFILE);
 			for (Task task : internalMem) {
-				//task name
+				// task name
 				formatter.format(task.getTaskName());
 				formatter.format(NEW_LINE);
-				//task id
+				// task id
 				formatter.format(String.valueOf(task.getTaskId()));
 				formatter.format(NEW_LINE);
-				//task type
+				// task type
 				formatter.format(String.valueOf(task.getTaskType()));
 				formatter.format(NEW_LINE);
-				//start time and end time
+				// start time and end time
 				switch (task.getTaskType()) {
 				case TYPE_TIMED_TASK:
 					formatter.format(String.valueOf(task.getStartTime().getTimeInMillis()));
@@ -194,7 +204,11 @@ public class Storage {
 		}
 	}
 
-	// Read from the Help.txt and return to string
+	/**
+	 * Read from the Help.txt and return to string
+	 * @param fileName The file name of help manual file
+	 * @return The contents of the help manual file
+	 */
 	public static String readManualFromHelpFile(String fileName) {
 		InputStream in = Storage.class.getResourceAsStream(fileName);
 		
@@ -233,35 +247,56 @@ public class Storage {
 		displayMem.clear();
 		displayMem.addAll(taskList);
 	}
-
+	
+	/** 
+	 * Export the database to the path which User entered
+	 * @param path The desired path of exported files
+	 * @return Feedback message
+	 */
 	public static String exportDataFile(String path) {
 		try {
-			File destination = new File(path + OUTFILE);
-			File destinationDirectory = new File(path);
-			Files.createDirectories(destinationDirectory.toPath());
-			Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
+			copyFileToTarget(path);
 		} catch (NullPointerException e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_EXPORT_FAILED;
 		} catch (NoSuchFileException e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_EXPORT_FAILED_CANNOT_WRITE;
 		} catch (InvalidPathException e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_EXPORT_FAILED_INVALID_PATH;
 		} catch (IOException e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_EXPORT_FAILED;
 		}
 		return MESSAGE_EXPORT;
 	}
 
+	private static void copyFileToTarget(String path) throws IOException {
+		File destination = new File(path + OUTFILE);
+		File destinationDirectory = new File(path);
+		Files.createDirectories(destinationDirectory.toPath());
+		Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
+		LogHelper.info(String.format(LOG_EXPORTED, destination.getPath()));
+	}
+
+	/**
+	 * Import the database from the path which User entered
+	 * @param path The desired path of imported files
+	 * @return Feedback messages
+	 */
 	public static String importDataFile(String path) {
 		File origin = new File(path + OUTFILE);
 		try {
 			Files.copy(origin.toPath(), dataFile.toPath(), REPLACE_EXISTING);
 			History.addNewVersion();
 		} catch (Exception e) {
+			LogHelper.warning(e.getMessage());
 			return MESSAGE_IMPORT_NO_ACCESS;
 		} 
 		internalMem.clear();
 		readContentFromFile(OUTFILE);
+		LogHelper.info(String.format(LOG_IMPORTED, path));
 		return MESSAGE_IMPORT;
 	}
 }
