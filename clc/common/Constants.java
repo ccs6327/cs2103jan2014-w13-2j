@@ -237,6 +237,8 @@ public class Constants {
 	public static final String EVERY = "every";
 	public static final String EVERY_WEEK = "every week";
 	public static final String EVERYDAY = "everyday";
+	public static final char CHAR_SPACE = ' ';
+	public static final char CHAR_COMMA = ',';
 	
 	//GUI
 	public static final String MESSAGE_SEPARATOR = "=========================================================================\n";
