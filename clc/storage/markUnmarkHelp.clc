@@ -1,0 +1,32 @@
+Mark As Done
+Alternative command: mrk
+
+Before you mark a task or multiple tasks as done, you are required to display or search tasks first.
+
+If you want to mark a task as done 
+--> Enter: mark [sequence no. of the task] 
+
+--> e.g. mark 4
+========================================================================= 
+
+If you want to mark multiple tasks as done
+--> Enter: mark [sequence no. of the task] [sequence no. of the task] …
+
+--> e.g. delete 3 1 8
+========================================================================= 
+
+Mark As Done
+Alternative command: unmrk
+
+Before you mark a task or multiple tasks as undone, you are required to display or search tasks first.
+
+If you want to mark a task as undone 
+--> Enter: unmark [sequence no. of the task] 
+
+--> e.g. unmark 10
+========================================================================= 
+
+If you want to mark multiple tasks as done
+--> Enter: mark [sequence no. of the task] [sequence no. of the task] …
+
+--> e.g. unmark 3 10 8
