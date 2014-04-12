@@ -131,6 +131,7 @@ public class Task {
 		return recurringPeriod;
 	}
 	
+	//@author A0105749Y
 	public String toString(){
 		
 	    if(taskType == TYPE_TIMED_TASK){
@@ -173,6 +174,7 @@ public class Task {
 		return taskTypeToString;
 	}
 	
+	//@author A0105712U
 	//mutator 
 	public void setTaskName(String newTaskName) {
 		taskName = newTaskName;
@@ -282,6 +284,7 @@ public class Task {
 	}
 }
 
+//@author A0105749Y
 class TaskComparator implements Comparator<Task> {
 	@Override
 	public int compare(Task task1, Task task2) {

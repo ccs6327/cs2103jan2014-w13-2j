@@ -1,5 +1,11 @@
 package clc.logic;
 
+//@author A0105749Y
+/**
+ * This class is used to update new information to task.
+ * 
+ */
+
 import static clc.common.Constants.*;
 
 import java.util.ArrayList;
@@ -14,9 +20,9 @@ public class Update implements Command {
 	
     private int seqNo;
     private int caseCalendarProvided;
-    private StringBuilder feedback = new StringBuilder();
+    private Task task; 
     private String newTaskName = null;
-    private Task task;
+    private StringBuilder feedback = new StringBuilder();
     private ArrayList<GregorianCalendar> time;
     private Calendar newStartTime = null, newEndTime = null;
     private ArrayList<Integer> displayMem;
@@ -33,34 +39,37 @@ public class Update implements Command {
 		this.seqNo = seqNo;
 		this.caseCalendarProvided = caseCalendarProvided;
 		this.time = time;
-		displayMem = Storage.getDisplayMem();
-		internalMem = Storage.getInternalMem();
 		newStartTime = time.get(0);
 		newEndTime = time.get(1);
+		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
 	}
+	
 	@Override
 	public String execute() {
 		if (isDataEmpty()) {
-			feedback.append(MESSAGE_NO_TASK_TO_UPDATE);
-			feedback.append(NEWLINE);
+			appendTaskUpdatedMessage(feedback, MESSAGE_NO_TASK_TO_UPDATE);
+			
 		} else if (isOutOfBound()) {
-			feedback.append(MESSAGE_INEXISTANCE_SEQNO);
-			feedback.append(NEWLINE);
+			appendTaskUpdatedMessage(feedback, MESSAGE_INEXISTANCE_SEQNO);
+			
 		} else {
 			int internalSeqNo = displayMem.get(seqNo - 1);
 			task = internalMem.get(internalSeqNo);
             updateTask();
+            
+            //have a backup for undo
     		History.addNewVersion();
     		Storage.writeContentIntoFile();
 		}
 		
+		assert feedback != null;
 		return feedback.toString();
 	}
 	
 	private void updateTask(){
 		
 		String taskName = task.getTaskName();
-		
 		int taskOldType = task.getTaskType();
 		String taskOldTypeString = task.taskTypeToString();
         Calendar taskOldStartTime = task.getStartTime(); 
@@ -68,37 +77,34 @@ public class Update implements Command {
 		
 		Calendar updateTime = null;
 		Calendar floatingTaskStartTime = null;
+		
 		//for checking start time >= end time
 		Calendar startTimeForChecking = null;
 		Calendar endTimeForChecking = null;
 		
 		//update name
-		if (newTaskName != null){
-            task.setTaskName(newTaskName);
-            feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskName, newTaskName));
-            feedback.append(NEWLINE);
+		if (isUpdatedNameCase(newTaskName)){
+			updateTaskName(taskName, newTaskName);
 		}
 		
-		 //System.out.println(caseCalendarProvided);
 		//update start time
-		if (newStartTime != null){
+		if (isUpdatedStartTimeCase(newStartTime)){
 			
 			if (taskOldType == TYPE_TIMED_TASK){//for timed task
 				//update date
-				if (caseCalendarProvided/8 == 1) {
-					taskName = task.getTaskName();
+				if (isStartDateUpdated(caseCalendarProvided)) {
 					updateTime = updateNewDate(taskOldStartTime, newStartTime);
 				    task.setStartTime(updateTime);
 				    caseCalendarProvided -= 8;
 				} 
 				//update time
-				if (caseCalendarProvided/4 == 1) {
-					taskName = task.getTaskName();
+				if (isStartTimeUpdated(caseCalendarProvided)) {
 					updateTime = task.getStartTime();
-					updateTime = updateNewDate(newStartTime, updateTime);
+					updateTime = updateNewTime(updateTime, newStartTime);
 				    task.setStartTime(updateTime);
 				    caseCalendarProvided -= 4;
 				}
+				taskName = task.getTaskName();
 				//process feedback
 				String startTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, startTime, seqNo));
@@ -139,7 +145,7 @@ public class Update implements Command {
 		//update end time
 		//System.out.println(newEndTime.getTime());
         //System.out.println(caseCalendarProvided);
-		if (newEndTime != null) {
+		if (isUpdatedEndTimeCase(newEndTime)) {
 			if (taskOldType == TYPE_FLOATING_TASK){//for floating task
 				floatingTaskStartTime = task.getStartTime();
 				if (floatingTaskStartTime == null){
@@ -164,34 +170,24 @@ public class Update implements Command {
 					feedback.append(NEWLINE);
 					
 				}
-			}else if (taskOldType == TYPE_DEADLINE_TASK){// for deadline task
-				task.setEndTime(newEndTime);
-				updateTime = task.getEndTime();
-				
-				//process feedback
-				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
-				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
-				feedback.append(NEWLINE);
-
-			} else { // for timed task
+			} else { // for deadline & timed task
 				
 				//update date
-				if (caseCalendarProvided/2 == 1) {
-					taskName = task.getTaskName();
+				if (isEndDateUpdated(caseCalendarProvided)) {
 					updateTime = updateNewDate(taskOldEndTime, newEndTime);
 				    task.setEndTime(updateTime);
 				    caseCalendarProvided -= 2;
 				} 
 				
 				//update time
-				if (caseCalendarProvided == 1) {
-					taskName = task.getTaskName();
+				if (isEndTimeUpdated(caseCalendarProvided)) {
 					updateTime = task.getEndTime();
-					updateTime = updateNewDate(newEndTime, updateTime);
+					updateTime = updateNewTime(updateTime, newEndTime);
 				    task.setEndTime(updateTime);
 				}
 				
 				// process feedback
+				taskName = task.getTaskName();
 				String endTime = D_M_Y_DateFormatter.format(updateTime.getTime());
 				//System.out.println(endTime);
 				feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
@@ -203,11 +199,8 @@ public class Update implements Command {
 		int taskNewType = task.getTaskType();
 		String taskNewTypeString = task.taskTypeToString();
 		if(isTaskTypeChanged(taskOldType, taskNewType)){
-			feedback.append(NEWLINE);
-			feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, seqNo ,taskName, taskOldTypeString, taskNewTypeString));
-			feedback.append(NEWLINE);
+			appendTaskTypeChangedMessage(feedback, seqNo, taskName, taskOldTypeString, taskNewTypeString);
 		}
-		
 		
         //check if startTime before endTime
 		startTimeForChecking = task.getStartTime();
@@ -229,8 +222,7 @@ public class Update implements Command {
 		
 		//check if nothing changes
 		if(newTaskName == null && newStartTime == null && newEndTime == null){
-			feedback.append(MESSAGE_NO_CHANGE);
-			feedback.append(NEWLINE);
+			appendTaskUpdatedMessage(feedback, MESSAGE_NO_CHANGE);
 		}
 	}
 	
@@ -240,26 +232,81 @@ public class Update implements Command {
 		int date = newTime.get(Calendar.DATE);
 		int hour = oldTime.get(Calendar.HOUR_OF_DAY);
 		int minute = oldTime.get(Calendar.MINUTE);
-		GregorianCalendar updateTime = new GregorianCalendar(year, month, date, hour, minute);
-		return updateTime;
+		GregorianCalendar dateUpdated = new GregorianCalendar(year, month, date, hour, minute);
+		return dateUpdated;
 	}
 	
+	private GregorianCalendar updateNewTime(Calendar oldTime, Calendar newTime){
+	    return updateNewDate(newTime, oldTime);
+	}
+	
+	private void updateTaskName(String taskOldName, String taskNewName){
+            task.setTaskName(taskNewName);
+            appendTaskUpdatedNewNameMessage(feedback, taskOldName, taskNewName);
+	} 
+	
+    //append feedback method
+	private void appendTaskUpdatedMessage(StringBuilder feedback, String message) {
+		feedback.append(message);
+		feedback.append(NEWLINE);
+	}
+	
+	private void appendTaskTypeChangedMessage(StringBuilder feedback, int seqNo, String taskName, String taskOldType, String taskNewType) {
+		feedback.append(NEWLINE);
+		feedback.append(String.format(MESSAGE_TASK_TYPE_CHANGED, seqNo ,taskName, taskOldType, taskNewType));
+		feedback.append(NEWLINE);
+	}
+	
+	private void appendTaskUpdatedNewNameMessage(StringBuilder feedback, String taskOldName, String taskNewName) {
+	       feedback.append(String.format(MESSAGE_TASK_NAME_UPDATED_SUCCESS, taskOldName, taskNewName));
+           feedback.append(NEWLINE);
+	}
+	
+
 	// Check whether the data which can be processed is empty
-	protected boolean isDataEmpty() {
+	private boolean isDataEmpty() {
 		return displayMem.isEmpty();
 	}
 	
-	protected boolean isOutOfBound() {
+	private boolean isOutOfBound() {
 		return seqNo > displayMem.size();
 	}
 	
-	protected boolean isStartTimeLaterThanEndTime(Calendar startTime, Calendar endTime) {
+	private boolean isStartTimeLaterThanEndTime(Calendar startTime, Calendar endTime) {
 		return startTime != null && startTime.compareTo(endTime) >= 0;
 	}
 	
-	protected boolean isTaskTypeChanged(int taskOldType, int taskNewType) {
+	private boolean isTaskTypeChanged(int taskOldType, int taskNewType) {
 		return taskOldType != taskNewType;
 	}
+	
+	private boolean isUpdatedNameCase(String taskNewName){
+		return taskNewName != null;
+	}
+	
+	private boolean isUpdatedStartTimeCase(Calendar newStartTime){
+		return newStartTime != null;
+	}
+	
+	private boolean isUpdatedEndTimeCase(Calendar newEndTime){
+		return newEndTime != null;
+	}
+	
+	private boolean isStartDateUpdated(int caseCalendarProvided) {
+		return caseCalendarProvided/8 == 1;
+	}
+	
+	private boolean isStartTimeUpdated(int caseCalendarProvided) {
+		return caseCalendarProvided/4 == 1;
+	}
+	
+	private boolean isEndDateUpdated(int caseCalendarProvided) {
+		return caseCalendarProvided/2 == 1;
+	}
+	private boolean isEndTimeUpdated(int caseCalendarProvided) {
+		return caseCalendarProvided == 1;
+	}
 }	
+
 	
 	
