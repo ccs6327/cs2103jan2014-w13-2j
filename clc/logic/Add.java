@@ -1,3 +1,9 @@
+/** 
+ * Command Line Calendar (CLC)
+ * 
+ * Add.java
+ * This Add class implements Command.
+ */
 package clc.logic;
 
 import static clc.common.Constants.*;

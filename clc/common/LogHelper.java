@@ -1,4 +1,10 @@
 //@author A0105712U
+/**
+ * Command Line Calendar (CLC)
+ * LogHelper.java
+ * 
+ * This is a helper class for other classes to log messages.
+ */
 package clc.common;
 
 import java.io.IOException;
