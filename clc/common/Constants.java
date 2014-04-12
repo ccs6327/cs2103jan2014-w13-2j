@@ -259,5 +259,22 @@ public class Constants {
 	public static final String ERROR_DISPLAY_WITH_RECCURING_TIME = "ERROR: Cannot display with reccuring time";
 	public static final String ERROR_CANNOT_UPDATE_TO_RECURRING_TASK = "ERROR: Cannot update to recurring task";
 	
-	
+	//Logging
+	public static final String[] CALENDAR_PROVIDED = {
+		"update end time only",
+		"update end date only",
+		"update end date and end time only",
+		"update start time only",
+		"update start time and end time only",
+		"update start time and end date only",
+		"update start time, end date and end time",
+		"update start date only",
+		"update start date and end time only",
+		"update start date and end date only",
+		"update start date, end date and end time",
+		"update start date and start time only",
+		"update start date, start time and end time",
+		"update start date, start time and end date",
+		"update start date, start time, end date and end time"
+	};
 }
