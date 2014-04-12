@@ -38,10 +38,6 @@ import clc.common.LogHelper;
 import clc.storage.History;
 import clc.storage.Storage;
 
-public class Add implements Command{
-	private Task task;
-	private ArrayList<Task> internalMem;
-	
 
 
 

@@ -16,11 +16,11 @@ import clc.common.LogHelper;
 import clc.storage.History;
 import clc.storage.Storage;
 
+//@author A0105712U
 public class Add implements Command{
 	private Task task;
 	private ArrayList<Task> internalMem;
 	
-	//@author A0105712U
 	public Add() {
 		internalMem = Storage.getInternalMem();
 	}
@@ -81,7 +81,7 @@ public class Add implements Command{
 		if (currentTask.getEndTime() != null) {
 			isOverdue = currentTask.getEndTime().compareTo(Calendar.getInstance());
 		}
-		return isOverdue <=0 && currentTask.getNumberOfRecurring() > 0;
+		return isOverdue <= 0 && currentTask.getNumberOfRecurring() > 0;
 	}
 	
 	//@author A0105712U
