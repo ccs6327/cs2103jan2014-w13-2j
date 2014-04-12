@@ -60,6 +60,7 @@ public class Constants {
 	public static final String MESSAGE_REDONE = "Last command has been redone.";
 	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
 	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
+	public static final String MESSAGE_UNHANDLED_COMMAND = "Unhandled command";
 
 	//Display
 	public static final String MESSAGE_SHOW_ALL_TASKS = "ALL TASKS";
@@ -161,12 +162,14 @@ public class Constants {
 	public static final String DATE_HELP_FILE = "dateHelp.clc";
 	public static final String HOTKEY_HELP_FILE = "hotkeyHelp.clc";
 	public static final String LOG_FILE = "clc.log";
+	public static final String LOG_EXIT = "CLC exited";
 
 	// Storage
 	public static final int IS_DONE = 1;
 	public static final int IS_NOT_DONE = 0;
 	public static final int IS_REMINDER_NEEDED = 1;
 	public static final int IS_REMINDER_NOT_NEEDED = 0;
+	public static final String LOG_DATA_FILE_WRITTEN = "Database %1$s written";
 
 	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
 	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");

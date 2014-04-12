@@ -1,4 +1,3 @@
-//@author A0105712U
 package clc.logic;
 
 import static clc.common.Constants.*;
@@ -7,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import clc.common.LogHelper;
 import clc.storage.History;
 import clc.storage.Storage;
 
@@ -14,6 +14,7 @@ public class Add implements Command{
 	private Task task;
 	private ArrayList<Task> internalMem;
 	
+	//@author A0105712U
 	public Add() {
 		internalMem = Storage.getInternalMem();
 	}
@@ -32,20 +33,24 @@ public class Add implements Command{
 		
 		switch (task.getTaskType()) {
 		case TYPE_TIMED_TASK:
+			LogHelper.info(String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getStartTime()), formatDate(task.getEndTime())));
 			return String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getStartTime()), formatDate(task.getEndTime()));
 			
 		case TYPE_DEADLINE_TASK:
+			LogHelper.info(String.format(MESSAGE_DEADLINE_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime())));
 			return String.format(MESSAGE_DEADLINE_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime()));
 			
 		case TYPE_FLOATING_TASK:
+			LogHelper.info(String.format(MESSAGE_FLOATING_TASK_ADDED, task.getTaskName()));
 			return String.format(MESSAGE_FLOATING_TASK_ADDED, task.getTaskName());
 			
 		default:
-			return "Unhandled command";
+			return MESSAGE_UNHANDLED_COMMAND;
 		}
 		
 	}
 	
+	//@author A0112089J
 	public void addOverdueRecurringTask() {
 		int taskListSize = internalMem.size();
 		for (int i = 0; i < taskListSize; i ++) {
@@ -73,6 +78,7 @@ public class Add implements Command{
 		return isOverdue <=0 && currentTask.getNumberOfRecurring() > 0;
 	}
 	
+	//@author A0105712U
 	private String formatDate(Calendar calendar) {
 		String date;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");

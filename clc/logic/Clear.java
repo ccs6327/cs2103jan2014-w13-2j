@@ -1,9 +1,11 @@
+//@author A0105712U
 package clc.logic;
 
 import static clc.common.Constants.*;
 
 import java.util.ArrayList;
 
+import clc.common.LogHelper;
 import clc.storage.Storage;
 import clc.storage.History;
 
@@ -22,6 +24,7 @@ public class Clear implements Command {
 		displayMem.clear();
 		History.addNewVersion();
 		Storage.writeContentIntoFile();
+		LogHelper.info(MESSAGE_CLEARED);
 		return MESSAGE_CLEARED;
 	}
 }

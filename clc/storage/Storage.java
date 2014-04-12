@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
 import clc.common.LogHelper;
 import clc.logic.Task;
 import static clc.common.Constants.*;
@@ -44,7 +43,6 @@ public class Storage {
 		} else {
 			try {
 				readContentFromFile(OUTFILE);
-				LogHelper.info(String.format(LOG_DATA_FILE_READ, dataFile.getPath()));
 			} catch (Exception e) {
 				LogHelper.severe(e.getMessage());
 			}
@@ -125,6 +123,7 @@ public class Storage {
 			}
 
 			bf.close();
+			LogHelper.info(String.format(LOG_DATA_FILE_READ, path));
 		} catch (IOException e) {
 			LogHelper.severe(e.getMessage());
 		}
@@ -199,8 +198,9 @@ public class Storage {
 			}
 			formatter.flush();
 			formatter.close();
+			LogHelper.info(String.format(LOG_DATA_FILE_WRITTEN, OUTFILE));
 		} catch (Exception e) {
-
+			LogHelper.severe(e.getMessage());
 		}
 	}
 
@@ -224,8 +224,9 @@ public class Storage {
 			}
 
 			bf.close();
+			LogHelper.info(String.format(LOG_DATA_FILE_READ, fileName));
 		} catch (IOException e) {
-
+			LogHelper.severe(e.getMessage());
 		}
 		return sb.toString();
 	}
