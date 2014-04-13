@@ -1,0 +1,5233 @@
+//@author: a0112089j
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+	 */
+
+	//Analyzer
+	public static final String EMPTY = "";
+	public static final String SLASH_R = "/r";
+	public static final String COMMA = ",";
+	public static final String PM = "pm";
+	public static final String AM = "am";
+	public static final String SPACE = " ";
+	public static final String SLASH = "/";
+	public static final String DOT = ".";
+	public static final String COLON = ":";
+	public static final String DASH = "-";
+	public static final String QUOTATION_MARK = "'";
+	public static final String ALL = "all";
+	public static final String INCOMPLETE_TASK = "";
+	public static final String FLOATING_TASK = "floating tasks";
+	public static final String DEADLINE_TASK = "deadline tasks";
+	public static final String TIMED_TASK = "timed tasks";
+	public static final String THIS_WEEK = "This Week";
+	public static final String NEXT_WEEK = "Next Week";
+	public static final String THIS_MONTH = "This Month";
+	public static final String NEXT_MONTH = "Next Month";
+
+	//TimeParser
+	public static final String TODAY = "Today";
+	public static final String TODAY_SHORT = "tdy";
+	public static final String TOMORROW = "Tomorrow";
+	public static final String TOMORROW_SHORT = "tmr";
+	public static final String MONDAY = "Monday";
+	public static final String MONDAY_SHORT = "mon";
+	public static final String TUESDAY = "Tuesday";
+	public static final String TUESDAY_SHORT = "tue";
+	public static final String WEDNESDAY = "Wednesday";
+	public static final String WEDNESDAY_SHORT = "wed";
+	public static final String THURSDAY = "Thursday";
+	public static final String THURSDAY_SHORT = "thu";
+	public static final String FRIDAY = "Friday";
+	public static final String FRIDAY_SHORT = "fri";
+	public static final String SATURDAY = "Saturday";
+	public static final String SATURDAY_SHORT = "sat";
+	public static final String SUNDAY = "Sunday";
+	public static final String SUNDAY_SHORT = "sun";
+	public static final String[] DATE_PATTERNS = {"ddMMMyyyy", "ddMMM", "dd/MM/yyyy", "dd/MM", "dd-MM-yyyy", "dd-MM", "dd.MM.yyyy", "dd.MM"};
+	public static final String[] TIME_12H_PATTERNS = {"h:mma", "h.mma", "hha", "hmma", "hhmma"};
+	public static final String[] TIME_24H_PATTERNS = {"HH:mm"};
+	public static final String FROM = "from";
+	public static final String BY = "by";
+	public static final String DUE = "due";
+	public static final String AT = "at";
+	public static final String TO = "to";
+	public static final String NEXT = "Next";
+	public static final String EVERY = "every";
+	public static final String EVERY_WEEK = "every week";
+	public static final String EVERYDAY = "everyday";
+	public static final char CHAR_SPACE = ' ';
+	public static final char CHAR_COMMA = ',';
+	
+	//GUI
+	public static final String MESSAGE_SEPARATOR = "=========================================================================\n";
+	public static final String NEWLINE = "\n";
+
+	//InvalidInputException messages
+	public static final String ERROR_NO_TASK_NAME = "ERROR: No task name is given";
+	public static final String ERROR_REMINDER_FOR_FLOATING_TASK = "ERROR: No reminder is allowed for floating task";
+	public static final String ERROR_EMPTY_COMMAND_DETAILS = "ERROR: Empty command details";
+	public static final String ERROR_START_TIME = "ERROR: Start time is a calendar before now";
+	public static final String ERROR_END_TIME = "ERROR: End time is a calendar before now";
+	public static final String ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME = "ERROR: Start time is later than or equal to end time";
+	public static final String ERROR_NO_EXACT_TIME = "ERROR: No exact time is given";
+	public static final String ERROR_INVALID_DISPLAY_REQUEST = "ERROR: Invalid display request";
+	public static final String ERROR_NO_NEW_TASK_NAME = "ERROR: No new task name is given";
+	public static final String ERROR_NO_SEQUENCE_NUMBER = "ERROR: Please indicate the sequence number";
+	public static final String ERROR_CONTAIN_NON_NUMERIC_INFO = "ERROR: Command details contain non-numeric info";
+	public static final String ERROR_ONLY_ALLOW_NEXT = "ERROR: Display query can be extended with 'next' only";
+	public static final String ERROR_DAILY_RECURRING_ONE_DATE_ONLY = "ERROR: Daily recurring event can contain one date only";
+	public static final String ERROR_DISPLAY_WITH_RECCURING_TIME = "ERROR: Cannot display with reccuring time";
+	public static final String ERROR_CANNOT_UPDATE_TO_RECURRING_TASK = "ERROR: Cannot update to recurring task";
+	
+	//Logging
+	public static final String[] CALENDAR_PROVIDED = {
+		"update end time only",
+		"update end date only",
+		"update end date and end time only",
+		"update start time only",
+		"update start time and end time only",
+		"update start time and end date only",
+		"update start time, end date and end time",
+		"update start date only",
+		"update start date and end time only",
+		"update start date and end date only",
+		"update start date, end date and end time",
+		"update start date and start time only",
+		"update start date, start time and end time",
+		"update start date, start time and end date",
+		"update start date, start time, end date and end time"
+	};
+	
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\InvalidInputException.java
+	 */
+
+
+package clc.common;
+
+public class InvalidInputException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7256048952103576883L;
+
+	public InvalidInputException(String string) {
+		super(string);
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\InvalidInputException.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+	 */
+
+	public void addOverdueRecurringTask() {
+		int taskListSize = internalMem.size();
+		for (int i = 0; i < taskListSize; i ++) {
+			Task currentTask = internalMem.get(i);
+			int nRecurring = currentTask.getNumberOfRecurring();
+			if (isRecurringAndOverDueTask(currentTask)) {
+				task = new Task(currentTask);
+				currentTask.setNumberOfRecurring(0);
+				task.setNumberOfRecurring(--nRecurring);
+				if (task.getRecurringPeriod() == EVERY_WEEK) {
+					task.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR);
+				} else if (task.getRecurringPeriod() == EVERYDAY) {
+					task.postponeStartAndEndTime(Calendar.DAY_OF_YEAR);
+				}
+				internalMem.add(task);
+			}
+		}
+	}
+
+	private boolean isRecurringAndOverDueTask(Task currentTask) {
+		int isOverdue = -1;
+		if (currentTask.getEndTime() != null) {
+			isOverdue = currentTask.getEndTime().compareTo(Calendar.getInstance());
+		}
+		return isOverdue <= 0 && currentTask.getNumberOfRecurring() > 0;
+	}
+	
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Delete.java
+	 */
+
+
+package clc.logic;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import clc.storage.Storage;
+import clc.storage.History;
+
+import static clc.common.Constants.MESSAGE_OUT_OF_BOUND;
+import static clc.common.Constants.MESSAGE_TASK_DELETED;
+import static clc.common.Constants.NEWLINE;
+
+public class Delete implements Command {
+	private ArrayList<Integer> taskSeqNo;
+	private ArrayList<Task> internalMem;
+	private ArrayList<Integer> displayMem;
+	
+	public Delete(ArrayList<Integer> taskSeqNo) {
+		this.taskSeqNo = taskSeqNo;
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
+	}
+	
+	@Override
+	public String execute() {
+		assert taskSeqNo != null; 
+		
+		StringBuilder feedback = new StringBuilder();
+		boolean isChanged = false;
+
+		//save a backup for undo
+		History.setDisplayMem();
+		appendMessageAccordingToSequence(feedback);
+		isChanged = deleteFromTheBackIfInBoundary(isChanged);
+		updateHistoryAndDatabaseIfChanged(isChanged);
+		
+		//after delete function displayMem is different
+		//displayMem must be cleared otherwise delete function can still be function after first deletion
+		displayMem.clear();
+		
+		assert feedback != null;
+		
+		return feedback.toString();
+	}
+
+	private void appendMessageAccordingToSequence(StringBuilder feedback) {
+		for (int i = 0; i < taskSeqNo.size(); i++) {
+			int seqNo = taskSeqNo.get(i);
+			if (isOutOfBound(displayMem.size(), seqNo)) {
+				appendOutOfBoundaryMessage(feedback, seqNo);
+			} else {
+				appendTaskDeletedMessage(feedback, seqNo);
+			}
+		}
+	}
+
+	private void appendOutOfBoundaryMessage(StringBuilder feedback, int seqNo) {
+		feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+		feedback.append(NEWLINE);
+	}
+
+	private void appendTaskDeletedMessage(StringBuilder feedback, int seqNo) {
+		int internalSeqNo = displayMem.get(seqNo - 1);
+		String taskName = internalMem.get(internalSeqNo).getTaskName();
+		feedback.append(String.format(MESSAGE_TASK_DELETED, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private boolean deleteFromTheBackIfInBoundary(boolean isChanged) {
+		Collections.sort(taskSeqNo);
+		for (int i = taskSeqNo.size() - 1; i >= 0; i--) {
+			int seqNo = taskSeqNo.get(i);
+			
+			if (!isOutOfBound(displayMem.size(), seqNo)) {
+				isChanged = true;
+				int internalSeqNo = displayMem.get(seqNo - 1); 
+				displayMem.remove(seqNo - 1);
+				internalMem.remove(internalSeqNo);
+			}
+		}
+		return isChanged;
+	}
+
+	private boolean isOutOfBound(int taskListSize, int seqNo) {
+		return (taskListSize < seqNo || seqNo <= 0);
+	}
+
+	private void updateHistoryAndDatabaseIfChanged(boolean isChanged) {
+		if (isChanged) {
+			History.addNewVersion();
+			Storage.writeContentIntoFile();
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Delete.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Help.java
+	 */
+
+
+package clc.logic;
+
+import static clc.common.Constants.TYPE_ADD;
+import static clc.common.Constants.TYPE_CREATE;
+import static clc.common.Constants.TYPE_DELETE;
+import static clc.common.Constants.TYPE_DELETE_SHORT;
+import static clc.common.Constants.TYPE_DISPLAY;
+import static clc.common.Constants.TYPE_DISPLAY_SHORT;
+import static clc.common.Constants.TYPE_EDIT;
+import static clc.common.Constants.TYPE_ERASE;
+import static clc.common.Constants.TYPE_EXPORT;
+import static clc.common.Constants.TYPE_EXPORT_SHORT;
+import static clc.common.Constants.TYPE_IMPORT;
+import static clc.common.Constants.TYPE_IMPORT_SHORT;
+import static clc.common.Constants.TYPE_LIST;
+import static clc.common.Constants.TYPE_MARK;
+import static clc.common.Constants.TYPE_MARK_SHORT;
+import static clc.common.Constants.TYPE_REMOVE;
+import static clc.common.Constants.TYPE_SHOW;
+import static clc.common.Constants.TYPE_UNMARK;
+import static clc.common.Constants.TYPE_UNMARK_SHORT;
+import static clc.common.Constants.TYPE_UPDATE;
+import static clc.common.Constants.TYPE_UPDATE_SHORT;
+import static clc.common.Constants.TYPE_SEARCH;
+import static clc.common.Constants.SEARCH_HELP_FILE;
+import static clc.common.Constants.IMPORT_EXPORT_HELP_FILE;
+import static clc.common.Constants.UPDATE_HELP_FILE;
+import static clc.common.Constants.MARK_UNMARK_HELP_FILE;
+import static clc.common.Constants.DISPLAY_HELP_FILE;
+import static clc.common.Constants.DELETE_HELP_FILE;
+import static clc.common.Constants.ADD_HELP_FILE;
+import static clc.common.Constants.GENERAL_HELP_FILE;
+import static clc.common.Constants.DATE_HELP_FILE;
+import static clc.common.Constants.HOTKEY_HELP_FILE;
+import static clc.common.Constants.HOTKEY;
+import static clc.common.Constants.DATE;
+import clc.storage.Storage;
+
+public class Help implements Command {
+	private String query;
+	
+	//constructor
+	public Help(String _query) {
+		query = _query;
+	}
+	
+	public String execute() {
+		String fileName;
+		if (isCaseAdd(query)) {
+			fileName = ADD_HELP_FILE;
+		} else if (isCaseDelete(query)) {
+			fileName = DELETE_HELP_FILE;
+		} else if (isCaseDisplay(query)) {
+			fileName = DISPLAY_HELP_FILE;
+		} else if (isCaseMark(query) || isCaseUnmark(query)) {
+			fileName = MARK_UNMARK_HELP_FILE;
+		} else if (isCaseUpdate(query)) {
+			fileName = UPDATE_HELP_FILE;
+		} else if (isCaseImport(query) || isCaseExport(query)) {
+			fileName = IMPORT_EXPORT_HELP_FILE;
+		} else if (isCaseSearch(query)) {
+			fileName = SEARCH_HELP_FILE;
+		} else if (isCaseHotkey(query)) {
+			fileName = HOTKEY_HELP_FILE;
+		} else if (isCaseDate(query)) {
+			fileName = DATE_HELP_FILE;
+		} else {
+			fileName = GENERAL_HELP_FILE;
+		}
+		
+		String helpMessage = readUserManual(fileName);
+		return helpMessage;
+	}
+
+	private String readUserManual(String fileName) {
+		return Storage.readManualFromHelpFile(fileName);
+	}
+	
+	private static boolean isCaseAdd(String query) {
+		return query.equalsIgnoreCase(TYPE_ADD) 
+				|| query.equalsIgnoreCase(TYPE_CREATE);
+	}
+
+	private static boolean isCaseDelete(String query) {
+		return query.equalsIgnoreCase(TYPE_DELETE) 
+				|| query.equalsIgnoreCase(TYPE_DELETE_SHORT)
+				|| query.equalsIgnoreCase(TYPE_ERASE)
+				|| query.equalsIgnoreCase(TYPE_REMOVE);
+	}
+
+	private static boolean isCaseDisplay(String query) {
+		return query.equalsIgnoreCase(TYPE_DISPLAY) 
+				|| query.equalsIgnoreCase(TYPE_DISPLAY_SHORT) 
+				|| query.equalsIgnoreCase(TYPE_SHOW) 
+				|| query.equalsIgnoreCase(TYPE_LIST);
+	}
+
+	private static boolean isCaseMark(String query) {
+		return query.equalsIgnoreCase(TYPE_MARK) 
+				|| query.equalsIgnoreCase(TYPE_MARK_SHORT);
+	}
+
+	private static boolean isCaseUnmark(String query) {
+		return query.equalsIgnoreCase(TYPE_UNMARK) 
+				|| query.equalsIgnoreCase(TYPE_UNMARK_SHORT);
+	}
+
+	private static boolean isCaseUpdate(String query) {
+		return query.equalsIgnoreCase(TYPE_UPDATE) 
+				|| query.equalsIgnoreCase(TYPE_UPDATE_SHORT)
+				|| query.equalsIgnoreCase(TYPE_EDIT);
+	}
+
+	private static boolean isCaseImport(String query) {
+		return query.equalsIgnoreCase(TYPE_IMPORT)
+				|| query.equalsIgnoreCase(TYPE_IMPORT_SHORT);
+	}
+
+	private static boolean isCaseExport(String query) {
+		return query.equalsIgnoreCase(TYPE_EXPORT)
+				|| query.equalsIgnoreCase(TYPE_EXPORT_SHORT);
+	}
+
+	private static boolean isCaseSearch(String query) {
+		return query.equalsIgnoreCase(TYPE_SEARCH);
+	}
+
+	private static boolean isCaseHotkey(String query) {
+		return query.equalsIgnoreCase(HOTKEY);
+	}
+
+	private static boolean isCaseDate(String query) {
+		return query.equalsIgnoreCase(DATE);
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Help.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Mark.java
+	 */
+
+
+package clc.logic;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import clc.storage.History;
+import clc.storage.Storage;
+
+import static clc.common.Constants.MESSAGE_OUT_OF_BOUND;
+import static clc.common.Constants.MESSAGE_MARK_DONE;
+import static clc.common.Constants.MESSAGE_PREVIOUSLY_MARK_DONE;
+import static clc.common.Constants.EVERYDAY;
+import static clc.common.Constants.EVERY_WEEK;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.NEWLINE;
+
+public class Mark implements Command {
+	private ArrayList<Integer> taskSeqNo;
+	private StringBuilder feedback = new StringBuilder();
+	private ArrayList<Integer> displayMem;
+	private ArrayList<Task> internalMem;
+	private ArrayList<Task> reminderMem;
+	private boolean isReminderTask;
+	private long targetTaskId;
+	
+	public Mark(ArrayList<Integer> taskSeqNo) {
+		this.taskSeqNo = taskSeqNo;
+		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
+	}
+	
+	//constructor for marking reminder task
+	public Mark(long taskId) {
+		isReminderTask = true;
+		reminderMem = Remind.getReminderMem();
+		targetTaskId = taskId;
+	}
+
+	@Override
+	public String execute() {
+		if (isReminderTask) {
+			markReminderMem();
+			//mark task when reminder pop up does not need to return feedback message
+			return EMPTY;
+		}
+		assert taskSeqNo != null; 
+		return markDisplayMem();
+	}
+
+	private void markReminderMem() {
+		for (int i = reminderMem.size() - 1; i >= 0; i --) {
+			Task task = reminderMem.get(i);
+			if (task.getTaskId() == targetTaskId) {
+				task.markDone();
+	    		Storage.writeContentIntoFile();
+	    		appendMarkDoneMessage(task.getTaskName());
+				break;
+			}
+		}
+	}
+
+	private String markDisplayMem() {
+		boolean isChanged = markTasks();
+		updateHistoryAndDatabaseIfChanged(isChanged);
+		assert feedback != null;
+		return feedback.toString().trim();
+	}
+
+	private boolean markTasks() {
+		boolean isChanged = false;
+		for (int i = 0; i < taskSeqNo.size(); i++) {
+			int seqNo = taskSeqNo.get(i);
+			isChanged = markTaskIfInBoundary(isChanged, seqNo);
+		}
+		return isChanged;
+	}
+
+	private boolean markTaskIfInBoundary(boolean isChanged, int seqNo) {
+		if (isOutOfBound(displayMem.size(), seqNo)) {
+			appendOutOfBoundaryMessage(seqNo);
+		} else {
+			isChanged = markTaskAndAppendFeedbackMessage(isChanged, seqNo);
+		}
+		return isChanged;
+	}
+
+	private boolean isOutOfBound(int taskListSize, int seqNo) {
+		return (taskListSize < seqNo || seqNo <= 0);
+	}
+
+	private boolean markTaskAndAppendFeedbackMessage(boolean isChanged, int seqNo) {
+		boolean isMarked = false;
+		int internalSeqNo = displayMem.get(seqNo - 1); 
+		
+		Task toBeMarkedTask = internalMem.get(internalSeqNo);
+		caseMarkRecurringTask(toBeMarkedTask);
+		isMarked = toBeMarkedTask.markDone();
+		String taskName = internalMem.get(internalSeqNo).getTaskName();
+		if (isMarked) {
+			isChanged = true;
+			appendMarkDoneMessage(taskName);
+		} else { //task is marked before this
+			appendPreviouslyMarkDoneMessage(taskName);
+		}
+		return isChanged;
+	}
+
+	private void appendPreviouslyMarkDoneMessage(String taskName) {
+		feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_DONE, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private void appendMarkDoneMessage(String taskName) {
+		feedback.append(String.format(MESSAGE_MARK_DONE, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private void appendOutOfBoundaryMessage(int seqNo) {
+		feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+		feedback.append(NEWLINE);
+	}
+
+	private void updateHistoryAndDatabaseIfChanged(boolean isChanged) {
+		if (isChanged) {
+			History.addNewVersion();
+    		Storage.writeContentIntoFile();
+		}
+	}
+
+	private void caseMarkRecurringTask(Task toBeMarkedTask) {
+		int nRecurring = toBeMarkedTask.getNumberOfRecurring();
+		addNewTaskIfRecurring(toBeMarkedTask, nRecurring);
+	}
+
+	private void addNewTaskIfRecurring(Task toBeMarkedTask, int nRecurring) {
+		if (nRecurring > 0) {
+			Task newRecurringTask = new Task(toBeMarkedTask);
+			//pass the recurring time to the new task
+			//set original task to non-recurring task
+			toBeMarkedTask.setNumberOfRecurring(0);
+			newRecurringTask.setNumberOfRecurring(--nRecurring);
+			constructNewTaskAccordingToRecurringPeriod(newRecurringTask);
+			Command addRecurringTask = new Add(newRecurringTask);
+			addRecurringTask.execute();
+		}
+	}
+
+	private void constructNewTaskAccordingToRecurringPeriod(
+			Task newRecurringTask) {
+		if (isRecurringEveryWeekTask(newRecurringTask)) {
+			newRecurringTask.postponeStartAndEndTime(Calendar.WEEK_OF_YEAR);
+		} else if (isRecurringEverydayTask(newRecurringTask)) {
+			newRecurringTask.postponeStartAndEndTime(Calendar.DAY_OF_YEAR);
+		}
+	}
+
+	private boolean isRecurringEveryWeekTask(Task newRecurringTask) {
+		return newRecurringTask.getRecurringPeriod().equals(EVERY_WEEK);
+	}
+
+	private boolean isRecurringEverydayTask(Task newRecurringTask) {
+		return newRecurringTask.getRecurringPeriod().equals(EVERYDAY);
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Mark.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Remind.java
+	 */
+
+
+package clc.logic;
+
+import static clc.common.Constants.MESSAGE_REMIND_TIMED_TASKS;
+import static clc.common.Constants.MESSAGE_REMIND_DEADLINE_TASKS;
+import static clc.common.Constants.TYPE_DEADLINE_TASK;
+import static clc.common.Constants.TYPE_TIMED_TASK;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import clc.storage.Storage;
+
+public class Remind {
+	ArrayList<Task> internalMem;
+	ArrayList<Date> timeToBeReminded;
+	private ArrayList<Long> taskIdToBeReminded;
+	static ArrayList<Task> reminderMem;
+
+	public Remind() {
+		internalMem = Storage.getInternalMem();
+		timeToBeReminded = new ArrayList<Date>();
+		reminderMem = new ArrayList<Task>();
+		taskIdToBeReminded = new ArrayList<Long>();
+	}
+
+	public ArrayList<String> getToBeRemindedInfo() {
+		ArrayList<String> taskInfo = new ArrayList<String>();
+		for (int i = 0; i < internalMem.size(); i ++) {
+			Task task = internalMem.get(i);
+			retrieveTaskInfoIfReminderNeeded(taskInfo, task);
+		}
+		return taskInfo;
+	}
+
+	private void retrieveTaskInfoIfReminderNeeded(ArrayList<String> taskInfo,
+			Task task) {
+		if (task.getIsReminderNeeded() && !task.getIsDone()) {
+			reminderMem.add(task);
+			taskIdToBeReminded.add(task.getTaskId());
+			switch (task.getTaskType()) {
+			case TYPE_TIMED_TASK:
+				remindTimedTask(taskInfo, task);
+				break;
+			case TYPE_DEADLINE_TASK:
+				remindDeadlineTask(taskInfo, task);
+				break;
+			}
+		}
+	}
+
+	private void remindDeadlineTask(ArrayList<String> taskInfo, Task task) {
+		String endTime = formatDate(task.getEndTime());
+		taskInfo.add(String.format(MESSAGE_REMIND_DEADLINE_TASKS, task.getTaskName(), endTime));
+		Calendar reminderCalendar = (Calendar) task.getEndTime().clone();
+		int intervalToBeReminded = -1*task.getReminderInterval();
+		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
+		timeToBeReminded.add(reminderCalendar.getTime());
+	}
+
+	private void remindTimedTask(ArrayList<String> taskInfo, Task task) {
+		String startTime = formatDate(task.getStartTime());
+		String endTime = formatDate(task.getEndTime());
+		taskInfo.add(String.format(MESSAGE_REMIND_TIMED_TASKS, task.getTaskName(), startTime, endTime));
+		Calendar reminderCalendar = (Calendar) task.getStartTime().clone();
+		int intervalToBeReminded = -1*task.getReminderInterval();
+		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
+		timeToBeReminded.add(reminderCalendar.getTime());
+	}
+
+	public ArrayList<Date> getToBeRemindedTime() {
+		return timeToBeReminded; 
+	}
+
+	public ArrayList<Long> getToBeRemindedTaskId() {
+		return taskIdToBeReminded;
+	}
+
+	private String formatDate(Calendar calendar) {
+		String date;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
+		date = dateFormat.format(calendar.getTime());
+		date = date.replaceAll("AM", "am");
+		date = date.replaceAll("PM", "pm");
+		return date;
+	}
+	
+	protected static ArrayList<Task> getReminderMem() {
+		return reminderMem;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Remind.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Unmark.java
+	 */
+
+
+package clc.logic;
+
+import java.util.ArrayList;
+
+import clc.storage.History;
+import clc.storage.Storage;
+
+import static clc.common.Constants.NEWLINE;
+import static clc.common.Constants.MESSAGE_OUT_OF_BOUND;
+import static clc.common.Constants.MESSAGE_MARK_NOT_DONE;
+import static clc.common.Constants.MESSAGE_PREVIOUSLY_MARK_NOT_DONE;
+
+public class Unmark implements Command {
+	private ArrayList<Integer> taskSeqNo;
+	private StringBuilder feedback = new StringBuilder();
+	private ArrayList<Integer> displayMem;
+	private ArrayList<Task> internalMem;
+	
+	public Unmark(ArrayList<Integer> taskSeqNo) {
+		this.taskSeqNo = taskSeqNo;
+		displayMem = Storage.getDisplayMem();
+		internalMem = Storage.getInternalMem();
+	}
+
+	@Override
+	public String execute() {
+		assert taskSeqNo != null; 
+		boolean isChanged = unmarkTasks();
+		updateHistoryAndDatabaseIfChanged(isChanged);
+		assert feedback != null;
+		return feedback.toString().trim();
+	}
+
+	private boolean unmarkTasks() {
+		boolean isChanged = false;
+		for (int i = 0; i < taskSeqNo.size(); i++) {
+			int seqNo = taskSeqNo.get(i);
+			isChanged = unmarkTaskIfInBoundary(isChanged, seqNo);
+		}
+		return isChanged;
+	}
+
+	private boolean unmarkTaskIfInBoundary(boolean isChanged, int seqNo) {
+		if (isOutOfBound(displayMem.size(), seqNo)) {
+			appendOutOfBoundMessage(seqNo);
+		} else {
+			isChanged = unmarkTaskAndAppendFeedbackMessage(isChanged, seqNo);
+		}
+		return isChanged;
+	}
+
+	private boolean isOutOfBound(int taskListSize, int seqNo) {
+		return (taskListSize < seqNo || seqNo <= 0);
+	}
+
+	private void appendOutOfBoundMessage(int seqNo) {
+		feedback.append(String.format(MESSAGE_OUT_OF_BOUND, seqNo));
+		feedback.append(NEWLINE);
+	}
+
+	private boolean unmarkTaskAndAppendFeedbackMessage(boolean isChanged, int seqNo) {
+		boolean isUnmarked = false;
+		int internalSeqNo = displayMem.get(seqNo - 1);
+		isUnmarked = internalMem.get(internalSeqNo).markUndone();
+		String taskName = internalMem.get(internalSeqNo).getTaskName();
+		
+		if (isUnmarked) {
+			isChanged = true;
+			appendMarkNotDoneMessage(taskName);
+		} else { //task is not marked as done previously
+			appendPreviouslyNotMarkDoneMessage(taskName);
+		}
+		return isChanged;
+	}
+
+	private void appendMarkNotDoneMessage(String taskName) {
+		feedback.append(String.format(MESSAGE_MARK_NOT_DONE, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private void appendPreviouslyNotMarkDoneMessage(String taskName) {
+		feedback.append(String.format(MESSAGE_PREVIOUSLY_MARK_NOT_DONE, taskName));
+		feedback.append(NEWLINE);
+	}
+
+	private void updateHistoryAndDatabaseIfChanged(boolean isChanged) {
+		if (isChanged) {
+			History.addNewVersion();
+			Storage.writeContentIntoFile();
+		}
+	}
+}
+
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Unmark.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\Main.java
+	 */
+
+package clc;
+
+import java.io.IOException;
+import java.net.BindException;
+import java.net.ServerSocket;
+
+import clc.common.LogHelper;
+import clc.storage.Storage;
+import clc.ui.UserInterface;
+
+import static clc.common.Constants.*;
+
+public class Main {
+	
+	public static void main(String[] args) { 
+		LogHelper.info(CLC_LAUNCHED);
+		checkIfRunning();
+		UserInterface userInterface = new UserInterface();
+		Storage.initializeDataFile();
+		userInterface.executeCommandsUntilExit();	
+	}
+	
+	private static void checkIfRunning() {
+		try { 
+			//if the socket is used by other application, software cannot be launched
+			new ServerSocket(PORT);
+		}
+		catch (BindException e) {
+			LogHelper.warning(ALREADY_RUNNING);
+			System.exit(1);
+		}
+		catch (IOException e) {
+			LogHelper.warning(UNEXPECTED_ERROR);
+			e.printStackTrace();
+			System.exit(2);
+		} 
+	} 
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\Main.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\AddAnalyzer.java
+	 */
+
+
+package clc.ui;
+
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.QUOTATION_MARK;
+import static clc.common.Constants.SLASH_R;
+import static clc.common.Constants.ERROR_NO_TASK_NAME;
+import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+import clc.logic.Task;
+
+public class AddAnalyzer extends TimeParser {
+	private static String taskName;
+	private static Task taskToBeAdded;
+	private static boolean isReminderNeeded;
+	private static boolean isCaseQuotedTaskName;
+	private static int intervalToBeReminded;
+
+	protected AddAnalyzer(String input) {
+		super(input);
+	}
+
+	protected static Task getToBeAddedTask() {
+		return taskToBeAdded;
+	}
+
+	protected static void analyze() throws InvalidInputException {
+		throwExceptionIfEmptyCommandDetails();
+		determineIfReminderNeeded();
+		setUpInfoToBeProcessed(); //info to be processed in time parser
+
+		if (doesContainTimeInfo()) { //timed task or deadline task
+			//quoted one does not require to merge anymore
+			mergeNotQuotedWordsAsTaskName();
+			determineIfTaskNameProvided();
+			setUpCalendarTask();
+		} else { // floating task
+			throwExceptionIfReminderNeeded();
+			setCommandDetailsAsTaskNameIfNotQuotedTaskName();
+			setUpFloatingTask();
+		}
+	}
+
+	private static void determineIfReminderNeeded() throws InvalidInputException {
+		isReminderNeeded = false;
+		if (isFirstWordSlashR()) {
+			LogHelper.info("Requested to add reminder task");
+			isReminderNeeded = true;
+			commandDetails = removeFirstWord(commandDetails);
+			setReminderInterval();
+		}
+	}
+
+	private static boolean isFirstWordSlashR() {
+		return getFirstWord(commandDetails).equalsIgnoreCase(SLASH_R);
+	}
+
+	private static void setReminderInterval() throws InvalidInputException {
+		if (isNumeric(getFirstWord(commandDetails))) {
+			intervalToBeReminded = Integer.parseInt(getFirstWord(commandDetails));
+			commandDetails = removeFirstWord(commandDetails);
+		} else {
+			intervalToBeReminded = DEFAULT_REMINDER_INTERVAL;
+		}
+	}
+
+	private static void setUpInfoToBeProcessed() {
+		isCaseQuotedTaskName = false;
+		int startQuotationIndex = commandDetails.indexOf(QUOTATION_MARK);
+		int endQuotationIndex = commandDetails.lastIndexOf(QUOTATION_MARK);
+		if (doesQuotationMarkExist(startQuotationIndex) 
+				&& doesContainAtLeastTwoQuotationMarks(startQuotationIndex, endQuotationIndex)) {
+			isCaseQuotedTaskName = true;
+			setInfoIfQuotationMarkAtTheBeginningOrEnding(startQuotationIndex, endQuotationIndex);
+			setQuotedStringAsTaskName(startQuotationIndex, endQuotationIndex);
+		}
+		else {
+			infoToBeProcessed = commandDetails.split(SPACE);
+		}
+	}
+
+	private static boolean doesQuotationMarkExist(int startQuotationIndex) {
+		return startQuotationIndex != -1;
+	}
+
+	private static boolean doesContainAtLeastTwoQuotationMarks(int startQuotationIndex, int endQuotationIndex) {
+		return startQuotationIndex != endQuotationIndex;
+	}
+
+	private static void setInfoIfQuotationMarkAtTheBeginningOrEnding(int startQuotationIndex, int endQuotationIndex) {
+		if (isQuotationMarkAtTheBeginning(startQuotationIndex)){
+			infoToBeProcessed = commandDetails.substring(endQuotationIndex + 1, commandDetails.length()).split(SPACE);
+		} else if (isQuotationMarkAtTheEnding(endQuotationIndex)) {
+			infoToBeProcessed = commandDetails.substring(0, startQuotationIndex).split(SPACE);
+		} else { //quoted in the middle
+			infoToBeProcessed = commandDetails.split(SPACE);
+			isCaseQuotedTaskName = false;
+		}
+	}
+
+	private static boolean isQuotationMarkAtTheBeginning(int startQuotationIndex) {
+		return startQuotationIndex == 0;
+	}
+
+	private static boolean isQuotationMarkAtTheEnding(int endQuotationIndex) {
+		return endQuotationIndex == commandDetails.length() - 1;
+	}
+
+	private static void setQuotedStringAsTaskName(int startQuotationIndex, int endQuotationIndex) {
+		if (isCaseQuotedTaskName) {
+			taskName = commandDetails.substring(startQuotationIndex + 1, endQuotationIndex);
+			LogHelper.info("Quoted Task Name: " + taskName);
+		}
+	}
+
+	private static void mergeNotQuotedWordsAsTaskName() {
+		if (!isCaseQuotedTaskName){
+			taskName = EMPTY;
+			mergeWordsBeforeCalendarInformation();
+			mergeWordsAfterCalendarInformation();
+			LogHelper.info("Merged Task Name: " + taskName);
+		}
+	}
+
+	private static void mergeWordsBeforeCalendarInformation() {
+		for (int i = 0; i < startCalendarIndex; i++) {
+			taskName += (infoToBeProcessed[i] + SPACE);
+		}
+	}
+
+	private static void mergeWordsAfterCalendarInformation() {
+		for (int i = endCalendarIndex + 1; i < infoToBeProcessed.length; i++) {
+			taskName += (infoToBeProcessed[i] + SPACE);
+		}
+		taskName = taskName.trim();
+	}
+
+	private static void determineIfTaskNameProvided()
+			throws InvalidInputException {
+		if (isEmptyTaskName()) {
+			LogHelper.info("No task name found");
+			throw new InvalidInputException(ERROR_NO_TASK_NAME);
+		}
+	}
+
+
+	private static void setUpCalendarTask() throws InvalidInputException {
+		if (isCaseDeadlineTask()) {
+			taskToBeAdded = new Task(taskName, endCalendar);
+			LogHelper.info("Deadline Task constructed");
+		} else if (isCaseTimedTask()) {
+			taskToBeAdded = new Task(taskName, startCalendar, endCalendar);
+			LogHelper.info("Timed Task constructed");
+		} else {
+			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
+		}
+
+		caseIfReminderNeeded();
+		caseIfRecurringTask();
+	}
+	
+	private static boolean isCaseTimedTask() {
+		return doesStartAndEndCalendarExist();
+	}
+
+	private static boolean isCaseDeadlineTask() {
+		return startCalendar == null && endCalendar != null;
+	}
+
+	private static void caseIfReminderNeeded() {
+		if (isReminderNeeded) {
+			taskToBeAdded.setReminder(intervalToBeReminded);
+		}
+	}
+
+	private static void caseIfRecurringTask() {
+		if (isRecurringEveryWeek) {
+			taskToBeAdded.setNumberOfRecurring(Integer.MAX_VALUE);
+			taskToBeAdded.setRecurringPeriod(recurringPeriod);
+		} else if  (isRecurringEveryday) {
+			taskToBeAdded.setNumberOfRecurring(Integer.MAX_VALUE);
+			taskToBeAdded.setRecurringPeriod(recurringPeriod);
+		}
+	}
+
+	private static void throwExceptionIfReminderNeeded() throws InvalidInputException {
+		if (isReminderNeeded) {
+			LogHelper.info("Invalid reminder request for floating task");
+			throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
+	 	}
+	}
+
+	private static void setCommandDetailsAsTaskNameIfNotQuotedTaskName() {
+		if (!isCaseQuotedTaskName) {
+			taskName = commandDetails;
+		}
+	}
+
+	private static void setUpFloatingTask() {
+		taskToBeAdded = new Task(taskName);
+		LogHelper.info("Floating Task constructed");
+	}
+
+	private static boolean isEmptyTaskName() {
+		return taskName.equals(EMPTY);
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\AddAnalyzer.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\AddAnalyzerTest.java
+	 */
+
+
+package clc.ui;
+
+import static org.junit.Assert.*;
+import static clc.common.Constants.ERROR_NO_TASK_NAME;
+import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import static clc.common.Constants.ERROR_START_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
+import static clc.common.Constants.ERROR_NO_EXACT_TIME;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import clc.common.InvalidInputException;
+
+public class AddAnalyzerTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testGetToBeAddedTask() throws InvalidInputException {
+
+		//command details without date and time 
+		Analyzer.analyze("add taskname");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//command details with one time only
+		Analyzer.analyze("add taskname1 1159pm");
+
+		AddAnalyzer.analyze();
+		GregorianCalendar gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals("taskname1", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//command details with one time and one date only
+		//case 1: date before time
+		Analyzer.analyze("add taskname2 1/1/2100 1159pm");
+
+		AddAnalyzer.analyze();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals("taskname2", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2: time before date
+		Analyzer.analyze("add taskname3 1159pm 1/1/2100");
+
+		AddAnalyzer.analyze();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals("taskname3", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//command details with two time and one date only
+		//case 1: date at the beginning of calendar info
+		Analyzer.analyze("add taskname4 1/1/2100 1158pm 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname4", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 58); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2: date in between the time
+		Analyzer.analyze("add taskname5 1158pm 1/1/2100 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname5", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		//assertEquals(gc.compareTo(AddAnalyzer.getToBeAddedTask().getStartTime()), 0);
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3: date at the end
+		Analyzer.analyze("add taskname6 1158pm 1159pm 1/1/2100");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname6", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//command details with two time and two date
+		//case 1: date time date time
+		Analyzer.analyze("add taskname7 1/1/2100 1159pm 2/1/2100 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname7", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2: time date time date
+		Analyzer.analyze("add taskname8 1159pm 1/1/2100 1159pm 2/1/2100");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname8", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3: date time time date
+		Analyzer.analyze("add taskname 9 1/1/2100 1159pm 1159pm 2/1/2100");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 9", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 4: time date date time
+		Analyzer.analyze("add task name 10 1159pm 1/1/2100 2/1/2100 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 10", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59); // month is 0 to 11
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//command details with keyword "today" and "tomorrow"
+		//case 1 with full word today and tomorrow
+		Analyzer.analyze("add task name 11 today 1159pm tomorrow 1159pm"); 
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 11", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 with acronym of today and tomorrow
+		Analyzer.analyze("add task name 11 tdy 1159pm tmr 1159pm"); 
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 11", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//name after calendar information
+		//case 1 timed task
+		Analyzer.analyze("add from tomorrow 4pm to 5pm task name 12");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 16, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 17, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 deadline task
+		Analyzer.analyze("add by tomorrow 4pm task name 12");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 12", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 1, 16, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//Monday to Sunday case + next Monday to Sunday case
+		//case 1 timed task
+		GregorianCalendar currTime = new GregorianCalendar();
+
+		Analyzer.analyze("add task name 13 from monday 1159pm to next tuesday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 13", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+		
+		//case 2 deadline task
+		Analyzer.analyze("add task name 14 by wednesday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 14", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), currTime.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3 timed task with acronym
+		Analyzer.analyze("add task name 15 from thu 1159pm to next next fri 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 15", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 14, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 4 deadline with acronym
+		Analyzer.analyze("add task name 16 at sat 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 16", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 5 timed task with full word and acronym
+		Analyzer.analyze("add task name 17 from sunday 1159pm to next monday 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 17", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE) + 7, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//everyday case, postpone to next day if before now
+		//case 1 deadline task before now
+		Analyzer.analyze("add task name 18 everyday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 18", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 deadline task after now
+		Analyzer.analyze("add task name 19 everyday 1159pm");
+
+		AddAnalyzer.analyze(); 
+		assertEquals("task name 19", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 3 timed task before now
+		Analyzer.analyze("add task name 20 everyday 1201am to 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 20", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.HOUR, 23);
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 4 timed task after now
+		Analyzer.analyze("add task name 21 everyday 1158pm to 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 21", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 1);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//every Monday to Sunday case, first task postpone one week if entered time is before now
+		//case 1 timed task at the same day
+		Analyzer.analyze("add task name 22 every mon from 1201am to 1202am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 22", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc.set(Calendar.MINUTE, 2);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 timed task at different day
+		boolean isPostponed = false;
+		Analyzer.analyze("add task name 23 every tue from 1201am to next tue 1202am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 23", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+			isPostponed = true;
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 2);
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		if (isPostponed) {
+			gc.add(Calendar.DATE, 7);
+		}
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 deadline task
+		Analyzer.analyze("add task name 24 every wed 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 24", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//the rest is use to make sure postpone is taken place
+		Analyzer.analyze("add task name 25 every thursday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 25", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 26 every friday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 26", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 27 every saturday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 27", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add task name 28 every sunday 1201am");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 28", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 1);
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		if (gc.compareTo(Calendar.getInstance()) == -1) {
+			gc.add(Calendar.DATE, 7);
+		}
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 0, 1);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//task name quoted with ' '
+		//case 1 without any time information
+		Analyzer.analyze("add 'task name 29 with today or sunday or 23/4/12 is okay'");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 29 with today or sunday or 23/4/12 is okay", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getEndTime());
+		//case 2 with time information
+		Analyzer.analyze("add 'task name 30 with today or sunday or 23/4/12 is okay' 1159pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("task name 30 with today or sunday or 23/4/12 is okay", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//task with reminder
+		//case 1 deadline task
+		Analyzer.analyze("add /r taskname 31 1159pm");
+
+		AddAnalyzer.analyze();
+		assertTrue(AddAnalyzer.getToBeAddedTask().getIsReminderNeeded());
+		assertEquals("taskname 31", AddAnalyzer.getToBeAddedTask().getTaskName());
+		assertEquals(null, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		//case 2 timed task		
+		Analyzer.analyze("add /r taskname 32 1158pm 1159pm");
+
+		AddAnalyzer.analyze();
+		assertTrue(AddAnalyzer.getToBeAddedTask().getIsReminderNeeded());
+		assertEquals("taskname 32", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+
+		//all calendar pattern
+		Analyzer.analyze("add taskname 33 1jan2100 1:23pm 2january2100 2.34pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 33", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar(2100, 0, 1, 13, 23);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 34);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 34 31 dec 23:58 31december 23:59");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 34", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 58);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 35 31/12 11.59 pm 2/1/2100 2:34 pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 35", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 34);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 36 31-12 1159 pm 2-1-2100 2 pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 36", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+
+		Analyzer.analyze("add taskname 37 31.12 1159 pm 2.1.2100 2pm");
+
+		AddAnalyzer.analyze();
+		assertEquals("taskname 37", AddAnalyzer.getToBeAddedTask().getTaskName());
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
+		gc = new GregorianCalendar(2100, 0, 2, 14, 0);
+		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
+	}
+
+	@Test
+	//throws exception for Analyzer.analyze() as it is tested in other test driver
+	public void testInvalidInputException() throws InvalidInputException {
+		//empty command details
+		Analyzer.analyze("add");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
+		}
+
+		//spaces command details
+		Analyzer.analyze("add            ");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
+		}
+
+		//command details without task name 
+		Analyzer.analyze("add 2/2/2100 1159pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_NO_TASK_NAME, e.getMessage());
+		}
+
+		//add with reminder for floating task
+		Analyzer.analyze("add -r taskname");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_REMINDER_FOR_FLOATING_TASK, e.getMessage());
+		}
+
+		//command details end time is earlier than start time
+		Analyzer.analyze("add taskname 25/5/2100 4pm 22/5/2100 3pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
+		}
+
+		//command details end time is equal to start time
+		Analyzer.analyze("add taskname 25/5/2100 4pm 25/5/2100 4pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
+		}
+
+		//start time(or both) is earlier than current time
+		Analyzer.analyze("add taskname 1/1/2014 4pm 1/1/2100 4pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME, e.getMessage());
+		}	
+
+		//end time for deadline task is earlier than current time
+		Analyzer.analyze("add taskname 1/1/2014 4pm");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_END_TIME, e.getMessage());
+		}
+
+		//no time(only date) is given
+		Analyzer.analyze("add taskname 1/1/2100");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_NO_EXACT_TIME, e.getMessage());
+		}
+
+		//add reminder for floating task
+		Analyzer.analyze("add /r floating task");
+		try {
+			AddAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_REMINDER_FOR_FLOATING_TASK, e.getMessage());
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\AddAnalyzerTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Analyzer.java
+	 */
+
+
+package clc.ui;
+
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+import static clc.common.Constants.MESSAGE_INVALID_FORMAT;
+
+import java.util.regex.PatternSyntaxException;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+
+public class Analyzer {
+
+	protected static String commandType, commandDetails;
+	
+	protected Analyzer(String input) {}
+	
+	protected static void analyze(String input) throws InvalidInputException {
+		commandType = getFirstWord(input);
+		LogHelper.info("Command type: " + commandType);
+		commandDetails = removeFirstWord(input);
+		LogHelper.info("Command details: " + commandDetails);
+	}
+
+	protected static String getCommandType() {
+		return commandType;
+	}
+	
+	protected static String getCommandDetails() {
+		return commandDetails;
+	}
+	
+	protected static String getFirstWord(String input) {
+		String commandType = input.trim().split(SPACE)[0];
+		return commandType;
+	}
+
+	protected static String removeFirstWord(String input) throws InvalidInputException {
+		String firstWord;
+		try {
+			firstWord = input.replaceFirst(getFirstWord(input), EMPTY).trim();
+		} catch (PatternSyntaxException e) {
+			throw new InvalidInputException(String.format(MESSAGE_INVALID_FORMAT, input));
+		}
+		return firstWord;
+	}
+
+	protected static boolean doesCommandDetailsExist(String commandDetails) {
+		return !commandDetails.equals(EMPTY);
+	}
+
+	protected static void throwExceptionIfEmptyCommandDetails() throws InvalidInputException {
+		if (!doesCommandDetailsExist(commandDetails)) {
+			LogHelper.info("No command details");
+			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
+		}
+	}
+	
+	protected static boolean isNumeric(String currWord) {
+		try {
+			Integer.parseInt(currWord);
+			LogHelper.info("'" + currWord + "'" + " is numeric");
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Analyzer.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\DisplayAnalyzer.java
+	 */
+
+
+package clc.ui;
+
+import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.ERROR_DISPLAY_WITH_RECCURING_TIME;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.NEXT;
+import static clc.common.Constants.ALL;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TODAY_SHORT;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.TOMORROW_SHORT;
+import static clc.common.Constants.MONDAY;
+import static clc.common.Constants.MONDAY_SHORT;
+import static clc.common.Constants.TUESDAY;
+import static clc.common.Constants.TUESDAY_SHORT;
+import static clc.common.Constants.WEDNESDAY;
+import static clc.common.Constants.WEDNESDAY_SHORT;
+import static clc.common.Constants.THURSDAY;
+import static clc.common.Constants.THURSDAY_SHORT;
+import static clc.common.Constants.FRIDAY;
+import static clc.common.Constants.FRIDAY_SHORT;
+import static clc.common.Constants.SATURDAY;
+import static clc.common.Constants.SATURDAY_SHORT;
+import static clc.common.Constants.SUNDAY;
+import static clc.common.Constants.SUNDAY_SHORT;
+import static clc.common.Constants.THIS_WEEK;
+import static clc.common.Constants.THIS_MONTH;
+import static clc.common.Constants.NEXT_WEEK;
+import static clc.common.Constants.NEXT_MONTH;
+import static clc.common.Constants.INCOMPLETE_TASK;
+import static clc.common.Constants.TIMED_TASK;
+import static clc.common.Constants.DEADLINE_TASK;
+import static clc.common.Constants.FLOATING_TASK;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+
+public class DisplayAnalyzer extends TimeParser{
+	private static boolean isCaseDisplayCalendar; //display Calendar with date format
+	private static boolean isCaseKeywordCalendar; //display Calendar with keyword
+	private static int year, month, date, dayOfWeek;
+	private static String lastWord, lastTwoWords;
+
+	protected DisplayAnalyzer(String input) {
+		super(input);
+	}
+
+	protected static boolean getIsCaseDisplayCalendar() {
+		return isCaseDisplayCalendar;
+	}
+
+	protected static boolean getIsCaseKeywordCalendar() {
+		return isCaseKeywordCalendar;
+	}
+
+	protected static String getDisplayQuery() {
+		return commandDetails;
+	}
+
+	protected static void analyze() throws InvalidInputException{
+		infoToBeProcessed = commandDetails.split(SPACE);
+		isCaseDisplayCalendar = true;
+		isCaseKeywordCalendar = true;
+		lastWord = EMPTY;
+		lastTwoWords = EMPTY;
+
+		// calendar keywords are today, tomorrow, etc ..
+		setDisplayTimeIfConsistOfCalendarKeyword(); 
+		setDisplayInfoWithCalendarOrString();
+	}
+
+	private static void setDisplayTimeIfConsistOfCalendarKeyword() throws InvalidInputException {
+		year = Calendar.getInstance().get(Calendar.YEAR);
+		month = Calendar.getInstance().get(Calendar.MONTH);
+		date = Calendar.getInstance().get(Calendar.DATE);
+		dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+		
+		retrieveLastAndLastTwoWordsIfAvailable();
+		setDisplayTimeIfLastOrLastTwoWordsMatchCalendarKeyword();
+		updateDisplayTimeIfCalendarKeywordExtendedWithNextKeyword();
+	}
+
+	private static void retrieveLastAndLastTwoWordsIfAvailable() {
+		if (infoToBeProcessed.length >= 1) {
+			lastWord = infoToBeProcessed[infoToBeProcessed.length - 1];
+			LogHelper.info("Last word: " + lastWord);
+			if (infoToBeProcessed.length >= 2) {
+				lastTwoWords = infoToBeProcessed[infoToBeProcessed.length - 2] + SPACE + lastWord;
+				LogHelper.info("Last two words: " + lastTwoWords);
+			}
+		}
+	}
+
+	private static void setDisplayTimeIfLastOrLastTwoWordsMatchCalendarKeyword() {
+		if (isCaseDisplayToday()) {
+			setToday();
+		} else if (isCaseDisplayTomorrow()) {
+			setTomorrow();
+		} else if (isCaseDisplayMonday()) {
+			setMonday();
+		} else if (isCaseDisplayTuesday()) {
+			setTuesday();
+		} else if (isCaseDisplayWednesday()) {
+			setWednesday();
+		} else if (isCaseDisplayThursday()) {
+			setThursday();
+		} else if (isCaseDisplayFriday()) {
+			setFriday();
+		} else if (isCaseDisplaySaturday()) {
+			setSaturday();
+		} else if (isCaseDisplaySunday()) {
+			setSunday();
+		} else if (isCaseDisplayThisWeek()) {
+			setThisWeek();
+		} else if (isCaseDisplayNextWeek()) {
+			setNextWeek();
+		} else if (isCaseDisplayThisMonth()) {
+			setThisMonth();
+		} else if (isCaseDisplayNextMonth()) {
+			setNextMonth();
+		} else {
+			isCaseKeywordCalendar = false;
+		}
+	}
+
+	private static void updateDisplayTimeIfCalendarKeywordExtendedWithNextKeyword() throws InvalidInputException {
+		int nNext = 0;
+		if (isCaseKeywordCalendar) {
+			if (isCaseDisplayMondayToSundayOrNextWeekMonth()) {
+				nNext = countExtraNext();
+				if (isCaseDisplayNextMonth()) {
+					startCalendar.add(Calendar.MONTH, nNext);
+					endCalendar.add(Calendar.MONTH, nNext);
+				} else {
+					startCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+					endCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+				}
+			}
+		}
+	}
+
+	private static int countExtraNext() throws InvalidInputException {
+		int nNext = 0;
+
+		//the last word is calendar keyword
+		int toBeAnalyzedLength = infoToBeProcessed.length - 1;
+
+		//ignore the first "next" of next week and next month
+		if (isCaseDisplayNextWeek() || isCaseDisplayNextMonth()) {
+			toBeAnalyzedLength --;
+		}
+
+		for (int i = 0; i < toBeAnalyzedLength; i ++) {
+			if (infoToBeProcessed[i].equalsIgnoreCase(NEXT)) {
+				nNext ++;
+				LogHelper.info("Keyword 'next' found: " + nNext);
+				commandDetails = NEXT + SPACE + commandDetails;
+				LogHelper.info("Set to display " + commandDetails);
+			} else {
+				isCaseKeywordCalendar = false;
+				return 0;
+			}
+		}
+
+		return nNext;
+	}
+
+	private static void setDisplayInfoWithCalendarOrString() throws InvalidInputException {
+		if (!isCaseKeywordCalendar) {
+			if (isCaseDisplayCalendar()) {
+				isCaseKeywordCalendar = false;
+				throwExceptionIfDisplayWithRecurringTime();
+			} else if(isCaseDisplayString()){
+				isCaseDisplayCalendar = false;
+				isCaseKeywordCalendar = false;
+			} else {
+				throw new InvalidInputException(ERROR_INVALID_DISPLAY_REQUEST);
+			}
+		}
+	}
+
+	private static void throwExceptionIfDisplayWithRecurringTime() throws InvalidInputException {
+		if (isRecurringEveryWeek || isRecurringEveryday) {
+			throw new InvalidInputException(ERROR_DISPLAY_WITH_RECCURING_TIME);
+		}
+	}
+
+	private static void setToday() {
+		commandDetails = TODAY;
+		// set the start time as 12am, end time as the end of today
+		startCalendar = new GregorianCalendar(year, month, date);
+		endCalendar = new GregorianCalendar(year, month, ++date);
+		LogHelper.info("Set to display today's tasks");
+	}
+
+	private static void setTomorrow() {
+		commandDetails = TOMORROW;
+		// set the start time as tomorrow 0000, end time as the end of the day
+		startCalendar = new GregorianCalendar(year, month, ++date);
+		endCalendar = new GregorianCalendar(year, month, ++date);
+		LogHelper.info("Set to display tomorrow's tasks");
+	}
+
+	private static void setMonday() {
+		commandDetails = MONDAY;
+		//set start time as the beginning of coming Monday, end time as the end of the day
+		int addValue = (Calendar.MONDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Monday's tasks");
+	}
+
+	private static void setTuesday() {
+		commandDetails = TUESDAY;
+		//set start time as the beginning of coming Tuesday, end time as the end of the day
+		int addValue = (Calendar.TUESDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Tuesday's tasks");
+	}
+
+	private static void setWednesday() {
+		commandDetails = WEDNESDAY;
+		//set start time as the beginning of coming Wednesday, end time as the end of the day
+		int addValue = (Calendar.WEDNESDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Wednesday's tasks");
+	}
+
+	private static void setThursday() {
+		commandDetails = THURSDAY;
+		//set start time as the beginning of coming Thursday, end time as the end of the day
+		int addValue = (Calendar.THURSDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Thursday's tasks");
+	}
+
+	private static void setFriday() {
+		commandDetails = FRIDAY;
+		//set start time as the beginning of coming Friday, end time as the end of the day
+		int addValue = (Calendar.FRIDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Friday's tasks");
+	}
+
+	private static void setSaturday() {
+		commandDetails = SATURDAY;
+		//set start time as the beginning of coming Saturday, end time as the end of the day
+		int addValue = (Calendar.SATURDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Saturday's tasks");
+	}
+
+	private static void setSunday() {
+		commandDetails = SUNDAY;
+		//set start time as the beginning of coming Sunday, end time as the end of the day
+		int addValue = (Calendar.SUNDAY - dayOfWeek + 7) % 7;
+		startCalendar = new GregorianCalendar(year, month, date + addValue);
+		endCalendar = new GregorianCalendar(year, month, date + addValue + 1);
+		LogHelper.info("Set to display Sunday's tasks");
+	}
+
+	private static void setThisWeek() {
+		commandDetails = THIS_WEEK;
+		// set the start time as Monday, end time as the end of the week
+		int deductValue = Calendar.MONDAY - dayOfWeek;
+		startCalendar = new GregorianCalendar(year, month, date + deductValue);
+		endCalendar = new GregorianCalendar(year, month, date);
+		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		endCalendar.add(Calendar.DATE, addValue);
+		LogHelper.info("Set to display this week's tasks");
+	}
+
+	private static void setNextWeek() {
+		commandDetails = NEXT_WEEK;
+		// set the start time as next Monday, end time as the end of next week
+		startCalendar = new GregorianCalendar(year, month, date);
+		endCalendar = new GregorianCalendar(year, month , date);
+
+		int addValue = (Calendar.MONDAY - startCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		startCalendar.add(Calendar.DATE, addValue);
+		addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
+		endCalendar.add(Calendar.DATE, addValue);
+		LogHelper.info("Set to display next week's tasks");
+	}
+
+	private static void setThisMonth() {
+		commandDetails = THIS_MONTH;
+		// set the start time as now, end time as the end of the month
+		startCalendar = new GregorianCalendar(year, month, 1);
+		endCalendar = new GregorianCalendar(year, ++month, 1);
+		LogHelper.info("Set to display this month's tasks");
+	}
+
+	private static void setNextMonth() {
+		commandDetails = NEXT_MONTH;
+		// set the start time as the beginning of next month, end time as the end of next month
+		startCalendar = new GregorianCalendar(year, ++month, 1);
+		endCalendar = new GregorianCalendar(year, ++month, 1);
+		LogHelper.info("Set to display next month's tasks");
+	}
+
+	private static boolean isCaseDisplayToday() {
+		return commandDetails.equalsIgnoreCase(TODAY)
+				|| commandDetails.equalsIgnoreCase(TODAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayTomorrow() {
+		return commandDetails.equalsIgnoreCase(TOMORROW)
+				|| commandDetails.equalsIgnoreCase(TOMORROW_SHORT);
+	}
+
+	private static boolean isCaseDisplayMonday() {
+		return lastWord.equalsIgnoreCase(MONDAY)
+				|| lastWord.equalsIgnoreCase(MONDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayTuesday() {
+		return lastWord.equalsIgnoreCase(TUESDAY)
+				|| lastWord.equalsIgnoreCase(TUESDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayWednesday() {
+		return lastWord.equalsIgnoreCase(WEDNESDAY)
+				|| lastWord.equalsIgnoreCase(WEDNESDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayThursday() {
+		return lastWord.equalsIgnoreCase(THURSDAY)
+				|| lastWord.equalsIgnoreCase(THURSDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayFriday() {
+		return lastWord.equalsIgnoreCase(FRIDAY)
+				|| lastWord.equalsIgnoreCase(FRIDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplaySaturday() {
+		return lastWord.equalsIgnoreCase(SATURDAY)
+				|| lastWord.equalsIgnoreCase(SATURDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplaySunday() {
+		return lastWord.equalsIgnoreCase(SUNDAY)
+				|| lastWord.equalsIgnoreCase(SUNDAY_SHORT);
+	}
+
+	private static boolean isCaseDisplayThisWeek() {
+		return commandDetails.equalsIgnoreCase(THIS_WEEK);
+	}
+
+	private static boolean isCaseDisplayNextWeek() {
+		return lastTwoWords.equalsIgnoreCase(NEXT_WEEK);
+	}
+
+	private static boolean isCaseDisplayThisMonth() {
+		return commandDetails.equalsIgnoreCase(THIS_MONTH);
+	}
+
+	private static boolean isCaseDisplayNextMonth() {
+		return lastTwoWords.equalsIgnoreCase(NEXT_MONTH);
+	}
+
+	private static boolean isCaseDisplayCalendar() throws InvalidInputException {
+		return doesContainTimeInfo();
+	}
+
+	private static boolean isCaseDisplayString() {
+
+		return commandDetails.equals(ALL) ||
+				commandDetails.equals(INCOMPLETE_TASK) ||
+				commandDetails.equals(FLOATING_TASK) ||
+				commandDetails.equals(DEADLINE_TASK) ||
+				commandDetails.equals(TIMED_TASK);
+	}
+
+	private static boolean isCaseDisplayMondayToSundayOrNextWeekMonth() {
+		return isCaseKeywordCalendar && !isCaseDisplayToday()
+				&& !isCaseDisplayTomorrow() && !isCaseDisplayThisWeek()
+				&& !isCaseDisplayThisMonth();
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\DisplayAnalyzer.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\DisplayAnalyzerTest.java
+	 */
+
+
+package clc.ui;
+
+import static org.junit.Assert.*;
+import static clc.common.Constants.ERROR_INVALID_DISPLAY_REQUEST;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.MONDAY;
+import static clc.common.Constants.TUESDAY;
+import static clc.common.Constants.WEDNESDAY;
+import static clc.common.Constants.THURSDAY;
+import static clc.common.Constants.FRIDAY;
+import static clc.common.Constants.SATURDAY;
+import static clc.common.Constants.SUNDAY;
+import static clc.common.Constants.THIS_WEEK;
+import static clc.common.Constants.THIS_MONTH;
+import static clc.common.Constants.NEXT_WEEK;
+import static clc.common.Constants.NEXT_MONTH;
+import static clc.common.Constants.ALL;
+import static clc.common.Constants.NEXT;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.TIMED_TASK;
+import static clc.common.Constants.DEADLINE_TASK;
+import static clc.common.Constants.FLOATING_TASK;
+import static clc.common.Constants.ERROR_DISPLAY_WITH_RECCURING_TIME;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import clc.common.InvalidInputException;
+
+public class DisplayAnalyzerTest {
+
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void test() throws InvalidInputException {
+		//display all
+		//case1 empty details
+		Analyzer.analyze("display");
+
+		DisplayAnalyzer.analyze();
+		assertEquals("", DisplayAnalyzer.getDisplayQuery());
+
+		//case2 with "all" keyword
+		Analyzer.analyze("display all");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(ALL, DisplayAnalyzer.getDisplayQuery());
+
+
+		//display timed task
+		Analyzer.analyze("display timed tasks");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TIMED_TASK, DisplayAnalyzer.getDisplayQuery());
+
+
+		//display deadline task
+		Analyzer.analyze("display deadline tasks");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(DEADLINE_TASK, DisplayAnalyzer.getDisplayQuery());
+
+
+		//display floating task
+		Analyzer.analyze("display floating tasks");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(FLOATING_TASK, DisplayAnalyzer.getDisplayQuery());
+
+
+		//display today
+		Analyzer.analyze("display today");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TODAY, DisplayAnalyzer.getDisplayQuery());
+		ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc.add(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display tomorrow
+		GregorianCalendar currTime = new GregorianCalendar();
+		Analyzer.analyze("display tomorrow");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TOMORROW, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE) + 1, 0, 0);
+		assertEquals(gc, time.get(0));
+		gc.add(Calendar.DATE, 1);
+		assertEquals(gc, time.get(1));
+
+
+		//display this week
+		Analyzer.analyze("display this week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THIS_WEEK, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK));
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display next week
+		Analyzer.analyze("display next week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//display coming week with multiple "next"
+		Analyzer.analyze("display next next next week");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
+
+		//display this month
+		Analyzer.analyze("display this month");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THIS_MONTH, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar();
+		gc.add(Calendar.MONTH, 1);
+		gc.set(Calendar.DATE, 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display next month
+		Analyzer.analyze("display next month");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT_MONTH, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH) + 1, 1);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH) + 2, 1);
+		assertEquals(gc, time.get(1));
+
+
+		//display Monday
+		Analyzer.analyze("display monday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display mon");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Tuesday
+		Analyzer.analyze("display tuesday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display tue");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Wednesday
+		Analyzer.analyze("display wednesday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display wed");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Thursday
+		Analyzer.analyze("display thursday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display thu");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Friday
+		Analyzer.analyze("display friday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		Analyzer.analyze("display fri");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Saturday
+		Analyzer.analyze("display saturday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display sat");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Sunday
+		Analyzer.analyze("display sunday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		Analyzer.analyze("display sun");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 1);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//display next Monday
+		Analyzer.analyze("display next Monday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + MONDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Tuesday
+		Analyzer.analyze("display NEXT NEXT tUESDAY");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + TUESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Wednesday
+		Analyzer.analyze("display nExT NeXt NEXT WEDNESDAY");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + NEXT + SPACE + WEDNESDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 21);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 22);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Thursday
+		Analyzer.analyze("display NEXT ThUrSdAy");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + THURSDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Friday
+		Analyzer.analyze("display next Next fRiDaY");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + FRIDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Saturday
+		Analyzer.analyze("display nexT SATURday");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + SATURDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 8);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display Sunday
+		Analyzer.analyze("display neXT NExt sunDAY");
+
+		DisplayAnalyzer.analyze();
+		assertEquals(NEXT + SPACE + NEXT + SPACE + SUNDAY, DisplayAnalyzer.getDisplayQuery());
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 14);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 15);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+
+		//display calendar by a specific time
+		Analyzer.analyze("display 31/12 1159pm");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, time.get(1));
+
+
+		//display calendar in a specific period of time
+		Analyzer.analyze("display 30/12 1159pm 31/12 1159pm");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 30, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), 11, 31, 23, 59);
+		assertEquals(gc, time.get(1));
+
+
+		//display calendar by a specific time
+		Analyzer.analyze("display 1159pm sunday");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		
+		//display calendar in a specific period of time with keyword Monday to Sunday
+		Analyzer.analyze("display from 12am monday to 1159pm next sunday");
+
+		DisplayAnalyzer.analyze();
+		time = DisplayAnalyzer.getCalendar();
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 0);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 23, 59);
+		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		assertEquals(gc, time.get(1));
+	}
+
+	@Test
+	public void testInvalidInputException() throws InvalidInputException {
+		//display unsupported query
+		Analyzer.analyze("display /oj1289asdf;l@#$");
+
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_INVALID_DISPLAY_REQUEST, e.getMessage());
+		}
+
+		//display date before current time
+		Analyzer.analyze("display 1/1/2010 12am");
+
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_END_TIME, e.getMessage());
+		}
+
+		//display period that end time before start time
+		Analyzer.analyze("display 1159pm 1158pm");
+
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME, e.getMessage());
+		}
+		
+		//display with everyday
+		Analyzer.analyze("display everyday 1pm");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
+		}
+		
+		//display with every Monday ~ Sunday
+		Analyzer.analyze("display every mon");
+		
+		try {
+			DisplayAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_DISPLAY_WITH_RECCURING_TIME, e.getMessage());
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\DisplayAnalyzerTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\GUI.java
+	 */
+
+
+package clc.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.Insets;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
+import clc.common.LogHelper;
+import static clc.common.Constants.MESSAGE_SEPARATOR;
+import static clc.common.Constants.NEWLINE;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.THIS_WEEK;
+import static clc.common.Constants.TYPE_DISPLAY;
+import static clc.common.Constants.TYPE_DISPLAY_SHORT;
+import static clc.common.Constants.TYPE_SHOW;
+import static clc.common.Constants.TYPE_LIST;
+import static clc.common.Constants.TYPE_HELP;
+
+public class GUI implements NativeKeyListener {
+	private JFrame frameClc;
+	private JTextField inputTextBox = new JTextField();
+	private JTextPane displayBox = new JTextPane();
+	private String input = EMPTY;
+	private JScrollPane scrollPane;
+	private StyledDocument doc = displayBox.getStyledDocument();
+	private boolean isPressingCtrl;
+	private ArrayList<String> previousInput = new ArrayList<String>();
+	private int inputIndex = 0;
+	protected boolean isWindowActivated;
+	private boolean isPressingShift;
+
+	protected GUI() { 
+		initialize();
+		LogHelper.info("GUI components initialized");
+	}
+
+	protected static void launchAndGetInputAndExecute() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI window = new GUI();
+					window.frameClc.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		LogHelper.info("GUI launched");
+	}
+
+	private void initialize() {
+		setUpJFrame();
+		setUpInputTextBox();
+		setUpDisplayBoxAndScrollPane();
+		initializeDisplayBox();
+		focusOnInputTextBox();
+		initializeInputTextBox();
+		actionWhenEnterIsPressed();
+		initiateWindowListener();
+		centreWindow(frameClc); 
+		initiateKeyListener();
+	}
+
+	private void setUpJFrame() {
+		frameClc = new JFrame();
+		frameClc.setName("frame");
+		frameClc.getContentPane().setBackground(Color.GRAY);
+		frameClc.setTitle("CLC V0.5");
+		frameClc.setResizable(false);
+		frameClc.setBounds(10, 10, 650, 500);
+		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameClc.getContentPane().setLayout(null);
+	}
+
+	private void setUpInputTextBox() {
+		inputTextBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inputTextBox.setHorizontalAlignment(SwingConstants.LEFT);
+		inputTextBox.setBounds(10, 415, 625, 40);
+		inputTextBox.setColumns(10);
+		inputTextBox.setCaretColor(Color.WHITE);
+		inputTextBox.setBorder(null);
+		inputTextBox.setBackground(Color.DARK_GRAY);
+		inputTextBox.setForeground(Color.WHITE);
+		frameClc.getContentPane().add(inputTextBox);
+	}
+
+	private void setUpDisplayBoxAndScrollPane() {
+		displayBox.setMargin(new Insets(10, 10, 10, 10));
+		displayBox.setBackground(Color.DARK_GRAY);
+		displayBox.setForeground(Color.WHITE);
+		displayBox.setEditable(false);
+		displayBox.setFont(new Font("Calibri Light", Font.PLAIN, 17));
+		displayBox.setBounds(10, 10, 625, 400);
+		scrollPane = new JScrollPane(displayBox);
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(10, 10, 625, 400);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frameClc.getContentPane().add(scrollPane);
+	}
+
+	private void focusOnInputTextBox() {
+		frameClc.addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				inputTextBox.requestFocusInWindow();
+			}
+		});
+	}
+
+	private void initializeInputTextBox() {
+		inputTextBox.setText(SPACE);
+		inputTextBox.setCaretPosition(SPACE.length());
+	}
+
+	private void actionWhenEnterIsPressed() {
+		inputTextBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				input = inputTextBox.getText().trim();
+				if (isCaseClearScreen()) {
+					emptyDisplayBox();
+				} else {
+					previousInput.add(input); // cache the previous input
+					inputIndex ++; // use it to traverse previous input
+					String feedback = UserInterface.setInputAndExecute(input);
+					if (isCaseDisplayOrHelp()) {
+						clearDisplayBoxAndStayTop(feedback);
+						displayBox.setCaretPosition(0);
+					} else {
+						showToUser(feedback);
+						displayBox.setCaretPosition(doc.getLength());
+					}
+				}
+				initializeInputTextBox();
+			}
+
+			private boolean isCaseDisplayOrHelp() {
+				String[] command = input.split(SPACE);
+
+				return command[0].equalsIgnoreCase(TYPE_DISPLAY)
+						|| command[0].equalsIgnoreCase(TYPE_DISPLAY_SHORT)
+						|| command[0].equalsIgnoreCase(TYPE_SHOW)
+						|| command[0].equalsIgnoreCase(TYPE_LIST)
+						|| command[0].equalsIgnoreCase(TYPE_HELP);
+			}
+
+			private void emptyDisplayBox() {
+				displayBox.setText(EMPTY);
+			}
+
+			private boolean isCaseClearScreen() {
+				return input.equals(EMPTY);
+			}
+		});
+	}
+
+	private void clearDisplayBoxAndStayTop(String feedback) {
+		try {
+			doc.remove(0,doc.getLength());
+			showToUser(feedback);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}
+		scrollPane.getVerticalScrollBar().setValue(0);
+	}
+
+	private void initiateWindowListener() {
+		frameClc.addWindowListener(new WindowListener() {
+			public void windowActivated(WindowEvent arg0) {
+				isWindowActivated = true;
+			}
+			public void windowClosed(WindowEvent arg0) {
+				//Clean up the native hook.
+				GlobalScreen.unregisterNativeHook();
+			}
+			public void windowClosing(WindowEvent arg0) {}
+			public void windowDeactivated(WindowEvent arg0) {
+				isWindowActivated = false;
+			}
+			public void windowDeiconified(WindowEvent arg0) {}
+			public void windowIconified(WindowEvent arg0) {}
+			public void windowOpened(WindowEvent arg0) {
+				initiateGlobalKeyListener();
+				initiateKeyListener();
+			}
+		});
+	}
+
+	private void initiateGlobalKeyListener() {
+		try {
+			GlobalScreen.registerNativeHook();
+		}
+		catch (NativeHookException ex) {
+			System.exit(1);
+		}
+
+		//Construct the example object and initialize native hook.
+		GlobalScreen.getInstance().addNativeKeyListener(this);
+	}
+
+	private void initiateKeyListener() {
+		inputTextBox.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) { 
+				if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+					isPressingCtrl = true;
+				}
+
+				showHelpIfPressedF1(e);
+				clearInputTextBoxIfPressedEsc(e);
+				if (isPressingCtrl) {
+					scrollUpOrDownDisplayBoxIfPressedCtrlUpOrDown(e);
+				} else {
+					traversePreviousInputIfPressedUpOrDown(e);
+				}
+			}
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+					isPressingCtrl = false;
+				}
+			}
+			public void keyTyped(KeyEvent e) {}
+		});
+	}
+
+	public static void centreWindow(Window frame) {
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+		frame.setLocation(x, y);
+	}
+
+	private void initializeDisplayBox() {
+		showToUser(UserInterface.getWelcomeMessage());
+		String feedback = UserInterface.setInputAndExecute(TYPE_DISPLAY + SPACE + THIS_WEEK);
+		showToUser(feedback);
+		displayBox.setCaretPosition(0);
+	}
+
+	private void showToUser(String string) {
+		try {
+			doc.insertString(doc.getLength(), string + NEWLINE, null);
+			doc.insertString(doc.getLength(), MESSAGE_SEPARATOR, null);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override //NativeKeyListener
+	public void nativeKeyPressed(NativeKeyEvent e) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+			isPressingShift = true;
+		}
+		if (isPressingShift) {
+			changeWindowVisibility(e);
+		}	
+	}
+	public void nativeKeyReleased(NativeKeyEvent e) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+			isPressingShift = false;
+		}
+	}
+	public void nativeKeyTyped(NativeKeyEvent e) {}
+
+	private void changeWindowVisibility(NativeKeyEvent e) {
+		if (e.getKeyCode() == NativeKeyEvent.VK_SPACE) { //shift  + space
+			if (frameClc.isVisible()) { 
+				frameClc.setVisible(false);
+				LogHelper.info("set windows visible to false");
+			} else if (!frameClc.isVisible()){
+				frameClc.setVisible(true);
+				frameClc.setState(Frame.NORMAL);
+				LogHelper.info("set windows visible to true");
+			} 
+		}
+	}
+
+	private void traversePreviousInputIfPressedUpOrDown(KeyEvent e) { 
+		String cachedInput;
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			inputIndex = previousInput.size();
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_UP && inputIndex - 1 >= 0) {
+			cachedInput = previousInput.get(--inputIndex);
+			inputTextBox.setText(SPACE + cachedInput);
+			inputTextBox.setCaretPosition(cachedInput.length() + 1);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN && inputIndex + 1 < previousInput.size()) {
+			cachedInput = previousInput.get(++inputIndex);
+			inputTextBox.setText(SPACE + cachedInput);
+			inputTextBox.setCaretPosition(cachedInput.length() + 1);
+		}
+	}
+
+	private void scrollUpOrDownDisplayBoxIfPressedCtrlUpOrDown(KeyEvent e) {
+		int incrementValue = scrollPane.getVerticalScrollBar().getBlockIncrement();
+		if (e.getKeyCode() == KeyEvent.VK_UP) { //ctrl + up
+			int currPosition = scrollPane.getVerticalScrollBar().getValue(); 
+			scrollPane.getVerticalScrollBar().setValue(currPosition - incrementValue);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) { //ctrl + down
+			int currPosition = scrollPane.getVerticalScrollBar().getValue(); 
+			scrollPane.getVerticalScrollBar().setValue(currPosition + incrementValue);
+		}
+	}
+
+	private void clearInputTextBoxIfPressedEsc(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			initializeInputTextBox();
+		}
+	}
+
+	private void showHelpIfPressedF1(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_F1) {
+			String feedback = UserInterface.setInputAndExecute(TYPE_HELP);
+			clearDisplayBoxAndStayTop(feedback);
+			displayBox.setCaretPosition(0);
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\GUI.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Reminder.java
+	 */
+
+
+package clc.ui;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.TimerTask;
+import java.awt.Font;
+
+public class Reminder extends TimerTask {
+
+	private JFrame frameReminder = new JFrame();
+	private JTextArea reminderBox = new JTextArea();
+	private JButton closeButton;
+	
+	public void run() {
+		frameReminder.setVisible(true);
+	}
+
+	protected Reminder(String reminderInfo, final long taskId) {
+		initializeFrame();
+		initializeReminderBox(reminderInfo);
+		initializeButton(taskId);
+	}
+
+	private void initializeFrame() {
+		frameReminder.setAlwaysOnTop(true);
+		frameReminder.setTitle("REMINDER");
+		frameReminder.setResizable(false);
+		frameReminder.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameReminder.setBounds(100, 100, 500, 242);
+		frameReminder.getContentPane().setBackground(Color.BLACK);
+		frameReminder.getContentPane().setLayout(null);
+	}
+
+	private void initializeReminderBox(String reminderInfo) {
+		reminderBox.setLineWrap(true);
+		reminderBox.setFont(new Font("Monospaced", Font.BOLD, 17));
+		reminderBox.setForeground(Color.WHITE);
+		reminderBox.append(reminderInfo);
+		reminderBox.setEditable(false);
+		reminderBox.setBounds(12, 13, 470, 143);
+		reminderBox.setBackground(Color.DARK_GRAY);
+		frameReminder.getContentPane().add(reminderBox);
+	}
+
+	private void initializeButton(final long taskId) {
+		closeButton = new JButton("Mark As Done");
+		
+		closeButton.setBounds(12, 169, 470, 25);
+		closeButton.setBackground(Color.DARK_GRAY);
+		closeButton.setForeground(Color.WHITE);
+		actionWhenButtonIsPressed(taskId);
+		requestFocusOnButton();
+		frameReminder.getContentPane().add(closeButton);
+	}
+
+	private void actionWhenButtonIsPressed(final long taskId) {
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserInterface.markReminderTask(taskId);
+				frameReminder.dispose();
+			}
+		});
+	}
+
+	private void requestFocusOnButton() {
+		frameReminder.addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				closeButton.requestFocusInWindow();
+			}
+		});
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Reminder.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\SequenceNumberExtractor.java
+	 */
+
+
+package clc.ui;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+import static clc.common.Constants.ERROR_CONTAIN_NON_NUMERIC_INFO;
+
+public class SequenceNumberExtractor extends Analyzer{
+	
+
+	protected SequenceNumberExtractor(String input) {
+		super(input);
+	}
+	
+	protected static ArrayList<Integer> getSequenceNum() throws InvalidInputException {
+		return parseDetailsToSequenceNum();
+	}
+
+	private static ArrayList<Integer> parseDetailsToSequenceNum() throws InvalidInputException {
+		ArrayList<Integer> taskSeqNo = new ArrayList<Integer>();
+		
+		throwExceptionIfEmptyCommandDetails();
+		
+		Scanner sc = new Scanner(commandDetails);
+		parseSeqNoIntoArrayList(taskSeqNo, sc);
+		sc.close();
+		
+		return new ArrayList<Integer>(taskSeqNo);
+	}
+
+	private static void parseSeqNoIntoArrayList(ArrayList<Integer> taskSeqNo,
+			Scanner sc) throws InvalidInputException {
+		while (sc.hasNext()) {
+			String currWord = sc.next();
+			if (isNumeric(currWord)) {
+				int seqNo = Integer.parseInt(currWord);
+				if (!taskSeqNo.contains(seqNo)) { //avoid duplicate
+					taskSeqNo.add(seqNo);
+				}
+				LogHelper.info("'" + currWord + "'" + " is numeric");
+			} else {
+				sc.close();
+				LogHelper.info("'" + currWord + "'" + " is non-numeric");
+				throw new InvalidInputException(ERROR_CONTAIN_NON_NUMERIC_INFO);
+			}
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\SequenceNumberExtractor.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\TimeParser.java
+	 */
+
+
+package clc.ui;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+import static clc.common.Constants.ERROR_START_TIME;
+import static clc.common.Constants.ERROR_END_TIME;
+import static clc.common.Constants.ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME;
+import static clc.common.Constants.ERROR_DAILY_RECURRING_ONE_DATE_ONLY;
+import static clc.common.Constants.TODAY;
+import static clc.common.Constants.TODAY_SHORT;
+import static clc.common.Constants.TOMORROW;
+import static clc.common.Constants.TOMORROW_SHORT;
+import static clc.common.Constants.MONDAY;
+import static clc.common.Constants.MONDAY_SHORT;
+import static clc.common.Constants.TUESDAY;
+import static clc.common.Constants.TUESDAY_SHORT;
+import static clc.common.Constants.WEDNESDAY;
+import static clc.common.Constants.WEDNESDAY_SHORT;
+import static clc.common.Constants.THURSDAY;
+import static clc.common.Constants.THURSDAY_SHORT;
+import static clc.common.Constants.FRIDAY;
+import static clc.common.Constants.FRIDAY_SHORT;
+import static clc.common.Constants.SATURDAY;
+import static clc.common.Constants.SATURDAY_SHORT;
+import static clc.common.Constants.SUNDAY;
+import static clc.common.Constants.SUNDAY_SHORT;
+import static clc.common.Constants.AM;
+import static clc.common.Constants.PM;
+import static clc.common.Constants.TIME_12H_PATTERNS;
+import static clc.common.Constants.TIME_24H_PATTERNS;
+import static clc.common.Constants.DATE_PATTERNS;
+import static clc.common.Constants.DOT;
+import static clc.common.Constants.COLON;
+import static clc.common.Constants.SLASH;
+import static clc.common.Constants.DASH;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.FROM;
+import static clc.common.Constants.BY;
+import static clc.common.Constants.DUE;
+import static clc.common.Constants.AT;
+import static clc.common.Constants.TO;
+import static clc.common.Constants.NEXT;
+import static clc.common.Constants.EVERY;
+import static clc.common.Constants.EVERYDAY;
+import static clc.common.Constants.EVERY_WEEK;
+
+public class TimeParser extends Analyzer {
+	private static SimpleDateFormat[] dateFormat, time12Format, time24Format;
+	private static GregorianCalendar analyzedCalendar;
+	private static boolean doesContainAmOrPm;
+	private static boolean isDate, isKeywordDate, isTime, isMondayToSunday;
+	protected static GregorianCalendar startCalendar, endCalendar;
+	protected static String[] infoToBeProcessed;
+	protected static boolean isStartDateSet, isStartTimeSet, isEndDateSet, isEndTimeSet;
+	protected static int startCalendarIndex, endCalendarIndex;
+	protected static boolean isRecurringEveryWeek, isRecurringEveryday;
+	protected static String recurringPeriod;
+
+	protected TimeParser(String input) {
+		super(input);
+	}
+
+	protected static ArrayList<GregorianCalendar> getCalendar() {
+		ArrayList<GregorianCalendar> time = new ArrayList<GregorianCalendar>();
+		time.add(startCalendar);
+		time.add(endCalendar);
+		return time;
+	}
+
+	protected static void processCalendarInfo() throws InvalidInputException {
+		initializeVariable();
+		analyzeAndSetCalendar();
+		setStartCalendarAsNullIfNotSet();
+		setEndCalendarAsNullIfNotSet();
+		caseIfStartAndEndCalendarShareOneDate();
+		caseIfRecurringTimeBeforeCurrentTime();
+		caseIfCalendarBeforeOrEqualToCurrentTime();
+		caseIfStartTimeLaterThanOrEqualToEndTime();
+		adjustToCorrectCalendarIndex();
+	}
+
+	protected static void initializeVariable() {
+		dateFormat = initializeDateFormat();
+		time12Format = initializeTime12Format();
+		time24Format = initializeTime24Format();
+		isStartDateSet = false;
+		isStartTimeSet = false; 
+		isEndDateSet = false; 
+		isEndTimeSet = false;
+		startCalendar = new GregorianCalendar();
+		endCalendar = new GregorianCalendar();
+		startCalendarIndex = -1;
+		endCalendarIndex = -1;
+		LogHelper.info("TimeParser variables initialized");
+	}
+
+	protected static void analyzeAndSetCalendar() throws InvalidInputException {
+		int currIndex = infoToBeProcessed.length - 1;
+		while (currIndex >= 0 && !hasAllTimeSet()) {
+			currIndex = analyzeCalendar(currIndex);
+			setCalendar();
+
+			currIndex --;
+			currIndex = skipNextIndexIfPreposition(currIndex);
+		}
+	}
+
+	private static int analyzeCalendar(int currIndex)
+			throws InvalidInputException {
+		String toBeAnalyzedString = EMPTY;
+		for (int i = 0; i < 3; i ++) { // calendar at most represent by 3 words
+			int loopIndex = currIndex - i;
+			toBeAnalyzedString = infoToBeProcessed[loopIndex] +  toBeAnalyzedString;
+			try {
+				parseCalendarAndSetAnalyzedCalendar(toBeAnalyzedString);
+				LogHelper.info("'" + toBeAnalyzedString + "'" + " PARSE INTO " + analyzedCalendar.getTime().toString());
+				checkIfDateFormatParsedCorrectly(infoToBeProcessed[loopIndex]);
+				currIndex = caseKeywordNextOrEveryBeforeKeywordDate(loopIndex);
+				setStartAndEndCalendarIndex(currIndex, loopIndex);
+				break;
+			} catch (ParseException e) { //catch parsing error
+				if (loopIndex - 1 < 0) {
+					break;
+				}
+			}
+		}
+		return currIndex;
+	}
+
+	private static void checkIfDateFormatParsedCorrectly(String currWord) {
+		if (isDate) { //avoid case "1/1/20 34" parse into "1/1/2034"
+			 parseIfDateFormat(currWord);
+			 LogHelper.info("'" + currWord + "'" + " PARSE INTO " + analyzedCalendar.getTime().toString());
+		}
+	}
+
+	private static void setStartAndEndCalendarIndex(int currIndex, int loopIndex) {
+		if (endCalendarIndex == -1) { //never set before
+			startCalendarIndex = currIndex; //consider case extra "next"
+			endCalendarIndex = loopIndex;
+		} else if (startCalendarIndex == -1 || loopIndex < startCalendarIndex) {
+			startCalendarIndex = currIndex;
+		}
+	}
+
+	private static int skipNextIndexIfPreposition(int currIndex) {
+		if (currIndex >= 0 && isPrepositionOfTime(infoToBeProcessed[currIndex])) {
+			LogHelper.info("Preposition of time found: " + infoToBeProcessed[currIndex]);
+			return currIndex - 1;
+		}
+		return currIndex;
+	}
+
+	private static boolean isPrepositionOfTime(String currWord) {
+		return currWord.equalsIgnoreCase(FROM)
+				|| currWord.equalsIgnoreCase(BY)
+				|| currWord.equalsIgnoreCase(DUE)
+				|| currWord.equalsIgnoreCase(AT)
+				|| currWord.equalsIgnoreCase(TO);
+	}
+
+	private static void caseIfRecurringTimeBeforeCurrentTime() {
+		if (isRecurringEveryWeek) {
+			postponeStartAndEndCalendarToNextWeekIfRequired();
+		} else if (isRecurringEveryday) {
+			postponeStartAndEndCalendarToNextDayIfRequired();
+		}
+	}
+
+	private static void postponeStartAndEndCalendarToNextWeekIfRequired() {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+			startCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+			endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
+			endCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+		}
+	}
+
+	private static void postponeStartAndEndCalendarToNextDayIfRequired() {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) == -1) {
+			startCalendar.add(Calendar.DAY_OF_YEAR, 1);
+			endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) == - 1) {
+			endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+		}
+	}
+
+	private static int caseKeywordNextOrEveryBeforeKeywordDate(int loopIndex) {
+		int nNext = 0, nEvery = 0;
+		if (isMondayToSunday) {
+			nNext = countExtraNext(loopIndex);
+			nEvery = checkIfKeywordEveryExists(loopIndex);
+			analyzedCalendar.add(Calendar.WEEK_OF_YEAR, nNext);
+		}
+		return loopIndex - nNext - nEvery;
+	}
+
+	private static int countExtraNext(int loopIndex) {
+		int nNext = 0;
+		while (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(NEXT)) {
+			nNext ++;
+		}
+		LogHelper.info("Keyword 'next' found: " + nNext);
+		return nNext;
+	}
+
+	private static int checkIfKeywordEveryExists(int loopIndex) {
+		if (--loopIndex >= 0 && infoToBeProcessed[loopIndex].equalsIgnoreCase(EVERY)) {
+			isRecurringEveryWeek = true;
+			recurringPeriod = EVERY_WEEK;
+			LogHelper.info("Keyword 'every' found");
+			return 1;
+		}
+		return 0; //no "every"
+	}
+
+	private static void adjustToCorrectCalendarIndex() {
+		determineIfWordBeforeIsPreposition();
+
+		int infoLength = infoToBeProcessed.length;
+		determineIfEndCalendarIndexIsCorrect(infoLength);
+	}
+
+	private static void determineIfWordBeforeIsPreposition() {
+		if (startCalendarIndex - 1 >= 0) {
+			if (isPrepositionOfTime(infoToBeProcessed[startCalendarIndex - 1])) {
+				startCalendarIndex --;
+			}
+		}
+	}
+
+	private static void determineIfEndCalendarIndexIsCorrect(int infoLength) {
+		if (isStartAndEndCalendarIndexSet() && 
+				!doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex])) {
+			if (endCalendarIndex + 1 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] 
+						+ infoToBeProcessed[endCalendarIndex + 1])) { //two words is a calendar
+					endCalendarIndex ++;
+				}
+			} else if (endCalendarIndex + 2 < infoLength) { //doesn't exceed the infoLength
+				if (doesContainCalendarInfo(infoToBeProcessed[endCalendarIndex] //three words is a calendar
+						+ infoToBeProcessed[endCalendarIndex + 1] 
+								+ infoToBeProcessed[endCalendarIndex + 2])) {
+					endCalendarIndex += 2;
+				}
+			}
+		}
+	}
+
+	private static boolean isStartAndEndCalendarIndexSet() {
+		return startCalendarIndex != -1 && endCalendarIndex != -1;
+	}
+
+	private static boolean doesContainCalendarInfo (String currStr) {
+		return parseIfDateFormat(currStr) || parseIfTime12Format(currStr);
+		//Time24Format does not contains time format that is represented by more than one String
+	}
+
+	private static void parseCalendarAndSetAnalyzedCalendar(String currStr) 
+			throws ParseException, InvalidInputException {
+		doesContainAmOrPm = false;
+		isMondayToSunday = false;
+		isTime = false;
+		isDate = false;
+		isKeywordDate = false;
+		determineIfFormatError(currStr); //e.g. 13pm or 13 am etc
+
+		if (doesContainAmOrPm) {
+			isTime = parseIfTime12Format(currStr);
+		} else {
+			isTime = parseIfTime24Format(currStr);
+			isDate = parseIfDateFormat(currStr);
+			isKeywordDate = parseIfKeywordDateFormat(currStr);
+		}
+		throwParseExceptionIfFailsAllParsing();
+	}
+
+	private static void setCalendar() {
+		if (isDate || isKeywordDate) {
+			setDate();
+		} else if (isTime) {
+			setTime();
+		}
+	}
+
+	private static void caseIfCalendarBeforeOrEqualToCurrentTime()
+			throws InvalidInputException {
+		if (startCalendar != null && startCalendar.compareTo(Calendar.getInstance()) != 1) { 
+			LogHelper.info("Start time is before or equal to current time");
+			throw new InvalidInputException(ERROR_START_TIME);
+		} else if (endCalendar != null && endCalendar.compareTo(Calendar.getInstance()) != 1) {
+			LogHelper.info("End time is before or equal to current time");
+			throw new InvalidInputException(ERROR_END_TIME);
+		}
+	}
+
+	private static void caseIfStartTimeLaterThanOrEqualToEndTime() throws InvalidInputException {
+		if (doesStartAndEndCalendarExist() && isStartCalendarLaterThanOrEqualToEndCalendar()) {
+			LogHelper.info("Start time is later than or equal to end time");
+			throw new InvalidInputException(ERROR_START_TIME_LATER_THAN_OR_EQUAL_TO_END_TIME);
+		}
+	}
+
+	private static void caseIfStartAndEndCalendarShareOneDate() {
+		if (doesStartAndEndCalendarExist() && !isEndDateSet 
+				&& isStartCalendarLaterThanOrEqualToEndCalendar()) {
+			//e.g. 1/1/2100 5pm 6pm
+			endCalendar.set(Calendar.YEAR, startCalendar.get(Calendar.YEAR));
+			endCalendar.set(Calendar.MONTH, startCalendar.get(Calendar.MONTH));
+			endCalendar.set(Calendar.DATE, startCalendar.get(Calendar.DATE));
+		}
+	}
+
+	protected static boolean doesStartAndEndCalendarExist() {
+		return startCalendar != null && endCalendar != null;
+	}
+
+	protected static void setStartCalendarAsNullIfNotSet() {
+		if (!isStartTimeSet && !isStartDateSet) {
+			startCalendar = null;
+		}
+	}
+
+	protected static void setEndCalendarAsNullIfNotSet() {
+		if (!isEndTimeSet && !isEndDateSet) {
+			endCalendar = null;
+		}
+	}
+
+	private static void setTime() {
+		if (!isEndTimeSet) {
+			setEndTime();
+			LogHelper.info("End time is set: " + endCalendar.getTime().toString());
+		} else if (!isStartTimeSet) {
+			setStartTime();
+			LogHelper.info("Start time is set: " + startCalendar.getTime().toString());
+		}
+	}
+
+	private static void setStartTime() {
+		isStartTimeSet = true;
+		startCalendar.set(Calendar.HOUR_OF_DAY, analyzedCalendar.get(Calendar.HOUR_OF_DAY));
+		startCalendar.set(Calendar.MINUTE, analyzedCalendar.get(Calendar.MINUTE));
+		startCalendar.set(Calendar.SECOND, 0);
+		startCalendar.set(Calendar.MILLISECOND, 0);
+	}
+
+	private static void setEndTime() {
+		isEndTimeSet = true;
+		endCalendar.set(Calendar.HOUR_OF_DAY, analyzedCalendar.get(Calendar.HOUR_OF_DAY));
+		endCalendar.set(Calendar.MINUTE, analyzedCalendar.get(Calendar.MINUTE));
+		endCalendar.set(Calendar.SECOND, 0);
+		endCalendar.set(Calendar.MILLISECOND, 0);
+	}
+
+	private static void setDate() {
+		//if isStartTimeSet is true implies that the date is placed before the start time
+		if (!isEndDateSet && !isStartTimeSet) { 
+			setEndDate();
+			LogHelper.info("End date is set: " + endCalendar.getTime().toString());
+		} else if (!isStartDateSet) {
+			setStartDate();
+			LogHelper.info("Start date is set: " + startCalendar.getTime().toString());
+		}
+	}
+
+	private static void setStartDate() {
+		isStartDateSet = true;
+		startCalendar.set(Calendar.YEAR, analyzedCalendar.get(Calendar.YEAR));
+		startCalendar.set(Calendar.MONTH, analyzedCalendar.get(Calendar.MONTH));
+		startCalendar.set(Calendar.DATE, analyzedCalendar.get(Calendar.DATE));
+	}
+
+	private static void setEndDate() {
+		isEndDateSet = true;
+		endCalendar.set(Calendar.YEAR, analyzedCalendar.get(Calendar.YEAR));
+		endCalendar.set(Calendar.MONTH, analyzedCalendar.get(Calendar.MONTH));
+		endCalendar.set(Calendar.DATE, analyzedCalendar.get(Calendar.DATE));
+	}
+
+	private static boolean parseIfKeywordDateFormat(String currStr) throws InvalidInputException {
+		Calendar currTime = Calendar.getInstance(); //get current Calendar
+		int addValue = -1;
+
+		if (isToday(currStr)) {
+			isMondayToSunday = false;
+			addValue = 0;
+		} else if (isTomorrow(currStr)) {
+			isMondayToSunday = false;
+			addValue = 1;
+		} else if (isEveryday(currStr)) {
+			addValue = setAsEverydayIfNoEndDateIsSet(addValue);
+		} else if (isMonday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isTuesday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.TUESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isWednesday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.WEDNESDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isThursday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.THURSDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isFriday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.FRIDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isSaturday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.SATURDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else if (isSunday(currStr)) {
+			isMondayToSunday = true;
+			addValue = (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		} else { //not calendar keyword
+			return false;
+		}
+
+		analyzedCalendar = new GregorianCalendar();
+		analyzedCalendar.add(GregorianCalendar.DAY_OF_WEEK, addValue);
+
+		return true;
+	}
+
+	private static int setAsEverydayIfNoEndDateIsSet(int addValue) throws InvalidInputException {
+		if (!isEndDateSet) {
+			isMondayToSunday = false;
+			addValue = 0;
+			isRecurringEveryday = true;
+			recurringPeriod = EVERYDAY;
+		} else {
+			throw new InvalidInputException(ERROR_DAILY_RECURRING_ONE_DATE_ONLY);
+		}
+		return addValue;
+	}
+
+	private static boolean parseIfTime12Format(String currStr) {
+		Date date;
+		for (int i = 0; i < time12Format.length; i++) { //check if time format
+			try {
+				date = time12Format[i].parse(currStr);
+				setAnalyzedCalendarWithDateParsed(date);
+				LogHelper.info("'" + currStr + "'" + " is 12 hour format");
+				return true;
+			} catch (ParseException e) {}
+		}
+		return false;
+	}
+
+	private static boolean parseIfTime24Format(String currStr) {
+		Date date;
+		for (int i = 0; i < time24Format.length; i++) { //check if time format
+			try {
+				date = time24Format[i].parse(currStr);
+				setAnalyzedCalendarWithDateParsed(date);
+				LogHelper.info("'" + currStr + "'" + "is 24 hour format");
+				return true;
+			} catch (ParseException e) {}
+		}
+		return false;
+	}
+
+	private static boolean parseIfDateFormat(String currStr) {
+		Date date;
+		for (int i = 0; i < dateFormat.length; i++) { //check if date format
+			try {
+				date = dateFormat[i].parse(currStr);
+				setAnalyzedCalendarWithDateParsed(date);
+				parseInto4DigitsYearIf2DigitsYearIsGiven();
+				parseIntoCurrentYearIfNoYearInfoIsGiven();
+				LogHelper.info("'" + currStr + "'" + "is date format");
+				return true;
+			} catch (ParseException e) {}
+		}
+		return false;
+	}
+
+	private static void setAnalyzedCalendarWithDateParsed(Date date) {
+		analyzedCalendar = new GregorianCalendar();
+		analyzedCalendar.setTime(date);
+	}
+
+	private static void parseInto4DigitsYearIf2DigitsYearIsGiven() {
+		if (analyzedCalendar.get(Calendar.YEAR) < 100) { //two digits year is given
+			analyzedCalendar.add(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR)/100*100);
+		}
+	}
+
+	private static void parseIntoCurrentYearIfNoYearInfoIsGiven() {
+		if (analyzedCalendar.get(Calendar.YEAR) == 1970) { //calendar provided without year
+			analyzedCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+		}
+	}
+
+	private static void determineIfFormatError(String currStr) throws ParseException {
+		if (currStr.toLowerCase().contains(AM) || currStr.toLowerCase().contains(PM)) {
+			doesContainAmOrPm = true;
+			if (!doesContainSpecialNotation(currStr)) {
+				String strAfterRemovingAmOrPm = currStr.substring(0,currStr.length() - 2);
+				try {
+					if (Integer.parseInt(strAfterRemovingAmOrPm) > 12 
+							&& Integer.parseInt(strAfterRemovingAmOrPm) < 100) {
+						LogHelper.info("'" + currStr + "'" + " is invalid hour format");
+						throw new ParseException(EMPTY, 0); //handle case e.g. 13pm to 99pm
+					}
+				}
+				catch(NumberFormatException nfe) {}
+			}
+		}
+	}
+
+	private static boolean doesContainSpecialNotation(String currStr) {
+		return currStr.contains(DOT) && currStr.contains(COLON) 
+				&& currStr.contains(SLASH) && currStr.contains(DASH);
+	}
+
+	private static void throwParseExceptionIfFailsAllParsing() throws ParseException {
+		if (hasFailedAllParsing()) { // all nFail
+			throw new ParseException(EMPTY, 0);
+		}
+	}
+
+	private static boolean hasFailedAllParsing() {
+		return !isTime && !isDate && !isKeywordDate;
+	}
+
+	private static boolean isStartCalendarLaterThanOrEqualToEndCalendar() {
+		return startCalendar.compareTo(endCalendar) != -1;
+	}
+
+	protected static boolean hasAllTimeSet() {
+		return isStartDateSet && isStartTimeSet
+				&& isEndDateSet && isEndTimeSet;
+	}
+
+	protected static boolean doesContainTimeInfo() throws InvalidInputException {
+		processCalendarInfo();
+		return isStartDateSet || isStartTimeSet 
+				|| isEndDateSet || isEndTimeSet;
+	}
+
+	private static boolean isToday(String currStr) {
+		return currStr.equalsIgnoreCase(TODAY) || currStr.equalsIgnoreCase(TODAY_SHORT);
+	}
+
+	private static boolean isTomorrow(String currStr) {
+		return currStr.equalsIgnoreCase(TOMORROW) || currStr.equalsIgnoreCase(TOMORROW_SHORT);
+	}
+
+	private static boolean isEveryday(String currStr) {
+		return currStr.equalsIgnoreCase(EVERYDAY);
+	}
+
+	private static boolean isMonday(String currStr) {
+		return currStr.equalsIgnoreCase(MONDAY) || currStr.equalsIgnoreCase(MONDAY_SHORT);
+	}
+
+	private static boolean isTuesday(String currStr) {
+		return currStr.equalsIgnoreCase(TUESDAY) || currStr.equalsIgnoreCase(TUESDAY_SHORT);
+	}
+
+	private static boolean isWednesday(String currStr) {
+		return currStr.equalsIgnoreCase(WEDNESDAY) || currStr.equalsIgnoreCase(WEDNESDAY_SHORT);
+	}
+
+	private static boolean isThursday(String currStr) {
+		return currStr.equalsIgnoreCase(THURSDAY) || currStr.equalsIgnoreCase(THURSDAY_SHORT);
+	}
+
+	private static boolean isFriday(String currStr) {
+		return currStr.equalsIgnoreCase(FRIDAY) || currStr.equalsIgnoreCase(FRIDAY_SHORT);
+	}
+
+	private static boolean isSaturday(String currStr) {
+		return currStr.equalsIgnoreCase(SATURDAY) || currStr.equalsIgnoreCase(SATURDAY_SHORT);
+	}
+
+	private static boolean isSunday(String currStr) {
+		return currStr.equalsIgnoreCase(SUNDAY) || currStr.equalsIgnoreCase(SUNDAY_SHORT);
+	}
+
+	private static SimpleDateFormat[] initializeTime12Format() {
+		// initialize time12Format
+		SimpleDateFormat[] timeFormat = new SimpleDateFormat[TIME_12H_PATTERNS.length];
+		for (int i = 0; i < timeFormat.length; i++) {
+			timeFormat[i] = new SimpleDateFormat(TIME_12H_PATTERNS[i]);
+			timeFormat[i].setLenient(false);
+		}
+		return timeFormat;
+	}
+
+	private static SimpleDateFormat[] initializeTime24Format() {
+		// initialize time24Format
+		SimpleDateFormat[] timeFormat = new SimpleDateFormat[TIME_24H_PATTERNS.length];
+		for (int i = 0; i < timeFormat.length; i++) {
+			timeFormat[i] = new SimpleDateFormat(TIME_24H_PATTERNS[i]);
+			timeFormat[i].setLenient(false);
+		}
+		return timeFormat;
+	}
+
+	private static SimpleDateFormat[] initializeDateFormat() {
+		// initialize dateFormat
+		SimpleDateFormat[] dateFormat = new SimpleDateFormat[DATE_PATTERNS.length];
+		for (int i = 0; i < dateFormat.length; i++) {
+			dateFormat[i] = new SimpleDateFormat(DATE_PATTERNS[i]);
+			dateFormat[i].setLenient(false);
+		}
+		return dateFormat;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\TimeParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UpdateAnalyzer.java
+	 */
+
+
+package clc.ui;
+
+import static clc.common.Constants.ERROR_CANNOT_UPDATE_TO_RECURRING_TASK;
+import static clc.common.Constants.SPACE;
+import static clc.common.Constants.COMMA;
+import static clc.common.Constants.CHAR_SPACE;
+import static clc.common.Constants.CHAR_COMMA;
+import static clc.common.Constants.EMPTY;
+import static clc.common.Constants.QUOTATION_MARK;
+import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
+import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
+import static clc.common.Constants.CALENDAR_PROVIDED;
+
+import java.util.GregorianCalendar;
+
+import clc.common.InvalidInputException;
+import clc.common.LogHelper;
+
+public class UpdateAnalyzer extends TimeParser {
+	private static boolean isCaseUpdateCalendar, isCaseQuotedTaskName;
+	private static String[] tempInfo;
+	private static int calendarProvided = 0;
+	private static int seqNo;
+	private static GregorianCalendar tempStartCalendar;
+
+	protected UpdateAnalyzer(String input) {
+		super(input);
+	}
+
+	protected static void analyze() throws InvalidInputException {
+		throwExceptionIfEmptyCommandDetails();
+		throwExceptionIfNoSeqNumberProvided();
+		checkIfQuotedTaskName();
+		addSpaceToCommaIfNotQuotedTaskName();
+
+		isCaseQuotedTaskName = false;
+		calendarProvided = 0;
+		tempInfo = commandDetails.split(SPACE);
+		infoToBeProcessed = tempInfo;
+
+		if (!isCaseQuotedTaskName && doesContainTimeInfo()) { //case update calendar
+			setCalendarInfoForUpdate();
+			isCaseUpdateCalendar = true;
+		} else { //case update task name
+			isCaseUpdateCalendar = false;
+		}
+	}
+
+	private static void addSpaceToCommaIfNotQuotedTaskName() {
+		if (commandDetails.contains(COMMA)) {
+			int indexOfFirstComma = commandDetails.indexOf(COMMA);
+			int indexOfLastComma = commandDetails.lastIndexOf(COMMA);
+			indexOfLastComma = findCommaAndAddSpaces(indexOfFirstComma,
+														indexOfLastComma);
+		}
+	}
+
+	private static int findCommaAndAddSpaces(int indexOfFirstComma,
+			int indexOfLastComma) {
+		for (int i = indexOfFirstComma; i <= indexOfLastComma; i ++) {
+			if (commandDetails.charAt(i) == CHAR_COMMA) {
+				i = addSpaceToTheFrontOfCommaIfNotSpace(i);
+				indexOfLastComma += addSpaceToTheBackOfCommaIfNotSpace(i);
+			}
+		}
+		return indexOfLastComma;
+	}
+
+	private static int addSpaceToTheBackOfCommaIfNotSpace(int i) {
+		if (i + 1 < commandDetails.length() 
+				&& commandDetails.charAt(i + 1) != CHAR_SPACE) {
+			commandDetails = commandDetails.substring(0, i + 1) + SPACE
+					+ commandDetails.substring(i + 1, commandDetails.length());
+			return 1;
+		}
+		return 0;
+	}
+
+	private static int addSpaceToTheFrontOfCommaIfNotSpace(int i) {
+		if (i - 1 >= 0 && commandDetails.charAt(i - 1) != ' ') {
+			commandDetails = commandDetails.substring(0, i) + SPACE
+					+ commandDetails.substring(i, commandDetails.length());
+			i ++;
+		}
+		return i;
+	}
+
+	private static void setCalendarInfoForUpdate() throws InvalidInputException {
+		if (commandDetails.contains(COMMA)) {
+			int indexOfComma = findIndexOfComma();
+			analyzeUpdateStartTime(indexOfComma);
+			analyzeUpdateEndTime(indexOfComma);
+
+			//comma case parse two string separately 
+			//tempStartCalendar is required to store the startCalendar 
+			startCalendar = tempStartCalendar;
+		} else { //update without using comma
+			determineIfStartDateIsProvided();
+			determineIfStartTimeIsProvided();
+			determineIfEndDateIsProvided();
+			determineIfEndTimeIsProvided();
+		}
+		LogHelper.info("Update case: " + CALENDAR_PROVIDED[calendarProvided - 1]);
+	}
+
+	private static void checkIfQuotedTaskName() {
+		if (isQuotedCommandDetails()) {
+			isCaseQuotedTaskName = true;
+			//trim away quotation mark
+			commandDetails = commandDetails.substring(1, commandDetails.length() - 1);
+			LogHelper.info("New quoted task name: " + commandDetails);
+		}
+	}
+
+	private static boolean isQuotedCommandDetails() {
+		return commandDetails.indexOf(QUOTATION_MARK) == 0 
+				&& commandDetails.lastIndexOf(QUOTATION_MARK) == commandDetails.length() - 1;
+	}
+
+	private static void throwExceptionIfNoSeqNumberProvided() throws InvalidInputException {
+		if (!isNumeric(getFirstWord(commandDetails))) {
+			LogHelper.info("No sequence number is indicated");
+			throw new InvalidInputException(ERROR_NO_SEQUENCE_NUMBER);
+		} else {
+			seqNo = Integer.parseInt(getFirstWord(commandDetails));
+			commandDetails = removeFirstWord(commandDetails);
+		}
+	}
+
+	private static void analyzeUpdateStartTime(int indexOfComma) throws InvalidInputException {
+
+		if (doesContainInfoBeforeComma(indexOfComma)) {
+			setStartTimeInfo(indexOfComma);
+			processCalendarInfo();
+
+			throwExceptionIfUpdateWithRecurringTime();
+
+			//TimeParser parse calendar information from the back
+			//therefore, have to set separately
+			setIsStartDateTrueIfDateIsSet();
+			setIsStartTimeTrueIfTimeIsSet();
+
+			// as processCalendarInfo will set the time to endTime
+			// so we have to swap the value
+			tempStartCalendar = endCalendar;
+			endCalendar = null;
+
+			determineIfStartDateIsProvided();
+			determineIfStartTimeIsProvided();
+			if (tempStartCalendar != null) {
+				LogHelper.info("New start calendar: " + tempStartCalendar.getTime().toString());
+			}
+		}
+	}
+
+	private static void throwExceptionIfUpdateWithRecurringTime() throws InvalidInputException {
+		if (isRecurringEveryWeek || isRecurringEveryday) {
+			throw new InvalidInputException(ERROR_CANNOT_UPDATE_TO_RECURRING_TASK);
+		}
+	}
+
+	private static void setIsStartTimeTrueIfTimeIsSet() {
+		if (isEndTimeSet) {
+			isStartTimeSet = true;
+		}
+	}
+
+	private static void setIsStartDateTrueIfDateIsSet() {
+		if (isEndDateSet) {
+			isStartDateSet = true;
+		}
+	}
+
+	private static void setStartTimeInfo(int indexOfComma) {
+		int index = 0;
+		int size = indexOfComma;
+		infoToBeProcessed = new String[size];
+		for (int i = 0; i < indexOfComma; i ++) {
+			infoToBeProcessed[index ++] = tempInfo[i];
+		}
+	}
+
+	private static boolean doesContainInfoBeforeComma(int indexOfComma) {
+		return indexOfComma > 0;
+	}
+
+	private static void analyzeUpdateEndTime(int indexOfComma) throws InvalidInputException {
+		if (doesContainInfoAfterComma(indexOfComma)) {
+			setEndTimeInfo(indexOfComma);
+
+			processCalendarInfo();
+
+			determineIfEndDateIsProvided();
+			determineIfEndTimeIsProvided();
+			if (endCalendar != null) {
+				LogHelper.info("New end calendar: " + endCalendar.getTime().toString());
+			}
+		}
+	}
+
+	private static void setEndTimeInfo(int indexOfComma) {
+		int index = 0;
+		int size = tempInfo.length - indexOfComma - 1;
+		infoToBeProcessed = new String[size];
+		for (int i = indexOfComma + 1; i < tempInfo.length ; i ++) {
+			infoToBeProcessed[index ++] = tempInfo[i];
+		}
+	}
+
+	private static boolean doesContainInfoAfterComma(int indexOfComma) {
+		return tempInfo.length != indexOfComma + 1;
+	}
+
+	/*
+	 * calendarProvided
+	 * case 1: update end time only
+	 * case 2: update end date only
+	 * case 3: update end date and end time only
+	 * case 4: update start time only
+	 * case 5: update start time and end time only
+	 * case 6: update start time and end date only
+	 * case 7: update start time, end date and end time
+	 * case 8: update start date only
+	 * case 9: update start date and end time only
+	 * case 10: update start date and end date only
+	 * case 11: update start date, end date and end time
+	 * case 12: update start date and start time only
+	 * case 13: update start date, start time and end time
+	 * case 14: update start date, start time and end date
+	 * case 15: update start date, start time, end date and end time
+	 */
+
+	private static void determineIfStartDateIsProvided() {
+		if (isStartDateSet) {
+			calendarProvided += 8;
+		}
+	}
+
+	private static void determineIfStartTimeIsProvided() {
+		if (isStartTimeSet) {
+			calendarProvided += 4;
+		}
+	}
+
+	private static void determineIfEndDateIsProvided() {
+		if (isEndDateSet) {
+			calendarProvided += 2;
+		}
+	}
+
+	private static void determineIfEndTimeIsProvided() {
+		if (isEndTimeSet) {
+			calendarProvided += 1;
+		}
+	}
+
+	private static int findIndexOfComma() {
+		for(int i = 0; i < tempInfo.length; i ++) {
+			if(tempInfo[i].equals(COMMA)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	protected static boolean getUpdateCase() {
+		return isCaseUpdateCalendar;
+	}
+
+	protected static int getSeqNumForUpdate() throws InvalidInputException {
+		return seqNo;
+	}
+
+	protected static String getNewTaskName() throws InvalidInputException {
+		if (isNewTaskNameProvided(commandDetails)) {
+			throw new InvalidInputException(ERROR_NO_NEW_TASK_NAME);
+		}
+		return commandDetails;
+	}
+
+	private static boolean isNewTaskNameProvided(String newTaskName) {
+		return newTaskName.equals(EMPTY);
+	}
+
+	protected static int getCalendarProvidedCase() {
+		return calendarProvided;
+	}
+
+	//Override TimeParser methods
+	protected static boolean doesContainTimeInfo() throws InvalidInputException {
+		processCalendarInfo();
+		return isStartDateSet || isStartTimeSet 
+				|| isEndDateSet || isEndTimeSet;
+	}
+
+	protected static void processCalendarInfo() throws InvalidInputException {
+		initializeVariable();
+		analyzeAndSetCalendar();
+		setStartCalendarAsNullIfNotSet();
+		setEndCalendarAsNullIfNotSet();
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UpdateAnalyzer.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UpdateAnalyzerTest.java
+	 */
+
+
+package clc.ui;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import clc.common.InvalidInputException;
+import static clc.common.Constants.ERROR_NO_SEQUENCE_NUMBER;
+import static clc.common.Constants.ERROR_NO_NEW_TASK_NAME;
+import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
+
+public class UpdateAnalyzerTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testCalendarProvided() throws InvalidInputException {
+		/*
+		 * D for Date
+		 * T for Time
+		 */
+
+		//case update , T
+		Analyzer.analyze("update 1 , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(1, UpdateAnalyzer.getCalendarProvidedCase());
+		ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+		
+
+		//case update , D
+		Analyzer.analyze("update 1 , 1/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(2, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//as milliseconds difference is minor for our software, we compare with toString() for current time
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		
+
+		//case update , D T
+		Analyzer.analyze("update 1 , 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update T ,
+		Analyzer.analyze("update 1 1159pm ,");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(4, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		assertEquals(null, time.get(1));
+
+		//case update T , T
+		Analyzer.analyze("update 1 1158pm , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 58);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update T , D
+		Analyzer.analyze("update 1 1159pm , 1/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(6, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+
+		//case update T , D T
+		Analyzer.analyze("update 1 1159pm , 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update D ,
+		Analyzer.analyze("update 1 1/1/2100 ,");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(8, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		assertEquals(null, time.get(1));
+
+		//case update D , T
+		Analyzer.analyze("update 1 1/1/2100 , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(9, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//case update D , D
+		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(10, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		long millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 2);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+
+		//case update D , D T
+		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(11, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update D T ,
+		Analyzer.analyze("update 1 1/1/2100 1159pm ,");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(12, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		assertEquals(null, time.get(1));
+
+		//case update D T , T
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(13, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//case update D T , D
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(14, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 2);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+
+		//case update D T , D T
+		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		//case comma stick to the left info
+		Analyzer.analyze("update 1 1/1/2100 1159pm, 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		//case comma stick to the right info
+		Analyzer.analyze("update 1 1/1/2100 1159pm ,2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//update calendar with comma but contain redundant/invalid info
+		Analyzer.analyze("update 1 .1/1/2100 .1159pm , 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		Analyzer.analyze("update 1 1/1/2100 1159pm , .2/1/2100 .1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(12, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		assertEquals(null, time.get(1));
+		
+		Analyzer.analyze("update 1 .1/1/2100 .1159pm , .2/1/2100 .1159pm");
+
+		UpdateAnalyzer.analyze();
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(".1/1/2100 .1159pm , .2/1/2100 .1159pm", UpdateAnalyzer.getNewTaskName());
+		assertEquals(null, time.get(0));
+		assertEquals(null, time.get(1));
+		
+		/* 
+		 * without comma, user CANNOT
+		 * update start date only 
+		 * OR update start time only 
+		 * OR update start date and start time only
+		 * OR update start time and end date only
+		 * OR update start date and end time only
+		 * OR update start date, start time and end date only
+		 */
+
+		//case update , T
+		Analyzer.analyze("update 1 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(1, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(1));
+
+		//case update , D
+		Analyzer.analyze("update 1 1/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(2, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+
+		//case update , D T
+		Analyzer.analyze("update 1 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(3, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		assertEquals(null, time.get(0));
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update T , T
+		Analyzer.analyze("update 1 1158pm 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(5, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 58);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
+		gc.set(Calendar.MINUTE, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update T , D T
+		Analyzer.analyze("update 1 1159pm 1/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(7, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, 23);
+		gc.set(Calendar.MINUTE, 59);
+		gc.set(Calendar.SECOND, 0);
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(1));
+
+
+		//case update D , D
+		Analyzer.analyze("update 1 1/1/2100 2/1/2100");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(10, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 2);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+
+		//case update D , D T
+		Analyzer.analyze("update 1 1/1/2100 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(11, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar();
+		gc.set(Calendar.YEAR, 2100);
+		gc.set(Calendar.MONTH, 0);
+		gc.set(Calendar.DATE, 1);
+		//might have difference in milliseconds that causes fail
+		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update D T , T
+		Analyzer.analyze("update 1 1/1/2100 1159pm 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(13, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		gc = new GregorianCalendar();
+		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
+		assertEquals(gc, time.get(1));
+
+		//case update D T , D T
+		Analyzer.analyze("update 1 1/1/2100 1159pm 2/1/2100 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+		//update calendar without comma but contain redundant info
+		Analyzer.analyze("update 1 1/1/2100 cd123dfa1 1159pm 345 2/1/2100 abcde 1159pm");
+
+		UpdateAnalyzer.analyze();
+		assertEquals(15, UpdateAnalyzer.getCalendarProvidedCase());
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
+		assertEquals(gc, time.get(0));
+		time = UpdateAnalyzer.getCalendar();
+		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
+		assertEquals(gc, time.get(1));
+		
+	}
+
+	@Test
+	public void test() throws InvalidInputException {
+		//no details
+		Analyzer.analyze("update");
+
+		try {
+			UpdateAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
+		}
+
+
+		//spaces details
+		Analyzer.analyze("update           ");
+
+		try {
+			UpdateAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_EMPTY_COMMAND_DETAILS, e.getMessage());
+		}
+
+
+		//no sequence number
+		//case1 update task name
+		Analyzer.analyze("update taskname");
+
+		try {
+			UpdateAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_NO_SEQUENCE_NUMBER, e.getMessage());
+		}
+
+		//case 2 update calendar
+		Analyzer.analyze("update 12/12/2112 4pm ,");
+
+		try {
+			UpdateAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_NO_SEQUENCE_NUMBER, e.getMessage());
+		}
+
+
+		//no task name **CALENDAR CASE IS CONSIDERED BY doesContainTimeInfo() ALREADY
+		Analyzer.analyze("update 1");
+
+		try {
+			UpdateAnalyzer.analyze();
+		} catch (InvalidInputException e) {
+			assertEquals(ERROR_NO_NEW_TASK_NAME, e.getMessage());
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UpdateAnalyzerTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UserInterface.java
+	 */
+
+
+package clc.ui;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Timer;
+
+import clc.common.InvalidInputException;
+import clc.logic.Add;
+import clc.logic.Clear;
+import clc.logic.Command;
+import clc.logic.Delete;
+import clc.logic.Display;
+import clc.logic.Exit;
+import clc.logic.Export;
+import clc.logic.Help;
+import clc.logic.Import;
+import clc.logic.Mark;
+import clc.logic.Redo;
+import clc.logic.Remind;
+import clc.logic.Search;
+import clc.logic.Task;
+import clc.logic.Undo;
+import clc.logic.Update;
+import clc.logic.Unmark;
+import clc.storage.History;
+import static clc.common.Constants.MESSAGE_INVALID_FORMAT;
+import static clc.common.Constants.MESSAGE_WELCOME;
+import static clc.common.Constants.TYPE_ADD;
+import static clc.common.Constants.TYPE_CREATE;
+import static clc.common.Constants.TYPE_DELETE;
+import static clc.common.Constants.TYPE_DELETE_SHORT;
+import static clc.common.Constants.TYPE_ERASE;
+import static clc.common.Constants.TYPE_REMOVE;
+import static clc.common.Constants.TYPE_DISPLAY;
+import static clc.common.Constants.TYPE_DISPLAY_SHORT;
+import static clc.common.Constants.TYPE_SHOW;
+import static clc.common.Constants.TYPE_LIST;
+import static clc.common.Constants.TYPE_MARK;
+import static clc.common.Constants.TYPE_MARK_SHORT;
+import static clc.common.Constants.TYPE_UNMARK;
+import static clc.common.Constants.TYPE_UNMARK_SHORT;
+import static clc.common.Constants.TYPE_UPDATE;
+import static clc.common.Constants.TYPE_UPDATE_SHORT;
+import static clc.common.Constants.TYPE_EDIT;
+import static clc.common.Constants.TYPE_CLEAR;
+import static clc.common.Constants.TYPE_UNDO;
+import static clc.common.Constants.TYPE_REDO;
+import static clc.common.Constants.TYPE_HELP;
+import static clc.common.Constants.TYPE_EXIT;
+import static clc.common.Constants.TYPE_IMPORT;
+import static clc.common.Constants.TYPE_IMPORT_SHORT;
+import static clc.common.Constants.TYPE_EXPORT;
+import static clc.common.Constants.TYPE_EXPORT_SHORT;
+import static clc.common.Constants.TYPE_SEARCH;
+
+
+public class UserInterface {
+	private static String input;
+	private static Timer timer;
+	public UserInterface() {}
+
+	//method for Main
+	public void executeCommandsUntilExit() {
+		History.addNewVersion();
+		setTimerForReminder();
+		GUI.launchAndGetInputAndExecute();
+	}
+
+	private static void setTimerForReminder() {
+		Remind rmd = new Remind();
+		ArrayList<String> reminderInfo = rmd.getToBeRemindedInfo();
+		ArrayList<Date> reminderTime = rmd.getToBeRemindedTime();
+		ArrayList<Long> reminderTaskId = rmd.getToBeRemindedTaskId();
+		timer = new Timer(true);
+		
+		for (int i = 0; i < reminderInfo.size(); i ++) {
+			timer.schedule(new Reminder(reminderInfo.get(i), reminderTaskId.get(i)), reminderTime.get(i));
+		}
+	}
+	
+	//three methods below are for GUI
+	protected static String setInputAndExecute(String line) {
+		input = line;
+		return executeCommand();
+	}
+
+	protected static String getWelcomeMessage() {
+		return MESSAGE_WELCOME;
+	}
+
+	protected static void markReminderTask(long taskId) {
+		Command command;
+		command = new Mark(taskId);
+		command.execute();
+	}
+
+	private static String executeCommand() {
+		addOverdueRecurringTask();
+		
+		Command command = null;
+		try{
+			Analyzer.analyze(input);
+			String commandType = Analyzer.getCommandType(); 
+			
+			if (isCaseAdd(commandType)) {
+				command = analyzeAdd();
+			} else if (isCaseDelete(commandType)) {
+				command = analyzeDelete();
+			} else if (isCaseDisplay(commandType)) {
+				command = analyzeDisplay();
+			} else if (isCaseMark(commandType)) {
+				command = analyzeMark();
+			} else if (isCaseUnmark(commandType)) {
+				command = analyzeUnmark();
+			} else if (isCaseUpdate(commandType)) {
+				command = analyzeUpdate();
+			} else if (isCaseImport(commandType)) {
+				command = analyzeImport();
+			} else if (isCaseExport(commandType)) {
+				command = analyzeExport();
+			} else if (isCaseSearch(commandType)) {
+				command = analyzeSearch();
+			} else if (isCaseHelp(commandType)) {
+				command = analyzeHelp();
+			} else if (isCaseClear(commandType)) {
+				command = new Clear();
+			} else if (isCaseUndo(commandType)) {
+				command = new Undo();
+			} else if (isCaseRedo(commandType)) {
+				command = new Redo();
+			} else if (isCaseExit(commandType)) {
+				command = new Exit();
+			} else {
+				throw new InvalidInputException(String.format(MESSAGE_INVALID_FORMAT, input));
+			}
+			
+			String feedback = command.execute();
+			
+			clearAndResetTimer();
+			
+			return feedback;
+		} catch (InvalidInputException iie) {
+			return iie.getMessage();
+		}
+	}
+
+	private static void addOverdueRecurringTask() {
+		Add add = new Add();
+		add.addOverdueRecurringTask();
+	}
+
+	private static boolean isCaseAdd(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_ADD) 
+				|| commandType.equalsIgnoreCase(TYPE_CREATE);
+	}
+
+	private static boolean isCaseDelete(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_DELETE) 
+				|| commandType.equalsIgnoreCase(TYPE_DELETE_SHORT)
+				|| commandType.equalsIgnoreCase(TYPE_ERASE)
+				|| commandType.equalsIgnoreCase(TYPE_REMOVE);
+	}
+
+	private static boolean isCaseDisplay(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_DISPLAY) 
+				|| commandType.equalsIgnoreCase(TYPE_DISPLAY_SHORT) 
+				|| commandType.equalsIgnoreCase(TYPE_SHOW) 
+				|| commandType.equalsIgnoreCase(TYPE_LIST);
+	}
+
+	private static boolean isCaseMark(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_MARK) 
+				|| commandType.equalsIgnoreCase(TYPE_MARK_SHORT);
+	}
+
+	private static boolean isCaseUnmark(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UNMARK) 
+				|| commandType.equalsIgnoreCase(TYPE_UNMARK_SHORT);
+	}
+
+	private static boolean isCaseUpdate(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UPDATE) 
+				|| commandType.equalsIgnoreCase(TYPE_UPDATE_SHORT)
+				|| commandType.equalsIgnoreCase(TYPE_EDIT);
+	}
+
+	private static boolean isCaseImport(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_IMPORT)
+				|| commandType.equalsIgnoreCase(TYPE_IMPORT_SHORT);
+	}
+
+	private static boolean isCaseExport(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_EXPORT)
+				|| commandType.equalsIgnoreCase(TYPE_EXPORT_SHORT);
+	}
+
+	private static boolean isCaseSearch(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_SEARCH);
+	}
+
+	private static boolean isCaseClear(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_CLEAR);
+	}
+
+	private static boolean isCaseUndo(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_UNDO);
+	}
+
+	private static boolean isCaseRedo(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_REDO);
+	}
+
+	private static boolean isCaseHelp(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_HELP);
+	}
+
+	private static boolean isCaseExit(String commandType) {
+		return commandType.equalsIgnoreCase(TYPE_EXIT);
+	}
+ 
+	private static Command analyzeAdd() throws InvalidInputException {
+		Command command;
+		AddAnalyzer.analyze(); 
+		Task task = AddAnalyzer.getToBeAddedTask();
+		command = new Add(task);
+		return command;
+	}
+
+	private static Command analyzeDelete() throws InvalidInputException {
+		Command command;
+		command = new Delete(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeDisplay() throws InvalidInputException{
+		Command command;
+		DisplayAnalyzer.analyze();
+		boolean isCaseDisplayCalendar = DisplayAnalyzer.getIsCaseDisplayCalendar();
+		if (isCaseDisplayCalendar) {
+			boolean isCaseKeywordCalendar = DisplayAnalyzer.getIsCaseKeywordCalendar();
+			ArrayList<GregorianCalendar> time = DisplayAnalyzer.getCalendar();
+			if (isCaseKeywordCalendar) { //display with calendar keyword
+				String query = DisplayAnalyzer.getDisplayQuery();
+				command = new Display(time, query);
+			} else { //normal display calendar
+				command = new Display(time);
+			}
+		} else {
+			String query = DisplayAnalyzer.getDisplayQuery();
+			command = new Display(query);
+		}
+		return command;
+	}
+
+	private static Command analyzeMark() throws InvalidInputException {
+		Command command;
+		command = new Mark(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeUnmark() throws InvalidInputException {
+		Command command;
+		command = new Unmark(SequenceNumberExtractor.getSequenceNum());
+		return command;
+	}
+
+	private static Command analyzeUpdate() throws InvalidInputException {
+		Command command;
+		UpdateAnalyzer.analyze();
+		boolean isCaseUpdateCalendar = UpdateAnalyzer.getUpdateCase();
+		int seqNo = UpdateAnalyzer.getSeqNumForUpdate();
+		if (isCaseUpdateCalendar) {
+			int caseCalendarProvided = UpdateAnalyzer.getCalendarProvidedCase();
+			ArrayList<GregorianCalendar> time = UpdateAnalyzer.getCalendar();
+			command = new Update(seqNo, caseCalendarProvided, time);
+		} else { //update task name
+			String newTaskName = UpdateAnalyzer.getNewTaskName();
+			command = new Update(seqNo, newTaskName);
+		}
+		return command;
+	}
+	
+	private static Command analyzeImport() {
+		Command command;
+		command = new Import(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static Command analyzeExport() {
+		Command command;
+		command = new Export(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static Command analyzeSearch() {
+		Command command;
+		command = new Search(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static Command analyzeHelp() {
+		Command command;
+		command = new Help(Analyzer.getCommandDetails());
+		return command;
+	}
+
+	private static void clearAndResetTimer() {
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();  
+			setTimerForReminder();
+		}
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UserInterface.java
+
+
+
+
+
