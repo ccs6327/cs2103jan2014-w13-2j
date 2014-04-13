@@ -1,4 +1,5 @@
-//@author A0112089J
+//@author A0112089J -unused
+//Function is not mature enough
 
 package clc.logic;
 

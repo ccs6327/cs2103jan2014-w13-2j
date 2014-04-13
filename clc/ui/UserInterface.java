@@ -3,9 +3,9 @@
 package clc.ui;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Timer;
+//import java.util.Timer;
+//import java.util.Date;
 
 import clc.common.InvalidInputException;
 import clc.logic.Add;
@@ -19,7 +19,7 @@ import clc.logic.Help;
 import clc.logic.Import;
 import clc.logic.Mark;
 import clc.logic.Redo;
-import clc.logic.Remind;
+//import clc.logic.Remind;
 import clc.logic.Search;
 import clc.logic.Task;
 import clc.logic.Undo;
@@ -59,17 +59,17 @@ import static clc.common.Constants.TYPE_SEARCH;
 
 public class UserInterface {
 	private static String input;
-	private static Timer timer;
+	//private static Timer timer;
 	public UserInterface() {}
 
 	//method for Main
 	public void executeCommandsUntilExit() {
 		History.addNewVersion();
-		setTimerForReminder();
+		//setTimerForReminder();
 		GUI.launchAndGetInputAndExecute();
 	}
 
-	private static void setTimerForReminder() {
+	/*private static void setTimerForReminder() {
 		Remind rmd = new Remind();
 		ArrayList<String> reminderInfo = rmd.getToBeRemindedInfo();
 		ArrayList<Date> reminderTime = rmd.getToBeRemindedTime();
@@ -79,7 +79,7 @@ public class UserInterface {
 		for (int i = 0; i < reminderInfo.size(); i ++) {
 			timer.schedule(new Reminder(reminderInfo.get(i), reminderTaskId.get(i)), reminderTime.get(i));
 		}
-	}
+	}*/
 	
 	//three methods below are for GUI
 	public static String setInputAndExecute(String line) {
@@ -91,11 +91,11 @@ public class UserInterface {
 		return MESSAGE_WELCOME;
 	}
 
-	protected static void markReminderTask(long taskId) {
+	/*protected static void markReminderTask(long taskId) {
 		Command command;
 		command = new Mark(taskId);
 		command.execute();
-	}
+	}*/
 
 	private static String executeCommand() {
 		addOverdueRecurringTask();
@@ -139,7 +139,7 @@ public class UserInterface {
 			
 			String feedback = command.execute();
 			
-			clearAndResetTimer();
+			//clearAndResetTimer();
 			
 			return feedback;
 		} catch (InvalidInputException iie) {
@@ -307,11 +307,11 @@ public class UserInterface {
 		return command;
 	}
 
-	private static void clearAndResetTimer() {
+	/*private static void clearAndResetTimer() {
 		if (timer != null) {
 			timer.cancel();
 			timer.purge();  
 			setTimerForReminder();
 		}
-	}
+	}*/
 }

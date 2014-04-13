@@ -13,17 +13,17 @@ import static clc.common.Constants.MESSAGE_MARK_DONE;
 import static clc.common.Constants.MESSAGE_PREVIOUSLY_MARK_DONE;
 import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.EVERY_WEEK;
-import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.NEWLINE;
+//import static clc.common.Constants.EMPTY;
 
 public class Mark implements Command {
 	private ArrayList<Integer> taskSeqNo;
 	private StringBuilder feedback = new StringBuilder();
 	private ArrayList<Integer> displayMem;
 	private ArrayList<Task> internalMem;
-	private ArrayList<Task> reminderMem;
-	private boolean isReminderTask;
-	private long targetTaskId;
+	//private ArrayList<Task> reminderMem;
+	//private boolean isReminderTask;
+	//private long targetTaskId;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -32,23 +32,25 @@ public class Mark implements Command {
 	}
 	
 	//constructor for marking reminder task
-	public Mark(long taskId) {
+	/*public Mark(long taskId) {
 		isReminderTask = true;
 		reminderMem = Remind.getReminderMem();
 		targetTaskId = taskId;
-	}
+	}*/
 
 	@Override
 	public String execute() {
+		/*
 		if (isReminderTask) {
 			markReminderMem();
 			//mark task when reminder pop up does not need to return feedback message
 			return EMPTY;
-		}
+		}*/
 		assert taskSeqNo != null; 
 		return markDisplayMem();
 	}
 
+	/*
 	private void markReminderMem() {
 		for (int i = reminderMem.size() - 1; i >= 0; i --) {
 			Task task = reminderMem.get(i);
@@ -59,7 +61,7 @@ public class Mark implements Command {
 				break;
 			}
 		}
-	}
+	}*/
 
 	private String markDisplayMem() {
 		boolean isChanged = markTasks();

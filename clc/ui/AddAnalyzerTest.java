@@ -434,7 +434,7 @@ public class AddAnalyzerTest {
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
-
+		/*
 		//task with reminder
 		//case 1 deadline task
 		Analyzer.analyze("add /r taskname 31 1159pm");
@@ -458,7 +458,7 @@ public class AddAnalyzerTest {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-
+		 */
 
 		//all calendar pattern
 		Analyzer.analyze("add taskname 33 1jan2100 1:23pm 2january2100 2.34pm");

@@ -5,11 +5,11 @@ package clc.ui;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.QUOTATION_MARK;
-import static clc.common.Constants.SLASH_R;
 import static clc.common.Constants.ERROR_NO_TASK_NAME;
-import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
-import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
+//import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+//import static clc.common.Constants.SLASH_R;
+//import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
 import clc.common.InvalidInputException;
 import clc.common.LogHelper;
 import clc.logic.Task;
@@ -17,9 +17,9 @@ import clc.logic.Task;
 public class AddAnalyzer extends TimeParser {
 	private static String taskName;
 	private static Task taskToBeAdded;
-	private static boolean isReminderNeeded;
 	private static boolean isCaseQuotedTaskName;
-	private static int intervalToBeReminded;
+	//private static boolean isReminderNeeded;
+	//private static int intervalToBeReminded;
 
 	protected AddAnalyzer(String input) {
 		super(input);
@@ -31,7 +31,7 @@ public class AddAnalyzer extends TimeParser {
 
 	protected static void analyze() throws InvalidInputException {
 		throwExceptionIfEmptyCommandDetails();
-		determineIfReminderNeeded();
+		//determineIfReminderNeeded();
 		setUpInfoToBeProcessed(); //info to be processed in time parser
 
 		if (doesContainTimeInfo()) { //timed task or deadline task
@@ -40,12 +40,13 @@ public class AddAnalyzer extends TimeParser {
 			determineIfTaskNameProvided();
 			setUpCalendarTask();
 		} else { // floating task
-			throwExceptionIfReminderNeeded();
+			//throwExceptionIfReminderNeeded();
 			setCommandDetailsAsTaskNameIfNotQuotedTaskName();
 			setUpFloatingTask();
 		}
 	}
 
+	/*
 	private static void determineIfReminderNeeded() throws InvalidInputException {
 		isReminderNeeded = false;
 		if (isFirstWordSlashR()) {
@@ -67,7 +68,7 @@ public class AddAnalyzer extends TimeParser {
 		} else {
 			intervalToBeReminded = DEFAULT_REMINDER_INTERVAL;
 		}
-	}
+	}*/
 
 	private static void setUpInfoToBeProcessed() {
 		isCaseQuotedTaskName = false;
@@ -160,7 +161,7 @@ public class AddAnalyzer extends TimeParser {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 
-		caseIfReminderNeeded();
+		//caseIfReminderNeeded();
 		caseIfRecurringTask();
 	}
 	
@@ -172,11 +173,12 @@ public class AddAnalyzer extends TimeParser {
 		return startCalendar == null && endCalendar != null;
 	}
 
+	/*
 	private static void caseIfReminderNeeded() {
 		if (isReminderNeeded) {
 			taskToBeAdded.setReminder(intervalToBeReminded);
 		}
-	}
+	}*/
 
 	private static void caseIfRecurringTask() {
 		if (isRecurringEveryWeek) {
@@ -188,12 +190,13 @@ public class AddAnalyzer extends TimeParser {
 		}
 	}
 
+	/*
 	private static void throwExceptionIfReminderNeeded() throws InvalidInputException {
 		if (isReminderNeeded) {
 			LogHelper.info("Invalid reminder request for floating task");
 			throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
 	 	}
-	}
+	}*/
 
 	private static void setCommandDetailsAsTaskNameIfNotQuotedTaskName() {
 		if (!isCaseQuotedTaskName) {

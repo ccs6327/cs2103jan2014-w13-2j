@@ -1,4 +1,5 @@
-//@author A0112089J
+//@author A0112089J -unused
+//Function is not mature enough
 
 package clc.ui;
 
@@ -65,7 +66,7 @@ public class Reminder extends TimerTask {
 	private void actionWhenButtonIsPressed(final long taskId) {
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserInterface.markReminderTask(taskId);
+				//UserInterface.markReminderTask(taskId);
 				frameReminder.dispose();
 			}
 		});
