@@ -441,17 +441,17 @@ import static clc.common.Constants.MESSAGE_MARK_DONE;
 import static clc.common.Constants.MESSAGE_PREVIOUSLY_MARK_DONE;
 import static clc.common.Constants.EVERYDAY;
 import static clc.common.Constants.EVERY_WEEK;
-import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.NEWLINE;
+//import static clc.common.Constants.EMPTY;
 
 public class Mark implements Command {
 	private ArrayList<Integer> taskSeqNo;
 	private StringBuilder feedback = new StringBuilder();
 	private ArrayList<Integer> displayMem;
 	private ArrayList<Task> internalMem;
-	private ArrayList<Task> reminderMem;
-	private boolean isReminderTask;
-	private long targetTaskId;
+	//private ArrayList<Task> reminderMem;
+	//private boolean isReminderTask;
+	//private long targetTaskId;
 	
 	public Mark(ArrayList<Integer> taskSeqNo) {
 		this.taskSeqNo = taskSeqNo;
@@ -460,23 +460,25 @@ public class Mark implements Command {
 	}
 	
 	//constructor for marking reminder task
-	public Mark(long taskId) {
+	/*public Mark(long taskId) {
 		isReminderTask = true;
 		reminderMem = Remind.getReminderMem();
 		targetTaskId = taskId;
-	}
+	}*/
 
 	@Override
 	public String execute() {
+		/*
 		if (isReminderTask) {
 			markReminderMem();
 			//mark task when reminder pop up does not need to return feedback message
 			return EMPTY;
-		}
+		}*/
 		assert taskSeqNo != null; 
 		return markDisplayMem();
 	}
 
+	/*
 	private void markReminderMem() {
 		for (int i = reminderMem.size() - 1; i >= 0; i --) {
 			Task task = reminderMem.get(i);
@@ -487,7 +489,7 @@ public class Mark implements Command {
 				break;
 			}
 		}
-	}
+	}*/
 
 	private String markDisplayMem() {
 		boolean isChanged = markTasks();
@@ -594,110 +596,6 @@ public class Mark implements Command {
 }
 
 	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Mark.java
-
-
-
-
-
-	/**
-	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Remind.java
-	 */
-
-
-package clc.logic;
-
-import static clc.common.Constants.MESSAGE_REMIND_TIMED_TASKS;
-import static clc.common.Constants.MESSAGE_REMIND_DEADLINE_TASKS;
-import static clc.common.Constants.TYPE_DEADLINE_TASK;
-import static clc.common.Constants.TYPE_TIMED_TASK;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import clc.storage.Storage;
-
-public class Remind {
-	ArrayList<Task> internalMem;
-	ArrayList<Date> timeToBeReminded;
-	private ArrayList<Long> taskIdToBeReminded;
-	static ArrayList<Task> reminderMem;
-
-	public Remind() {
-		internalMem = Storage.getInternalMem();
-		timeToBeReminded = new ArrayList<Date>();
-		reminderMem = new ArrayList<Task>();
-		taskIdToBeReminded = new ArrayList<Long>();
-	}
-
-	public ArrayList<String> getToBeRemindedInfo() {
-		ArrayList<String> taskInfo = new ArrayList<String>();
-		for (int i = 0; i < internalMem.size(); i ++) {
-			Task task = internalMem.get(i);
-			retrieveTaskInfoIfReminderNeeded(taskInfo, task);
-		}
-		return taskInfo;
-	}
-
-	private void retrieveTaskInfoIfReminderNeeded(ArrayList<String> taskInfo,
-			Task task) {
-		if (task.getIsReminderNeeded() && !task.getIsDone()) {
-			reminderMem.add(task);
-			taskIdToBeReminded.add(task.getTaskId());
-			switch (task.getTaskType()) {
-			case TYPE_TIMED_TASK:
-				remindTimedTask(taskInfo, task);
-				break;
-			case TYPE_DEADLINE_TASK:
-				remindDeadlineTask(taskInfo, task);
-				break;
-			}
-		}
-	}
-
-	private void remindDeadlineTask(ArrayList<String> taskInfo, Task task) {
-		String endTime = formatDate(task.getEndTime());
-		taskInfo.add(String.format(MESSAGE_REMIND_DEADLINE_TASKS, task.getTaskName(), endTime));
-		Calendar reminderCalendar = (Calendar) task.getEndTime().clone();
-		int intervalToBeReminded = -1*task.getReminderInterval();
-		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
-		timeToBeReminded.add(reminderCalendar.getTime());
-	}
-
-	private void remindTimedTask(ArrayList<String> taskInfo, Task task) {
-		String startTime = formatDate(task.getStartTime());
-		String endTime = formatDate(task.getEndTime());
-		taskInfo.add(String.format(MESSAGE_REMIND_TIMED_TASKS, task.getTaskName(), startTime, endTime));
-		Calendar reminderCalendar = (Calendar) task.getStartTime().clone();
-		int intervalToBeReminded = -1*task.getReminderInterval();
-		reminderCalendar.add(Calendar.MINUTE, intervalToBeReminded);
-		timeToBeReminded.add(reminderCalendar.getTime());
-	}
-
-	public ArrayList<Date> getToBeRemindedTime() {
-		return timeToBeReminded; 
-	}
-
-	public ArrayList<Long> getToBeRemindedTaskId() {
-		return taskIdToBeReminded;
-	}
-
-	private String formatDate(Calendar calendar) {
-		String date;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
-		date = dateFormat.format(calendar.getTime());
-		date = date.replaceAll("AM", "am");
-		date = date.replaceAll("PM", "pm");
-		return date;
-	}
-	
-	protected static ArrayList<Task> getReminderMem() {
-		return reminderMem;
-	}
-}
-
-	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Remind.java
 
 
 
@@ -867,11 +765,11 @@ package clc.ui;
 import static clc.common.Constants.SPACE;
 import static clc.common.Constants.EMPTY;
 import static clc.common.Constants.QUOTATION_MARK;
-import static clc.common.Constants.SLASH_R;
 import static clc.common.Constants.ERROR_NO_TASK_NAME;
-import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
 import static clc.common.Constants.ERROR_EMPTY_COMMAND_DETAILS;
-import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
+//import static clc.common.Constants.ERROR_REMINDER_FOR_FLOATING_TASK;
+//import static clc.common.Constants.SLASH_R;
+//import static clc.common.Constants.DEFAULT_REMINDER_INTERVAL;
 import clc.common.InvalidInputException;
 import clc.common.LogHelper;
 import clc.logic.Task;
@@ -879,9 +777,9 @@ import clc.logic.Task;
 public class AddAnalyzer extends TimeParser {
 	private static String taskName;
 	private static Task taskToBeAdded;
-	private static boolean isReminderNeeded;
 	private static boolean isCaseQuotedTaskName;
-	private static int intervalToBeReminded;
+	//private static boolean isReminderNeeded;
+	//private static int intervalToBeReminded;
 
 	protected AddAnalyzer(String input) {
 		super(input);
@@ -893,7 +791,7 @@ public class AddAnalyzer extends TimeParser {
 
 	protected static void analyze() throws InvalidInputException {
 		throwExceptionIfEmptyCommandDetails();
-		determineIfReminderNeeded();
+		//determineIfReminderNeeded();
 		setUpInfoToBeProcessed(); //info to be processed in time parser
 
 		if (doesContainTimeInfo()) { //timed task or deadline task
@@ -902,12 +800,13 @@ public class AddAnalyzer extends TimeParser {
 			determineIfTaskNameProvided();
 			setUpCalendarTask();
 		} else { // floating task
-			throwExceptionIfReminderNeeded();
+			//throwExceptionIfReminderNeeded();
 			setCommandDetailsAsTaskNameIfNotQuotedTaskName();
 			setUpFloatingTask();
 		}
 	}
 
+	/*
 	private static void determineIfReminderNeeded() throws InvalidInputException {
 		isReminderNeeded = false;
 		if (isFirstWordSlashR()) {
@@ -929,7 +828,7 @@ public class AddAnalyzer extends TimeParser {
 		} else {
 			intervalToBeReminded = DEFAULT_REMINDER_INTERVAL;
 		}
-	}
+	}*/
 
 	private static void setUpInfoToBeProcessed() {
 		isCaseQuotedTaskName = false;
@@ -1022,7 +921,7 @@ public class AddAnalyzer extends TimeParser {
 			throw new InvalidInputException(ERROR_EMPTY_COMMAND_DETAILS);
 		}
 
-		caseIfReminderNeeded();
+		//caseIfReminderNeeded();
 		caseIfRecurringTask();
 	}
 	
@@ -1034,11 +933,12 @@ public class AddAnalyzer extends TimeParser {
 		return startCalendar == null && endCalendar != null;
 	}
 
+	/*
 	private static void caseIfReminderNeeded() {
 		if (isReminderNeeded) {
 			taskToBeAdded.setReminder(intervalToBeReminded);
 		}
-	}
+	}*/
 
 	private static void caseIfRecurringTask() {
 		if (isRecurringEveryWeek) {
@@ -1050,12 +950,13 @@ public class AddAnalyzer extends TimeParser {
 		}
 	}
 
+	/*
 	private static void throwExceptionIfReminderNeeded() throws InvalidInputException {
 		if (isReminderNeeded) {
 			LogHelper.info("Invalid reminder request for floating task");
 			throw new InvalidInputException(ERROR_REMINDER_FOR_FLOATING_TASK);
 	 	}
-	}
+	}*/
 
 	private static void setCommandDetailsAsTaskNameIfNotQuotedTaskName() {
 		if (!isCaseQuotedTaskName) {
@@ -1518,7 +1419,7 @@ public class AddAnalyzerTest {
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
 
-
+		/*
 		//task with reminder
 		//case 1 deadline task
 		Analyzer.analyze("add /r taskname 31 1159pm");
@@ -1542,7 +1443,7 @@ public class AddAnalyzerTest {
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getStartTime());
 		gc = new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE), 23, 59);
 		assertEquals(gc, AddAnalyzer.getToBeAddedTask().getEndTime());
-
+		 */
 
 		//all calendar pattern
 		Analyzer.analyze("add taskname 33 1jan2100 1:23pm 2january2100 2.34pm");
@@ -2978,6 +2879,7 @@ import static clc.common.Constants.TYPE_DISPLAY_SHORT;
 import static clc.common.Constants.TYPE_SHOW;
 import static clc.common.Constants.TYPE_LIST;
 import static clc.common.Constants.TYPE_HELP;
+import static clc.common.Constants.TYPE_SEARCH;
 
 public class GUI implements NativeKeyListener {
 	private JFrame frameClc;
@@ -3021,7 +2923,6 @@ public class GUI implements NativeKeyListener {
 		actionWhenEnterIsPressed();
 		initiateWindowListener();
 		centreWindow(frameClc); 
-		initiateKeyListener();
 	}
 
 	private void setUpJFrame() {
@@ -3093,6 +2994,7 @@ public class GUI implements NativeKeyListener {
 					}
 				}
 				initializeInputTextBox();
+				inputIndex = previousInput.size();
 			}
 
 			private boolean isCaseDisplayOrHelp() {
@@ -3102,7 +3004,8 @@ public class GUI implements NativeKeyListener {
 						|| command[0].equalsIgnoreCase(TYPE_DISPLAY_SHORT)
 						|| command[0].equalsIgnoreCase(TYPE_SHOW)
 						|| command[0].equalsIgnoreCase(TYPE_LIST)
-						|| command[0].equalsIgnoreCase(TYPE_HELP);
+						|| command[0].equalsIgnoreCase(TYPE_HELP)
+						|| command[0].equalsIgnoreCase(TYPE_SEARCH);
 			}
 
 			private void emptyDisplayBox() {
@@ -3238,9 +3141,6 @@ public class GUI implements NativeKeyListener {
 
 	private void traversePreviousInputIfPressedUpOrDown(KeyEvent e) { 
 		String cachedInput;
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			inputIndex = previousInput.size();
-		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP && inputIndex - 1 >= 0) {
 			cachedInput = previousInput.get(--inputIndex);
@@ -3267,6 +3167,7 @@ public class GUI implements NativeKeyListener {
 	private void clearInputTextBoxIfPressedEsc(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			initializeInputTextBox();
+			inputIndex = previousInput.size();
 		}
 	}
 
@@ -3280,98 +3181,6 @@ public class GUI implements NativeKeyListener {
 }
 
 	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\GUI.java
-
-
-
-
-
-	/**
-	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Reminder.java
-	 */
-
-
-package clc.ui;
-
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.TimerTask;
-import java.awt.Font;
-
-public class Reminder extends TimerTask {
-
-	private JFrame frameReminder = new JFrame();
-	private JTextArea reminderBox = new JTextArea();
-	private JButton closeButton;
-	
-	public void run() {
-		frameReminder.setVisible(true);
-	}
-
-	protected Reminder(String reminderInfo, final long taskId) {
-		initializeFrame();
-		initializeReminderBox(reminderInfo);
-		initializeButton(taskId);
-	}
-
-	private void initializeFrame() {
-		frameReminder.setAlwaysOnTop(true);
-		frameReminder.setTitle("REMINDER");
-		frameReminder.setResizable(false);
-		frameReminder.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frameReminder.setBounds(100, 100, 500, 242);
-		frameReminder.getContentPane().setBackground(Color.BLACK);
-		frameReminder.getContentPane().setLayout(null);
-	}
-
-	private void initializeReminderBox(String reminderInfo) {
-		reminderBox.setLineWrap(true);
-		reminderBox.setFont(new Font("Monospaced", Font.BOLD, 17));
-		reminderBox.setForeground(Color.WHITE);
-		reminderBox.append(reminderInfo);
-		reminderBox.setEditable(false);
-		reminderBox.setBounds(12, 13, 470, 143);
-		reminderBox.setBackground(Color.DARK_GRAY);
-		frameReminder.getContentPane().add(reminderBox);
-	}
-
-	private void initializeButton(final long taskId) {
-		closeButton = new JButton("Mark As Done");
-		
-		closeButton.setBounds(12, 169, 470, 25);
-		closeButton.setBackground(Color.DARK_GRAY);
-		closeButton.setForeground(Color.WHITE);
-		actionWhenButtonIsPressed(taskId);
-		requestFocusOnButton();
-		frameReminder.getContentPane().add(closeButton);
-	}
-
-	private void actionWhenButtonIsPressed(final long taskId) {
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UserInterface.markReminderTask(taskId);
-				frameReminder.dispose();
-			}
-		});
-	}
-
-	private void requestFocusOnButton() {
-		frameReminder.addWindowFocusListener(new WindowAdapter() {
-			public void windowGainedFocus(WindowEvent e) {
-				closeButton.requestFocusInWindow();
-			}
-		});
-	}
-
-}
-
-	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\Reminder.java
 
 
 
@@ -3544,6 +3353,8 @@ public class TimeParser extends Analyzer {
 		endCalendar = new GregorianCalendar();
 		startCalendarIndex = -1;
 		endCalendarIndex = -1;
+		isRecurringEveryWeek = false;
+		isRecurringEveryday = false;
 		LogHelper.info("TimeParser variables initialized");
 	}
 
@@ -4447,9 +4258,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//as milliseconds difference is minor for our software, we compare with toString() for current time
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		long millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		
 
 		//case update , D T
@@ -4507,8 +4318,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update T , D T
 		Analyzer.analyze("update 1 1159pm , 1/1/2100 1159pm");
@@ -4520,8 +4332,8 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(1));
 
@@ -4535,8 +4347,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		assertEquals(null, time.get(1));
 
 		//case update D , T
@@ -4549,8 +4362,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
@@ -4568,15 +4382,16 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		long millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
 		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D , D T
 		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100 1159pm");
@@ -4588,8 +4403,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));
@@ -4631,8 +4447,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D T , D T
 		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100 1159pm");
@@ -4729,8 +4546,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update , D T
 		Analyzer.analyze("update 1 1/1/2100 1159pm");
@@ -4767,7 +4585,8 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(1));
 
@@ -4782,14 +4601,16 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D , D T
 		Analyzer.analyze("update 1 1/1/2100 2/1/2100 1159pm");
@@ -4801,8 +4622,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));
@@ -4912,9 +4734,9 @@ public class UpdateAnalyzerTest {
 package clc.ui;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Timer;
+//import java.util.Timer;
+//import java.util.Date;
 
 import clc.common.InvalidInputException;
 import clc.logic.Add;
@@ -4928,7 +4750,7 @@ import clc.logic.Help;
 import clc.logic.Import;
 import clc.logic.Mark;
 import clc.logic.Redo;
-import clc.logic.Remind;
+//import clc.logic.Remind;
 import clc.logic.Search;
 import clc.logic.Task;
 import clc.logic.Undo;
@@ -4968,17 +4790,17 @@ import static clc.common.Constants.TYPE_SEARCH;
 
 public class UserInterface {
 	private static String input;
-	private static Timer timer;
+	//private static Timer timer;
 	public UserInterface() {}
 
 	//method for Main
 	public void executeCommandsUntilExit() {
 		History.addNewVersion();
-		setTimerForReminder();
+		//setTimerForReminder();
 		GUI.launchAndGetInputAndExecute();
 	}
 
-	private static void setTimerForReminder() {
+	/*private static void setTimerForReminder() {
 		Remind rmd = new Remind();
 		ArrayList<String> reminderInfo = rmd.getToBeRemindedInfo();
 		ArrayList<Date> reminderTime = rmd.getToBeRemindedTime();
@@ -4988,10 +4810,10 @@ public class UserInterface {
 		for (int i = 0; i < reminderInfo.size(); i ++) {
 			timer.schedule(new Reminder(reminderInfo.get(i), reminderTaskId.get(i)), reminderTime.get(i));
 		}
-	}
+	}*/
 	
 	//three methods below are for GUI
-	protected static String setInputAndExecute(String line) {
+	public static String setInputAndExecute(String line) {
 		input = line;
 		return executeCommand();
 	}
@@ -5000,11 +4822,11 @@ public class UserInterface {
 		return MESSAGE_WELCOME;
 	}
 
-	protected static void markReminderTask(long taskId) {
+	/*protected static void markReminderTask(long taskId) {
 		Command command;
 		command = new Mark(taskId);
 		command.execute();
-	}
+	}*/
 
 	private static String executeCommand() {
 		addOverdueRecurringTask();
@@ -5048,7 +4870,7 @@ public class UserInterface {
 			
 			String feedback = command.execute();
 			
-			clearAndResetTimer();
+			//clearAndResetTimer();
 			
 			return feedback;
 		} catch (InvalidInputException iie) {
@@ -5216,13 +5038,13 @@ public class UserInterface {
 		return command;
 	}
 
-	private static void clearAndResetTimer() {
+	/*private static void clearAndResetTimer() {
 		if (timer != null) {
 			timer.cancel();
 			timer.purge();  
 			setTimerForReminder();
 		}
-	}
+	}*/
 }
 
 	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\UserInterface.java
