@@ -1,0 +1,15 @@
+Delete 
+Alternative command: remove/erase/del
+
+Before you delete a task or multiple tasks, you are required to display or search tasks first.
+
+If you want to delete a single task 
+--> Enter: delete [sequence no. of the task]
+
+--> e.g. delete 1
+========================================================================= 
+
+If you want to delete multiple tasks, simply delete their sequence numbers 
+--> Enter: delete [sequence no. of the task] [sequence no. of the task] ...
+
+--> e.g. delete 1 6 8
