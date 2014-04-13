@@ -105,14 +105,14 @@ public class Constants {
 	public static final String TYPE_DISPLAY_FLOATING_TASK = "floating tasks";
 	public static final String TYPE_DISPLAY_DEADLINE_TASK = "deadline tasks";
 	public static final String TYPE_DISPLAY_TIMED_TASK = "timed tasks";
-	
+	public static final String LOG_DISPLAY_STARTED = "DISPLAY Operating: Starting to fliter tasks";
 	// Search
 	public final static String MESSAGE_RESULTS_FOUND = "Found: ";
     public final static String MESSAGE_MATCHING_ENTRIES = "All entries containing: '%s'";
     public final static String MESSAGE_SEARCH_FEEDBACK_PLURAL = "Tasks containing '%s' have been displayed.";
     public final static String MESSAGE_SEARCH_FEEDBACK_SINGULAR = "The task containing '%s' has been displayed.";
     public final static String ERROR_TASK_NOT_FOUND = "Cannot find any task about '%s'.";
-    public static final String LOG_SEARCH_STARTED = "SEARCH Operating: Starting to sort events";
+    public static final String LOG_SEARCH_STARTED = "SEARCH Operating: Starting to sort tasks";
 
 	//Update
 	public static final String MESSAGE_TASK_NAME_UPDATED_SUCCESS = "Task name [%1$s] is updated to [%2$s] successfully.";
