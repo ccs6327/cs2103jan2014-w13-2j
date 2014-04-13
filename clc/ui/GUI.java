@@ -44,6 +44,7 @@ import static clc.common.Constants.TYPE_DISPLAY_SHORT;
 import static clc.common.Constants.TYPE_SHOW;
 import static clc.common.Constants.TYPE_LIST;
 import static clc.common.Constants.TYPE_HELP;
+import static clc.common.Constants.TYPE_SEARCH;
 
 public class GUI implements NativeKeyListener {
 	private JFrame frameClc;
@@ -87,7 +88,6 @@ public class GUI implements NativeKeyListener {
 		actionWhenEnterIsPressed();
 		initiateWindowListener();
 		centreWindow(frameClc); 
-		initiateKeyListener();
 	}
 
 	private void setUpJFrame() {
@@ -159,6 +159,7 @@ public class GUI implements NativeKeyListener {
 					}
 				}
 				initializeInputTextBox();
+				inputIndex = previousInput.size();
 			}
 
 			private boolean isCaseDisplayOrHelp() {
@@ -168,7 +169,8 @@ public class GUI implements NativeKeyListener {
 						|| command[0].equalsIgnoreCase(TYPE_DISPLAY_SHORT)
 						|| command[0].equalsIgnoreCase(TYPE_SHOW)
 						|| command[0].equalsIgnoreCase(TYPE_LIST)
-						|| command[0].equalsIgnoreCase(TYPE_HELP);
+						|| command[0].equalsIgnoreCase(TYPE_HELP)
+						|| command[0].equalsIgnoreCase(TYPE_SEARCH);
 			}
 
 			private void emptyDisplayBox() {
@@ -304,9 +306,6 @@ public class GUI implements NativeKeyListener {
 
 	private void traversePreviousInputIfPressedUpOrDown(KeyEvent e) { 
 		String cachedInput;
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			inputIndex = previousInput.size();
-		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP && inputIndex - 1 >= 0) {
 			cachedInput = previousInput.get(--inputIndex);
@@ -333,6 +332,7 @@ public class GUI implements NativeKeyListener {
 	private void clearInputTextBoxIfPressedEsc(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			initializeInputTextBox();
+			inputIndex = previousInput.size();
 		}
 	}
 
