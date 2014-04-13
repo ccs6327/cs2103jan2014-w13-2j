@@ -1,5 +1,6 @@
 package test;
 
+//@author A0105749Y
 /**
  * This is the overall test for the whole system
  * 
@@ -46,12 +47,26 @@ public class SystemTest {
 		// Test case 4: Undo
 		inputList.add("undo");
 		feedbackList.add("Last command has been undone.");
-			
+		
+		// Tast case 5: Redo
+		inputList.add("redo");
+		feedbackList.add("Last command has been redone.");
+		inputList.add("undo");
+		feedbackList.add("Last command has been undone.");
+		
+		
 		//Test case 6: Mark
 		inputList.add("mark 1");
+		
 		feedbackList.add("mark [buy ticket] as done successfully.");
 		
-		//Test case 7: Invalid Command 
+		//Test case 7: Unmark
+		inputList.add("unmark 1");
+		feedbackList.add("mark [buy ticket] as not done sucessfully");
+		
+		//Test case 8: 
+		
+		//Test case 9: Invalid Command 
 		inputList.add("unso");
 		feedbackList.add("Invalid command format: unso");
 	}
@@ -61,7 +76,7 @@ public class SystemTest {
 		for(int i = 0; i < inputList.size(); i++) {
 			actualFeedback = UserInterface.setInputAndExecute(inputList.get(i));
 			assertEquals(feedbackList.get(i), actualFeedback);
-			//System.out.println("Test case " + (i+1) + " passed!");	
+			System.out.println("Test case " + (i+1) + " passed!");	
 		}
 	}
 }
