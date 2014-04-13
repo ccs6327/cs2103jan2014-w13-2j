@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 
 import static clc.common.Constants.MESSAGE_TASK_NAME_UPDATED_SUCCESS; 
 import static clc.common.Constants.MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS;
+import static clc.common.Constants.MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS;
 import static clc.common.Constants.MESSAGE_TASK_TYPE_CHANGED;
 import static clc.common.Constants.MESSAGE_NO_TASK_TO_UPDATE;
 import static clc.common.Constants.MESSAGE_INEXISTANCE_SEQNO;
@@ -160,8 +161,7 @@ public class Update implements Command {
 				if (floatingTaskStartTime == null){
 					task.setEndTime(newEndTime);
 					updateTime = task.getEndTime();
-					task.setTaskType(TYPE_DEADLINE_TASK);
-					
+					task.setTaskType(TYPE_DEADLINE_TASK);	
 					
 				} else {
 					task.setEndTime(newEndTime);
@@ -241,7 +241,7 @@ public class Update implements Command {
 	private void appendTaskEndTimeUpdatedMessage(StringBuilder feedback,Task task, int seqNo){
 		String taskName = task.getTaskName();
 		String endTime = D_M_Y_DateFormatter.format(task.getEndTime().getTime());
-		feedback.append(String.format(MESSAGE_TASK_STARTTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
+		feedback.append(String.format(MESSAGE_TASK_ENDTIME_UPDATED_SUCCESS, taskName, endTime, seqNo));
 		feedback.append(NEWLINE);
 	}
     
