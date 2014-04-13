@@ -76,7 +76,6 @@ public class SystemTest {
 		for(int i = 0; i < inputList.size(); i++) {
 			actualFeedback = UserInterface.setInputAndExecute(inputList.get(i));
 			assertEquals(feedbackList.get(i), actualFeedback);
-			System.out.println("Test case " + (i+1) + " passed!");	
 		}
 	}
 }
