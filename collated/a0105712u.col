@@ -1,0 +1,1519 @@
+//@author: a0105712u
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+	 */
+
+	public static final int TYPE_TIMED_TASK = 0;
+	public static final int TYPE_DEADLINE_TASK = 1; 
+	public static final int TYPE_FLOATING_TASK = 2;
+	public static final int TYPE_UNSUPPORTED_TASK = 3;
+	public static final String TIMED_TASK_TO_STRING = "[%2$s - %3$s] %1$s";
+	public static final String DEADLINE_TASK_TO_STRING = "[by %2$s] %1$s";
+	public static final String FLOATING_TASK_TO_STRING = "%s";
+
+	public static final String TYPE_ADD = "add";
+	public static final String TYPE_CREATE = "create";
+	public static final String TYPE_DISPLAY = "display";
+	public static final String TYPE_DISPLAY_SHORT = "dis";
+	public static final String TYPE_SHOW = "show";
+	public static final String TYPE_LIST = "list";
+	public static final String TYPE_DELETE = "delete";
+	public static final String TYPE_DELETE_SHORT = "del";
+	public static final String TYPE_REMOVE = "remove";
+	public static final String TYPE_ERASE = "erase";
+	public static final String TYPE_CLEAR = "clear";
+	public static final String TYPE_EXIT = "exit";
+	public static final String TYPE_HELP = "help";
+	public static final String TYPE_MARK = "mark";
+	public static final String TYPE_MARK_SHORT = "mrk";
+	public static final String TYPE_UNMARK = "unmark";
+	public static final String TYPE_UNMARK_SHORT = "umrk";
+	public static final String TYPE_UNDO = "undo";
+	public static final String TYPE_REDO = "redo";
+	public static final String TYPE_UPDATE = "update";
+	public static final String TYPE_UPDATE_SHORT = "up";
+	public static final String TYPE_EDIT = "edit";
+	public static final String TYPE_IMPORT = "import";
+	public static final String TYPE_IMPORT_SHORT = "imp";
+	public static final String TYPE_EXPORT = "export";
+	public static final String TYPE_EXPORT_SHORT = "exp";
+	public static final String TYPE_SEARCH = "search";
+
+	public static final String EMPTY_STRING = "";
+	public static final String NEW_LINE = "\r\n";
+	
+	public static final String ADD_DATE_FORMAT = "EEE, d MMM yyyy h.mm a";
+	
+	public static final String MESSAGE_WELCOME = "Welcome to CLC.\nPress F1 for help";
+	public static final String MESSAGE_ENTER_COMMAND = "Command: ";
+	public static final String MESSAGE_INVALID_FORMAT = "Invalid command format: %1$s";
+	public static final String MESSAGE_TIMED_TASK_ADDED = "%1$s(%2$s - %3$s) is added.";
+	public static final String MESSAGE_DEADLINE_TASK_ADDED = "%1$s(ending at %2$s) is added.";
+	public static final String MESSAGE_FLOATING_TASK_ADDED = "%1$s is added.";
+	public static final String MESSAGE_TASK_DELETED = "[%1$s] is deleted.";
+	public static final String MESSAGE_OUT_OF_BOUND = "sequence number %d is out of bound";
+	public static final String MESSAGE_MARK_DONE = "mark [%1$s] as done successfully.";
+	public static final String MESSAGE_MARK_NOT_DONE = "mark [%1$s] as not done sucessfully";
+	public static final String MESSAGE_PREVIOUSLY_MARK_DONE = "[%1$s] is already marked as done";
+	public static final String MESSAGE_PREVIOUSLY_MARK_NOT_DONE = "[%1$s] is originally not mark as done";
+	public static final String MESSAGE_UNDONE = "Last command has been undone.";
+	public static final String MESSAGE_UNDONE_FAILED = "No previous version is available.";
+	public static final String MESSAGE_REDONE = "Last command has been redone.";
+	public static final String MESSAGE_REDONE_FAILED = "No next version is available.";
+	public static final String MESSAGE_CLEARED = "Task list is cleared. Tip: You may undo to recover.";
+	public static final String MESSAGE_UNHANDLED_COMMAND = "Unhandled command";
+	
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+	 */
+
+	// Export/Import
+	public static final String BACKSLASH = "\\";
+	public static final String MESSAGE_EXPORT = "Your calendar has been exported to %1$s";
+	public static final String MESSAGE_EXPORT_FAILED = "Failed to export to %1$s. Please check the destination path.";
+	public static final String MESSAGE_EXPORT_FAILED_CANNOT_WRITE = "Failed to export to %1$s since CLC cannot access the destination."
+			+ "\r\nPlease grant the access permission. You may have to provide administrator permission to do so.";
+	public static final String MESSAGE_EXPORT_FAILED_INVALID_PATH = "%1$s is not a valid path. Please revise the path.";
+	public static final String MESSAGE_IMPORT = "Your calendar has been imported from %1$s";
+	public static final String MESSAGE_IMPORT_NO_ACCESS = "Failed to import from %1$s. Please check the origin path.";
+	public static final String MESSAGE_IMPORT_FILE_CORRUPTED = "The data file is corrupted.";
+	
+	//Filename
+	public static final String OUTFILE = "metadata.clc";
+	public static final String CLC_EXPORT_DIRECTORY = "CLC Exported Files\\";
+	public static final String SEARCH_HELP_FILE = "searchHelp.clc";
+	public static final String IMPORT_EXPORT_HELP_FILE = "importExportHelp.clc";
+	public static final String UPDATE_HELP_FILE = "updateHelp.clc";
+	public static final String MARK_UNMARK_HELP_FILE = "markUnmarkHelp.clc";
+	public static final String DISPLAY_HELP_FILE = "displayHelp.clc";
+	public static final String DELETE_HELP_FILE = "deleteHelp.clc";
+	public static final String ADD_HELP_FILE = "addHelp.clc";
+	public static final String GENERAL_HELP_FILE = "generalHelp.clc";
+	public static final String DATE_HELP_FILE = "dateHelp.clc";
+	public static final String HOTKEY_HELP_FILE = "hotkeyHelp.clc";
+	public static final String LOG_FILE = "clc.log";
+	public static final String LOG_EXIT = "CLC exited";
+
+	// Storage
+	public static final int IS_DONE = 1;
+	public static final int IS_NOT_DONE = 0;
+	public static final int IS_REMINDER_NEEDED = 1;
+	public static final int IS_REMINDER_NOT_NEEDED = 0;
+	public static final String LOG_DATA_FILE_WRITTEN = "Database %1$s written";
+
+	public static ArrayList<String> DisplayOutput = new ArrayList<String>();
+	public static SimpleDateFormat D_M_Y_DateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h.mm a");
+	public static SimpleDateFormat D_M_Y_TimeFormatter = new SimpleDateFormat("h.mm a");
+	
+	public static final String LOG_DATA_FILE_CREATED = "Database %1$s created";
+	public static final String LOG_DATA_FILE_READ = "Database %1$s accessed";		
+	public static final String LOG_EXPORTED = "Exported to %1$s";
+    public static final String LOG_IMPORTED = "Imported from %1$s";
+    
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+	 */
+
+	// Main
+	public static final String CLC_LAUNCHED = "CLC launched.";
+	public static final String ALREADY_RUNNING = "Already running";
+	public static final String UNEXPECTED_ERROR = "Unexpected error";
+	public static final int PORT = 6327;
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\Constants.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\LogHelper.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * LogHelper.java
+ * 
+ * This is a helper class for other classes to log messages.
+ */
+package clc.common;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+import static clc.common.Constants.*;
+
+public class LogHelper {
+	
+	private static boolean isPrintedInConsole = true;
+	
+	public static void enablePrintInConsole() {
+		isPrintedInConsole = true;
+	}
+	
+	public static void disablePrintInConsole() {
+		isPrintedInConsole = false;
+	}
+	
+	public static void log(Level level, String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(level, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void info(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.INFO, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void all(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.ALL, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void config(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.CONFIG, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void fine(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.FINE, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void finer(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.FINER, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void finest(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.FINEST, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void off(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.OFF, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void severe(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.SEVERE, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void warning(String message) {
+		try {
+			FileHandler fileHandler = new FileHandler(LOG_FILE, true);
+			Logger logger = Logger.getLogger("log");
+			logger.setUseParentHandlers(isPrintedInConsole);
+			logger.addHandler(fileHandler);
+			SimpleFormatter formatter = new SimpleFormatter();  
+		    fileHandler.setFormatter(formatter);  
+		    StackTraceElement caller = new Throwable().getStackTrace()[1];
+			logger.logp(Level.WARNING, caller.getClassName(), caller.getMethodName(), message);
+			fileHandler.close();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\common\LogHelper.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+	 */
+
+public class Add implements Command{
+	private Task task;
+	private ArrayList<Task> internalMem;
+	
+	public Add() {
+		internalMem = Storage.getInternalMem();
+	}
+	
+	public Add(Task task) {
+		this.task = task;
+		internalMem = Storage.getInternalMem();
+	}
+
+	@Override
+	public String execute() {
+		
+		internalMem.add(task);
+		History.addNewVersion();
+		Storage.writeContentIntoFile();
+		
+		switch (task.getTaskType()) {
+		case TYPE_TIMED_TASK:
+			LogHelper.info(String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getStartTime()), formatDate(task.getEndTime())));
+			return String.format(MESSAGE_TIMED_TASK_ADDED, task.getTaskName(), formatDate(task.getStartTime()), formatDate(task.getEndTime()));
+			
+		case TYPE_DEADLINE_TASK:
+			LogHelper.info(String.format(MESSAGE_DEADLINE_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime())));
+			return String.format(MESSAGE_DEADLINE_TASK_ADDED, task.getTaskName(), formatDate(task.getEndTime()));
+			
+		case TYPE_FLOATING_TASK:
+			LogHelper.info(String.format(MESSAGE_FLOATING_TASK_ADDED, task.getTaskName()));
+			return String.format(MESSAGE_FLOATING_TASK_ADDED, task.getTaskName());
+			
+		default:
+			return MESSAGE_UNHANDLED_COMMAND;
+		}
+		
+	}
+	
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+	 */
+
+	private String formatDate(Calendar calendar) {
+		String date;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(ADD_DATE_FORMAT);
+		date = dateFormat.format(calendar.getTime());
+		return date;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Add.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\AddTest.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * AddTest.java
+ * 
+ * This is JUnit test cases for Add.
+ */
+package clc.logic;
+
+import static clc.common.Constants.*;
+import static org.junit.Assert.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.junit.Test;
+
+import clc.common.LogHelper;
+
+public class AddTest {
+
+	private static final String TEST_CASE_ALL_PASSED = "All test cases passed\r\n";
+	private static final String TEST_CASE_THREE_PASSED = "Test case 3 passed";
+	private static final String TEST_CASE_TWO_PASSED = "Test case 2 passed";
+	private static final String TEST_CASE_ONE_PASSED = "Test case 1 passed";
+	private static final long OFFSET = 600000;
+
+	@Test
+	public void test() {
+		
+		Calendar startTime = new GregorianCalendar();
+		startTime.setTimeInMillis(System.currentTimeMillis() + OFFSET);
+		Calendar endTime = new GregorianCalendar();
+		endTime.setTimeInMillis(System.currentTimeMillis() + OFFSET);
+		
+		// Test case 1: add a timed task	
+		Task timedTask = new Task(TIMED_TASK, startTime, endTime);
+		Add add1 = new Add(timedTask);
+		assertEquals(String.format(MESSAGE_TIMED_TASK_ADDED, timedTask.getTaskName(), formatDate(timedTask.getStartTime()), formatDate(timedTask.getEndTime())), add1.execute());
+		LogHelper.info(TEST_CASE_ONE_PASSED);
+		
+		// Test case 2: add a deadline task	
+		Task deadlineTask = new Task(DEADLINE_TASK, endTime);
+		Add add2 = new Add(deadlineTask);
+		assertEquals(String.format(MESSAGE_DEADLINE_TASK_ADDED, deadlineTask.getTaskName(), formatDate(deadlineTask.getEndTime())), add2.execute());
+		LogHelper.info(TEST_CASE_TWO_PASSED);
+		
+		// Test case 3: add a floating task	
+		Task floatingTask = new Task(FLOATING_TASK);
+		Add add3 = new Add(floatingTask);
+		assertEquals(String.format(MESSAGE_FLOATING_TASK_ADDED, floatingTask.getTaskName()), add3.execute());
+		LogHelper.info(TEST_CASE_THREE_PASSED);
+		
+		LogHelper.info(TEST_CASE_ALL_PASSED);
+		
+	}
+
+	private String formatDate(Calendar calendar) {
+		String date;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(ADD_DATE_FORMAT);
+		date = dateFormat.format(calendar.getTime());
+		return date;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\AddTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Clear.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Clear.java
+ * 
+ * This Clear class implements Command. Its instance executes clear command.
+ */
+package clc.logic;
+
+import static clc.common.Constants.*;
+
+import java.util.ArrayList;
+
+import clc.common.LogHelper;
+import clc.storage.Storage;
+import clc.storage.History;
+
+public class Clear implements Command {
+	private ArrayList<Task> internalMem;
+	private ArrayList<Integer> displayMem;
+	
+	public Clear() {
+		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
+	}
+	
+	@Override
+	public String execute() {
+		internalMem.clear();
+		displayMem.clear();
+		History.addNewVersion();
+		Storage.writeContentIntoFile();
+		LogHelper.info(MESSAGE_CLEARED);
+		return MESSAGE_CLEARED;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Clear.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Command.java
+	 */
+
+/*
+ * Command Line Calendar (CLC)
+ * Command.java
+ * 
+ * Command is the interface of all kinds of commands.
+ */
+package clc.logic;
+
+public interface Command {
+	
+	public String execute();
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Command.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Exit.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Exit.java
+ * 
+ * This Exit class implements Command. Its instance executes exit command.
+ */
+package clc.logic;
+
+import clc.common.LogHelper;
+import clc.storage.Storage;
+
+import static clc.common.Constants.LOG_EXIT;
+
+public class Exit implements Command {
+
+	@Override
+	public String execute() {
+		Storage.writeContentIntoFile();
+		LogHelper.info(LOG_EXIT);
+		System.exit(0);
+		return null;
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Exit.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Export.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Export.java
+ * 
+ * This Export class implements Command. Its instance executes export command.
+ */
+package clc.logic;
+
+import clc.storage.Storage;
+import static clc.common.Constants.BACKSLASH;
+import static clc.common.Constants.CLC_EXPORT_DIRECTORY;
+
+public class Export implements Command {
+	
+	private String inputPath;
+	private String actualPath;
+
+	public Export(String commandDetails) {
+		inputPath = formatPath(commandDetails);
+		actualPath = inputPath + CLC_EXPORT_DIRECTORY;
+	}
+
+	private String formatPath(String commandDetails) {
+		if (commandDetails.endsWith(BACKSLASH)) {
+			return commandDetails;
+		} else {
+			return commandDetails + BACKSLASH;
+		}
+	}
+
+	@Override
+	public String execute() {
+		return String.format(Storage.exportDataFile(actualPath), inputPath);
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Export.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Import.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Import.java
+ * 
+ * THis Import class implements Command. Its instance executes import command.
+ */
+package clc.logic;
+
+import clc.storage.Storage;
+import static clc.common.Constants.BACKSLASH;
+import static clc.common.Constants.CLC_EXPORT_DIRECTORY;
+
+public class Import implements Command {
+	
+	private String inputPath;
+	private String actualPath;
+
+	public Import(String commandDetails) {
+		inputPath = formatPath(commandDetails);
+		actualPath = inputPath + CLC_EXPORT_DIRECTORY;
+	}
+
+	private String formatPath(String commandDetails) {
+		if (commandDetails.endsWith(BACKSLASH)) {
+			return commandDetails;
+		} else {
+			return commandDetails + BACKSLASH;
+		}
+	}
+
+	@Override
+	public String execute() {
+		return String.format(Storage.importDataFile(actualPath), inputPath);
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Import.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Redo.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Redo.java
+ * 
+ * This Redo class implements Command. Its instance executes Redo command.
+ */
+package clc.logic;
+
+import static clc.common.Constants.*;
+
+import java.util.ArrayList;
+
+import clc.common.LogHelper;
+import clc.storage.Storage;
+import clc.storage.History;
+
+public class Redo implements Command {
+	private ArrayList<ArrayList<Task>> historyMem;
+	private int currentVersion;
+	
+	@Override
+	public String execute() {
+		
+		historyMem = History.getHistoryMem();
+		currentVersion = History.getCurrentVersion();
+		
+		try {
+			Storage.setInternalMem(historyMem.get(currentVersion + 1));
+			Storage.writeContentIntoFile();
+			currentVersion = History.increaseCurrentVersion();
+		} catch (Exception exception) {
+			LogHelper.info(MESSAGE_REDONE_FAILED);
+			return MESSAGE_REDONE_FAILED;
+		}
+		
+		LogHelper.info(MESSAGE_REDONE);
+		return MESSAGE_REDONE;
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Redo.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Task.java
+	 */
+
+	private String taskName;
+	private String taskToString;
+	private String taskTypeToString;
+	private long taskId;
+	private Calendar startTime;
+	private Calendar endTime;
+	private int taskType;
+	private boolean isDone;
+	private boolean isReminderNeeded; 
+	private int numberOfRecurring;
+	private String recurringPeriod;
+	private int intervalToBeReminded;
+
+	public Task() {
+
+	}
+
+	public Task(Task task) {
+		taskName = task.getTaskName();
+		taskTypeToString = task.taskTypeToString();
+		taskId = Calendar.getInstance().getTimeInMillis();
+		if (task.getStartTime() != null) {
+			startTime = (Calendar) task.getStartTime().clone();
+		} else {
+			startTime = null;
+		}
+		if (task.getEndTime() != null) {
+			endTime = (Calendar) task.getEndTime().clone();
+		} else {
+			endTime = null;
+		}
+		taskType = task.getTaskType();
+		isDone = false;
+		isReminderNeeded = task.getIsReminderNeeded();
+		numberOfRecurring = task.getNumberOfRecurring();
+		recurringPeriod = task.getRecurringPeriod();
+	}
+
+	public Task(String _taskName, Calendar _startTime, Calendar _endTime) {
+		taskName = _taskName;
+		taskId = setTaskId();
+		startTime = _startTime;
+		endTime = _endTime;
+		taskType = TYPE_TIMED_TASK;
+		isDone = false;
+		setTaskId();
+	}
+
+	public Task(String _taskName, Calendar _endTime) {
+		taskName = _taskName;
+		taskId = setTaskId();
+		startTime = null;
+		endTime = _endTime;
+		taskType = TYPE_DEADLINE_TASK;
+		isDone = false;
+		setTaskId();
+	}
+
+	public Task(String _taskName) {
+		taskName = _taskName;
+		taskId = setTaskId();
+		startTime = null;
+		endTime = null;
+		taskType = TYPE_FLOATING_TASK;
+		isDone = false;
+		setTaskId();
+	}
+
+	public Task(String _taskName, Long _taskId, int _taskType,
+			Calendar _startTime, Calendar _endTime, boolean _isDone, 
+			boolean _isReminderNeeded, int _numberOfRecurring, int _intervalToBeReminded, String _recurringPeriod) {
+		taskName = _taskName;
+		taskId = _taskId;
+		taskType = _taskType;
+		startTime = _startTime;
+		endTime = _endTime;
+		isDone = _isDone;
+		isReminderNeeded = _isReminderNeeded;
+		intervalToBeReminded = _intervalToBeReminded;
+		numberOfRecurring = _numberOfRecurring;
+		recurringPeriod = _recurringPeriod;
+	}
+
+	//accessor
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public long getTaskId() {
+		return taskId;
+	}
+
+	public int getTaskType() {
+		return taskType;
+	}
+
+	public Calendar getStartTime() {
+		return startTime;
+	}
+
+	public Calendar getEndTime() {
+		return endTime;
+	}
+
+	public boolean getIsDone() {
+		return isDone;
+	}
+
+	public boolean getIsReminderNeeded() {
+		return isReminderNeeded;
+	}
+
+	public int getReminderInterval() {
+		return intervalToBeReminded;
+	}
+
+	public int getNumberOfRecurring() {
+		return numberOfRecurring;
+	}
+
+	public String getRecurringPeriod() {
+		return recurringPeriod;
+	}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Task.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Task.java
+	 */
+
+	//mutator 
+	public void setTaskName(String newTaskName) {
+		taskName = newTaskName;
+	}
+
+	public long setTaskId() {
+		return System.currentTimeMillis();
+	}
+
+	public void setTaskType(int _taskType){
+		taskType = _taskType;
+	}
+
+	public void setStartTime(Calendar startTime) {
+		this.startTime = startTime;
+	}
+
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
+	}
+
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
+	}
+
+	public void setReminder(int _intervalToBeReminded) {
+		isReminderNeeded = true;
+		intervalToBeReminded = _intervalToBeReminded;
+	}
+
+	public void setNumberOfRecurring(int nRecurring) {
+		numberOfRecurring = nRecurring;
+	}
+
+	public void setRecurringPeriod(String recurringPeriod) {
+		this.recurringPeriod = recurringPeriod;
+	}
+
+	// Check whether the task has both start time and end time
+	public boolean isTimedTask() {
+		return getStartTime() != null && getEndTime() != null;
+	}
+	// Check whether the task has only the end date
+	public boolean isDeadlineTask() {
+		return getStartTime() == null && getEndTime() != null;
+	}
+	// Check whether the event has neither start date nor end date
+	public boolean isFloatingTask() {
+		return getStartTime() == null && getEndTime() == null;
+	}
+
+	//public method
+	public boolean markDone() {
+		if (!isDone) {
+			isDone = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean markUndone() {
+		if (isDone) {
+			isDone = false;
+			return true;
+		}
+		return false;
+	}
+
+	public void postponeStartAndEndTime(int typeOfCalendar) {
+		if (startTime != null) {
+			startTime.add(typeOfCalendar, 1);
+			endTime.add(typeOfCalendar, 1);
+		} else if (endTime != null) {
+			endTime.add(typeOfCalendar, 1);
+		}
+	}
+
+	public Task getNewCopy() {
+		Task task = new Task();
+
+		task.setTaskName(taskName);
+		task.setTaskToString(taskToString);
+		task.setTaskTypeToString(taskTypeToString);
+		task.setTaskId(taskId);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
+		task.setTaskType(taskType);
+		task.setIsDone(isDone);
+		task.setIsDone(isReminderNeeded); 
+		task.setNumberOfRecurring(numberOfRecurring);
+		task.setRecurringPeriod(recurringPeriod);
+
+		return task;
+	}
+
+	private void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	private void setTaskTypeToString(String taskTypeToString) {
+		this.taskTypeToString = taskTypeToString;
+
+	}
+
+	private void setTaskToString(String taskToString) {
+		this.taskToString = taskToString;
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Task.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Undo.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * Undo.java
+ * 
+ * This Undo class implements Command. Its instance executes undo command.
+ */
+package clc.logic;
+
+import static clc.common.Constants.*;
+
+import java.util.ArrayList;
+
+import clc.common.LogHelper;
+import clc.storage.History;
+import clc.storage.Storage;
+
+
+
+public class Undo implements Command {
+	private ArrayList<ArrayList<Task>> historyMem;
+	private ArrayList<Integer> displayMem;
+	private int currentVersion;
+	
+	@Override
+	public String execute() {
+		
+		historyMem = History.getHistoryMem();
+		displayMem = History.getDisplayMem();
+		currentVersion = History.getCurrentVersion();
+		
+		try {
+			Storage.setInternalMem(historyMem.get(currentVersion - 1));
+			Storage.writeContentIntoFile();
+			Storage.setDisplayMem(displayMem);
+			currentVersion = History.decreaseCurrentVersion();
+		} catch (Exception exception) {
+			LogHelper.info(MESSAGE_UNDONE_FAILED);
+			return MESSAGE_UNDONE_FAILED;
+		}
+		
+		LogHelper.info(MESSAGE_UNDONE);
+		return MESSAGE_UNDONE;
+	}
+
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\logic\Undo.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\History.java
+	 */
+
+/**
+ * Command Line Calendar (CLC)
+ * History.java
+ * 
+ * This class is part of Storage component.
+ * It handles the history information like database in previous versions.
+ */
+package clc.storage;
+
+import java.util.ArrayList;
+import java.util.Stack;
+
+import clc.logic.Task;
+import clc.logic.Command;
+
+public class History {
+	//Variables to store the history data
+	private static Stack<Command> operationHistory = new Stack<Command>();
+	private static Stack<Task> taskHistory = new Stack<Task>();
+	private static Stack<Task> updateHistory = new Stack<Task>(); //for update operation to store updated task
+	private static ArrayList<ArrayList<Task>> historyMem = new ArrayList<ArrayList<Task>>();
+	private static ArrayList<Integer> displayMem = new ArrayList<Integer>();
+	private static int currentVersion = -1;
+	
+	private static void addOperationHistory(Command operation){
+		operationHistory.push(operation);
+	}
+	
+	private static void addTaskHistory(Task task){
+		taskHistory.push(task);
+	}
+	
+	public static void addUpdateHistory(Task updatedTask) {
+		updateHistory.push(updatedTask);
+	}
+	
+	public static Command popOperationHistory() {
+		return operationHistory.pop();
+	}
+	
+	public static Task popTasksHistory() {
+		return taskHistory.pop();
+	}
+	
+	public static Task popUpdateTasksHistory() {
+		return updateHistory.pop();
+	}
+	
+	public static boolean isEmptyHistory(){
+		return operationHistory.isEmpty(); 
+	}
+	
+	public static void addNewVersion() {
+		currentVersion++;
+		ArrayList<Task> tempMem = new ArrayList<Task>();
+		for (Task task : Storage.getInternalMem()) {
+			tempMem.add(task.getNewCopy());
+		}
+		for (int i = historyMem.size() - 1; i >= currentVersion ; i--) {
+			historyMem.remove(i);
+		}
+		historyMem.add(tempMem);
+	}
+	
+	public static ArrayList<ArrayList<Task>> getHistoryMem() {
+		return historyMem;
+	}
+
+	public static int getCurrentVersion() {
+		return currentVersion;
+	}
+	
+	public static int increaseCurrentVersion() {
+		currentVersion += 1;
+		return currentVersion;
+	}
+	
+	public static int decreaseCurrentVersion() {
+		currentVersion -= 1;
+		return currentVersion;
+	}
+
+	public static ArrayList<Integer> getDisplayMem() {
+		return displayMem;
+	}
+
+	public static void setDisplayMem() {
+		displayMem.clear();
+		displayMem.addAll(Storage.getDisplayMem());
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\History.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\Storage.java
+	 */
+
+	/**
+	 * Read from the data file and store them into the internal memory
+	 * @param path The location of the file to be read
+	 */
+	
+	public static void readContentFromFile(String path) {
+		File fileIn = new File(path);
+
+		try {
+
+			BufferedReader bf = new BufferedReader(new FileReader(fileIn));
+			
+			String contentToRead = null;
+			String taskName;
+			String recurringPeriod;
+			int taskType;
+			int intervalToBeReminded = 0;
+			int numberOfRecurring;
+			Long taskId;
+			Calendar startTime = null;
+			Calendar endTime = null;
+			boolean isDone;
+			boolean isReminderNeeded;
+
+			while((contentToRead = bf.readLine()) != null) {
+				Task task;
+				taskName = contentToRead;
+				taskId = Long.parseLong(bf.readLine());
+				taskType = Integer.parseInt(bf.readLine());
+				//start time and end time
+				switch (taskType) {
+				case TYPE_TIMED_TASK:
+					startTime = new GregorianCalendar();
+					startTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					endTime = new GregorianCalendar();
+					endTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					break;
+				case TYPE_DEADLINE_TASK:
+					startTime = null;
+					endTime = new GregorianCalendar();
+					endTime.setTimeInMillis(Long.parseLong(bf.readLine()));
+					break;
+				case TYPE_FLOATING_TASK:
+					startTime = null;
+					endTime = null;
+					break;
+				}
+				// is done
+				if (Integer.parseInt(bf.readLine()) == IS_DONE) {
+					isDone = true;
+				} else {
+					isDone = false;
+				}
+				// is reminder needed
+				if (Integer.parseInt(bf.readLine()) == IS_REMINDER_NEEDED) {
+					isReminderNeeded = true;
+				} else {
+					isReminderNeeded = false;
+				}
+				intervalToBeReminded = Integer.parseInt(bf.readLine());
+				numberOfRecurring = Integer.parseInt(bf.readLine());
+				recurringPeriod = bf.readLine();
+
+				task = new Task(taskName, taskId, taskType, startTime, endTime, isDone
+								, isReminderNeeded, intervalToBeReminded, numberOfRecurring, recurringPeriod);
+				if (hasNoIdenticalTask(task)) {
+					internalMem.add(task);
+				}
+			}
+
+			bf.close();
+			LogHelper.info(String.format(LOG_DATA_FILE_READ, path));
+		} catch (IOException e) {
+			LogHelper.severe(e.getMessage());
+		}
+
+	}
+
+	private static boolean hasNoIdenticalTask(Task task) {
+		for (Task taskInInternalMem : internalMem) {
+			if (taskInInternalMem.getTaskId() == task.getTaskId()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Write contents in the list into the data file
+	 */
+	public static void writeContentIntoFile() {
+		try {
+
+			Formatter formatter = new Formatter(OUTFILE);
+			for (Task task : internalMem) {
+				// task name
+				formatter.format(task.getTaskName());
+				formatter.format(NEW_LINE);
+				// task id
+				formatter.format(String.valueOf(task.getTaskId()));
+				formatter.format(NEW_LINE);
+				// task type
+				formatter.format(String.valueOf(task.getTaskType()));
+				formatter.format(NEW_LINE);
+				// start time and end time
+				switch (task.getTaskType()) {
+				case TYPE_TIMED_TASK:
+					formatter.format(String.valueOf(task.getStartTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					break;
+				case TYPE_DEADLINE_TASK:
+					formatter.format(String.valueOf(task.getEndTime().getTimeInMillis()));
+					formatter.format(NEW_LINE);
+					break;
+				case TYPE_FLOATING_TASK:
+					break;
+				}
+				//is done
+				if (task.getIsDone()) {
+					formatter.format(String.valueOf(IS_DONE));
+				} else {
+					formatter.format(String.valueOf(IS_NOT_DONE));
+				}
+				formatter.format(NEW_LINE);
+				// is reminder needed
+				if (task.getIsReminderNeeded()) {
+					formatter.format(String.valueOf(IS_REMINDER_NEEDED));
+				} else {
+					formatter.format(String.valueOf(IS_REMINDER_NOT_NEEDED));
+				}
+				formatter.format(NEW_LINE);
+				// interval to be reminded
+				formatter.format(String.valueOf(task.getReminderInterval()));
+				formatter.format(NEW_LINE);
+				// number of recurring
+				formatter.format(String.valueOf(task.getNumberOfRecurring()));
+				formatter.format(NEW_LINE);
+				// recurring period
+				formatter.format(String.valueOf(task.getRecurringPeriod()));
+				formatter.format(NEW_LINE);
+			}
+			formatter.flush();
+			formatter.close();
+			LogHelper.info(String.format(LOG_DATA_FILE_WRITTEN, OUTFILE));
+		} catch (Exception e) {
+			LogHelper.severe(e.getMessage());
+		}
+	}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\Storage.java
+	 */
+
+	public static ArrayList<Task> getInternalMem() {
+		return internalMem;
+	}
+
+	public static ArrayList<Integer> getDisplayMem() {
+		return displayMem;
+	}
+
+	public static void setInternalMem(ArrayList<Task> taskList) {
+		internalMem.clear();
+		internalMem.addAll(taskList);
+	}
+
+	public static void setDisplayMem(ArrayList<Integer> taskList) {
+		displayMem.clear();
+		displayMem.addAll(taskList);
+	}
+	
+	/** 
+	 * Export the database to the path which User entered
+	 * @param path The desired path of exported files
+	 * @return Feedback message
+	 */
+	public static String exportDataFile(String path) {
+		try {
+			copyFileToTarget(path);
+		} catch (NullPointerException e) {
+			LogHelper.warning(e.getMessage());
+			return MESSAGE_EXPORT_FAILED;
+		} catch (NoSuchFileException e) {
+			LogHelper.warning(e.getMessage());
+			return MESSAGE_EXPORT_FAILED_CANNOT_WRITE;
+		} catch (InvalidPathException e) {
+			LogHelper.warning(e.getMessage());
+			return MESSAGE_EXPORT_FAILED_INVALID_PATH;
+		} catch (IOException e) {
+			LogHelper.warning(e.getMessage());
+			return MESSAGE_EXPORT_FAILED;
+		}
+		return MESSAGE_EXPORT;
+	}
+
+	private static void copyFileToTarget(String path) throws IOException {
+		File destination = new File(path + OUTFILE);
+		File destinationDirectory = new File(path);
+		Files.createDirectories(destinationDirectory.toPath());
+		Files.copy(dataFile.toPath(), destination.toPath(), REPLACE_EXISTING);
+		LogHelper.info(String.format(LOG_EXPORTED, destination.getPath()));
+	}
+
+	/**
+	 * Import the database from the path which User entered
+	 * @param path The desired path of imported files
+	 * @return Feedback messages
+	 */
+	public static String importDataFile(String path) {
+		File origin = new File(path + OUTFILE);
+		try {
+			Files.copy(origin.toPath(), dataFile.toPath(), REPLACE_EXISTING);
+			History.addNewVersion();
+		} catch (Exception e) {
+			LogHelper.warning(e.getMessage());
+			return MESSAGE_IMPORT_NO_ACCESS;
+		} 
+		internalMem.clear();
+		readContentFromFile(OUTFILE);
+		LogHelper.info(String.format(LOG_IMPORTED, path));
+		return MESSAGE_IMPORT;
+	}
+}
+
+
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\StorageTest.java
+	 */
+
+package clc.storage;
+
+import static org.junit.Assert.*;
+import static clc.common.Constants.*;
+
+import org.junit.Test;
+
+import clc.common.LogHelper;
+
+public class StorageTest {
+	
+	private static final String TESTING_IMPORT_DATA_FILE = "Testing importDataFile";
+	private static final String TEST_CASE_ALL_PASSED = "All test cases passed\r\n";
+	private static final String TEST_CASE_SIX_PASSED = "Test case 6 passed";
+	private static final String TEST_CASE_FIVE_PASSED = "Test case 5 passed";
+	private static final String TEST_CASE_FOUR_PASSED = "Test case 4 passed";
+	private static final String TEST_CASE_THREE_PASSED = "Test case 3 passed";
+	private static final String TEST_CASE_TWO_PASSED = "Test case 2 passed";
+	private static final String TEST_CASE_ONE_PASSED = "Test case 1 passed";
+	private static final String TESTING_EXPORT_DATA_FILE = "Testing exportDataFile";
+	private static final String PATH_INVALID = "This is an invalid path ?%!~";
+	private static final String PATH_ROOT = "\\" + CLC_EXPORT_DIRECTORY;
+	private static final String PATH_ROOT_C = "C:\\" + CLC_EXPORT_DIRECTORY;
+	private static final String PATH_WORKSPACE = "..\\" + CLC_EXPORT_DIRECTORY;
+	private static final String PATH_NESTED_DIRECTORIES = "C:\\CLC\\Unit Testing\\ + CLC_EXPORT_DIRECTORY";
+			
+	@Test
+	public void testExportDataFile() {
+		
+		Storage.initializeDataFile();
+		
+		LogHelper.info(TESTING_EXPORT_DATA_FILE);
+		
+		// Test case 1: path is null
+		assertEquals(MESSAGE_EXPORT_FAILED, Storage.exportDataFile(null));
+		LogHelper.info(TEST_CASE_ONE_PASSED);
+		
+		// Test case 2: path is invalid
+		assertEquals(MESSAGE_EXPORT_FAILED_INVALID_PATH, Storage.exportDataFile(PATH_INVALID));
+		LogHelper.info(TEST_CASE_TWO_PASSED);
+		
+		// Test case 3: path is the root of workspace
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_ROOT));
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_ROOT));
+		LogHelper.info(TEST_CASE_THREE_PASSED);
+		
+		// Test case 4: path is other root
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_ROOT_C));
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_ROOT_C));
+		LogHelper.info(TEST_CASE_FOUR_PASSED);
+		
+		// Test case 5: path is the workspace
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_WORKSPACE));
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_WORKSPACE));
+		LogHelper.info(TEST_CASE_FIVE_PASSED);
+		
+		// Test case 6: path is in general
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_NESTED_DIRECTORIES));
+		assertEquals(MESSAGE_EXPORT, Storage.exportDataFile(PATH_NESTED_DIRECTORIES));
+		LogHelper.info(TEST_CASE_SIX_PASSED);
+		
+		LogHelper.info(TEST_CASE_ALL_PASSED);
+	}
+	
+	@Test
+	public void testImportDataFile() {
+		
+		LogHelper.info(TESTING_IMPORT_DATA_FILE);
+		
+		// Test case 1: path is null
+		assertEquals(MESSAGE_IMPORT_NO_ACCESS, Storage.importDataFile(null));
+		LogHelper.info(TEST_CASE_ONE_PASSED);
+		
+		// Test case 2: path is invalid
+		assertEquals(MESSAGE_IMPORT_NO_ACCESS, Storage.importDataFile(PATH_INVALID));
+		LogHelper.info(TEST_CASE_TWO_PASSED);
+		
+		// Test case 3: path is the root of workspace
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_ROOT));
+		LogHelper.info(TEST_CASE_THREE_PASSED);
+		
+		// Test case 4: path is other root
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_ROOT_C));
+		LogHelper.info(TEST_CASE_FOUR_PASSED);
+		
+		// Test case 5: path is the workspace
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_WORKSPACE));
+		LogHelper.info(TEST_CASE_FIVE_PASSED);
+		
+		// Test case 6: path is in general
+		assertEquals(MESSAGE_IMPORT, Storage.importDataFile(PATH_NESTED_DIRECTORIES));
+		LogHelper.info(TEST_CASE_SIX_PASSED);
+		
+		LogHelper.info(TEST_CASE_ALL_PASSED);
+	}
+}
+
+	// End of segment: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\storage\StorageTest.java
+
+
+
+
+
