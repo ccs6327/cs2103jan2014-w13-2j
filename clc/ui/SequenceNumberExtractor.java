@@ -38,7 +38,7 @@ public class SequenceNumberExtractor extends Analyzer{
 			String currWord = sc.next();
 			if (isNumeric(currWord)) {
 				int seqNo = Integer.parseInt(currWord);
-				if (!taskSeqNo.contains(seqNo)) { //avoid duplicate
+				if (!taskSeqNo.contains(seqNo)) { //avoid duplication
 					taskSeqNo.add(seqNo);
 				}
 				LogHelper.info("'" + currWord + "'" + " is numeric");

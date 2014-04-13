@@ -95,9 +95,11 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void setInfoIfQuotationMarkAtTheBeginningOrEnding(int startQuotationIndex, int endQuotationIndex) {
 		if (isQuotationMarkAtTheBeginning(startQuotationIndex)){
-			infoToBeProcessed = commandDetails.substring(endQuotationIndex + 1, commandDetails.length()).split(SPACE);
+			String unquotedString = commandDetails.substring(endQuotationIndex + 1, commandDetails.length());
+			infoToBeProcessed = unquotedString.split(SPACE);
 		} else if (isQuotationMarkAtTheEnding(endQuotationIndex)) {
-			infoToBeProcessed = commandDetails.substring(0, startQuotationIndex).split(SPACE);
+			String unquotedString = commandDetails.substring(0, startQuotationIndex);
+			infoToBeProcessed = unquotedString.split(SPACE);
 		} else { //quoted in the middle
 			infoToBeProcessed = commandDetails.split(SPACE);
 			isCaseQuotedTaskName = false;

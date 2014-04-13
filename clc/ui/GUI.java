@@ -1,4 +1,4 @@
-//@author A0112089J
+//@author A0112089J generated
 
 package clc.ui;
 
@@ -89,7 +89,7 @@ public class GUI implements NativeKeyListener {
 		initiateWindowListener();
 		centreWindow(frameClc); 
 	}
-
+	
 	private void setUpJFrame() {
 		frameClc = new JFrame();
 		frameClc.setName("frame");
@@ -126,7 +126,8 @@ public class GUI implements NativeKeyListener {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		frameClc.getContentPane().add(scrollPane);
 	}
-
+	
+	//@author A0112089J
 	private void focusOnInputTextBox() {
 		frameClc.addWindowFocusListener(new WindowAdapter() {
 			public void windowGainedFocus(WindowEvent e) {
