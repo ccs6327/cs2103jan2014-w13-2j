@@ -48,8 +48,8 @@ public class Update implements Command {
 	public Update(int seqNo, String newTaskName) {
 		this.seqNo = seqNo;
 		this.newTaskName = newTaskName;
-		displayMem = Storage.getDisplayMem();
 		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
 	}
 	public Update(int seqNo, int caseCalendarProvided, ArrayList<GregorianCalendar> time){
 		this.seqNo = seqNo;
@@ -57,8 +57,8 @@ public class Update implements Command {
 		this.time = time;
 		newStartTime = time.get(0);
 		newEndTime = time.get(1);
-		displayMem = Storage.getDisplayMem();
 		internalMem = Storage.getInternalMem();
+		displayMem = Storage.getDisplayMem();
 	}
 	
 	@Override
