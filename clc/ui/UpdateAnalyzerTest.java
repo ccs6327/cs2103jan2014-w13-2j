@@ -60,9 +60,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//as milliseconds difference is minor for our software, we compare with toString() for current time
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		long millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		
 
 		//case update , D T
@@ -120,8 +120,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update T , D T
 		Analyzer.analyze("update 1 1159pm , 1/1/2100 1159pm");
@@ -133,8 +134,8 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(1));
 
@@ -148,8 +149,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		assertEquals(null, time.get(1));
 
 		//case update D , T
@@ -162,8 +164,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
@@ -181,15 +184,16 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		long millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
 		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D , D T
 		Analyzer.analyze("update 1 1/1/2100 , 2/1/2100 1159pm");
@@ -201,8 +205,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));
@@ -244,8 +249,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D T , D T
 		Analyzer.analyze("update 1 1/1/2100 1159pm , 2/1/2100 1159pm");
@@ -342,8 +348,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update , D T
 		Analyzer.analyze("update 1 1/1/2100 1159pm");
@@ -380,7 +387,8 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.HOUR_OF_DAY, 23);
 		gc.set(Calendar.MINUTE, 59);
 		gc.set(Calendar.SECOND, 0);
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		gc.set(Calendar.MILLISECOND, 0);
+		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(2100, 0, 1, 23, 59);
 		assertEquals(gc, time.get(1));
 
@@ -395,14 +403,16 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		gc = new GregorianCalendar();
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 2);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(1).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(1).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 
 		//case update D , D T
 		Analyzer.analyze("update 1 1/1/2100 2/1/2100 1159pm");
@@ -414,8 +424,9 @@ public class UpdateAnalyzerTest {
 		gc.set(Calendar.YEAR, 2100);
 		gc.set(Calendar.MONTH, 0);
 		gc.set(Calendar.DATE, 1);
-		//might have difference in milliseconds that causes fail
-		assertEquals(gc.getTime().toString(), time.get(0).getTime().toString());
+		//might have difference in milliseconds
+		millisecondsDifference = gc.getTimeInMillis() - time.get(0).getTimeInMillis();
+		assertTrue(millisecondsDifference < 500);
 		time = UpdateAnalyzer.getCalendar();
 		gc = new GregorianCalendar(2100, 0, 2, 23, 59);
 		assertEquals(gc, time.get(1));

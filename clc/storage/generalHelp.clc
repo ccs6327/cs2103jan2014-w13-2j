@@ -11,7 +11,7 @@ DISPLAY/SHOW/LIST         - display what you have added to the task list
 *MARK/UNMARK              - mark tasks as done or undone (originally mark as undone)
 UPDATE/EDIT                     - update the task name or calendar information 
 SEARCH                              - search tasks with certain words in the task name
-UNDO/REDO                      - redo or undo the operation you have recently executed
+UNDO/REDO                      - undo or redo the operation you have recently executed
 IMPORT/EXPORT               - export a backup file or import from other device or folder
 CLEAR                                 - delete all the tasks in the task list
 EXIT                                     - close the CLC to-do manager

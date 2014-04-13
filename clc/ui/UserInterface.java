@@ -82,7 +82,7 @@ public class UserInterface {
 	}
 	
 	//three methods below are for GUI
-	protected static String setInputAndExecute(String line) {
+	public static String setInputAndExecute(String line) {
 		input = line;
 		return executeCommand();
 	}

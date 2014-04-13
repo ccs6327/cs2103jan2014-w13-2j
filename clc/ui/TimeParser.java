@@ -100,6 +100,8 @@ public class TimeParser extends Analyzer {
 		endCalendar = new GregorianCalendar();
 		startCalendarIndex = -1;
 		endCalendarIndex = -1;
+		isRecurringEveryWeek = false;
+		isRecurringEveryday = false;
 		LogHelper.info("TimeParser variables initialized");
 	}
 
