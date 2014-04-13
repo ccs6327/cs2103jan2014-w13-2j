@@ -77,7 +77,7 @@ public class Display implements Command {
 					displayTimedTasks();
 					break;
 				default:	
-					LogHelper.warning("user inputs invild command details for display function");
+					LogHelper.warning("User inputs invalid command details for display function");
 					throw new InvalidInputException(String.format(MESSAGE_INVALID_FORMAT, commandDetails));
 				    //feedback.append(String.format(MESSAGE_INVALID_FORMAT, commandDetails)); 
 				}
