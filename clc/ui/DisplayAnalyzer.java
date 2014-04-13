@@ -276,8 +276,10 @@ public class DisplayAnalyzer extends TimeParser{
 		int deductValue = Calendar.MONDAY - dayOfWeek;
 		startCalendar = new GregorianCalendar(year, month, date + deductValue);
 		endCalendar = new GregorianCalendar(year, month, date);
-		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
 		endCalendar.add(Calendar.DATE, addValue);
+		System.out.println(startCalendar.getTime().toString());
+		System.out.println(endCalendar.getTime().toString());
 		LogHelper.info("Set to display this week's tasks");
 	}
 

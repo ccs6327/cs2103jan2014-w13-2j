@@ -132,7 +132,7 @@ public class DisplayAnalyzerTest {
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
@@ -688,12 +688,12 @@ public class DisplayAnalyzerTest {
 
 		
 		//display calendar in a specific period of time with keyword Monday to Sunday
-		Analyzer.analyze("display from 12am monday to 1159pm next sunday");
+		Analyzer.analyze("display from 12am next monday to 1159pm next sunday");
 
 		DisplayAnalyzer.analyze();
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 0);
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 23, 59);
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
