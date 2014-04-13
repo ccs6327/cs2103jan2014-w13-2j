@@ -1,5 +1,6 @@
 package test;
 
+//@author A0105749Y
 /**
  * This is the overall test for the whole system
  * 
@@ -37,7 +38,7 @@ public class SystemTest {
 		internalMem.add(new Task("buy ticket", date));
 		displayMem.add(internalMem.size());
 		inputList.add("update 1 , 03/04");
-		feedbackList.add("Task No.1 [buy ticket] end time is updated to [Thu, 3 Apr 2014 2.00 PM] successfully.\n\n");
+		feedbackList.add("Task No.1 [buy ticket] end  time is updated to [Thu, 3 Apr 2014 2.00 PM] successfully.\n");
 		
 		// Test case 3: Delete 
 		inputList.add("delete 1");
@@ -46,14 +47,28 @@ public class SystemTest {
 		// Test case 4: Undo
 		inputList.add("undo");
 		feedbackList.add("Last command has been undone.");
-			
+		
+		// Tast case 5: Redo
+		inputList.add("redo");
+		feedbackList.add("Last command has been redone.");
+		inputList.add("undo");
+		feedbackList.add("Last command has been undone.");
+		
+		
 		//Test case 6: Mark
 		inputList.add("mark 1");
-		feedbackList.add("mark [buy ticket] as done sucessfuly.");
 		
-		//Test case 7: Invalid Command 
+		feedbackList.add("mark [buy ticket] as done successfully.");
+		
+		//Test case 7: Unmark
+		inputList.add("unmark 1");
+		feedbackList.add("mark [buy ticket] as not done sucessfully");
+		
+		//Test case 8: 
+		
+		//Test case 9: Invalid Command 
 		inputList.add("unso");
-		feedbackList.add("Invalid command format");
+		feedbackList.add("Invalid command format: unso");
 	}
 	
 	@Test
