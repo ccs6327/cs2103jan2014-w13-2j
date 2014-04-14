@@ -89,10 +89,11 @@ public class UpdateAnalyzer extends TimeParser {
 
 	private static void setCalendarInfoForUpdate() throws InvalidInputException {
 		if (commandDetails.contains(COMMA)) {
+			tempStartCalendar = null;
 			int indexOfComma = findIndexOfComma();
+			
 			analyzeUpdateStartTime(indexOfComma);
 			analyzeUpdateEndTime(indexOfComma);
-
 			//comma case parse two string separately 
 			//tempStartCalendar is required to store the startCalendar 
 			startCalendar = tempStartCalendar;
