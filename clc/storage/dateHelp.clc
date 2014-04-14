@@ -1,0 +1,57 @@
+Date and time format
+
+Uppercase and lowercase are supported.
+
+All the keywords below are supported:
+today
+tdy
+tomorrow
+tmr
+monday
+mon
+tuesday
+tue
+wednesday
+wed
+thursday
+thu
+friday
+fri
+saturday
+sat
+sunday
+sun
+=========================================================================
+
+All the date formats below are supported:
+1/1
+1/1/14
+1/1/2014
+1-1
+1-1-14
+1-1-2014
+1.1
+1.1.14
+1.1.2014
+1 jan
+1 january
+1 jan 2014
+1 january 2014
+1jan
+1january
+1jan2014
+1january2014
+=========================================================================
+
+All the time formats below are supported:
+
+12 hour format:
+1:23pm
+1:23 pm
+1.23pm
+1.23 pm
+123pm
+123 pm
+
+24 hour format:
+23:23
