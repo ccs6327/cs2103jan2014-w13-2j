@@ -64,9 +64,7 @@ public class SystemTest {
 		inputList.add("unmark 1");
 		feedbackList.add("mark [buy ticket] as not done sucessfully");
 		
-		//Test case 8: 
-		
-		//Test case 9: Invalid Command 
+		//Test case 8: Invalid Command 
 		inputList.add("unso");
 		feedbackList.add("Invalid command format: unso");
 	}
