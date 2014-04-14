@@ -250,7 +250,9 @@ public class Storage {
 
 	public static void setInternalMem(ArrayList<Task> taskList) {
 		internalMem.clear();
-		internalMem.addAll(taskList);
+		for (Task task: taskList) {
+			internalMem.add(task.getNewCopy());
+		}
 	}
 
 	public static void setDisplayMem(ArrayList<Integer> taskList) {
