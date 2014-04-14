@@ -69,7 +69,8 @@ public class UserInterface {
 		GUI.launchAndGetInputAndExecute();
 	}
 
-	/*private static void setTimerForReminder() {
+	/*
+	private static void setTimerForReminder() {
 		Remind rmd = new Remind();
 		ArrayList<String> reminderInfo = rmd.getToBeRemindedInfo();
 		ArrayList<Date> reminderTime = rmd.getToBeRemindedTime();
