@@ -1,4 +1,4 @@
-//@author A0112089J generated
+//@author generated
 
 package clc.ui;
 

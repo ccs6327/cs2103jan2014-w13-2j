@@ -8,6 +8,7 @@
 package clc.logic;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 
 import static clc.common.Constants.*;
 
@@ -261,20 +262,45 @@ public class Task {
 
 	public Task getNewCopy() {
 		Task task = new Task();
-
+		
 		task.setTaskName(taskName);
 		task.setTaskToString(taskToString);
 		task.setTaskTypeToString(taskTypeToString);
 		task.setTaskId(taskId);
-		task.setStartTime(startTime);
-		task.setEndTime(endTime);
 		task.setTaskType(taskType);
+		if (taskType == TYPE_TIMED_TASK) {
+			long startTimeInLong = startTime.getTimeInMillis();
+			long endTimeInLong = endTime.getTimeInMillis();
+			task.setStartTimeInMillis(startTimeInLong);
+			task.setEndTimeInMillis(endTimeInLong);
+		} else if (taskType == TYPE_DEADLINE_TASK) {
+			task.setStartTime(null);
+			long endTimeInLong = endTime.getTimeInMillis();
+			task.setEndTimeInMillis(endTimeInLong);
+		} else {
+			task.setStartTime(null);
+			task.setEndTime(null);
+		}
 		task.setIsDone(isDone);
-		task.setIsDone(isReminderNeeded); 
+		task.setIsReminderNeeded(isReminderNeeded); 
 		task.setNumberOfRecurring(numberOfRecurring);
 		task.setRecurringPeriod(recurringPeriod);
 
 		return task;
+	}
+
+	private void setIsReminderNeeded(boolean isReminderNeeded) {
+		this.isReminderNeeded = isReminderNeeded;
+	}
+
+	private void setEndTimeInMillis(long endTimeInLong) {
+		endTime = new GregorianCalendar();
+		this.endTime.setTimeInMillis(endTimeInLong);
+	}
+
+	private void setStartTimeInMillis(long startTimeInLong) {
+		startTime = new GregorianCalendar();
+		this.startTime.setTimeInMillis(startTimeInLong);
 	}
 
 	private void setTaskId(long taskId) {
