@@ -855,9 +855,11 @@ public class AddAnalyzer extends TimeParser {
 
 	private static void setInfoIfQuotationMarkAtTheBeginningOrEnding(int startQuotationIndex, int endQuotationIndex) {
 		if (isQuotationMarkAtTheBeginning(startQuotationIndex)){
-			infoToBeProcessed = commandDetails.substring(endQuotationIndex + 1, commandDetails.length()).split(SPACE);
+			String unquotedString = commandDetails.substring(endQuotationIndex + 1, commandDetails.length());
+			infoToBeProcessed = unquotedString.split(SPACE);
 		} else if (isQuotationMarkAtTheEnding(endQuotationIndex)) {
-			infoToBeProcessed = commandDetails.substring(0, startQuotationIndex).split(SPACE);
+			String unquotedString = commandDetails.substring(0, startQuotationIndex);
+			infoToBeProcessed = unquotedString.split(SPACE);
 		} else { //quoted in the middle
 			infoToBeProcessed = commandDetails.split(SPACE);
 			isCaseQuotedTaskName = false;
@@ -1949,8 +1951,10 @@ public class DisplayAnalyzer extends TimeParser{
 		int deductValue = Calendar.MONDAY - dayOfWeek;
 		startCalendar = new GregorianCalendar(year, month, date + deductValue);
 		endCalendar = new GregorianCalendar(year, month, date);
-		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
 		endCalendar.add(Calendar.DATE, addValue);
+		System.out.println(startCalendar.getTime().toString());
+		System.out.println(endCalendar.getTime().toString());
 		LogHelper.info("Set to display this week's tasks");
 	}
 
@@ -2207,7 +2211,7 @@ public class DisplayAnalyzerTest {
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
@@ -2763,12 +2767,12 @@ public class DisplayAnalyzerTest {
 
 		
 		//display calendar in a specific period of time with keyword Monday to Sunday
-		Analyzer.analyze("display from 12am monday to 1159pm next sunday");
+		Analyzer.analyze("display from 12am next monday to 1159pm next sunday");
 
 		DisplayAnalyzer.analyze();
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 0, 0);
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar(currTime.get(Calendar.YEAR), currTime.get(Calendar.MONTH), currTime.get(Calendar.DATE), 23, 59);
 		gc.add(Calendar.DATE, (Calendar.SUNDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
@@ -2833,134 +2837,6 @@ public class DisplayAnalyzerTest {
 	/**
 	 * origin: D:\Dropbox\workspace\cs2103jan2014-w13-2j\clc\ui\GUI.java
 	 */
-
-
-package clc.ui;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.Insets;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-import javax.swing.JScrollPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
-
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
-
-import clc.common.LogHelper;
-import static clc.common.Constants.MESSAGE_SEPARATOR;
-import static clc.common.Constants.NEWLINE;
-import static clc.common.Constants.EMPTY;
-import static clc.common.Constants.SPACE;
-import static clc.common.Constants.THIS_WEEK;
-import static clc.common.Constants.TYPE_DISPLAY;
-import static clc.common.Constants.TYPE_DISPLAY_SHORT;
-import static clc.common.Constants.TYPE_SHOW;
-import static clc.common.Constants.TYPE_LIST;
-import static clc.common.Constants.TYPE_HELP;
-import static clc.common.Constants.TYPE_SEARCH;
-
-public class GUI implements NativeKeyListener {
-	private JFrame frameClc;
-	private JTextField inputTextBox = new JTextField();
-	private JTextPane displayBox = new JTextPane();
-	private String input = EMPTY;
-	private JScrollPane scrollPane;
-	private StyledDocument doc = displayBox.getStyledDocument();
-	private boolean isPressingCtrl;
-	private ArrayList<String> previousInput = new ArrayList<String>();
-	private int inputIndex = 0;
-	protected boolean isWindowActivated;
-	private boolean isPressingShift;
-
-	protected GUI() { 
-		initialize();
-		LogHelper.info("GUI components initialized");
-	}
-
-	protected static void launchAndGetInputAndExecute() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI window = new GUI();
-					window.frameClc.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		LogHelper.info("GUI launched");
-	}
-
-	private void initialize() {
-		setUpJFrame();
-		setUpInputTextBox();
-		setUpDisplayBoxAndScrollPane();
-		initializeDisplayBox();
-		focusOnInputTextBox();
-		initializeInputTextBox();
-		actionWhenEnterIsPressed();
-		initiateWindowListener();
-		centreWindow(frameClc); 
-	}
-
-	private void setUpJFrame() {
-		frameClc = new JFrame();
-		frameClc.setName("frame");
-		frameClc.getContentPane().setBackground(Color.GRAY);
-		frameClc.setTitle("CLC V0.5");
-		frameClc.setResizable(false);
-		frameClc.setBounds(10, 10, 650, 500);
-		frameClc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameClc.getContentPane().setLayout(null);
-	}
-
-	private void setUpInputTextBox() {
-		inputTextBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inputTextBox.setHorizontalAlignment(SwingConstants.LEFT);
-		inputTextBox.setBounds(10, 415, 625, 40);
-		inputTextBox.setColumns(10);
-		inputTextBox.setCaretColor(Color.WHITE);
-		inputTextBox.setBorder(null);
-		inputTextBox.setBackground(Color.DARK_GRAY);
-		inputTextBox.setForeground(Color.WHITE);
-		frameClc.getContentPane().add(inputTextBox);
-	}
-
-	private void setUpDisplayBoxAndScrollPane() {
-		displayBox.setMargin(new Insets(10, 10, 10, 10));
-		displayBox.setBackground(Color.DARK_GRAY);
-		displayBox.setForeground(Color.WHITE);
-		displayBox.setEditable(false);
-		displayBox.setFont(new Font("Calibri Light", Font.PLAIN, 17));
-		displayBox.setBounds(10, 10, 625, 400);
-		scrollPane = new JScrollPane(displayBox);
-		scrollPane.setBorder(null);
-		scrollPane.setBounds(10, 10, 625, 400);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameClc.getContentPane().add(scrollPane);
-	}
 
 	private void focusOnInputTextBox() {
 		frameClc.addWindowFocusListener(new WindowAdapter() {
@@ -3229,7 +3105,7 @@ public class SequenceNumberExtractor extends Analyzer{
 			String currWord = sc.next();
 			if (isNumeric(currWord)) {
 				int seqNo = Integer.parseInt(currWord);
-				if (!taskSeqNo.contains(seqNo)) { //avoid duplicate
+				if (!taskSeqNo.contains(seqNo)) { //avoid duplication
 					taskSeqNo.add(seqNo);
 				}
 				LogHelper.info("'" + currWord + "'" + " is numeric");

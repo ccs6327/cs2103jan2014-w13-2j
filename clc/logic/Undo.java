@@ -38,7 +38,7 @@ public class Undo implements Command {
 			LogHelper.info(MESSAGE_UNDONE_FAILED);
 			return MESSAGE_UNDONE_FAILED;
 		}
-		
+
 		LogHelper.info(MESSAGE_UNDONE);
 		return MESSAGE_UNDONE;
 	}
