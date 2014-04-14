@@ -275,11 +275,7 @@ public class DisplayAnalyzer extends TimeParser{
 		// set the start time as Monday, end time as the end of the week
 		int deductValue = Calendar.MONDAY - dayOfWeek;
 		startCalendar = new GregorianCalendar(year, month, date + deductValue);
-		endCalendar = new GregorianCalendar(year, month, date);
-		int addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
-		endCalendar.add(Calendar.DATE, addValue);
-		System.out.println(startCalendar.getTime().toString());
-		System.out.println(endCalendar.getTime().toString());
+		endCalendar = new GregorianCalendar(year, month, startCalendar.get(Calendar.DATE) + 7);
 		LogHelper.info("Set to display this week's tasks");
 	}
 
@@ -289,9 +285,9 @@ public class DisplayAnalyzer extends TimeParser{
 		startCalendar = new GregorianCalendar(year, month, date);
 		endCalendar = new GregorianCalendar(year, month , date);
 
-		int addValue = (Calendar.MONDAY - startCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+		int addValue = Calendar.MONDAY - dayOfWeek + 7;
 		startCalendar.add(Calendar.DATE, addValue);
-		addValue = (Calendar.MONDAY - endCalendar.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7;
+		addValue = Calendar.MONDAY - dayOfWeek + 14;
 		endCalendar.add(Calendar.DATE, addValue);
 		LogHelper.info("Set to display next week's tasks");
 	}

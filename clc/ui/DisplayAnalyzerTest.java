@@ -147,14 +147,14 @@ public class DisplayAnalyzerTest {
 		assertEquals(NEXT_WEEK, DisplayAnalyzer.getDisplayQuery());
 		time = DisplayAnalyzer.getCalendar();
 		gc = new GregorianCalendar();
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7);
+		gc.add(Calendar.DATE, Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
 		gc.set(Calendar.MILLISECOND, 0);
 		assertEquals(gc, time.get(0));
 		gc = new GregorianCalendar();
-		gc.add(Calendar.DATE, (Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 7) % 7 + 7);
+		gc.add(Calendar.DATE, Calendar.MONDAY - currTime.get(Calendar.DAY_OF_WEEK) + 14);
 		gc.set(Calendar.HOUR_OF_DAY, 0);
 		gc.set(Calendar.MINUTE, 0);
 		gc.set(Calendar.SECOND, 0);
